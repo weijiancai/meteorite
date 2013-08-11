@@ -1,0 +1,30 @@
+apply plugin: "java"
+
+group = "com.meteorite"
+
+dependencies {
+    testCompile: "junit:junit:4.+"
+}
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.+'
+        compile group: 'org.hsqldb', name: 'hsqldb', version: '2.3.0'
+    }
+
+    version = '1.0'
+
+    jar {
+        manifest.attributes provider: 'gradle'
+    }
+}
