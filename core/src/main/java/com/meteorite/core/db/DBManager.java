@@ -11,6 +11,6 @@ public class DBManager {
      * @return 返回系统数据库sys
      */
     public static DataSource getSysDataSource() {
-        return new DataSource("taobao", "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/taobao", "sa", "");
+        return new DataSource("sys", "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/sys", "sa", "");
     }
 }
