@@ -20,4 +20,26 @@ public class UtilFile {
         br.close();
         return  result.toString();
     }
+
+    /**
+     * 根据目录路径，创建目录结构
+     *
+     * @param dir 目录路径
+     * @return 返回创建后的目录
+     */
+    public static File makeDirs(File dir) {
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return dir;
+    }
+
+    public static File makeDirs(String dirPath) {
+        return makeDirs(new File(dirPath));
+    }
+
+
+    public static File makeDirs(String parentDir, String subDir) {
+        return makeDirs(new File(parentDir, subDir));
+    }
 }
