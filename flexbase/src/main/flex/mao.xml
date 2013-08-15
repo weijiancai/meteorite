@@ -1,0 +1,101 @@
+<Graph>
+    <Node id="1" name="毛泽东" desc="This is a description" nodeColor="0x333333" nodeSize="32" nodeClass="earth" nodeIcon="center" x="10" y="10" />
+
+    <Node id="2" name="毛泽民" desc="This is a description" nodeColor="0xFFA500" nodeSize="14" nodeClass="tree" nodeIcon="5" x="10" y="30" />
+    <Node id="3" name="毛泽谭" desc="This is a description" nodeColor="0x191970" nodeSize="10" nodeClass="tree" nodeIcon="6" x="10" y="35" />
+
+    <Node id="4" name="杨开慧" desc="This is a description" nodeColor="0x191970" nodeSize="10" nodeClass="tree" nodeIcon="6" x="10" y="35" />
+    <Node id="5" name="贺子珍" desc="This is a description" nodeColor="0x191970" nodeSize="10" nodeClass="tree" nodeIcon="6" x="10" y="35" />
+    <Node id="6" name="江青" desc="This is a description" nodeColor="0x191970" nodeSize="10" nodeClass="tree" nodeIcon="6" x="10" y="35" />
+
+    <Node id="10" name="毛贻昌" desc="This is a description" nodeColor="0x8F8FFF" nodeSize="12" nodeClass="tree" nodeIcon="2" x="10" y="15" />
+    <Node id="11" name="文素勤" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="12" name="毛贻盛" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="13" name="毛贻富" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="14" name="毛贻经" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+
+    <Node id="100" name="毛恩普" desc="This is a description" nodeColor="0x00FF00" nodeSize="10" nodeClass="tree" nodeIcon="4" x="10" y="25" />
+    <Node id="101" name="毛恩农" desc="This is a description" nodeColor="0x00FF00" nodeSize="10" nodeClass="tree" nodeIcon="4" x="10" y="25" />
+
+    <Node id="20" name="毛岸英" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="21" name="毛岸青" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="22" name="毛岸龙" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+
+    <Node id="30" name="毛金花" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="31" name="毛岸红" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="32" name="毛娇娇" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+
+    <Node id="40" name="李讷" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+
+    <!--<Node id="7" name="阿部力" desc="This is a description" nodeColor="0x4682b4" nodeSize="18" nodeClass="tree" nodeIcon="7" x="10" y="40" />
+    <Node id="8" name="梁静茹" desc="This is a description" nodeColor="0x8F8FFF" nodeSize="21" nodeClass="leaf" nodeIcon="10" x="20" y="20" />
+    <Node id="9" name="李宗盛" desc="This is a description" nodeColor="0x8F8FFF" nodeSize="15" nodeClass="leaf" nodeIcon="11" x="20" y="25" />
+    <Node id="10" name="王菲" desc="This is a description" nodeColor="0x8F8FFF" nodeSize="32" nodeClass="leaf" nodeIcon="12" x="20" y="30" />
+-->
+    <Edge fromID="1" toID="4" edgeLabel="第一任妻子" flow="100" color="0x607b8b" edgeClass="sun" edgeIcon="Good" />
+    <Edge fromID="1" toID="5" edgeLabel="第二任妻子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="1" toID="6" edgeLabel="第三任妻子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+
+    <Edge fromID="11" toID="1" edgeLabel="长子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="11" toID="2" edgeLabel="次子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="11" toID="3" edgeLabel="三子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+
+    <Edge fromID="100" toID="10" edgeLabel="儿子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="100" toID="11" edgeLabel="儿媳" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="101" toID="12" edgeLabel="长子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="101" toID="13" edgeLabel="次子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="101" toID="14" edgeLabel="三子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+
+    <Edge fromID="100" toID="101" edgeLabel="兄弟" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+
+    <Edge fromID="4" toID="20" edgeLabel="长子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="4" toID="21" edgeLabel="次子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="4" toID="22" edgeLabel="三子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+
+    <Edge fromID="5" toID="30" edgeLabel="长女" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="5" toID="31" edgeLabel="次子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="5" toID="32" edgeLabel="三子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+
+    <Edge fromID="6" toID="40" edgeLabel="三子" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <!--<Edge fromID="1" toID="7" edgeLabel="师弟" flow="150" color="0x6b8e23" edgeClass="sun" edgeIcon="Bad" />
+    <Edge fromID="1" toID="8" edgeLabel="好友" flow="100" edgeClass="rain" edgeIcon="Good" />
+    <Edge fromID="1" toID="9" edgeLabel="好友" flow="400" edgeClass="rain" edgeIcon="Bad" />
+    <Edge fromID="1" toID="10" edgeLabel="好友" flow="800" edgeClass="rain" edgeIcon="NoChange" />
+
+    <Node id="11" name="马云" desc="This is a description" nodeColor="0x333333" nodeSize="32" nodeClass="earth" nodeIcon="center" x="10" y="10" />
+    <Node id="12" name="张瑛" desc="This is a description" nodeColor="0x8F8FFF" nodeSize="12" nodeClass="tree" nodeIcon="2" x="10" y="15" />
+    <Node id="13" name="惠特曼" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="14" name="王俊海" desc="This is a description" nodeColor="0x00FF00" nodeSize="10" nodeClass="tree" nodeIcon="4" x="10" y="25" />
+    <Node id="15" name="谢文" desc="This is a description" nodeColor="0xFFA500" nodeSize="14" nodeClass="tree" nodeIcon="5" x="10" y="30" />
+    <Node id="16" name="张纪中" desc="This is a description" nodeColor="0x191970" nodeSize="10" nodeClass="tree" nodeIcon="6" x="10" y="35" />
+    <Node id="17" name="杨致远" desc="This is a description" nodeColor="0x4682b4" nodeSize="18" nodeClass="tree" nodeIcon="7" x="10" y="40" />
+    <Node id="18" name="孙正义" desc="This is a description" nodeColor="0x8F8FFF" nodeSize="21" nodeClass="leaf" nodeIcon="10" x="20" y="20" />
+    <Node id="19" name="周宏伟" desc="This is a description" nodeColor="0x8F8FFF" nodeSize="15" nodeClass="leaf" nodeIcon="11" x="20" y="25" />
+    <Node id="20" name="黄圣依" desc="This is a description" nodeColor="0x8F8FFF" nodeSize="32" nodeClass="leaf" nodeIcon="12" x="20" y="30" />
+
+    <Edge fromID="11" toID="12" edgeLabel="媳妇|同事" flow="50" color="0x556b2f" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="11" toID="13" edgeLabel="对手" flow="400" color="0xcd5c5c" edgeClass="sun" edgeIcon="Bad" />
+    <Edge fromID="11" toID="14" edgeLabel="好友" flow="80" color="0xb22222" edgeClass="sun" edgeIcon="Good" />
+    <Edge fromID="11" toID="15" edgeLabel="选择" flow="100" color="0x607b8b" edgeClass="sun" edgeIcon="Good" />
+    <Edge fromID="11" toID="16" edgeLabel="会见" flow="120" color="0x333333" edgeClass="sun" edgeIcon="NoChange" />
+    <Edge fromID="11" toID="17" edgeLabel="牵手|好友" flow="150" color="0x6b8e23" edgeClass="sun" edgeIcon="Bad" />
+    <Edge fromID="11" toID="18" edgeLabel="会见|好友" flow="100" edgeClass="rain" edgeIcon="Good" />
+    <Edge fromID="11" toID="19" edgeLabel="恩怨" flow="400" edgeClass="rain" edgeIcon="Bad" />
+    <Edge fromID="11" toID="20" edgeLabel="《辟邪剑》" flow="800" edgeClass="rain" edgeIcon="NoChange" />
+
+    <Node id="131" name="张三" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="132" name="李四" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="133" name="王五" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="134" name="马六" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="135" name="赵七" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+    <Node id="136" name="孙八" desc="This is a description" nodeColor="0xF00000" nodeSize="36" nodeClass="tree" nodeIcon="3" x="10" y="20" />
+
+    <Edge fromID="13" toID="131" edgeLabel="员工" flow="400" color="0xcd5c5c" edgeClass="sun" edgeIcon="Bad" />
+    <Edge fromID="13" toID="132" edgeLabel="员工" flow="400" color="0xcd5c5c" edgeClass="sun" edgeIcon="Bad" />
+    <Edge fromID="13" toID="133" edgeLabel="员工" flow="400" color="0xcd5c5c" edgeClass="sun" edgeIcon="Bad" />
+    <Edge fromID="13" toID="134" edgeLabel="员工" flow="400" color="0xcd5c5c" edgeClass="sun" edgeIcon="Bad" />
+    <Edge fromID="13" toID="135" edgeLabel="员工" flow="400" color="0xcd5c5c" edgeClass="sun" edgeIcon="Bad" />
+    <Edge fromID="13" toID="136" edgeLabel="员工" flow="400" color="0xcd5c5c" edgeClass="sun" edgeIcon="Bad" />
+
+    <Edge fromID="3" toID="20" edgeLabel="闺蜜" flow="800" edgeClass="rain" edgeIcon="NoChange" />-->
+</Graph>
