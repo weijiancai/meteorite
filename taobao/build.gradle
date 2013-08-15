@@ -5,4 +5,5 @@ version = '1.0'
 
 dependencies {
     compile project(':core')
+    compile project(':fxbase')
 }

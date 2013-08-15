@@ -3,10 +3,7 @@ package com.meteorite.core.config;
 import com.meteorite.core.db.DataSource;
 import com.meteorite.core.util.UtilFile;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +15,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @XmlRootElement
-@XmlType (propOrder = {"projectName", "userHome", "userDir", "dataSources"})
+@XmlType (propOrder = {"projectName", "projectCnName", "userHome", "userDir", "dataSources"})
 public class ProjectConfig {
     public static final String DIR_NAME_SQLDB = "hsqldb"; // hsqldb数据库存储数据库文件的目录名
     public static final String DIR_NAME_DBCONF = "dbconf"; // 数据库配置信息目录名
@@ -26,6 +23,7 @@ public class ProjectConfig {
     private static String userHome = System.getProperty("user.home");
     private static String userDir = System.getProperty("user.dir");
     private static String projectName;
+    private static String projectCnName;
 
     private List<DataSource> dataSources = new ArrayList<DataSource>();
 
@@ -57,6 +55,14 @@ public class ProjectConfig {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getProjectCnName() {
+        return projectCnName;
+    }
+
+    public void setProjectCnName(String projectCnName) {
+        ProjectConfig.projectCnName = projectCnName;
     }
 
     @XmlElementWrapper(name = "DataSources")
