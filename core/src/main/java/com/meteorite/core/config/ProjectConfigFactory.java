@@ -1,8 +1,8 @@
 package com.meteorite.core.config;
 
-import com.meteorite.core.db.DBManager;
 import com.meteorite.core.db.DataSource;
 import com.meteorite.core.util.JAXBUtil;
+import com.meteorite.core.util.UString;
 
 import java.io.File;
 
@@ -22,7 +22,7 @@ public class ProjectConfigFactory {
             }
             projectConfig = JAXBUtil.unmarshal(file, ProjectConfig.class);
 
-            boolean hasSysDataSource = false;
+            /*boolean hasSysDataSource = false;
             for (DataSource dataSource : projectConfig.getDataSources()) {
                 if ("sys".equals(dataSource.getName())) {
                     hasSysDataSource = true;
@@ -32,7 +32,7 @@ public class ProjectConfigFactory {
             if (!hasSysDataSource) {
                 projectConfig.getDataSources().add(DBManager.getSysDataSource());
                 save(projectConfig);
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,5 +48,32 @@ public class ProjectConfigFactory {
 
     public static void save(ProjectConfig projectConfig) throws Exception {
         JAXBUtil.marshalToFile(projectConfig, ProjectConfig.getProjectConfigFile(), ProjectConfig.class, DataSource.class);
+    }
+
+    /**
+     * 检查项目是否已经配置
+     * 1. 检查项目名称
+     * 2. 检查sys数据源
+     *
+     * @param projectConfig 项目配置信息
+     * @return 如果已经配置，返回true，否则返回false
+     */
+    public static boolean isConfigured(ProjectConfig projectConfig) {
+        // 检查项目名称
+        if (UString.isEmpty(projectConfig.getProjectName())) {
+            return false;
+        }
+        // 检查sys数据源
+        boolean hasSysDataSource = false;
+        for (DataSource dataSource : projectConfig.getDataSources()) {
+            if ("sys".equals(dataSource.getName())) {
+                hasSysDataSource = true;
+                break;
+            }
+        }
+        if (!hasSysDataSource) {
+            return false;
+        }
+        return true;
     }
 }

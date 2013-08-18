@@ -1,7 +1,7 @@
 package com.meteorite.taobao;
 
 import com.meteorite.core.facade.IFacade;
-import com.meteorite.fxbase.BaseApplication;
+import com.meteorite.fxbase.BaseApp;
 
 /**
  * 淘宝主应用程序
@@ -9,13 +9,13 @@ import com.meteorite.fxbase.BaseApplication;
  * @author wei_jc
  * @version 1.0.0
  */
-public class TaobaoApplication extends BaseApplication {
+public class TaobaoApp extends BaseApp {
     @Override
     protected IFacade getFacade() {
         return TaobaoFacade.getInstance();
     }
 
     public static void main(String[] args) {
-        launch(TaobaoApplication.class);
+        launch(TaobaoApp.class);
     }
 }
