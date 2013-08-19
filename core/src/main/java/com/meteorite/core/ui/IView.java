@@ -6,6 +6,8 @@ package com.meteorite.core.ui;
  * @author wei_jc
  * @version 1.0.0
  */
-public interface IView {
+public interface IView<T> {
     void initUI();
+
+    ILayout<T> getLayout();
 }

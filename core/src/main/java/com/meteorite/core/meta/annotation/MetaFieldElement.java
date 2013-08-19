@@ -57,4 +57,11 @@ public @interface MetaFieldElement {
      * @return 返回元数据字段数据类型
      */
     MetaDataType dataType() default MetaDataType.STRING;
+
+    /**
+     * 排序号
+     *
+     * @return 返回排序号
+     */
+    int sortNum() default 0;
 }

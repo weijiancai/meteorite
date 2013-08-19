@@ -1,15 +1,11 @@
-apply plugin: "java"
-
-group = "com.meteorite"
-
-dependencies {
-    testCompile: "junit:junit:4.+"
-}
+// the top-level build isn't oomplete until all the child projects are complete
+dependsOnChildren()
 
 repositories {
     mavenCentral()
 }
 
+/*
 subprojects {
     apply plugin: 'java'
 
@@ -27,4 +23,8 @@ subprojects {
     jar {
         manifest.attributes provider: 'gradle'
     }
-}
+}*/
+
+// top-level build task that depends on the underlying tasks
+
+task build

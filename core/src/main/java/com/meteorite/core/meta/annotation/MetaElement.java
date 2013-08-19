@@ -41,4 +41,11 @@ public @interface MetaElement {
      * @return 如果有效 返回true， 否则false
      */
     boolean isValid() default true;
+
+    /**
+     * 排序号
+     *
+     * @return 返回排序号
+     */
+    int sortNum() default 0;
 }

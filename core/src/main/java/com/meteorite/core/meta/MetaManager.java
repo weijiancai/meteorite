@@ -10,9 +10,7 @@ import com.meteorite.core.util.ClassUtil;
 import com.meteorite.core.util.UString;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 元数据管理
@@ -42,6 +40,7 @@ public class MetaManager {
         meta.setValid(metaElement.isValid());
         meta.setDesc(metaElement.desc());
         meta.setInputDate(new Date());
+        meta.setSortNum(metaElement.sortNum());
 
         List<MetaField> fieldList = new ArrayList<MetaField>();
         for (Method method : clazz.getDeclaredMethods()) {
@@ -52,9 +51,10 @@ public class MetaManager {
                 MetaField metaField = new MetaField();
                 metaField.setName("##default".equals(metaFieldElement.name()) ? name : metaFieldElement.name());
                 metaField.setDisplayName(metaFieldElement.displayName());
-                metaField.setValid(metaElement.isValid());
-                metaField.setDesc(metaElement.desc());
+                metaField.setValid(metaFieldElement.isValid());
+                metaField.setDesc(metaFieldElement.desc());
                 metaField.setInputDate(new Date());
+                metaField.setSortNum(metaFieldElement.sortNum());
                 if (UString.isEmpty(metaFieldElement.defaultValue())) {
                     Object obj = method.invoke(metaObj);
                     if (obj != null && ClassUtil.isPrimitive(obj.getClass())) {
@@ -67,6 +67,13 @@ public class MetaManager {
                 fieldList.add(metaField);
             }
         }
+        // 排序fields
+        Collections.sort(fieldList, new Comparator<MetaField>() {
+            @Override
+            public int compare(MetaField o1, MetaField o2) {
+                return o1.getSortNum() - o2.getSortNum();
+            }
+        });
 
         meta.setFileds(fieldList);
 
