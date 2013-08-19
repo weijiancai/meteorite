@@ -23,4 +23,19 @@ public enum DisplayStyle {
      * 3. 下拉框
      */
     COMBO_BOX
+    ;
+
+    public static DisplayStyle getStyle(String styleStr) {
+        if ("0".equals(styleStr)) {
+            return TEXT_FIELD;
+        } else if ("1".equals(styleStr)) {
+            return TEXT_AREA;
+        } else if ("2".equals(styleStr)) {
+            return PASSWORD;
+        } else if ("3".equals(styleStr)) {
+            return COMBO_BOX;
+        }
+
+        return TEXT_FIELD;
+    }
 }

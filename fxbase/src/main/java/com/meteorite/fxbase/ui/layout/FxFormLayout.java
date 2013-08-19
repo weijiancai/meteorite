@@ -3,6 +3,7 @@ package com.meteorite.fxbase.ui.layout;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaFormField;
+import com.meteorite.core.ui.layout.impl.FormFieldLayout;
 import com.meteorite.core.ui.layout.impl.FormLayout;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.valuectl.*;
@@ -16,11 +17,7 @@ import javafx.scene.layout.Region;
  * @author wei_jc
  * @version 1.0.0
  */
-public class FxFormLayout<T> extends FormLayout<T> {
-    @Override
-    public T layout() {
-        return null;
-    }
+public class FxFormLayout extends FormLayout {
 
     private void initFormGridPane() {
         GridPane formGrid = new GridPane();
@@ -33,7 +30,7 @@ public class FxFormLayout<T> extends FormLayout<T> {
         Region fieldGap;
         int idxRow = 0;
         int idxCol = 0;
-        for (MetaFormField field : getFormFields()) {
+        for (FormFieldLayout field : getFormFields()) {
             if (!field.isDisplay()) { // 不显示
                 continue;
             }
@@ -82,7 +79,7 @@ public class FxFormLayout<T> extends FormLayout<T> {
         }
     }
 
-    private IValue getValueNode(MetaFormField field) {
+    private IValue getValueNode(FormFieldLayout field) {
         IValue node;
         if (DisplayStyle.TEXT_AREA == field.getDisplayStyle()) {
             VTextArea textArea = new VTextArea();

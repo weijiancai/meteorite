@@ -12,16 +12,16 @@ import java.util.List;
  * @author wei_jc
  * @version 1.0.0
  */
-public abstract class FormLayout<T> extends BaseLayout<T> {
-    public static final String NAME = "name";
-    public static final String CNAME = "cname";
+public class FormLayout extends BaseLayout {
+    public static final String FORM_NAME = "name";
+    public static final String FORM_CNAME = "cname";
     public static final String FORM_TYPE = "formType";
-    public static final String COL_COUNT = "colCount";
-    public static final String COL_WIDTH = "colWidth";
-    public static final String LABEL_GAP = "labelGap";
-    public static final String FIELD_GAP = "fieldGap";
-    public static final String HGAP = "hgap";
-    public static final String VGAP = "vgap";
+    public static final String FORM_COL_COUNT = "colCount";
+    public static final String FORM_COL_WIDTH = "colWidth";
+    public static final String FORM_LABEL_GAP = "labelGap";
+    public static final String FORM_FIELD_GAP = "fieldGap";
+    public static final String FORM_HGAP = "hgap";
+    public static final String FORM_VGAP = "vgap";
 
     private List<FormFieldLayout> formFields;
 
@@ -31,15 +31,15 @@ public abstract class FormLayout<T> extends BaseLayout<T> {
 
     private void initProperties() {
         // 表单属性
-        this.addProperty(LayoutType.FORM, new LayoutProperty(NAME, "名称", null, 10));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(CNAME, "中文名", null, 20));
+        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_NAME, "名称", null, 10));
+        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_CNAME, "中文名", null, 20));
         this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_TYPE, "表单类型", null, 30));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(COL_COUNT, "列数", "3", 40));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(COL_WIDTH, "列宽", "180", 50));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(LABEL_GAP, "labelGap", "5", 50));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(FIELD_GAP, "fieldGap", "15", 50));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(HGAP, "hgap", "3", 50));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(VGAP, "vgap", "5", 50));
+        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_COL_COUNT, "列数", "3", 40));
+        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_COL_WIDTH, "列宽", "180", 50));
+        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_LABEL_GAP, "labelGap", "5", 50));
+        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_FIELD_GAP, "fieldGap", "15", 50));
+        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_HGAP, "hgap", "3", 50));
+        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_VGAP, "vgap", "5", 50));
     }
 
     private String getPropertyValue(String propertyName) {
@@ -60,20 +60,20 @@ public abstract class FormLayout<T> extends BaseLayout<T> {
 
     @XmlAttribute
     public String getName() {
-        return getPropertyValue(NAME);
+        return getPropertyValue(FORM_NAME);
     }
 
     public void setName(String name) {
-        setPropertyValue(NAME, name);
+        setPropertyValue(FORM_NAME, name);
     }
 
     @XmlAttribute
     public String getCname() {
-        return getPropertyValue(CNAME);
+        return getPropertyValue(FORM_CNAME);
     }
 
     public void setCname(String cname) {
-        setPropertyValue(CNAME, cname);
+        setPropertyValue(FORM_CNAME, cname);
     }
 
     @XmlAttribute
@@ -87,55 +87,63 @@ public abstract class FormLayout<T> extends BaseLayout<T> {
 
     @XmlAttribute
     public int getColCount() {
-        return Integer.parseInt(getPropertyValue(COL_COUNT));
+        return Integer.parseInt(getPropertyValue(FORM_COL_COUNT));
     }
 
     public void setColCount(int colCount) {
-        setPropertyValue(COL_COUNT, colCount + "");
+        setPropertyValue(FORM_COL_COUNT, colCount + "");
     }
 
     @XmlAttribute
     public int getColWidth() {
-        return Integer.parseInt(getPropertyValue(COL_WIDTH));
+        return Integer.parseInt(getPropertyValue(FORM_COL_WIDTH));
     }
 
     public void setColWidth(int colWidth) {
-        setPropertyValue(COL_WIDTH, colWidth + "");
+        setPropertyValue(FORM_COL_WIDTH, colWidth + "");
     }
 
     @XmlAttribute
     public int getLabelGap() {
-        return Integer.parseInt(getPropertyValue(LABEL_GAP));
+        return Integer.parseInt(getPropertyValue(FORM_LABEL_GAP));
     }
 
     public void setLabelGap(int labelGap) {
-        setPropertyValue(LABEL_GAP, labelGap + "");
+        setPropertyValue(FORM_LABEL_GAP, labelGap + "");
     }
 
     @XmlAttribute
     public int getFieldGap() {
-        return Integer.parseInt(getPropertyValue(FIELD_GAP));
+        return Integer.parseInt(getPropertyValue(FORM_FIELD_GAP));
     }
 
     public void setFieldGap(int fieldGap) {
-        setPropertyValue(FIELD_GAP, fieldGap + "");
+        setPropertyValue(FORM_FIELD_GAP, fieldGap + "");
     }
 
     @XmlAttribute
     public int getHgap() {
-        return Integer.parseInt(getPropertyValue(HGAP));
+        return Integer.parseInt(getPropertyValue(FORM_HGAP));
     }
 
     public void setHgap(int hgap) {
-        setPropertyValue(HGAP, hgap + "");
+        setPropertyValue(FORM_HGAP, hgap + "");
     }
 
     @XmlAttribute
     public int getVgap() {
-        return Integer.parseInt(getPropertyValue(VGAP));
+        return Integer.parseInt(getPropertyValue(FORM_VGAP));
     }
 
     public void setVgap(int vgap) {
-        setPropertyValue(VGAP, vgap + "");
+        setPropertyValue(FORM_VGAP, vgap + "");
+    }
+
+    public List<FormFieldLayout> getFormFields() {
+        return formFields;
+    }
+
+    public void setFormFields(List<FormFieldLayout> formFields) {
+        this.formFields = formFields;
     }
 }

@@ -12,7 +12,7 @@ import java.util.Map;
  * @author wei_jc
  * @version 1.0.0
  */
-public interface ILayout<T> {
+public interface ILayout {
     /**
      * 设置布局属性
      *
@@ -27,9 +27,4 @@ public interface ILayout<T> {
      * @param property 布局属性
      */
     void addProperty(LayoutType type, LayoutProperty property);
-
-    /**
-     * 进行布局，返回布局后的可视化对象
-     */
-    T layout();
 }

@@ -9,5 +9,12 @@ package com.meteorite.core.ui;
 public interface IView<T> {
     void initUI();
 
-    ILayout<T> getLayout();
+    ILayout getLayout();
+
+    /**
+     * 进行布局，返回布局后的可视化对象
+     *
+     * @return 返回布局后的可视化对象
+     */
+    T doLayout();
 }

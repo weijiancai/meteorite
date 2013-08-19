@@ -1,9 +1,14 @@
 package com.meteorite.core.ui.layout.impl;
 
+import com.meteorite.core.meta.DisplayStyle;
+import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.meta.model.MetaForm;
 import com.meteorite.core.ui.layout.LayoutProperty;
 import com.meteorite.core.ui.layout.LayoutType;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
+import java.util.Date;
 
 /**
  * 表单字段布局器
@@ -11,39 +16,38 @@ import javax.xml.bind.annotation.XmlAttribute;
  * @author wei_jc
  * @version 1.0.0
  */
-public abstract class FormFieldLayout<T> extends BaseLayout<T> {
-    public static final String NAME = "name";
-    public static final String CNAME = "cname";
-    public static final String FORM_TYPE = "formType";
-    public static final String COL_COUNT = "colCount";
-    public static final String COL_WIDTH = "colWidth";
-    public static final String LABEL_GAP = "labelGap";
-    public static final String FIELD_GAP = "fieldGap";
-    public static final String HGAP = "hgap";
-    public static final String VGAP = "vgap";
+public class FormFieldLayout extends BaseLayout {
+    public static final String DISPLAY_NAME = "displayName";
+    public static final String IS_SINGLE_LINE = "isSingleLine";
+    public static final String IS_DISPLAY = "isDisplay";
+    public static final String WIDTH = "width";
+    public static final String HEIGHT = "height";
+    public static final String DISPLAY_STYLE = "displayStyle";
+    public static final String SORT_NUM = "sortNum";
+
+    private FormLayout form;
+    private MetaField metaField;
 
     public FormFieldLayout() {
         initProperties();
     }
 
     private void initProperties() {
-        // 表单属性
-        this.addProperty(LayoutType.FORM, new LayoutProperty(NAME, "名称", null, 10));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(CNAME, "中文名", null, 20));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_TYPE, "表单类型", null, 30));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(COL_COUNT, "列数", "3", 40));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(COL_WIDTH, "列宽", "180", 50));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(LABEL_GAP, "labelGap", "5", 50));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(FIELD_GAP, "fieldGap", "15", 50));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(HGAP, "hgap", "3", 50));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(VGAP, "vgap", "5", 50));
+        // 表单字段属性
+        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(DISPLAY_NAME, "显示名", null, 10));
+        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(IS_SINGLE_LINE, "独行", null, 20));
+        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(IS_DISPLAY, "显示", null, 30));
+        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(WIDTH, "宽", null, 40));
+        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(HEIGHT, "高", null, 50));
+        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(DISPLAY_STYLE, "显示风格", "string", 60));
+        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(SORT_NUM, "排序号", "0", 70));
     }
 
     private String getPropertyValue(String propertyName) {
-        return super.getPropertyValue(LayoutType.FORM, propertyName);
+        return super.getPropertyValue(LayoutType.FORM_ITEM_FIELD, propertyName);
     }
     private void setPropertyValue(String propertyName, String propertyValue) {
-        super.setPropertyValue(LayoutType.FORM, propertyName, propertyValue);
+        super.setPropertyValue(LayoutType.FORM_ITEM_FIELD, propertyName, propertyValue);
     }
 
     @XmlAttribute
@@ -56,83 +60,109 @@ public abstract class FormFieldLayout<T> extends BaseLayout<T> {
     }
 
     @XmlAttribute
-    public String getName() {
-        return getPropertyValue(NAME);
+    public String getDisplayName() {
+        return getPropertyValue(DISPLAY_NAME);
     }
 
-    public void setName(String name) {
-        setPropertyValue(NAME, name);
-    }
-
-    @XmlAttribute
-    public String getCname() {
-        return getPropertyValue(CNAME);
-    }
-
-    public void setCname(String cname) {
-        setPropertyValue(CNAME, cname);
+    public void setDisplayName(String displayName) {
+        setPropertyValue(DISPLAY_NAME, displayName);
     }
 
     @XmlAttribute
-    public String getFormType() {
-        return getPropertyValue(FORM_TYPE);
+    public boolean isSingleLine() {
+        return Boolean.valueOf(getPropertyValue(IS_SINGLE_LINE));
     }
 
-    public void setFormType(String formType) {
-        setPropertyValue(FORM_TYPE, formType);
-    }
-
-    @XmlAttribute
-    public int getColCount() {
-        return Integer.parseInt(getPropertyValue(COL_COUNT));
-    }
-
-    public void setColCount(int colCount) {
-        setPropertyValue(COL_COUNT, colCount + "");
+    public void setSingleLine(boolean singleLine) {
+        setPropertyValue(IS_SINGLE_LINE, singleLine + "");
     }
 
     @XmlAttribute
-    public int getColWidth() {
-        return Integer.parseInt(getPropertyValue(COL_WIDTH));
+    public boolean isDisplay() {
+        return Boolean.valueOf(getPropertyValue(IS_DISPLAY));
     }
 
-    public void setColWidth(int colWidth) {
-        setPropertyValue(COL_WIDTH, colWidth + "");
+    public void setDisplay(boolean display) {
+        setPropertyValue(IS_DISPLAY, display + "");
+    }
+
+    /*@XmlAttribute
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
+    }*/
+
+    @XmlAttribute
+    public int getWidth() {
+        return Integer.parseInt(getPropertyValue(WIDTH));
+    }
+
+    public void setWidth(int width) {
+        setPropertyValue(WIDTH, width + "");
     }
 
     @XmlAttribute
-    public int getLabelGap() {
-        return Integer.parseInt(getPropertyValue(LABEL_GAP));
+    public int getHeight() {
+        return Integer.parseInt(getPropertyValue(HEIGHT));
     }
 
-    public void setLabelGap(int labelGap) {
-        setPropertyValue(LABEL_GAP, labelGap + "");
-    }
-
-    @XmlAttribute
-    public int getFieldGap() {
-        return Integer.parseInt(getPropertyValue(FIELD_GAP));
-    }
-
-    public void setFieldGap(int fieldGap) {
-        setPropertyValue(FIELD_GAP, fieldGap + "");
+    public void setHeight(int height) {
+        setPropertyValue(HEIGHT, height + "");
     }
 
     @XmlAttribute
-    public int getHgap() {
-        return Integer.parseInt(getPropertyValue(HGAP));
+    public DisplayStyle getDisplayStyle() {
+        return DisplayStyle.getStyle(getPropertyValue(DISPLAY_STYLE));
     }
 
-    public void setHgap(int hgap) {
-        setPropertyValue(HGAP, hgap + "");
+    public void setDisplayStyle(DisplayStyle displayStyle) {
+        setPropertyValue(DISPLAY_STYLE, displayStyle.ordinal() + "");
     }
+
+    /*@XmlAttribute
+    public Date getInputDate() {
+        return inputDate;
+    }
+
+    public void setInputDate(Date inputDate) {
+        this.inputDate = inputDate;
+    }*/
 
     @XmlAttribute
-    public int getVgap() {
-        return Integer.parseInt(getPropertyValue(VGAP));
+    public int getSortNum() {
+        return Integer.parseInt(getPropertyValue(SORT_NUM));
     }
 
-    public void setVgap(int vgap) {
-        setPropertyValue(VGAP, vgap + "");
+    public void setSortNum(int sortNum) {
+        setPropertyValue(SORT_NUM, sortNum + "");
+    }
+
+    /*@XmlTransient
+    public MetaForm getForm() {
+        return form;
+    }
+
+    public void setForm(MetaForm form) {
+        this.form = form;
+    }*/
+
+    public FormLayout getForm() {
+        return form;
+    }
+
+    public void setForm(FormLayout form) {
+        this.form = form;
+    }
+
+    @XmlTransient
+    public MetaField getMetaField() {
+        return metaField;
+    }
+
+    public void setMetaField(MetaField metaField) {
+        this.metaField = metaField;
     }
 }

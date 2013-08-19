@@ -14,7 +14,7 @@ import java.util.Map;
  * @author wei_jc
  * @version 1.0.0
  */
-public abstract class BaseLayout<T> implements ILayout<T> {
+public class BaseLayout implements ILayout {
     private Map<LayoutType, List<LayoutProperty>> properties;
 
     @Override
