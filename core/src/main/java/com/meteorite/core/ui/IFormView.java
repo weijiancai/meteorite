@@ -6,5 +6,5 @@ package com.meteorite.core.ui;
  * @author wei_jc
  * @version 1.0.0
  */
-public interface IFormView<T> extends IView<T> {
+public interface IFormView<L extends ILayout> extends IView<L> {
 }
