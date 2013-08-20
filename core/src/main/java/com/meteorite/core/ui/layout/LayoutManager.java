@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class LayoutManager {
 
-    public static ILayout getFormLayout(Meta meta) {
+    /*public static ILayout getFormLayout(Meta meta) {
         FormLayout form = new FormLayout();
         form.setName(meta.getName() + "Form");
         form.setCname(meta.getCname() + "表单");
@@ -51,5 +51,5 @@ public class LayoutManager {
         form.setFormFields(formFields);
 
         return form;
-    }
+    }*/
 }

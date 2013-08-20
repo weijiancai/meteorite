@@ -1,4 +1,4 @@
-package com.meteorite.core.ui.layout;
+package com.meteorite.core.ui.layout.model;
 
 /**
  * 布局属性信息
@@ -7,6 +7,12 @@ package com.meteorite.core.ui.layout;
  * @version 1.0.0
  */
 public class LayoutProperty {
+    /** 属性ID*/
+    private int id;
+    /** 属性父ID*/
+    private int pid;
+    /** 属性类型 */
+    private String prop_type;
     /** 属性名称 */
     private String name;
     /** 属性中文名 */
@@ -23,6 +29,30 @@ public class LayoutProperty {
         this.cname = cname;
         this.defaultValue = defaultValue;
         this.sortNum = sortNum;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
+
+    public String getProp_type() {
+        return prop_type;
+    }
+
+    public void setProp_type(String prop_type) {
+        this.prop_type = prop_type;
     }
 
     public String getName() {

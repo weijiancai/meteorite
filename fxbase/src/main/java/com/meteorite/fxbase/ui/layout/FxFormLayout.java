@@ -2,14 +2,15 @@ package com.meteorite.fxbase.ui.layout;
 
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
-import com.meteorite.core.meta.model.MetaFormField;
-import com.meteorite.core.ui.layout.impl.FormFieldLayout;
 import com.meteorite.core.ui.layout.impl.FormLayout;
+import com.meteorite.core.ui.layout.property.FormFieldProperties;
+import com.meteorite.core.ui.layout.property.FormProperties;
 import com.meteorite.fxbase.ui.IValue;
-import com.meteorite.fxbase.ui.valuectl.*;
+import com.meteorite.fxbase.ui.valuectl.VPasswordField;
+import com.meteorite.fxbase.ui.valuectl.VTextArea;
+import com.meteorite.fxbase.ui.valuectl.VTextField;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
@@ -18,11 +19,13 @@ import javafx.scene.layout.Region;
  * @version 1.0.0
  */
 public class FxFormLayout extends FormLayout {
+    @Override
+    public GridPane layout() {
+        FormProperties form = getProperties();
 
-    private void initFormGridPane() {
         GridPane formGrid = new GridPane();
-        formGrid.setHgap(getHgap());
-        formGrid.setVgap(getVgap());
+        formGrid.setHgap(form.getHgap());
+        formGrid.setVgap(form.getVgap());
 
         Label label;
         Region labelGap;
@@ -30,7 +33,7 @@ public class FxFormLayout extends FormLayout {
         Region fieldGap;
         int idxRow = 0;
         int idxCol = 0;
-        for (FormFieldLayout field : getFormFields()) {
+        for (FormFieldProperties field : form.getFormFields()) {
             if (!field.isDisplay()) { // 不显示
                 continue;
             }
@@ -43,10 +46,10 @@ public class FxFormLayout extends FormLayout {
                 idxRow++;
                 formGrid.add(new Label(field.getDisplayName()), 0, idxRow);
                 labelGap = new Region();
-                labelGap.setPrefWidth(getLabelGap());
+                labelGap.setPrefWidth(form.getLabelGap());
                 formGrid.add(labelGap, 1, idxRow);
 //                fieldNodeMap.put(field.getId(), node);
-                formGrid.add((Node)node, 2, idxRow, getColCount() * 4 - 3, 1);
+                formGrid.add((Node)node, 2, idxRow, form.getColCount() * 4 - 3, 1);
                 idxCol = 0;
                 idxRow++;
 
@@ -57,29 +60,31 @@ public class FxFormLayout extends FormLayout {
             formGrid.add(label, idxCol++, idxRow);
 
             labelGap = new Region();
-            labelGap.setPrefWidth(getLabelGap());
+            labelGap.setPrefWidth(form.getLabelGap());
             formGrid.add(labelGap, idxCol++, idxRow);
 
 //            fieldNodeMap.put(field.getId(), node);
             formGrid.add((Node)node, idxCol++, idxRow);
 
-            if (getColCount() == 1) {
+            if (form.getColCount() == 1) {
                 idxCol = 0;
                 idxRow++;
             } else {
-                if (idxCol == getColCount() * 4 - 1) {
+                if (idxCol == form.getColCount() * 4 - 1) {
                     idxCol = 0;
                     idxRow++;
                 } else {
                     fieldGap = new Region();
-                    fieldGap.setPrefWidth(getFieldGap());
+                    fieldGap.setPrefWidth(form.getFieldGap());
                     formGrid.add(fieldGap, idxCol++, idxRow);
                 }
             }
         }
+
+        return formGrid;
     }
 
-    private IValue getValueNode(FormFieldLayout field) {
+    private IValue getValueNode(FormFieldProperties field) {
         IValue node;
         if (DisplayStyle.TEXT_AREA == field.getDisplayStyle()) {
             VTextArea textArea = new VTextArea();
@@ -96,7 +101,7 @@ public class FxFormLayout extends FormLayout {
             node = null;
         } else {
             if (MetaDataType.DATE == field.getMetaField().getDataType()) {
-                if ("0".equals(field.getForm().getFormType())) {
+                /*if ("0".equals(field.getForm().getFormType())) {
                     VDateRangeField dateField = new VDateRangeField();
                     dateField.setPrefWidth(field.getWidth() + 0.0);
                     node = dateField;
@@ -104,7 +109,8 @@ public class FxFormLayout extends FormLayout {
                     VDateField dateField = new VDateField();
                     dateField.setDateTextWidth(field.getWidth() + 0.0);
                     node = dateField;
-                }
+                }*/
+                node = null;
             } else {
                 VTextField textField = new VTextField();
                 textField.setPrefWidth(field.getWidth());
@@ -113,4 +119,6 @@ public class FxFormLayout extends FormLayout {
         }
         return node;
     }
+
+
 }
