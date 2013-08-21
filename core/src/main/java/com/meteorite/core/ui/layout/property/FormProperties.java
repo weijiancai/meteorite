@@ -32,7 +32,7 @@ public class FormProperties extends LayoutProperties {
 
     private void initProperties() {
         // 表单属性
-        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_NAME, "名称", null, 10));
+        /*this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_NAME, "名称", null, 10));
         this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_CNAME, "中文名", null, 20));
         this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_TYPE, "表单类型", null, 30));
         this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_COL_COUNT, "列数", "3", 40));
@@ -40,7 +40,7 @@ public class FormProperties extends LayoutProperties {
         this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_LABEL_GAP, "labelGap", "5", 50));
         this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_FIELD_GAP, "fieldGap", "15", 50));
         this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_HGAP, "hgap", "3", 50));
-        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_VGAP, "vgap", "5", 50));
+        this.addProperty(LayoutType.FORM, new LayoutProperty(FORM_VGAP, "vgap", "5", 50));*/
     }
 
     private String getPropertyValue(String propertyName) {

@@ -33,13 +33,13 @@ public class FormFieldProperties extends LayoutProperties {
 
     private void initProperties() {
         // 表单字段属性
-        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(DISPLAY_NAME, "显示名", null, 10));
+        /*this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(DISPLAY_NAME, "显示名", null, 10));
         this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(IS_SINGLE_LINE, "独行", null, 20));
         this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(IS_DISPLAY, "显示", null, 30));
         this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(WIDTH, "宽", null, 40));
         this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(HEIGHT, "高", null, 50));
         this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(DISPLAY_STYLE, "显示风格", "string", 60));
-        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(SORT_NUM, "排序号", "0", 70));
+        this.addProperty(LayoutType.FORM_ITEM_FIELD, new LayoutProperty(SORT_NUM, "排序号", "0", 70));*/
     }
 
     private String getPropertyValue(String propertyName) {

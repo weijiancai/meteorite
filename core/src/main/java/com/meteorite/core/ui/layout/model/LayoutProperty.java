@@ -9,26 +9,33 @@ package com.meteorite.core.ui.layout.model;
 public class LayoutProperty {
     /** 属性ID*/
     private int id;
-    /** 属性父ID*/
-    private int pid;
-    /** 属性类型 */
-    private String prop_type;
     /** 属性名称 */
     private String name;
     /** 属性中文名 */
     private String cname;
-    /** 属性值 */
-    private String value;
     /** 默认值 */
     private String defaultValue;
     /** 排序号*/
     private int sortNum;
 
-    public LayoutProperty(String name, String cname, String defaultValue, int sortNum) {
+    private Layout layout;
+
+    public LayoutProperty(int id, String name, String cname, String defaultValue, int sortNum, Layout layout) {
+        this.id = id;
         this.name = name;
         this.cname = cname;
         this.defaultValue = defaultValue;
         this.sortNum = sortNum;
+        this.layout = layout;
+    }
+
+    public LayoutProperty(String name, String cname, String defaultValue, Layout layout) {
+        this.name = name;
+        this.cname = cname;
+        this.defaultValue = defaultValue;
+        this.layout = layout;
+        // 将此属性添加到布局中
+        layout.getProperties().add(this);
     }
 
     public int getId() {
@@ -37,22 +44,6 @@ public class LayoutProperty {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getPid() {
-        return pid;
-    }
-
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
-
-    public String getProp_type() {
-        return prop_type;
-    }
-
-    public void setProp_type(String prop_type) {
-        this.prop_type = prop_type;
     }
 
     public String getName() {
@@ -71,14 +62,6 @@ public class LayoutProperty {
         this.cname = cname;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
     public String getDefaultValue() {
         return defaultValue;
     }
@@ -93,5 +76,13 @@ public class LayoutProperty {
 
     public void setSortNum(int sortNum) {
         this.sortNum = sortNum;
+    }
+
+    public Layout getLayout() {
+        return layout;
+    }
+
+    public void setLayout(Layout layout) {
+        this.layout = layout;
     }
 }

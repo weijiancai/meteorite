@@ -1,5 +1,6 @@
 package com.meteorite.core.ui.layout.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class Layout {
 
     private List<LayoutProperty> properties;
     private List<Layout> children;
+    private Layout parent;
 
     public Layout(int id, int pid, String name, String cname, String desc, int sortNum) {
         this.id = id;
@@ -32,6 +34,17 @@ public class Layout {
         this.cname = cname;
         this.desc = desc;
         this.sortNum = sortNum;
+    }
+
+    public Layout(String name, String cname, String desc, Layout parent) {
+        this.name = name;
+        this.cname = cname;
+        this.desc = desc;
+        this.parent = parent;
+        // 将子节点添加到父节点中
+        if (parent != null) {
+            parent.getChildren().add(this);
+        }
     }
 
     public int getId() {
@@ -83,6 +96,9 @@ public class Layout {
     }
 
     public List<LayoutProperty> getProperties() {
+        if (properties == null) {
+            properties = new ArrayList<LayoutProperty>();
+        }
         return properties;
     }
 
@@ -91,10 +107,21 @@ public class Layout {
     }
 
     public List<Layout> getChildren() {
+        if (children == null) {
+            children = new ArrayList<Layout>();
+        }
         return children;
     }
 
     public void setChildren(List<Layout> children) {
         this.children = children;
+    }
+
+    public Layout getParent() {
+        return parent;
+    }
+
+    public void setParent(Layout parent) {
+        this.parent = parent;
     }
 }
