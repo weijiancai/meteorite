@@ -62,7 +62,6 @@ public abstract class BaseApp extends Application {
         // 检查是否配置了项目
         if (!ProjectConfigFactory.isConfigured(projectConfig)) {
             Meta meta = MetaManager.toMeta(projectConfig);
-            MetaForm metaForm = MetaManager.toForm(meta);
             FxFormView formView = new FxFormView(meta);
 //            Dialogs.showInformationDialog(stage, "请配置项目信息！");
             Dialogs.showCustomDialog(stage, formView, "masthead", "项目信息配置", DialogOptions.OK, new Callback<Void, Void>() {

@@ -1,11 +1,18 @@
 package com.meteorite.core.ui.layout.model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * 布局属性信息
  *
  * @author wei_jc
  * @version 1.0.0
  */
+@XmlRootElement
+@XmlType(propOrder = {"id", "name", "cname", "defaultValue", "sortNum"})
 public class LayoutProperty {
     /** 属性ID*/
     private int id;
@@ -19,6 +26,8 @@ public class LayoutProperty {
     private int sortNum;
 
     private Layout layout;
+
+    private LayoutProperty() {}
 
     public LayoutProperty(int id, String name, String cname, String defaultValue, int sortNum, Layout layout) {
         this.id = id;
@@ -38,6 +47,7 @@ public class LayoutProperty {
         layout.getProperties().add(this);
     }
 
+    @XmlAttribute
     public int getId() {
         return id;
     }
@@ -46,6 +56,7 @@ public class LayoutProperty {
         this.id = id;
     }
 
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -54,6 +65,7 @@ public class LayoutProperty {
         this.name = name;
     }
 
+    @XmlAttribute
     public String getCname() {
         return cname;
     }
@@ -62,6 +74,7 @@ public class LayoutProperty {
         this.cname = cname;
     }
 
+    @XmlAttribute
     public String getDefaultValue() {
         return defaultValue;
     }
@@ -70,6 +83,7 @@ public class LayoutProperty {
         this.defaultValue = defaultValue;
     }
 
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -78,6 +92,7 @@ public class LayoutProperty {
         this.sortNum = sortNum;
     }
 
+    @XmlTransient
     public Layout getLayout() {
         return layout;
     }

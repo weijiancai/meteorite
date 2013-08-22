@@ -3,6 +3,7 @@ package com.meteorite.core.config;
 import com.meteorite.core.db.DataSource;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
+import com.meteorite.core.ui.layout.model.Layout;
 import com.meteorite.core.util.UtilFile;
 
 import javax.xml.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.List;
  * @version 1.0.0
  */
 @XmlRootElement
-@XmlType (propOrder = {"projectName", "projectCnName", "userHome", "userDir", "dataSources"})
+@XmlType (propOrder = {"projectName", "projectCnName", "userHome", "userDir", "dataSources", "layout"})
 @MetaElement(cname = "项目配置", sortNum = 0)
 public class ProjectConfig {
     public static final String DIR_NAME_SQLDB = "hsqldb"; // hsqldb数据库存储数据库文件的目录名
@@ -29,6 +30,7 @@ public class ProjectConfig {
     private static String projectCnName;
 
     private List<DataSource> dataSources = new ArrayList<DataSource>();
+    private Layout layout;
 
     public ProjectConfig() {}
 
@@ -82,6 +84,14 @@ public class ProjectConfig {
         this.dataSources = dataSources;
     }
 
+    @XmlElement(name = "Layout")
+    public Layout getLayout() {
+        return layout;
+    }
+
+    public void setLayout(Layout layout) {
+        this.layout = layout;
+    }
 
     // ===================== 静态方法 ==================================
 

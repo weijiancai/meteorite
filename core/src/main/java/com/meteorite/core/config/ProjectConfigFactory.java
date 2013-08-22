@@ -1,6 +1,7 @@
 package com.meteorite.core.config;
 
 import com.meteorite.core.db.DataSource;
+import com.meteorite.core.ui.layout.LayoutInit;
 import com.meteorite.core.util.JAXBUtil;
 import com.meteorite.core.util.UString;
 
@@ -33,6 +34,9 @@ public class ProjectConfigFactory {
                 projectConfig.getDataSources().add(DBManager.getSysDataSource());
                 save(projectConfig);
             }*/
+            if(projectConfig.getLayout() == null) {
+                projectConfig.setLayout(LayoutInit.getRoot());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,6 +48,10 @@ public class ProjectConfigFactory {
             initProjectConfig();
         }
         return projectConfig;
+    }
+
+    public static ProjectConfig getProjectConfig() {
+        return getProjectConfig(null);
     }
 
     public static void save(ProjectConfig projectConfig) throws Exception {

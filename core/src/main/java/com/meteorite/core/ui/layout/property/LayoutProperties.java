@@ -41,10 +41,11 @@ public class LayoutProperties implements ILayoutProperties {
     }
 
     public void setPropertyValue(LayoutType type, String propertyName, String value) {
-        getLayoutProperty(type, propertyName).setValue(value);
+//        getLayoutProperty(type, propertyName).setValue(value);
     }
 
     public String getPropertyValue(LayoutType type, String propertyName) {
-        return getLayoutProperty(type, propertyName).getValue();
+//        return getLayoutProperty(type, propertyName).getValue();
+        return null;
     }
 }

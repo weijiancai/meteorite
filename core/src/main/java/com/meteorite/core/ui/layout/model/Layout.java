@@ -1,5 +1,6 @@
 package com.meteorite.core.ui.layout.model;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import java.util.List;
  * @author wei_jc
  * @version 1.0.0
  */
+@XmlRootElement
+@XmlType(propOrder = {"id", "pid", "name", "cname", "sortNum", "desc", "properties", "children"})
 public class Layout {
     /** 布局ID*/
     private int id;
@@ -26,6 +29,8 @@ public class Layout {
     private List<LayoutProperty> properties;
     private List<Layout> children;
     private Layout parent;
+
+    public Layout() {}
 
     public Layout(int id, int pid, String name, String cname, String desc, int sortNum) {
         this.id = id;
@@ -47,6 +52,7 @@ public class Layout {
         }
     }
 
+    @XmlAttribute
     public int getId() {
         return id;
     }
@@ -55,6 +61,7 @@ public class Layout {
         this.id = id;
     }
 
+    @XmlAttribute
     public int getPid() {
         return pid;
     }
@@ -63,6 +70,7 @@ public class Layout {
         this.pid = pid;
     }
 
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -71,6 +79,7 @@ public class Layout {
         this.name = name;
     }
 
+    @XmlAttribute
     public String getCname() {
         return cname;
     }
@@ -79,6 +88,7 @@ public class Layout {
         this.cname = cname;
     }
 
+    @XmlAttribute
     public String getDesc() {
         return desc;
     }
@@ -87,6 +97,7 @@ public class Layout {
         this.desc = desc;
     }
 
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -95,6 +106,8 @@ public class Layout {
         this.sortNum = sortNum;
     }
 
+    @XmlElement(name = "Property")
+    @XmlElementWrapper(name = "Properties")
     public List<LayoutProperty> getProperties() {
         if (properties == null) {
             properties = new ArrayList<LayoutProperty>();
@@ -106,6 +119,7 @@ public class Layout {
         this.properties = properties;
     }
 
+    @XmlElement(name = "Layout")
     public List<Layout> getChildren() {
         if (children == null) {
             children = new ArrayList<Layout>();
@@ -117,6 +131,7 @@ public class Layout {
         this.children = children;
     }
 
+    @XmlTransient
     public Layout getParent() {
         return parent;
     }
