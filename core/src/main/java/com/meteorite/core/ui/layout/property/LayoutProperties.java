@@ -2,7 +2,7 @@ package com.meteorite.core.ui.layout.property;
 
 import com.meteorite.core.ui.ILayoutProperties;
 import com.meteorite.core.ui.layout.LayoutType;
-import com.meteorite.core.ui.layout.model.LayoutProperty;
+import com.meteorite.core.ui.model.LayoutProperty;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,10 +41,11 @@ public class LayoutProperties implements ILayoutProperties {
     }
 
     public void setPropertyValue(LayoutType type, String propertyName, String value) {
-        getLayoutProperty(type, propertyName).setValue(value);
+//        getLayoutProperty(type, propertyName).setValue(value);
     }
 
     public String getPropertyValue(LayoutType type, String propertyName) {
-        return getLayoutProperty(type, propertyName).getValue();
+//        return getLayoutProperty(type, propertyName).getValue();
+        return null;
     }
 }

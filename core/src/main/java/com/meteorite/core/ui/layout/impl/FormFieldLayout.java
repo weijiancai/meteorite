@@ -1,6 +1,6 @@
 package com.meteorite.core.ui.layout.impl;
 
-import com.meteorite.core.ui.layout.property.FormFieldProperties;
+import com.meteorite.core.ui.layout.property.FormFieldProperty;
 
 /**
  * 表单字段布局器
@@ -10,7 +10,7 @@ import com.meteorite.core.ui.layout.property.FormFieldProperties;
  */
 public abstract class FormFieldLayout extends BaseLayout {
     @Override
-    public FormFieldProperties getProperties() {
-        return new FormFieldProperties();
+    public FormFieldProperty getProperty() {
+        return new FormFieldProperty();
     }
 }

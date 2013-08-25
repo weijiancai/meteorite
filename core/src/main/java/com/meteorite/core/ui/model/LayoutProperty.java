@@ -1,4 +1,9 @@
-package com.meteorite.core.ui.layout.model;
+package com.meteorite.core.ui.model;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * 布局属性信息
@@ -6,22 +11,25 @@ package com.meteorite.core.ui.layout.model;
  * @author wei_jc
  * @version 1.0.0
  */
+@XmlRootElement
+@XmlType(propOrder = {"name", "cname", "defaultValue", "sortNum"})
 public class LayoutProperty {
-    /** 属性ID*/
-    private int id;
     /** 属性名称 */
     private String name;
     /** 属性中文名 */
     private String cname;
     /** 默认值 */
     private String defaultValue;
+    /** 属性值 */
+    private String value;
     /** 排序号*/
     private int sortNum;
 
     private Layout layout;
 
-    public LayoutProperty(int id, String name, String cname, String defaultValue, int sortNum, Layout layout) {
-        this.id = id;
+    public LayoutProperty() {}
+
+    public LayoutProperty(String name, String cname, String defaultValue, int sortNum, Layout layout) {
         this.name = name;
         this.cname = cname;
         this.defaultValue = defaultValue;
@@ -38,14 +46,7 @@ public class LayoutProperty {
         layout.getProperties().add(this);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -54,6 +55,7 @@ public class LayoutProperty {
         this.name = name;
     }
 
+    @XmlAttribute
     public String getCname() {
         return cname;
     }
@@ -62,6 +64,7 @@ public class LayoutProperty {
         this.cname = cname;
     }
 
+    @XmlAttribute
     public String getDefaultValue() {
         return defaultValue;
     }
@@ -70,6 +73,16 @@ public class LayoutProperty {
         this.defaultValue = defaultValue;
     }
 
+    @XmlAttribute
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -78,6 +91,7 @@ public class LayoutProperty {
         this.sortNum = sortNum;
     }
 
+    @XmlTransient
     public Layout getLayout() {
         return layout;
     }

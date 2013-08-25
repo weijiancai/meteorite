@@ -3,9 +3,8 @@ package com.meteorite.core.ui.layout.impl;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.ui.layout.property.FormFieldProperties;
-import com.meteorite.core.ui.layout.property.FormProperties;
-import com.meteorite.core.ui.layout.property.PropertyManager;
+import com.meteorite.core.ui.layout.property.FormFieldProperty;
+import com.meteorite.core.ui.layout.property.FormProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +15,23 @@ import java.util.List;
  * @author wei_jc
  * @version 1.0.0
  */
-public abstract class FormLayout extends BaseLayout {
-    private FormProperties formProperties;
+public class FormLayout extends BaseLayout {
+    private FormProperty formProperty;
 
     @Override
-    public FormProperties getProperties() {
-        if (formProperties == null) {
-            formProperties = PropertyManager.getFormProperties();
-        }
-        return formProperties;
+    public FormProperty getProperty() {
+        /*if (formProperty == null) {
+            formProperty = PropertyManager.getFormProperties();
+        }*/
+        return formProperty;
+    }
+
+    @Override
+    public <P> void setProperty(P property) {
     }
 
     public void setValues(Meta meta) {
-        FormProperties form = getProperties();
+        FormProperty form = getProperty();
         form.setName(meta.getName() + "Form");
         form.setCname(meta.getCname() + "表单");
 //        metaForm.setInputDate(new Date());
@@ -41,9 +44,9 @@ public abstract class FormLayout extends BaseLayout {
         form.setVgap(5);
 
         int sortNum = 0;
-        List<FormFieldProperties> formFields = new ArrayList<FormFieldProperties>();
+        List<FormFieldProperty> formFields = new ArrayList<FormFieldProperty>();
         for (MetaField field : meta.getFileds()) {
-            FormFieldProperties formField = new FormFieldProperties();
+            FormFieldProperty formField = new FormFieldProperty();
 //            formField.setInputDate(new Date());
             formField.setSortNum(sortNum += 10);
 //            formField.setValid(true);
@@ -59,5 +62,10 @@ public abstract class FormLayout extends BaseLayout {
         }
 
         form.setFormFields(formFields);
+    }
+
+    @Override
+    public <T> T layout() {
+        return null;
     }
 }

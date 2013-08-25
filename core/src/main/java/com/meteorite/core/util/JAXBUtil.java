@@ -8,6 +8,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
@@ -68,6 +69,10 @@ public class JAXBUtil {
     @SuppressWarnings("unchecked")
     public static <T> T unmarshal(File file, Class<T> clazz) throws Exception {
         return (T)getUnmarshaller(clazz).unmarshal(file);
+    }
+
+    public static <T> T unmarshal(InputStream inputStream, Class<T> clazz) throws JAXBException {
+        return (T)getUnmarshaller(clazz).unmarshal(inputStream);
     }
 
     @SuppressWarnings("unchecked")

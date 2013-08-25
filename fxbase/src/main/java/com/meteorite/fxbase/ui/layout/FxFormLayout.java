@@ -1,27 +1,70 @@
 package com.meteorite.fxbase.ui.layout;
 
+import com.meteorite.core.R;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.impl.FormLayout;
-import com.meteorite.core.ui.layout.property.FormFieldProperties;
-import com.meteorite.core.ui.layout.property.FormProperties;
+import com.meteorite.core.ui.layout.property.FormFieldProperty;
+import com.meteorite.core.ui.layout.property.FormProperty;
+import com.meteorite.core.ui.model.Action;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.valuectl.VPasswordField;
 import com.meteorite.fxbase.ui.valuectl.VTextArea;
 import com.meteorite.fxbase.ui.valuectl.VTextField;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
+
+import java.util.List;
 
 /**
  * @author wei_jc
  * @version 1.0.0
  */
 public class FxFormLayout extends FormLayout {
+    private FormProperty model;
+    private List<Action> actions;
+
+    public FxFormLayout(FormProperty property) {
+        this.model = property;
+        actions = LayoutManager.getLayout(R.layout.FORM).getActions();
+
+        initUI();
+    }
+
+    private void initUI() {
+
+    }
+
+    public List<Action> getActions() {
+        return actions;
+    }
+
     @Override
-    public GridPane layout() {
-        FormProperties form = getProperties();
+    public BorderPane layout() {
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(getTop());
+        borderPane.setCenter(getCenter());
+        return borderPane;
+    }
+
+    public HBox getTop() {
+        HBox box = new HBox(5);
+        Region region = new Region();
+        box.getChildren().add(region);
+        HBox.setHgrow(region, Priority.ALWAYS);
+        for (Action action : actions) {
+            Button button = new Button(action.getCname());
+            button.setId(action.getName());
+            box.getChildren().add(button);
+        }
+        return box;
+    }
+
+    public GridPane getCenter() {
+        FormProperty form = model;
 
         GridPane formGrid = new GridPane();
         formGrid.setHgap(form.getHgap());
@@ -33,7 +76,7 @@ public class FxFormLayout extends FormLayout {
         Region fieldGap;
         int idxRow = 0;
         int idxCol = 0;
-        for (FormFieldProperties field : form.getFormFields()) {
+        for (FormFieldProperty field : form.getFormFields()) {
             if (!field.isDisplay()) { // 不显示
                 continue;
             }
@@ -84,7 +127,7 @@ public class FxFormLayout extends FormLayout {
         return formGrid;
     }
 
-    private IValue getValueNode(FormFieldProperties field) {
+    private IValue getValueNode(FormFieldProperty field) {
         IValue node;
         if (DisplayStyle.TEXT_AREA == field.getDisplayStyle()) {
             VTextArea textArea = new VTextArea();
