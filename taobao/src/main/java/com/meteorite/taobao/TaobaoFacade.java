@@ -1,6 +1,5 @@
 package com.meteorite.taobao;
 
-import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.ProjectConfigFactory;
 import com.meteorite.core.db.DataSource;
 import com.meteorite.core.facade.impl.BaseFacade;
@@ -12,9 +11,12 @@ import com.meteorite.core.facade.impl.BaseFacade;
 public class TaobaoFacade extends BaseFacade {
     private static TaobaoFacade instance;
 
-    private ProjectConfig projectConfig;
-
     private TaobaoFacade() {
+
+    }
+
+    @Override
+    protected void initProjectConfig() {
         projectConfig = ProjectConfigFactory.getProjectConfig(".taobao");
         projectConfig.setProjectCnName("淘宝助手");
         DataSource taobaoDS = new DataSource("taobao", "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/taobao", "sa", "");
@@ -24,12 +26,6 @@ public class TaobaoFacade extends BaseFacade {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    @Override
-    public ProjectConfig getProjectConfig() {
-        return projectConfig;
     }
 
     public static TaobaoFacade getInstance() {

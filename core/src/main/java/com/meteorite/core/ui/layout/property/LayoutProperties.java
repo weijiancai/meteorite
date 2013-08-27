@@ -2,7 +2,7 @@ package com.meteorite.core.ui.layout.property;
 
 import com.meteorite.core.ui.ILayoutProperties;
 import com.meteorite.core.ui.layout.LayoutType;
-import com.meteorite.core.ui.layout.model.LayoutProperty;
+import com.meteorite.core.ui.model.LayoutProperty;
 
 import java.util.ArrayList;
 import java.util.HashMap;

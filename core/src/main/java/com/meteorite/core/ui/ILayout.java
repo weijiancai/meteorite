@@ -12,7 +12,9 @@ public interface ILayout {
      *
      * @return 返回布局属性
      */
-    <P> P getProperties();
+    <P> P getProperty();
+
+    <P> void setProperty(P property);
 
     /**
      * 进行布局，返回布局后的可视化对象

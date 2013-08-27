@@ -3,7 +3,7 @@ package com.meteorite.core.config;
 import com.meteorite.core.db.DataSource;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
-import com.meteorite.core.ui.layout.model.Layout;
+import com.meteorite.core.ui.model.Layout;
 import com.meteorite.core.util.UtilFile;
 
 import javax.xml.bind.annotation.*;
@@ -92,8 +92,7 @@ public class ProjectConfig {
     public void setLayout(Layout layout) {
         this.layout = layout;
     }
-
-    // ===================== 静态方法 ==================================
+// ===================== 静态方法 ==================================
 
     public static File getProjectDir() {
         return UtilFile.makeDirs(userHome, projectName);

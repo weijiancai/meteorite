@@ -1,7 +1,7 @@
 package com.meteorite.core.ui;
 
 import com.meteorite.core.ui.layout.LayoutType;
-import com.meteorite.core.ui.layout.model.LayoutProperty;
+import com.meteorite.core.ui.model.LayoutProperty;
 
 import java.util.List;
 import java.util.Map;

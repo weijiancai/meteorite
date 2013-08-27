@@ -1,26 +1,31 @@
 package com.meteorite.core.ui.layout;
 
 import com.meteorite.core.R;
-import com.meteorite.core.ui.layout.model.Layout;
-import com.meteorite.core.ui.layout.model.LayoutProperty;
+import com.meteorite.core.ui.model.Layout;
+import com.meteorite.core.ui.model.LayoutProperty;
 
 /**
- * 初始化布局
+ * 布局初始化
  *
  * @author wei_jc
  * @version 1.0.0
  */
 public class LayoutInit {
-    /**
-     * 初始化布局，返回根布局管理器
-     *
-     * @return 返回根布局管理器
-     */
+    private static final LayoutInit INSTANCE = new LayoutInit();
+    private static int count = 0;
+
+    private LayoutInit() {}
+
+    public static LayoutInit getInstance() {
+        return INSTANCE;
+    }
+
     public static Layout getRoot() {
         Layout root = new Layout(R.layout.ROOT, "布局管理器", "", null);
         Layout formLayout = new Layout(R.layout.FORM, "表单", "", root);
         Layout formLabelLayout = new Layout(R.layout.FORM_LABEL, "表单Label", "", formLayout);
         Layout formFieldLayout = new Layout(R.layout.FORM_FIELD, "表单Field", "", formLayout);
+//        addChild(root, formLayout);
 
         LayoutProperty formNameProp = new LayoutProperty(R.layout.prop.form.NAME, "名称", null, formLayout);
         LayoutProperty formCNameProp = new LayoutProperty(R.layout.prop.form.CNAME, "中文名", null, formLayout);
@@ -41,5 +46,10 @@ public class LayoutInit {
         LayoutProperty formFieldSortNumProp = new LayoutProperty(R.layout.prop.form.field.SORT_NUM, "排序号", null, formFieldLayout);
 
         return root;
+    }
+
+    private static void addChild(Layout parent, Layout child) {
+        child.setSortNum(parent.getChildren().size() + 1);
+        parent.getChildren().add(child);
     }
 }

@@ -11,8 +11,9 @@ import com.meteorite.core.ui.IView;
  */
 public class ViewManager {
     public static <L extends ILayout> IView<L> getFormView() {
-        FxFormLayout layout = new FxFormLayout();
+        /*FxFormLayout layout = new FxFormLayout();
         FxFormView view = new FxFormView(layout);
-        return view;
+        return view;*/
+        return null;
     }
 }

@@ -1,9 +1,19 @@
 package com.meteorite.core.ui.layout;
 
+import com.meteorite.core.R;
 import com.meteorite.core.config.ProjectConfigFactory;
-import com.meteorite.core.ui.layout.model.Layout;
+import com.meteorite.core.meta.DisplayStyle;
+import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.ui.layout.impl.FormLayout;
+import com.meteorite.core.ui.layout.property.FormFieldProperty;
+import com.meteorite.core.ui.layout.property.FormProperty;
+import com.meteorite.core.ui.model.Layout;
+import com.meteorite.core.ui.model.LayoutProperty;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,27 +22,34 @@ import java.util.Map;
  * @version 1.0.0
  */
 public class LayoutManager {
-    private static Layout root = ProjectConfigFactory.getProjectConfig().getLayout();
     private static Map<String, Layout> cache = new HashMap<String, Layout>();
 
-    static {
-        iterator(root);
+    public static void load() {
+        iterator(ProjectConfigFactory.getProjectConfig().getLayout());
     }
 
-    static void iterator(Layout layout) {
+    private static void iterator(Layout layout) {
         cache.put(layout.getName(), layout);
-        if(layout.getChildren() != null) {
-            for(Layout lt : layout.getChildren()) {
-                iterator(lt);
+        if (layout.getChildren() != null && layout.getChildren().size() > 0) {
+            for (Layout child : layout.getChildren()) {
+                iterator(child);
             }
         }
     }
 
-    public static void load() throws Exception {
-
+    public static Layout getLayout(String name) {
+        return cache.get(name);
     }
 
-    public static Layout getLayout(String layoutName) {
-        return cache.get(layoutName);
+    public static Layout createLayout(Meta meta) {
+        Layout layout = getLayout(R.layout.FORM);
+        return layout;
+    }
+
+    public static Layout createFormLayout(Meta meta) {
+        Layout layout = getLayout(R.layout.FORM);
+
+
+        return layout;
     }
 }
