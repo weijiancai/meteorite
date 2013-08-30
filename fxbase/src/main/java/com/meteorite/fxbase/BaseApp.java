@@ -6,12 +6,14 @@ import com.meteorite.core.facade.IFacade;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaForm;
+import com.meteorite.core.ui.config.ViewConfigManager;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.property.PropertyManager;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.ui.Dialogs;
 import com.meteorite.fxbase.ui.FxDesktop;
 import com.meteorite.fxbase.ui.FxFormView;
+import com.meteorite.fxbase.ui.FxView;
 import com.meteorite.fxbase.ui.calendar.FXCalendar;
 import com.meteorite.fxbase.ui.dialog.DialogOptions;
 import com.meteorite.fxbase.ui.layout.ViewManager;
@@ -66,9 +68,10 @@ public abstract class BaseApp extends Application {
         // 检查是否配置了项目
         if (!ProjectConfigFactory.isConfigured(projectConfig)) {
             Meta meta = MetaManager.toMeta(projectConfig);
-            FxFormView formView = new FxFormView(PropertyManager.getFormProperty(meta));
+//            FxFormView formView = new FxFormView(PropertyManager.getFormProperty(meta));
 //            Dialogs.showInformationDialog(stage, "请配置项目信息！");
-            Dialogs.showCustomDialog(stage, formView, "masthead", "项目信息配置", DialogOptions.OK, new Callback<Void, Void>() {
+            FxView view = new FxView(ViewConfigManager.getViewConfig("ProjectConfig"));
+            Dialogs.showCustomDialog(stage, view.getUI(), "masthead", "项目信息配置", DialogOptions.OK, new Callback<Void, Void>() {
                 @Override
                 public Void call(Void aVoid) {
                     return null;

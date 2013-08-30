@@ -31,6 +31,10 @@ public class FxFormView extends BorderPane implements IFormView<FxFormLayout> {
         this.setCenter(layout.layout());
     }
 
+    public FxFormView(FxFormLayout layout) {
+
+    }
+
     @Override
     public void initUI() {
 

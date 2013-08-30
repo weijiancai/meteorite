@@ -10,4 +10,6 @@ public interface IView<L extends ILayout> {
     void initUI();
 
     L getLayout();
+
+    <UI> UI getUI();
 }

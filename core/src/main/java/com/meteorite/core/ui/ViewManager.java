@@ -5,4 +5,5 @@ package com.meteorite.core.ui;
  * @version 1.0.0
  */
 public class ViewManager {
+
 }
