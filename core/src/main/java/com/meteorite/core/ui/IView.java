@@ -6,10 +6,16 @@ package com.meteorite.core.ui;
  * @author wei_jc
  * @version 1.0.0
  */
-public interface IView<L extends ILayout> {
+public interface IView {
+    /**
+     * 初始化
+     */
     void initUI();
 
-    L getLayout();
-
-    <UI> UI getUI();
+    /**
+     * 获得视图配置信息
+     *
+     * @return 返回视图配置信息
+     */
+    IViewConfig getViewConfig();
 }

@@ -15,10 +15,9 @@ import java.util.List;
  * @author wei_jc
  * @version 1.0.0
  */
-public class FormLayout extends BaseLayout {
+public class FormLayout  {
     private FormProperty formProperty;
 
-    @Override
     public FormProperty getProperty() {
         /*if (formProperty == null) {
             formProperty = PropertyManager.getFormProperties();
@@ -26,7 +25,6 @@ public class FormLayout extends BaseLayout {
         return formProperty;
     }
 
-    @Override
     public <P> void setProperty(P property) {
     }
 
@@ -64,7 +62,6 @@ public class FormLayout extends BaseLayout {
         form.setFormFields(formFields);
     }
 
-    @Override
     public <T> T layout() {
         return null;
     }

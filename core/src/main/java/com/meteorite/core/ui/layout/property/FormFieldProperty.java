@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @version 1.0.0
  */
 public class FormFieldProperty {
+    private String name;
     private String displayName;
     private boolean isSingleLine;
     private boolean isDisplay;
@@ -20,6 +21,10 @@ public class FormFieldProperty {
     private int height;
     private DisplayStyle displayStyle;
     private int sortNum;
+    /** 标签对齐 */
+    private String labelAlign;
+    /** 字段对齐 */
+    private String fieldAlign;
 
     private FormProperty form;
     private MetaField metaField;

@@ -1,7 +1,6 @@
 package com.meteorite.fxbase.ui.layout;
 
-import com.meteorite.core.ui.ILayout;
-import com.meteorite.core.ui.IView;
+import com.meteorite.core.ui.IViewConfig;
 
 /**
  * 视图管理器
@@ -10,7 +9,7 @@ import com.meteorite.core.ui.IView;
  * @version 1.0.0·
  */
 public class ViewManager {
-    public static <L extends ILayout> IView<L> getFormView() {
+    public static IViewConfig getFormView() {
         /*FxFormLayout layout = new FxFormLayout();
         FxFormView view = new FxFormView(layout);
         return view;*/

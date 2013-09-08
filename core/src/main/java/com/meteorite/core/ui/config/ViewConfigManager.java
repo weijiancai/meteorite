@@ -1,5 +1,7 @@
 package com.meteorite.core.ui.config;
 
+import com.meteorite.core.meta.model.Meta;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +17,10 @@ public class ViewConfigManager {
     }
 
     public static void addViewConfig(ViewConfig viewConfig) {
-        cache.put(viewConfig.getName(), viewConfig);
+//        cache.put(viewConfig.getName(), viewConfig);
+    }
+
+    public static void getViewConfig(Meta meta) {
+
     }
 }

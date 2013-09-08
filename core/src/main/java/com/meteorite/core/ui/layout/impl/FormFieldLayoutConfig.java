@@ -8,8 +8,7 @@ import com.meteorite.core.ui.layout.property.FormFieldProperty;
  * @author wei_jc
  * @version 1.0.0
  */
-public abstract class FormFieldLayout extends BaseLayout {
-    @Override
+public abstract class FormFieldLayoutConfig extends BaseLayoutConfig {
     public FormFieldProperty getProperty() {
         return new FormFieldProperty();
     }

@@ -9,6 +9,10 @@ public class View {
     private int id;
     /** 视图名称 */
     private String name;
+    /** 显示名 */
+    private String displayName;
+    /** 排序号 */
+    private int sortNum;
 
     private Layout layout;
 
@@ -32,6 +36,22 @@ public class View {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public int getSortNum() {
+        return sortNum;
+    }
+
+    public void setSortNum(int sortNum) {
+        this.sortNum = sortNum;
     }
 
     public Layout getLayout() {

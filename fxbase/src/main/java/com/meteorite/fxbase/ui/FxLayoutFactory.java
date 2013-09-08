@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
 public class FxLayoutFactory {
     public static Pane create(View view) {
         if (R.layout.FORM.equals(view.getLayout().getName())) {
-            return new FxFormLayout(null).layout();
+//            return new FxFormLayout().layout();
         }
 
         return null;

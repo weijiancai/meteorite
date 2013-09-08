@@ -39,4 +39,27 @@ public enum MetaDataType {
      * 7. URL
      */
     URL
+    ;
+
+    public static MetaDataType getDataType(String dataTypeStr) {
+        if ("0".equals(dataTypeStr)) {
+            return STRING;
+        } else if ("1".equals(dataTypeStr)) {
+            return INTEGER;
+        } else if ("2".equals(dataTypeStr)) {
+            return DOUBLE;
+        } else if ("3".equals(dataTypeStr)) {
+            return NUMBER;
+        } else if ("4".equals(dataTypeStr)) {
+            return DATE;
+        } else if ("5".equals(dataTypeStr)) {
+            return EMAIL;
+        } else if ("6".equals(dataTypeStr)) {
+            return IP;
+        } else if ("7".equals(dataTypeStr)) {
+            return URL;
+        }
+
+        return STRING;
+    }
 }

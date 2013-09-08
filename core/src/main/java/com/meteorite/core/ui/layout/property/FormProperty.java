@@ -1,9 +1,6 @@
 package com.meteorite.core.ui.layout.property;
 
-import com.meteorite.core.R;
 import com.meteorite.core.ui.model.Action;
-import com.meteorite.core.ui.model.Layout;
-import com.meteorite.core.util.UNumber;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import java.util.ArrayList;

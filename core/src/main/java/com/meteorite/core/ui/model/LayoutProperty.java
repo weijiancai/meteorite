@@ -1,5 +1,7 @@
 package com.meteorite.core.ui.model;
 
+import com.meteorite.core.ui.config.LayoutConfig;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -14,14 +16,14 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType(propOrder = {"name", "cname", "defaultValue", "sortNum"})
 public class LayoutProperty {
+    /** 属性ID */
+    private String id;
     /** 属性名称 */
     private String name;
     /** 属性中文名 */
     private String cname;
     /** 默认值 */
     private String defaultValue;
-    /** 属性值 */
-    private String value;
     /** 排序号*/
     private int sortNum;
 
@@ -44,6 +46,15 @@ public class LayoutProperty {
         this.layout = layout;
         // 将此属性添加到布局中
         layout.getProperties().add(this);
+    }
+
+    @XmlAttribute
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @XmlAttribute
@@ -71,15 +82,6 @@ public class LayoutProperty {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
-    }
-
-    @XmlAttribute
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     @XmlAttribute

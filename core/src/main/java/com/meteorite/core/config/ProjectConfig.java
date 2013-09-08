@@ -3,6 +3,7 @@ package com.meteorite.core.config;
 import com.meteorite.core.db.DataSource;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
+import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.ui.model.Layout;
 import com.meteorite.core.util.UtilFile;
 
@@ -30,7 +31,7 @@ public class ProjectConfig {
     private static String projectCnName;
 
     private List<DataSource> dataSources = new ArrayList<DataSource>();
-    private Layout layout;
+    private LayoutConfig layout;
 
     public ProjectConfig() {}
 
@@ -85,11 +86,11 @@ public class ProjectConfig {
     }
 
     @XmlElement(name = "Layout")
-    public Layout getLayout() {
+    public LayoutConfig getLayout() {
         return layout;
     }
 
-    public void setLayout(Layout layout) {
+    public void setLayout(LayoutConfig layout) {
         this.layout = layout;
     }
 // ===================== 静态方法 ==================================

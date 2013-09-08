@@ -1,6 +1,5 @@
 package com.meteorite.core.ui.layout.property;
 
-import com.meteorite.core.ui.ILayoutProperties;
 import com.meteorite.core.ui.layout.LayoutType;
 import com.meteorite.core.ui.model.LayoutProperty;
 
@@ -13,10 +12,9 @@ import java.util.Map;
  * @author wei_jc
  * @version 1.0.0
  */
-public class LayoutProperties implements ILayoutProperties {
+public class LayoutProperties {
     private Map<LayoutType, List<LayoutProperty>> properties = new HashMap<LayoutType, List<LayoutProperty>>();
 
-    @Override
     public void setProperties(Map<LayoutType, List<LayoutProperty>> properties) {
         this.properties = properties;
     }

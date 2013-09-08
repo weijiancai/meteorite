@@ -23,12 +23,12 @@ public class BaseProperty {
         }
     }
 
-    protected String getPropertyValue(String propertyName) {
+    /*protected String getPropStringValue(String propertyName) {
         System.out.println(layout.getName() + " Get Property : " + propertyName);
         return map.get(propertyName).getValue();
     }
 
     protected void setPropertyValue(String propertyName, String propertyValue) {
         map.get(propertyName).setValue(propertyValue);
-    }
+    }*/
 }
