@@ -21,10 +21,10 @@ public class ViewManager {
         config.setId(0);
         config.setName(meta.getName());
         List<LayoutConfig> list = new ArrayList<LayoutConfig>();
-        Layout formLayout = LayoutConfigManager.getLayout(R.layout.FORM);
-        for (LayoutProperty property : formLayout.getProperties()) {
+//        Layout formLayout = LayoutConfigManager.getLayout(R.layout.FORM);
+//        for (LayoutProperty property : formLayout.getProperties()) {
 //            list.add(new LayoutConfig(formLayout.getName() + " " + property.getName(), property.getCname(), property.getDefaultValue(), "", 10));
-        }
+//        }
 
 
         return config;

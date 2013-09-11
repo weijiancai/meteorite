@@ -37,7 +37,7 @@ public class ProjectConfigFactory {
             }*/
             if(projectConfig.getLayout() == null) {
                 Layout root = JAXBUtil.unmarshal(UIO.getInputStream("/Layout.xml", UIO.FROM.CP), Layout.class);
-                projectConfig.setLayout(root);
+//                projectConfig.setLayout(root);
             }
         } catch (Exception e) {
             e.printStackTrace();

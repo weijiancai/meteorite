@@ -3,6 +3,14 @@ apply plugin: "java"
 sourceCompatibility = 1.5
 version = '1.0.0'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile project(':core')
+    testCompile 'junit:junit:4.+'
+
+    compile group: 'org.hsqldb', name: 'hsqldb', version: '2.3.0'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
 }
