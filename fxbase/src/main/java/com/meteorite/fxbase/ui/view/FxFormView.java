@@ -1,30 +1,32 @@
 package com.meteorite.fxbase.ui.view;
 
-import com.meteorite.core.R;
-import com.meteorite.core.ui.config.ViewConfig;
-import com.meteorite.core.ui.layout.LayoutConfigManager;
-import com.meteorite.core.ui.model.Layout;
+import com.meteorite.core.ui.IView;
+import com.meteorite.core.ui.IViewConfig;
+import com.meteorite.fxbase.ui.layout.FxLayoutFactory;
 import javafx.scene.layout.Pane;
 
 /**
  * @author wei_jc
  * @version 1.0.0
  */
-public class FxFormView {
-    private ViewConfig config;
+public class FxFormView implements IView<Pane> {
+    private final IViewConfig viewConfig;
 
-    public FxFormView(ViewConfig config) {
-        this.config = config;
+    public FxFormView(IViewConfig viewConfig) {
+        this.viewConfig = viewConfig;
     }
 
+    @Override
     public void initUI() {
     }
 
-    public Layout getLayout() {
-        return LayoutConfigManager.getLayout(R.layout.FORM);
+    @Override
+    public IViewConfig getViewConfig() {
+        return viewConfig;
     }
 
-    public Pane getUI() {
-        return null;
+    @Override
+    public Pane layout() {
+        return FxLayoutFactory.create(viewConfig);
     }
 }

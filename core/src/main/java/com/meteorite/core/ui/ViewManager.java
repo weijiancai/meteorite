@@ -23,7 +23,7 @@ public class ViewManager {
         List<LayoutConfig> list = new ArrayList<LayoutConfig>();
 //        Layout formLayout = LayoutConfigManager.getLayout(R.layout.FORM);
 //        for (LayoutProperty property : formLayout.getProperties()) {
-//            list.add(new LayoutConfig(formLayout.getName() + " " + property.getName(), property.getCname(), property.getDefaultValue(), "", 10));
+//            list.add(new LayoutConfig(formLayout.getName() + " " + property.getName(), property.getDisplayName(), property.getDefaultValue(), "", 10));
 //        }
 
 

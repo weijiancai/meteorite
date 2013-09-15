@@ -6,7 +6,7 @@ package com.meteorite.core.ui;
  * @author wei_jc
  * @version 1.0.0
  */
-public interface IView {
+public interface IView<T> {
     /**
      * 初始化
      */
@@ -18,4 +18,11 @@ public interface IView {
      * @return 返回视图配置信息
      */
     IViewConfig getViewConfig();
+
+    /**
+     * 布局
+     *
+     * @return 返回布局
+     */
+    T layout();
 }

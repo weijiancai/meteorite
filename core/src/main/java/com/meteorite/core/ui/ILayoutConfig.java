@@ -1,7 +1,9 @@
 package com.meteorite.core.ui;
 
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.ui.config.LayoutConfig;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 /**
@@ -10,7 +12,7 @@ import java.util.List;
  * @author wei_jc
  * @version 1.0.0
  */
-public interface ILayoutConfig extends ConfigConst {
+public interface ILayoutConfig extends ConfigConst, Cloneable {
     /**
      * 获得布局ID
      *
@@ -52,6 +54,13 @@ public interface ILayoutConfig extends ConfigConst {
      * @return 返回上级布局
      */
     ILayoutConfig getParent();
+
+    /**
+     * 设置下一级所有布局
+     *
+     * @param children 下一级所有布局
+     */
+    void setChildren(List<ILayoutConfig> children);
 
     /**
      * 获得下一级所有布局
@@ -113,4 +122,19 @@ public interface ILayoutConfig extends ConfigConst {
      * @return 返回布局属性数据类型
      */
     MetaDataType getPropDataType(String propName);
+
+    /**
+     * 设置布局属性值
+     *
+     * @param propName 属性名
+     * @param value    属性值
+     */
+    void setPropValue(String propName, String value);
+
+    /**
+     * Clone布局配置信息
+     *
+     * @return 返回Clone的布局配置信息
+     */
+    ILayoutConfig clone();
 }

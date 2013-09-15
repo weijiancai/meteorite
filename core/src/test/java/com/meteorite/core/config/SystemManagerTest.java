@@ -10,18 +10,18 @@ import static org.junit.Assert.assertThat;
  * @author wei_jc
  * @version 1.0
  */
-public class ProjectConfigFactoryTest {
+public class SystemManagerTest {
     @Test
     public void testGetTaobaoProjectConfig() throws Exception {
-        ProjectConfig taobao = ProjectConfigFactory.getProjectConfig(".taobao");
+        ProjectConfig taobao = SystemManager.getInstance().createProjectConfig(".taobao");
         assertThat(taobao.getDataSources().size(), equalTo(1));
     }
 
     @Test
     public void testAddDataSource() throws Exception {
-        ProjectConfig projConf = ProjectConfigFactory.getProjectConfig(".taobao");
+        ProjectConfig projConf = SystemManager.getInstance().createProjectConfig(".taobao");
         DataSource dataSource = new DataSource("taobao", "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/taobao", "sa", "");
         projConf.getDataSources().add(dataSource);
-        ProjectConfigFactory.save(projConf);
+        SystemManager.getInstance().save(projConf);
     }
 }

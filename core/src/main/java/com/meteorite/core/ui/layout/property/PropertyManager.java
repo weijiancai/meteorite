@@ -1,10 +1,8 @@
 package com.meteorite.core.ui.layout.property;
 
-import com.meteorite.core.R;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.ui.config.ViewConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ public class PropertyManager {
     public static FormProperty getFormProperty(Meta meta) {
         FormProperty form = new FormProperty();
         form.setName(meta.getName() + "Form");
-        form.setCname(meta.getCname() + "表单");
+        form.setCname(meta.getDisplayName() + "表单");
 //        metaForm.setInputDate(new Date());
 //        metaForm.setValid(true);
         form.setColCount(1);
@@ -55,7 +53,7 @@ public class PropertyManager {
     /*public static FormProperty getFormProperty(ViewConfig config) {
         FormProperty form = new FormProperty();
         form.setName(config.getValue(R.layout.FORM + "." + R.layout.prop.form.NAME) + "Form");
-        form.setCname(meta.getCname() + "表单");
+        form.setDisplayName(meta.getDisplayName() + "表单");
 //        metaForm.setInputDate(new Date());
 //        metaForm.setValid(true);
         form.setColCount(1);

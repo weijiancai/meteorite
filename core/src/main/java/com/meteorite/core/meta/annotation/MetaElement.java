@@ -22,11 +22,11 @@ public @interface MetaElement {
     String name() default "##default";
 
     /**
-     * 元数据中文名称
+     * 元数据显示名称
      *
-     * @return 返回元数据中文名称
+     * @return 返回元数据显示名称
      */
-    String cname();
+    String displayName();
 
     /**
      * 元数据描述信息

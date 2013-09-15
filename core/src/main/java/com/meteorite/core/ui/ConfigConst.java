@@ -7,6 +7,9 @@ package com.meteorite.core.ui;
  * @version 1.0.0
  */
 public interface ConfigConst {
+    String LAYOUT_FORM = "FORM";
+    String LAYOUT_FORM_FIELD = "FORM_FIELD";
+
     String FORM_NAME = "name";
     String FORM_DISPLAY_NAME = "displayName";
     String FORM_TYPE = "formType";
@@ -17,6 +20,7 @@ public interface ConfigConst {
     String FORM_HGAP = "hgap";
     String FORM_VGAP = "vgap";
 
+    String FORM_FIELD_NAME = "name";
     String FORM_FIELD_DISPLAY_NAME = "displayName";
     String FORM_FIELD_IS_SINGLE_LINE = "isSingleLine";
     String FORM_FIELD_IS_DISPLAY = "isDisplay";

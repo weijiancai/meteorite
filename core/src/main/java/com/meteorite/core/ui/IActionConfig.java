@@ -6,7 +6,7 @@ package com.meteorite.core.ui;
  * @author wei_jc
  * @version 1.0.0
  */
-public interface IActionConfig {
+public interface IActionConfig extends Cloneable {
     /**
      * 获得Action Id
      *
@@ -34,4 +34,11 @@ public interface IActionConfig {
      * @return 返回Action排序号
      */
     int getSortNum();
+
+    /**
+     * Clone布局Action配置
+     *
+     * @return 返回Clone的布局Action配置
+     */
+    IActionConfig clone();
 }

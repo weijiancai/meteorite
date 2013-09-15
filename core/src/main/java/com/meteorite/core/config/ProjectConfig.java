@@ -3,8 +3,6 @@ package com.meteorite.core.config;
 import com.meteorite.core.db.DataSource;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
-import com.meteorite.core.ui.config.LayoutConfig;
-import com.meteorite.core.ui.model.Layout;
 import com.meteorite.core.util.UtilFile;
 
 import javax.xml.bind.annotation.*;
@@ -19,59 +17,36 @@ import java.util.List;
  * @version 1.0.0
  */
 @XmlRootElement
-@XmlType (propOrder = {"projectName", "projectCnName", "userHome", "userDir", "dataSources", "layout"})
-@MetaElement(cname = "项目配置", sortNum = 0)
+@XmlType (propOrder = {"name", "displayName", "dataSources"})
+@MetaElement(displayName = "项目配置", sortNum = 0)
 public class ProjectConfig {
-    public static final String DIR_NAME_SQLDB = "hsqldb"; // hsqldb数据库存储数据库文件的目录名
-    public static final String DIR_NAME_DBCONF = "dbconf"; // 数据库配置信息目录名
-
-    private static String userHome = System.getProperty("user.home");
-    private static String userDir = System.getProperty("user.dir");
-    private static String projectName;
-    private static String projectCnName;
+    private String name;
+    private String displayName;
 
     private List<DataSource> dataSources = new ArrayList<DataSource>();
-    private LayoutConfig layout;
 
     public ProjectConfig() {}
 
-    public ProjectConfig(String projectName) {
-        this.projectName = projectName;
-    }
-
-    @MetaFieldElement(displayName = "用户主目录", sortNum = 30)
-    public String getUserHome() {
-        return userHome;
-    }
-
-    public void setUserHome(String userHome) {
-        this.userHome = userHome;
-    }
-
-    public String getUserDir() {
-        return userDir;
-    }
-
-    public void setUserDir(String userDir) {
-        this.userDir = userDir;
+    public ProjectConfig(String name) {
+        this.name = name;
     }
 
     @MetaFieldElement(displayName = "项目名称", sortNum = 10)
-    public String getProjectName() {
-        return projectName;
+    public String getName() {
+        return name;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @MetaFieldElement(displayName = "项目中文名", sortNum = 20)
-    public String getProjectCnName() {
-        return projectCnName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setProjectCnName(String projectCnName) {
-        ProjectConfig.projectCnName = projectCnName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @XmlElementWrapper(name = "DataSources")
@@ -85,29 +60,21 @@ public class ProjectConfig {
         this.dataSources = dataSources;
     }
 
-    @XmlElement(name = "Layout")
-    public LayoutConfig getLayout() {
-        return layout;
-    }
-
-    public void setLayout(LayoutConfig layout) {
-        this.layout = layout;
-    }
 // ===================== 静态方法 ==================================
 
-    public static File getProjectDir() {
-        return UtilFile.makeDirs(userHome, projectName);
+    public File getProjectDir() {
+        return UtilFile.makeDirs(SystemConfig.DIR_SYSTEM, name);
     }
 
-    public static File getHsqldbDir() {
-        return UtilFile.makeDirs(userHome, DIR_NAME_SQLDB);
+    public File getHsqldbDir() {
+        return UtilFile.makeDirs(getProjectDir(), SystemConfig.DIR_NAME_SQLDB);
     }
 
-    public static File getDbConfDir() {
-        return UtilFile.makeDirs(userHome, DIR_NAME_DBCONF);
+    public File getDbConfDir() {
+        return UtilFile.makeDirs(getProjectDir(), SystemConfig.DIR_NAME_DBCONF);
     }
 
-    public static File getProjectConfigFile() {
-        return new File(getProjectDir(), "ProjectConfig.xml");
+    public File getProjectConfigFile() {
+        return new File(getProjectDir(), SystemConfig.FILE_NAME_PROJECT_CONFIG);
     }
 }

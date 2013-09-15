@@ -42,4 +42,23 @@ public class UtilFile {
     public static File makeDirs(String parentDir, String subDir) {
         return makeDirs(new File(parentDir, subDir));
     }
+
+    public static File makeDirs(File parentDir, String subDir) {
+        return makeDirs(new File(parentDir, subDir));
+    }
+
+    /**
+     * 创建文件
+     *
+     * @param parentDir 父目录
+     * @param fileName  文件名
+     * @return 返回创建后的文件
+     */
+    public static File createFile(File parentDir, String fileName) throws IOException {
+        File file = new File(parentDir, fileName);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        return file;
+    }
 }

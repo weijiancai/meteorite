@@ -11,12 +11,15 @@ import com.meteorite.core.ui.layout.LayoutConfigManager;
 public abstract class BaseFacade implements IFacade {
     protected ProjectConfig projectConfig;
 
-    protected BaseFacade()
-    {
-        initializeFacade();
+    protected BaseFacade() {
+        try {
+            initializeFacade();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void initializeFacade() {
+    private void initializeFacade() throws Exception {
         // 1. 初始化ProjectConfig
         initProjectConfig();
         // 2. 加载Layout
@@ -31,5 +34,5 @@ public abstract class BaseFacade implements IFacade {
     /**
      * 初始化ProjectConfig
      */
-    protected abstract void initProjectConfig();
+    protected abstract void initProjectConfig() throws Exception;
 }

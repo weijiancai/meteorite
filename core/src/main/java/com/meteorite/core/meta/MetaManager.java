@@ -36,7 +36,7 @@ public class MetaManager {
         MetaElement metaElement = clazz.getAnnotation(MetaElement.class);
         Meta meta = new Meta();
         meta.setName("##default".equals(metaElement.name()) ? clazz.getSimpleName() : metaElement.name());
-        meta.setCname(metaElement.cname());
+        meta.setDisplayName(metaElement.displayName());
         meta.setValid(metaElement.isValid());
         meta.setDesc(metaElement.desc());
         meta.setInputDate(new Date());
@@ -83,7 +83,7 @@ public class MetaManager {
     public static MetaForm toForm(Meta meta) {
         MetaForm metaForm = new MetaForm();
         metaForm.setName(meta.getName() + "Form");
-        metaForm.setCname(meta.getCname() + "表单");
+        metaForm.setCname(meta.getDisplayName() + "表单");
         metaForm.setInputDate(new Date());
         metaForm.setValid(true);
         metaForm.setColCount(1);

@@ -1,21 +1,24 @@
 package com.meteorite.fxbase;
 
 import com.meteorite.core.config.ProjectConfig;
-import com.meteorite.core.config.ProjectConfigFactory;
+import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.facade.IFacade;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
-import com.meteorite.core.ui.layout.property.PropertyManager;
+import com.meteorite.core.ui.IView;
+import com.meteorite.core.ui.config.ViewConfigFactory;
+import com.meteorite.core.util.HSqlDBServer;
 import com.meteorite.fxbase.ui.Dialogs;
 import com.meteorite.fxbase.ui.FxDesktop;
-import com.meteorite.fxbase.ui.FxFormView;
 import com.meteorite.fxbase.ui.calendar.FXCalendar;
 import com.meteorite.fxbase.ui.dialog.DialogOptions;
+import com.meteorite.fxbase.ui.view.FxViewFactory;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -49,8 +52,11 @@ public abstract class BaseApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        ProjectConfig projectConfig = facade.getProjectConfig();
-        stage.setTitle(projectConfig.getProjectCnName());
+        final ProjectConfig projectConfig = facade.getProjectConfig();
+        stage.setTitle(projectConfig.getDisplayName());
+
+        //  启动数据库
+        HSqlDBServer.getInstance().start();
 
         // 全屏显示
         Rectangle2D primaryScreenBonds = Screen.getPrimary().getVisualBounds();
@@ -60,26 +66,27 @@ public abstract class BaseApp extends Application {
         stage.setHeight(primaryScreenBonds.getHeight());
 
         // 检查是否配置了项目
-        if (!ProjectConfigFactory.isConfigured(projectConfig)) {
+        if (!SystemManager.isConfigured(projectConfig)) {
             Meta meta = MetaManager.toMeta(projectConfig);
-            FxFormView formView = new FxFormView(PropertyManager.getFormProperty(meta));
-//            Dialogs.showInformationDialog(stage, "请配置项目信息！");
-//            IViewConfig<Pane> view = ViewFactory.getView(ViewConfigManager.getViewConfig("ProjectConfig"));
-            Dialogs.showCustomDialog(stage, formView, "masthead", "项目信息配置", DialogOptions.OK, new Callback<Void, Void>() {
+            IView<Pane> projectConfigView = FxViewFactory.getView(ViewConfigFactory.createFormConfig(meta));
+            Dialogs.showCustomDialog(stage, projectConfigView.layout(), "masthead", "项目信息配置", DialogOptions.OK, new Callback<Void, Void>() {
                 @Override
                 public Void call(Void aVoid) {
+                    if (!SystemManager.isConfigured(projectConfig)) {
+                        System.exit(0);
+                    }
                     return null;
                 }
             });
         } else {
-            scene = new Scene(new Button("测试"));
+            desktop = new FxDesktop(stage);
+            scene = new Scene(desktop);
             setSkin(R.skin.DEFAULT);
             setCalendarStyle();
             // show stage
             stage.setScene(scene);
         }
 
-        scene = new Scene(new Label("测试"));
         setSkin(R.skin.DEFAULT);
         setCalendarStyle();
         // show stage
@@ -98,6 +105,12 @@ public abstract class BaseApp extends Application {
 
     private void setCalendarStyle() {
         scene.getStylesheets().addAll(FXCalendar.class.getResource("styles/calendar_styles.css").toExternalForm());
+    }
+
+    @Override
+    public void stop() throws Exception {
+        HSqlDBServer.getInstance().stop();
+        super.stop();
     }
 
     /**

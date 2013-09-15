@@ -7,6 +7,9 @@ import com.meteorite.core.ui.ILayoutProperty;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
 
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +18,8 @@ import java.util.List;
  * @author wei_jc
  * @version 1.0.0
  */
+@XmlRootElement(name = "Layout")
+@XmlType(propOrder = {"id", "name", "displayName", "sortNum", "desc", "actionConfigs", "properties", "children"})
 public class LayoutConfig implements ILayoutConfig {
     /** 布局ID */
     private int id;
@@ -27,10 +32,23 @@ public class LayoutConfig implements ILayoutConfig {
     /** 排序号*/
     private int sortNum;
 
-    private ILayoutConfig parent;
+    private LayoutConfig parent;
     private List<ILayoutConfig> children;
     private List<IActionConfig> actionConfigs;
     private List<ILayoutProperty> properties;
+
+    public LayoutConfig() {}
+
+    public LayoutConfig(String name, String displayName, String desc, LayoutConfig parent) {
+        this.name = name;
+        this.displayName = displayName;
+        this.desc = desc;
+        this.parent = parent;
+        // 将子节点添加到父节点中
+        if (parent != null) {
+            parent.getChildren().add(this);
+        }
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -60,7 +78,7 @@ public class LayoutConfig implements ILayoutConfig {
         this.children = children;
     }
 
-    public void setParent(ILayoutConfig parent) {
+    public void setParent(LayoutConfig parent) {
         this.parent = parent;
     }
 
@@ -69,47 +87,68 @@ public class LayoutConfig implements ILayoutConfig {
     }
 
     @Override
+    @XmlAttribute
     public int getId() {
         return id;
     }
 
     @Override
+    @XmlAttribute
     public String getName() {
         return name;
     }
 
     @Override
+    @XmlAttribute
     public String getDisplayName() {
         return displayName;
     }
 
     @Override
+    @XmlAttribute
     public String getDesc() {
         return desc;
     }
 
     @Override
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
 
     @Override
-    public ILayoutConfig getParent() {
+    @XmlTransient
+    public LayoutConfig getParent() {
         return parent;
     }
 
     @Override
+    @XmlElement(type = LayoutConfig.class, name = "Layout")
+    @XmlElementWrapper(name = "children")
     public List<ILayoutConfig> getChildren() {
+        if (children == null) {
+            children = new ArrayList<ILayoutConfig>();
+        }
         return children;
     }
 
     @Override
+    @XmlElement(type = ActionConfig.class, name = "Action")
+    @XmlElementWrapper(name = "Actions")
     public List<IActionConfig> getActionConfigs() {
+        if (actionConfigs == null) {
+            actionConfigs = new ArrayList<IActionConfig>();
+        }
         return actionConfigs;
     }
 
     @Override
+    @XmlElement(type = LayoutProperty.class, name = "Property")
+    @XmlElementWrapper(name = "Properties")
     public List<ILayoutProperty> getProperties() {
+        if (properties == null) {
+            properties = new ArrayList<ILayoutProperty>();
+        }
         return properties;
     }
 
@@ -128,7 +167,7 @@ public class LayoutConfig implements ILayoutConfig {
     public String getPropStringValue(String propName) {
         ILayoutProperty property = getProperty(propName);
         if (property != null) {
-            return property.getValue();
+            return UString.isEmpty(property.getValue()) ? property.getDefaultValue() : property.getValue();
         }
 
         return null;
@@ -148,5 +187,44 @@ public class LayoutConfig implements ILayoutConfig {
     public MetaDataType getPropDataType(String propName) {
 //        return getProperty(propName).getDataType();
         return MetaDataType.getDataType(getPropStringValue(propName));
+    }
+
+    @Override
+    public void setPropValue(String propName, String value) {
+        System.out.println("Set Property: " + propName + " > " + value);
+        getProperty(propName).setValue(value);
+    }
+
+    @Override
+    public ILayoutConfig clone() {
+        try {
+            LayoutConfig config = (LayoutConfig) super.clone();
+            // Clone Children
+            List<ILayoutConfig> childrenList = new ArrayList<ILayoutConfig>();
+            for (ILayoutConfig layoutConfig : children) {
+                childrenList.add(layoutConfig.clone());
+            }
+            config.setChildren(childrenList);
+
+            // Clone Property
+            List<ILayoutProperty> propertyList = new ArrayList<ILayoutProperty>();
+            for (ILayoutProperty property : properties) {
+                propertyList.add(property.clone());
+            }
+            config.setProperties(propertyList);
+
+            // Clone Action
+            List<IActionConfig> actionConfigList = new ArrayList<IActionConfig>();
+            for (IActionConfig action : actionConfigs) {
+                actionConfigList.add(action.clone());
+            }
+            config.setActionConfigs(actionConfigList);
+
+            return config;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

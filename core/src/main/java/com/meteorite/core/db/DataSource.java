@@ -9,13 +9,14 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0.0
  */
 @XmlRootElement
-@XmlType(propOrder = {"driverClass", "url", "username", "password"})
+@XmlType(propOrder = {"driverClass", "url", "username", "password", "filePath"})
 public class DataSource {
     private String name;
     private String driverClass;
     private String url;
     private String username;
     private String password;
+    private String filePath; // 数据库文件路径
 
     public DataSource() {}
 
@@ -66,5 +67,13 @@ public class DataSource {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

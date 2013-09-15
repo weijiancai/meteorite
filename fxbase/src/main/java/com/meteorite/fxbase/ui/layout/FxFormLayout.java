@@ -22,16 +22,8 @@ import javafx.scene.layout.*;
  * @version 1.0.0
  */
 public class FxFormLayout implements ConfigConst {
-//    private FormProperty model;
 //    private List<Action> actions;
     private IViewConfig viewConfig;
-
-    public FxFormLayout(FormProperty property) {
-//        this.model = property;
-//        actions = LayoutConfigManager.getLayout(R.layout.FORM).getActions();
-
-        initUI();
-    }
 
     public FxFormLayout(IViewConfig viewConfig) {
         this.viewConfig = viewConfig;
@@ -53,7 +45,8 @@ public class FxFormLayout implements ConfigConst {
     }
 
     public HBox getTop() {
-        HBox box = new HBox(5);
+        HBox box = new HBox(10);
+        box.setPrefHeight(30);
         Region region = new Region();
         box.getChildren().add(region);
         HBox.setHgrow(region, Priority.ALWAYS);
@@ -88,7 +81,7 @@ public class FxFormLayout implements ConfigConst {
             // 单行
             if (field.getPropBooleanValue(FORM_FIELD_IS_SINGLE_LINE)) {
                 idxRow++;
-                formGrid.add(new Label(field.getDisplayName()), 0, idxRow);
+                formGrid.add(new Label(field.getPropStringValue(FORM_FIELD_DISPLAY_NAME)), 0, idxRow);
                 labelGap = new Region();
                 labelGap.setPrefWidth(form.getPropIntValue(FORM_LABEL_GAP));
                 formGrid.add(labelGap, 1, idxRow);
@@ -100,7 +93,7 @@ public class FxFormLayout implements ConfigConst {
                 continue;
             }
 
-            label = new Label(field.getDisplayName());
+            label = new Label(field.getPropStringValue(FORM_FIELD_DISPLAY_NAME));
             formGrid.add(label, idxCol++, idxRow);
 
             labelGap = new Region();

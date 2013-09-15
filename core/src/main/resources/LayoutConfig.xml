@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Layout id="0" name="ROOT" displayName="布局管理器" sortNum="0" desc="">
+    <Actions/>
+    <Properties/>
+    <children>
+        <Layout id="0" name="FORM" displayName="表单" sortNum="0" desc="">
+            <Actions>
+                <Action id="0" name="form_save" displayName="保存" sortNum="0"/>
+                <Action id="0" name="form_exit" displayName="退出" sortNum="0"/>
+            </Actions>
+            <Properties>
+                <Property id="0" name="name" displayName="名称" sortNum="0"/>
+                <Property id="0" name="displayName" displayName="显示名" sortNum="0"/>
+                <Property id="0" name="formType" displayName="表单类型" sortNum="0"/>
+                <Property id="0" name="colCount" displayName="列数" defaultValue="3" sortNum="0"/>
+                <Property id="0" name="colWidth" displayName="列宽" defaultValue="180" sortNum="0"/>
+                <Property id="0" name="labelGap" displayName="labelGap" defaultValue="5" sortNum="0"/>
+                <Property id="0" name="fieldGap" displayName="fieldGap" defaultValue="15" sortNum="0"/>
+                <Property id="0" name="hgap" displayName="hgap" defaultValue="3" sortNum="0"/>
+                <Property id="0" name="vgap" displayName="vgap" defaultValue="5" sortNum="0"/>
+            </Properties>
+            <children>
+                <Layout id="0" name="FORM_LABEL" displayName="表单Label" sortNum="0" desc="">
+                    <Actions/>
+                    <Properties/>
+                    <children/>
+                </Layout>
+                <Layout id="0" name="FORM_FIELD" displayName="表单Field" sortNum="0" desc="">
+                    <Actions/>
+                    <Properties>
+                        <Property id="0" name="name" displayName="名称" sortNum="0"/>
+                        <Property id="0" name="displayName" displayName="显示名" sortNum="0"/>
+                        <Property id="0" name="isSingleLine" displayName="独行" defaultValue="false" sortNum="0"/>
+                        <Property id="0" name="isDisplay" displayName="显示" defaultValue="true" sortNum="0"/>
+                        <Property id="0" name="width" displayName="宽" defaultValue="180" sortNum="0"/>
+                        <Property id="0" name="height" displayName="高" sortNum="0"/>
+                        <Property id="0" name="displayStyle" displayName="显示风格" defaultValue="0" sortNum="0"/>
+                        <Property id="0" name="sortNum" displayName="排序号" sortNum="0"/>
+                    </Properties>
+                    <children/>
+                </Layout>
+            </children>
+        </Layout>
+    </children>
+</Layout>

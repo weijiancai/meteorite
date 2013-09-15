@@ -11,11 +11,11 @@ import java.util.List;
  * @version 1.0.0
  */
 @XmlRootElement
-@XmlType(propOrder = {"id", "name", "cname", "valid", "sortNum", "inputDate", "desc", "fileds"})
+@XmlType(propOrder = {"id", "name", "displayName", "valid", "sortNum", "inputDate", "desc", "fileds"})
 public class Meta {
     private long id;
     private String name;
-    private String cname;
+    private String displayName;
     private String desc;
     private boolean isValid;
     private int sortNum;
@@ -42,12 +42,12 @@ public class Meta {
     }
 
     @XmlAttribute
-    public String getCname() {
-        return cname;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setCname(String cname) {
-        this.cname = cname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getDesc() {

@@ -1,5 +1,7 @@
 package com.meteorite.fxbase.ui;
 
+import com.meteorite.fxbase.ui.view.FxTreeView;
+import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -12,12 +14,15 @@ public class FxDesktop extends BorderPane {
     private Banner banner;
     private Workbench workbench;
 //    private ModuleMenu moduleMenu;
+    private FxTreeView treeView;
 
     public FxDesktop(final Stage stage) {
         banner = new Banner(stage);
         this.setTop(banner);
         /*moduleMenu = new ModuleMenu(this);
         this.setLeft(moduleMenu);*/
+        treeView = new FxTreeView(null);
+        this.setLeft(treeView.layout());
         workbench = new Workbench();
         this.setCenter(workbench);
     }

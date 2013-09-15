@@ -1,7 +1,7 @@
 package com.meteorite.core.meta;
 
 import com.meteorite.core.config.ProjectConfig;
-import com.meteorite.core.config.ProjectConfigFactory;
+import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaForm;
 import com.meteorite.core.util.JAXBUtil;
@@ -25,11 +25,11 @@ public class MetaManagerTest {
             assertThat(e.getMessage(), equalTo("不能将非MetaElement的对象【java.lang.String】转化为Meta对象！"));
         }
 
-        ProjectConfig projectConfig = ProjectConfigFactory.getProjectConfig("taobao");
+        ProjectConfig projectConfig = SystemManager.getInstance().createProjectConfig("taobao");
         Meta meta = MetaManager.toMeta(projectConfig);
         assertThat(meta, notNullValue());
         assertThat(meta.getName(), equalTo("ProjectConfig"));
-        assertThat(meta.getCname(), equalTo("项目配置"));
+        assertThat(meta.getDisplayName(), equalTo("项目配置"));
         assertThat(meta.getDesc(), equalTo(""));
         assertThat(meta.isValid(), equalTo(true));
         assertThat(meta.getFileds().size(), equalTo(4));
@@ -40,7 +40,7 @@ public class MetaManagerTest {
 
     @Test
     public void testToForm() throws Exception {
-        ProjectConfig projectConfig = ProjectConfigFactory.getProjectConfig("taobao");
+        ProjectConfig projectConfig = SystemManager.getInstance().createProjectConfig("taobao");
         Meta meta = MetaManager.toMeta(projectConfig);
         MetaForm metaForm = MetaManager.toForm(meta);
 

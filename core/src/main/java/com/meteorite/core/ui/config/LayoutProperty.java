@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * 布局属性信息
@@ -15,7 +16,8 @@ import javax.xml.bind.annotation.XmlType;
  * @author wei_jc
  * @version 1.0.0
  */
-@XmlRootElement
+@XmlRootElement(name = "Property")
+@XmlType(propOrder = {"id", "name", "displayName", "defaultValue", "sortNum"})
 public class LayoutProperty implements ILayoutProperty {
     /** 属性ID */
     private int id;
@@ -32,6 +34,9 @@ public class LayoutProperty implements ILayoutProperty {
     /** 排序号*/
     private int sortNum;
 
+    private LayoutConfig layoutConfig;
+
+    public LayoutProperty() {}
 
     public LayoutProperty(String name, String displayName, String value, MetaDataType dataType, String defaultValue) {
         this.dataType = dataType;
@@ -39,6 +44,15 @@ public class LayoutProperty implements ILayoutProperty {
         this.displayName = displayName;
         this.name = name;
         this.value = value;
+    }
+
+    public LayoutProperty(String name, String displayName, String defaultValue, LayoutConfig layoutConfig) {
+        this.name = name;
+        this.displayName = displayName;
+        this.defaultValue = defaultValue;
+        this.layoutConfig = layoutConfig;
+        // 将此属性添加到布局中
+        layoutConfig.getProperties().add(this);
     }
 
     public void setDataType(MetaDataType dataType) {
@@ -65,42 +79,69 @@ public class LayoutProperty implements ILayoutProperty {
         this.sortNum = sortNum;
     }
 
+    @Override
     public void setValue(String value) {
         this.value = value;
     }
 
     @Override
+    @XmlAttribute
     public int getId() {
         return id;
     }
 
     @Override
+    @XmlAttribute
     public String getName() {
         return name;
     }
 
     @Override
+    @XmlAttribute
     public String getDisplayName() {
         return displayName;
     }
 
     @Override
+    @XmlAttribute
     public String getDefaultValue() {
         return defaultValue;
     }
 
     @Override
+    @XmlAttribute
     public String getValue() {
         return value;
     }
 
     @Override
+    @XmlAttribute
     public MetaDataType getDataType() {
         return dataType;
     }
 
     @Override
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
+    }
+
+    @Override
+    public ILayoutProperty clone() {
+        try {
+            return (ILayoutProperty)super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @XmlTransient
+    public LayoutConfig getLayoutConfig() {
+        return layoutConfig;
+    }
+
+    public void setLayoutConfig(LayoutConfig layoutConfig) {
+        this.layoutConfig = layoutConfig;
     }
 }
