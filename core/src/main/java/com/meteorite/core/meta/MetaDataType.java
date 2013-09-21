@@ -38,7 +38,11 @@ public enum MetaDataType {
     /**
      * 7. URL
      */
-    URL
+    URL,
+    /**
+     * 8. DATA_SOURCE
+     */
+    DATA_SOURCE
     ;
 
     public static MetaDataType getDataType(String dataTypeStr) {
@@ -58,6 +62,8 @@ public enum MetaDataType {
             return IP;
         } else if ("7".equals(dataTypeStr)) {
             return URL;
+        } else if ("8".equals(dataTypeStr)) {
+            return DATA_SOURCE;
         }
 
         return STRING;

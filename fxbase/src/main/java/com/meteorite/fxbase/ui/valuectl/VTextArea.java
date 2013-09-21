@@ -2,12 +2,20 @@ package com.meteorite.fxbase.ui.valuectl;
 
 import com.meteorite.fxbase.ui.IValue;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 
 /**
  * @author weijiancai
  * @since 1.0.0
  */
-public class VTextArea extends TextArea implements IValue {
+public class VTextArea extends HBox implements IValue {
+    private TextArea textArea;
+
+    public VTextArea() {
+        textArea = new TextArea();
+        this.getChildren().add(textArea);
+    }
+
     @Override
     public String[] values() {
         return new String[]{value()};
@@ -15,13 +23,13 @@ public class VTextArea extends TextArea implements IValue {
 
     @Override
     public String value() {
-        return getText().trim();
+        return textArea.getText().trim();
     }
 
     @Override
     public void setValue(String[] value) {
         if (value != null && value.length > 0) {
-            setText(value[0]);
+            textArea.setText(value[0]);
         }
     }
 

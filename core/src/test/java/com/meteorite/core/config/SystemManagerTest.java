@@ -20,7 +20,7 @@ public class SystemManagerTest {
     @Test
     public void testAddDataSource() throws Exception {
         ProjectConfig projConf = SystemManager.getInstance().createProjectConfig(".taobao");
-        DataSource dataSource = new DataSource("taobao", "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/taobao", "sa", "");
+        DataSource dataSource = new DataSource("taobao", "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/taobao", "sa", "", "1.0.0");
         projConf.getDataSources().add(dataSource);
         SystemManager.getInstance().save(projConf);
     }

@@ -27,7 +27,6 @@ public class FxTreeView implements IView<Pane> {
     @Override
     public void initUI() {
         borderPane.setCenter(treeView);
-        viewConfig.getLayoutConfig().getPropStringValue("");
     }
 
     @Override

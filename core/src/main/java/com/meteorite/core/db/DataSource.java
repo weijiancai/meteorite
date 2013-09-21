@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0.0
  */
 @XmlRootElement
-@XmlType(propOrder = {"driverClass", "url", "username", "password", "filePath"})
+@XmlType(propOrder = {"driverClass", "url", "username", "password", "dbVersion", "filePath"})
 public class DataSource {
     private String name;
     private String driverClass;
@@ -17,15 +17,17 @@ public class DataSource {
     private String username;
     private String password;
     private String filePath; // 数据库文件路径
+    private String dbVersion; // 数据库版本
 
     public DataSource() {}
 
-    public DataSource(String name, String driverClass, String url, String username, String password) {
+    public DataSource(String name, String driverClass, String url, String username, String password, String dbVersion) {
         this.name = name;
         this.driverClass = driverClass;
         this.url = url;
         this.username = username;
         this.password = password;
+        this.dbVersion = dbVersion;
     }
 
     @XmlAttribute
@@ -75,5 +77,13 @@ public class DataSource {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public String getDbVersion() {
+        return dbVersion;
+    }
+
+    public void setDbVersion(String dbVersion) {
+        this.dbVersion = dbVersion;
     }
 }

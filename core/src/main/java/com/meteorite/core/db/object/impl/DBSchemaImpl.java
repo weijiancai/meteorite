@@ -6,7 +6,9 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author weijiancai
@@ -18,6 +20,7 @@ public class DBSchemaImpl implements DBSchema {
     private String comment;
 
     private List<DBTable> tables;
+    private Map<String, DBTable> tableMap = new HashMap<String, DBTable>();
 
     @Override
     public String getCatalog() {
@@ -33,6 +36,10 @@ public class DBSchemaImpl implements DBSchema {
 
     public void setTables(List<DBTable> tables) {
         this.tables = tables;
+        tableMap.clear();
+        for (DBTable table : tables) {
+            tableMap.put(table.getName(), table);
+        }
     }
 
     @Override
@@ -52,7 +59,7 @@ public class DBSchemaImpl implements DBSchema {
 
     @Override
     public DBTable getTable(String name) {
-        return null;
+        return tableMap.get(name);
     }
 
     @Override
@@ -103,6 +110,11 @@ public class DBSchemaImpl implements DBSchema {
     @Override
     public String getComment() {
         return comment;
+    }
+
+    @Override
+    public DBObjectType getObjectType() {
+        return DBObjectType.SCHEMA;
     }
 
     public void setName(String name) {

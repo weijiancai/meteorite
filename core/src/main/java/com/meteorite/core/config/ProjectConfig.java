@@ -1,6 +1,7 @@
 package com.meteorite.core.config;
 
 import com.meteorite.core.db.DataSource;
+import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.util.UtilFile;
@@ -51,7 +52,7 @@ public class ProjectConfig {
 
     @XmlElementWrapper(name = "DataSources")
     @XmlElement(name = "DataSource")
-    @MetaFieldElement(displayName = "数据源", sortNum = 40)
+    @MetaFieldElement(displayName = "数据源", sortNum = 40, dataType = MetaDataType.DATA_SOURCE)
     public List<DataSource> getDataSources() {
         return dataSources;
     }

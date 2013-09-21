@@ -1,5 +1,6 @@
 package com.meteorite.core.db.object.impl;
 
+import com.meteorite.core.db.object.DBObjectType;
 import com.meteorite.core.db.object.DBTable;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -24,6 +25,11 @@ public class DBTableImpl implements DBTable {
     @Override @XmlAttribute
     public String getComment() {
         return comment;
+    }
+
+    @Override
+    public DBObjectType getObjectType() {
+        return DBObjectType.TABLE;
     }
 
     public void setName(String name) {

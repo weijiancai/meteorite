@@ -22,7 +22,11 @@ public enum DisplayStyle {
     /**
      * 3. 下拉框
      */
-    COMBO_BOX
+    COMBO_BOX,
+    /**
+     * 4. 数据源
+     */
+    DATA_SOURCE
     ;
 
     public static DisplayStyle getStyle(String styleStr) {
@@ -34,6 +38,8 @@ public enum DisplayStyle {
             return PASSWORD;
         } else if ("3".equals(styleStr)) {
             return COMBO_BOX;
+        } else if ("4".equals(styleStr)) {
+            return DATA_SOURCE;
         }
 
         return TEXT_FIELD;

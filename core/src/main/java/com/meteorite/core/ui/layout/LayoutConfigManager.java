@@ -2,6 +2,8 @@ package com.meteorite.core.ui.layout;
 
 import com.meteorite.core.R;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.meta.DisplayStyle;
+import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ILayoutConfig;
@@ -61,6 +63,10 @@ public class LayoutConfigManager {
             formField.setPropValue(FORM_FIELD_NAME, field.getName());
             formField.setPropValue(FORM_FIELD_DISPLAY_NAME, field.getDisplayName());
             formField.setPropValue(FORM_FIELD_SORT_NUM, field.getSortNum() + "");
+            if (MetaDataType.DATA_SOURCE == field.getDataType()) {
+                formField.setPropValue(FORM_FIELD_DISPLAY_STYLE, DisplayStyle.DATA_SOURCE.ordinal() + "");
+                formField.setPropValue(FORM_FIELD_IS_SINGLE_LINE, "true");
+            }
             children.add(formField);
         }
         form.setChildren(children);

@@ -1,0 +1,29 @@
+<mockup version="1.0" skin="sketch" measuredW="1508" measuredH="504" mockupW="1448" mockupH="484">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::TitleWindow" x="60" y="20" w="548" h="453" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u7CFB%u7EDF%u8BBE%u7F6E</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::Image" x="828" y="29" w="-1" h="-1" measuredW="680" measuredH="475" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/qq_setting.png</src>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::List" x="64" y="44" w="100" h="397" measuredW="100" measuredH="126" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u57FA%u672C%u8BBE%u7F6E%0A%u9879%u76EE1%0A%u9879%u76EE2</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::FieldSet" x="164" y="44" w="436" h="170" measuredW="200" measuredH="170" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u57FA%u672C%u8BBE%u7F6E</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::FieldSet" x="164" y="214" w="436" h="170" measuredW="200" measuredH="170" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%u9879%u76EE1</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

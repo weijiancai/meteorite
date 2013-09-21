@@ -6,6 +6,7 @@ import com.meteorite.core.facade.IFacade;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.IView;
+import com.meteorite.core.ui.config.ConfigInit;
 import com.meteorite.core.ui.config.ViewConfigFactory;
 import com.meteorite.core.util.HSqlDBServer;
 import com.meteorite.fxbase.ui.Dialogs;
@@ -58,6 +59,9 @@ public abstract class BaseApp extends Application {
         //  启动数据库
         HSqlDBServer.getInstance().start();
 
+        // 初始化完成
+        facade.initAfter();
+
         // 全屏显示
         Rectangle2D primaryScreenBonds = Screen.getPrimary().getVisualBounds();
         stage.setX(primaryScreenBonds.getMinX());
@@ -67,13 +71,16 @@ public abstract class BaseApp extends Application {
 
         // 检查是否配置了项目
         if (!SystemManager.isConfigured(projectConfig)) {
-            Meta meta = MetaManager.toMeta(projectConfig);
-            IView<Pane> projectConfigView = FxViewFactory.getView(ViewConfigFactory.createFormConfig(meta));
+            IView<Pane> projectConfigView = FxViewFactory.getView(ConfigInit.getProjectConfig());
             Dialogs.showCustomDialog(stage, projectConfigView.layout(), "masthead", "项目信息配置", DialogOptions.OK, new Callback<Void, Void>() {
                 @Override
                 public Void call(Void aVoid) {
-                    if (!SystemManager.isConfigured(projectConfig)) {
-                        System.exit(0);
+                    try {
+                        if (!SystemManager.isConfigured(projectConfig)) {
+                            System.exit(0);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     return null;
                 }

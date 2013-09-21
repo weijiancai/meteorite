@@ -15,4 +15,9 @@ public interface IFacade {
      * @version 1.0.0
      */
     ProjectConfig getProjectConfig();
+
+    /**
+     * 初始化完成
+     */
+    void initAfter() throws Exception;
 }

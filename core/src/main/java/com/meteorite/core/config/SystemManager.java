@@ -1,5 +1,7 @@
 package com.meteorite.core.config;
 
+import com.meteorite.core.db.DBManager;
+import com.meteorite.core.db.DBUtil;
 import com.meteorite.core.db.DataSource;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.util.*;
@@ -67,15 +69,17 @@ public class SystemManager {
     /**
      * 加载数据源
      */
-    private void loadDataSource() throws IOException {
+    private void loadDataSource() throws Exception {
         // 加载系统默认Hsqldb数据源
         File sysDbFile = UtilFile.createFile(DIR_SYSTEM_HSQL_DB, "sys");
         HSqlDBServer.getInstance().addDbFile("sys", sysDbFile.getAbsolutePath());
+//        DBManager.addDataSource(DBManager.getSysDataSource());
 
         for (ProjectConfig config : cache.values()) {
             List<DataSource> list = config.getDataSources();
             if (list != null) {
                 for (DataSource dataSource : list) {
+                    DBManager.addDataSource(dataSource);
                     if (dataSource.getFilePath() != null) {
                         HSqlDBServer.getInstance().addDbFile(dataSource.getName(), dataSource.getFilePath());
                     }
@@ -117,22 +121,20 @@ public class SystemManager {
      * @param projectConfig 项目配置信息
      * @return 如果已经配置，返回true，否则返回false
      */
-    public static boolean isConfigured(ProjectConfig projectConfig) {
+    public static boolean isConfigured(ProjectConfig projectConfig) throws Exception {
         // 检查项目名称
         if (UString.isEmpty(projectConfig.getName())) {
             return false;
         }
         // 检查sys数据源
-        /*boolean hasSysDataSource = false;
-        for (DataSource dataSource : projectConfig.getDataSources()) {
-            if ("sys".equals(dataSource.getName())) {
-                hasSysDataSource = true;
-                break;
-            }
-        }
-        if (!hasSysDataSource) {
+        if (DBManager.getDataSource(SystemConfig.SYS_DB_NAME) == null) {
             return false;
-        }*/
+        }
+        // 检查版本表
+        if (!DBUtil.existsTable(SystemConfig.SYS_DB_VERSION_TABLE_NAME)) {
+            return false;
+        }
+
         return true;
     }
 }

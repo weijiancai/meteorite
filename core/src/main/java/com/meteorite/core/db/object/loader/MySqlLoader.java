@@ -1,40 +1,39 @@
 package com.meteorite.core.db.object.loader;
 
 import com.meteorite.core.db.object.DBConnection;
-import com.meteorite.core.db.object.DBLoader;
-import com.meteorite.core.db.object.DBSchema;
-import com.meteorite.core.db.object.DBTable;
-
-import java.util.List;
-import java.util.Map;
 
 /**
+ * MySql加载器
+ *
  * @author wei_jc
- * @version 0.0.1
+ * @since 1.0.0
  */
-public class MySqlLoader implements DBLoader {
-    public static final String SCHEMAS = "select\n" +
-            "                SCHEMA_NAME,\n" +
-            "                'N' as IS_PUBLIC,\n" +
-            "                if(lower(SCHEMA_NAME)='information_schema', 'Y', 'N') as IS_SYSTEM\n" +
-            "            from INFORMATION_SCHEMA.SCHEMATA\n" +
-            "            order by SCHEMA_NAME asc";
+public class MySqlLoader extends BaseDBLoader {
 
-    private DBConnection conn;
-
-    public MySqlLoader(DBConnection conn) {
-        this.conn = conn;
+    public MySqlLoader(DBConnection conn) throws Exception {
+        super(conn);
     }
 
     @Override
-    public List<DBSchema> loadSchemas() throws Exception {
-        List<Map<String, Object>> list = conn.getResultSet(SCHEMAS);
-
-        return null;
+    protected String getSchemaSql() {
+        return "select\n" +
+                "                SCHEMA_NAME,\n" +
+                "                'N' as IS_PUBLIC,\n" +
+                "                if(lower(SCHEMA_NAME)='information_schema', 'Y', 'N') as IS_SYSTEM\n" +
+                "            from INFORMATION_SCHEMA.SCHEMATA\n" +
+                "            order by SCHEMA_NAME asc";
     }
 
     @Override
-    public List<DBTable> loadTables() {
-        return null;
+    protected String getTableSql() {
+        return "select\n" +
+                "                TABLE_NAME,\n" +
+                "                TABLE_COMMENT,\n" +
+                "                'N' as IS_TEMPORARY\n" +
+                "            from  INFORMATION_SCHEMA.TABLES\n" +
+                "            where\n" +
+                "                TABLE_SCHEMA = '%s' and\n" +
+                "                TABLE_TYPE = 'BASE TABLE'\n" +
+                "            order by TABLE_NAME asc";
     }
 }

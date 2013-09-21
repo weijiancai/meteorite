@@ -17,4 +17,11 @@ public interface DBObject {
      * @return
      */
 //    String getDatabase();
+
+    /**
+     * 获得数据库对象类型
+     *
+     * @return 返回数据库对象类型
+     */
+    DBObjectType getObjectType();
 }

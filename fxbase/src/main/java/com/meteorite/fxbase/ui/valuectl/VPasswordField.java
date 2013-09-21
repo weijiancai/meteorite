@@ -2,12 +2,20 @@ package com.meteorite.fxbase.ui.valuectl;
 
 import com.meteorite.fxbase.ui.IValue;
 import javafx.scene.control.PasswordField;
+import javafx.scene.layout.HBox;
 
 /**
  * @author weijiancai
  * @since 1.0.0
  */
-public class VPasswordField extends PasswordField implements IValue {
+public class VPasswordField extends HBox implements IValue {
+    private PasswordField passwordField;
+
+    public VPasswordField() {
+        passwordField = new PasswordField();
+        this.getChildren().add(passwordField);
+    }
+
     @Override
     public String[] values() {
         return new String[]{value()};
@@ -15,13 +23,13 @@ public class VPasswordField extends PasswordField implements IValue {
 
     @Override
     public String value() {
-        return getText().trim();
+        return passwordField.getText().trim();
     }
 
     @Override
     public void setValue(String[] value) {
         if (value != null && value.length > 0) {
-            setText(value[0]);
+            passwordField.setText(value[0]);
         }
     }
 

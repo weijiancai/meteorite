@@ -1,5 +1,6 @@
 package com.meteorite.core.util;
 
+import com.meteorite.core.db.DBManager;
 import org.hsqldb.Server;
 
 import java.util.ArrayList;

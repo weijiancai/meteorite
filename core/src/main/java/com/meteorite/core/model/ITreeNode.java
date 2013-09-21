@@ -15,6 +15,13 @@ public interface ITreeNode {
     String getId();
 
     /**
+     * 获得树形父节点ID
+     *
+     * @return 返回树形父节点ID
+     */
+    String getPid();
+
+    /**
      * 获得父树形节点
      *
      * @return 返回父树形节点
@@ -41,4 +48,11 @@ public interface ITreeNode {
      * @return 返回显示名
      */
     String getDisplayName();
+
+    /**
+     * 获得排序号
+     *
+     * @return 返回排序号
+     */
+    int getSortNum();
 }

@@ -32,4 +32,17 @@ public class SystemConfig {
      * 系统默认数据库目录
      */
     public static File DIR_SYSTEM_HSQL_DB = UtilFile.makeDirs(DIR_SYSTEM, DIR_NAME_SQLDB);
+
+    /**
+     * 系统数据库版本
+     */
+    public static final String SYS_DB_VERSION = "1.0.0";
+    /**
+     * 系统数据库名称
+     */
+    public static final String SYS_DB_NAME = "sys";
+    /**
+     * 系统数据库版本表名
+     */
+    public static final String SYS_DB_VERSION_TABLE_NAME = "sys_db_version";
 }

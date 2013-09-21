@@ -18,21 +18,19 @@ import static org.junit.Assert.assertThat;
 public class MetaManagerTest {
     @Test
     public void testToMeta() throws Exception {
-        String str = "aaa";
         try {
-            MetaManager.toMeta(str);
+            MetaManager.toMeta(String.class);
         } catch (Exception e) {
             assertThat(e.getMessage(), equalTo("不能将非MetaElement的对象【java.lang.String】转化为Meta对象！"));
         }
 
-        ProjectConfig projectConfig = SystemManager.getInstance().createProjectConfig("taobao");
-        Meta meta = MetaManager.toMeta(projectConfig);
+        Meta meta = MetaManager.getMeta(ProjectConfig.class);
         assertThat(meta, notNullValue());
         assertThat(meta.getName(), equalTo("ProjectConfig"));
         assertThat(meta.getDisplayName(), equalTo("项目配置"));
         assertThat(meta.getDesc(), equalTo(""));
         assertThat(meta.isValid(), equalTo(true));
-        assertThat(meta.getFileds().size(), equalTo(4));
+        assertThat(meta.getFileds().size(), equalTo(3));
 
         String metaXml = JAXBUtil.marshalToString(meta, Meta.class);
         System.out.println(metaXml);
@@ -41,7 +39,7 @@ public class MetaManagerTest {
     @Test
     public void testToForm() throws Exception {
         ProjectConfig projectConfig = SystemManager.getInstance().createProjectConfig("taobao");
-        Meta meta = MetaManager.toMeta(projectConfig);
+        Meta meta = MetaManager.getMeta(ProjectConfig.class);
         MetaForm metaForm = MetaManager.toForm(meta);
 
         String metaXml = JAXBUtil.marshalToString(metaForm, MetaForm.class);

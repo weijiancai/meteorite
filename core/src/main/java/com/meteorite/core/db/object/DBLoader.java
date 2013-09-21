@@ -11,5 +11,5 @@ import java.util.List;
 public interface DBLoader {
     List<DBSchema> loadSchemas() throws Exception;
 
-    List<DBTable> loadTables();
+    List<DBTable> loadTables(DBSchema schema) throws Exception;
 }

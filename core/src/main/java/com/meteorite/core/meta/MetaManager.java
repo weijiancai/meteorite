@@ -1,5 +1,7 @@
 package com.meteorite.core.meta;
 
+import com.meteorite.core.config.ProjectConfig;
+import com.meteorite.core.db.DataSource;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
@@ -19,18 +21,53 @@ import java.util.*;
  * @version 1.0.0
  */
 public class MetaManager {
+    private static Map<String, Meta> metaMap = new HashMap<String, Meta>();
+
+    static {
+        try {
+            addMeta(ProjectConfig.class);
+//            addMeta(DataSource.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addMeta(Class<?> clazz) throws Exception {
+        Meta meta = toMeta(clazz);
+        metaMap.put(meta.getName(), meta);
+    }
+
     /**
-     * 将注解了MetaElement的类对象转换为元数据对象
+     * 获得元数据信息
      *
-     * @param metaObj 注解了MetaElement的类对象
+     * @param metaName 元数据名称
+     * @return 返回元数据信息
+     */
+    public static Meta getMeta(String metaName) {
+        return metaMap.get(metaName);
+    }
+
+    /**
+     * 获得元数据信息
+     *
+     * @param clazz 类信息
+     * @return 返回元数据信息
+     */
+    public static Meta getMeta(Class<?> clazz) {
+        return metaMap.get(clazz.getSimpleName());
+    }
+
+    /**
+     * 将注解了MetaElement的类转换为元数据对象
+     *
+     * @param clazz 注解了MetaElement的类对象
      * @return 返回类对象的元数据信息
      * @throws Exception 如果此类对象没有注解MetaElement，则抛出此异常
      * @since 1.0.0
      */
-    public static Meta toMeta(Object metaObj) throws Exception {
-        Class<?> clazz = metaObj.getClass();
+    public static Meta toMeta(Class<?> clazz) throws Exception {
         if (!clazz.isAnnotationPresent(MetaElement.class)) {
-            throw new Exception(String.format("不能将非MetaElement的对象【%s】转化为Meta对象！", metaObj.getClass().getName()));
+            throw new Exception(String.format("不能将非MetaElement的对象【%s】转化为Meta对象！", clazz.getName()));
         }
 
         MetaElement metaElement = clazz.getAnnotation(MetaElement.class);
@@ -55,11 +92,12 @@ public class MetaManager {
                 metaField.setDesc(metaFieldElement.desc());
                 metaField.setInputDate(new Date());
                 metaField.setSortNum(metaFieldElement.sortNum());
+                metaField.setDataType(metaFieldElement.dataType());
                 if (UString.isEmpty(metaFieldElement.defaultValue())) {
-                    Object obj = method.invoke(metaObj);
+                    /*Object obj = method.invoke(metaObj);
                     if (obj != null && ClassUtil.isPrimitive(obj.getClass())) {
                         metaField.setDefaultValue(obj.toString());
-                    }
+                    }*/
                 } else {
                     metaField.setDefaultValue(metaFieldElement.defaultValue());
                 }

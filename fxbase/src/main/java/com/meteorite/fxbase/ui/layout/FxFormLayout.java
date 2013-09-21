@@ -6,9 +6,12 @@ import com.meteorite.core.ui.ConfigConst;
 import com.meteorite.core.ui.IActionConfig;
 import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.core.ui.IViewConfig;
+import com.meteorite.core.ui.config.layout.FormConfig;
+import com.meteorite.core.ui.config.layout.FormFieldConfig;
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.fxbase.ui.IValue;
+import com.meteorite.fxbase.ui.component.FxDataSource;
 import com.meteorite.fxbase.ui.valuectl.VPasswordField;
 import com.meteorite.fxbase.ui.valuectl.VTextArea;
 import com.meteorite.fxbase.ui.valuectl.VTextField;
@@ -21,12 +24,14 @@ import javafx.scene.layout.*;
  * @author wei_jc
  * @version 1.0.0
  */
-public class FxFormLayout implements ConfigConst {
+public class FxFormLayout {
 //    private List<Action> actions;
     private IViewConfig viewConfig;
+    private FormConfig formConfig;
 
     public FxFormLayout(IViewConfig viewConfig) {
         this.viewConfig = viewConfig;
+        this.formConfig = new FormConfig(viewConfig.getLayoutConfig());
     }
 
     private void initUI() {
@@ -59,19 +64,18 @@ public class FxFormLayout implements ConfigConst {
     }
 
     public GridPane getCenter() {
-        ILayoutConfig form = viewConfig.getLayoutConfig();
         GridPane formGrid = new GridPane();
-        formGrid.setHgap(form.getPropIntValue(FORM_HGAP));
-        formGrid.setVgap(form.getPropIntValue(FORM_VGAP));
+        formGrid.setHgap(formConfig.getHgap());
+        formGrid.setVgap(formConfig.getVgap());
 
         Label label;
         Region labelGap;
-        IValue node;
+        Pane node;
         Region fieldGap;
         int idxRow = 0;
         int idxCol = 0;
-        for (ILayoutConfig field : form.getChildren()) {
-            if (!field.getPropBooleanValue(FORM_FIELD_IS_DISPLAY)) { // 不显示
+        for (FormFieldConfig field : formConfig.getFormFields()) {
+            if (!field.isDisplay()) { // 不显示
                 continue;
             }
 //            columnNameMap.put(field.getMetaField().getName().toLowerCase(), field);
@@ -79,66 +83,81 @@ public class FxFormLayout implements ConfigConst {
 
             node = getValueNode(field);
             // 单行
-            if (field.getPropBooleanValue(FORM_FIELD_IS_SINGLE_LINE)) {
+            if (field.isSingleLine()) {
                 idxRow++;
-                formGrid.add(new Label(field.getPropStringValue(FORM_FIELD_DISPLAY_NAME)), 0, idxRow);
+                formGrid.add(new Label(field.getDisplayName()), 0, idxRow);
                 labelGap = new Region();
-                labelGap.setPrefWidth(form.getPropIntValue(FORM_LABEL_GAP));
+                labelGap.setPrefWidth(formConfig.getLabelGap());
                 formGrid.add(labelGap, 1, idxRow);
 //                fieldNodeMap.put(field.getId(), node);
-                formGrid.add((Node)node, 2, idxRow, form.getPropIntValue(FORM_COL_COUNT) * 4 - 3, 1);
+                int prefWidth = formConfig.getColCount() * formConfig.getColWidth() + formConfig.getColCount() * formConfig.getLabelGap() + (formConfig.getColCount() - 1) * formConfig.getFieldGap()
+                        + formConfig.getColCount() * formConfig.getHgap();
+//                System.out.println(prefWidth);
+                System.out.println(formGrid.getPrefWidth());
+//                System.out.println(node.getPrefWidth());
+//                node.setPrefWidth(prefWidth);
+                GridPane.setHgrow(node, Priority.ALWAYS);
+                node.prefWidthProperty().bindBidirectional(formGrid.prefWidthProperty());
+                formGrid.add(node, 2, idxRow, formConfig.getColCount() * 4 - 2, 1);
                 idxCol = 0;
                 idxRow++;
 
                 continue;
             }
 
-            label = new Label(field.getPropStringValue(FORM_FIELD_DISPLAY_NAME));
+            label = new Label(field.getDisplayName());
             formGrid.add(label, idxCol++, idxRow);
 
             labelGap = new Region();
-            labelGap.setPrefWidth(form.getPropIntValue(FORM_LABEL_GAP));
+            labelGap.setPrefWidth(formConfig.getLabelGap());
             formGrid.add(labelGap, idxCol++, idxRow);
 
 //            fieldNodeMap.put(field.getId(), node);
-            formGrid.add((Node)node, idxCol++, idxRow);
+            formGrid.add(node, idxCol++, idxRow);
 
-            if (form.getPropIntValue(FORM_COL_COUNT) == 1) {
+            if (formConfig.getColCount() == 1) {
                 idxCol = 0;
                 idxRow++;
             } else {
-                if (idxCol == form.getPropIntValue(FORM_COL_COUNT) * 4 - 1) {
+                if (idxCol == formConfig.getColCount() * 4 - 1) {
                     idxCol = 0;
                     idxRow++;
                 } else {
                     fieldGap = new Region();
-                    fieldGap.setPrefWidth(form.getPropIntValue(FORM_FIELD_GAP));
+                    fieldGap.setPrefWidth(formConfig.getFieldGap());
                     formGrid.add(fieldGap, idxCol++, idxRow);
                 }
             }
         }
 
+        formGrid.layout();
+
         return formGrid;
     }
 
-    private IValue getValueNode(ILayoutConfig field) {
-        IValue node;
-        DisplayStyle displayStyle = DisplayStyle.getStyle(field.getPropStringValue(FORM_FIELD_DISPLAY_STYLE));
+    private Pane getValueNode(FormFieldConfig field) {
+        Pane node;
+        DisplayStyle displayStyle = field.getDisplayStyle();
         if (DisplayStyle.TEXT_AREA == displayStyle) {
             VTextArea textArea = new VTextArea();
-            textArea.setPrefHeight(field.getPropIntValue(FORM_FIELD_HEIGHT));
+            textArea.setPrefHeight(field.getHeight());
             node = textArea;
         } else if (DisplayStyle.PASSWORD == displayStyle) {
             VPasswordField passwordField = new VPasswordField();
-            passwordField.setPrefWidth(field.getPropIntValue(FORM_FIELD_WIDTH));
+            passwordField.setPrefWidth(field.getWidth());
             node = passwordField;
         } else if (DisplayStyle.COMBO_BOX == displayStyle) {
             /*VComboBox comboBox = new VComboBox(field.getMetaField().getDictCategory());
             comboBox.setPrefWidth(field.getWidth());
             node = comboBox;*/
             node = null;
+        } else if (DisplayStyle.DATA_SOURCE == displayStyle) {
+            FxDataSource dataSource = new FxDataSource();
+//            dataSource.setPrefWidth(field.getFormConfig().getColWidth() * 2);
+            node = dataSource;
+
         } else {
-            if (MetaDataType.DATE == field.getPropDataType(FORM_FIELD_DATA_TYPE)) {
+            if (MetaDataType.DATE == field.getDataType()) {
                 /*if ("0".equals(field.getForm().getFormType())) {
                     VDateRangeField dateField = new VDateRangeField();
                     dateField.setPrefWidth(field.getWidth() + 0.0);
@@ -151,7 +170,7 @@ public class FxFormLayout implements ConfigConst {
                 node = null;
             } else {
                 VTextField textField = new VTextField();
-                textField.setPrefWidth(field.getPropIntValue(FORM_FIELD_WIDTH));
+                textField.setPrefWidth(field.getWidth());
                 node = textField;
             }
         }
