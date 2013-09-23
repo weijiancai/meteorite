@@ -5,6 +5,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,5 +74,48 @@ public class JSoupParserTest {
                     ", sortNum=" + sortNum +
                     '}';
         }
+    }
+
+    @Test
+    public void testBaobiao() throws IOException {
+        PrintWriter pw = new PrintWriter("d:/超级贴身保镖.txt");
+//        for (int i = 12668679; i < 12707915; i++) {
+        for(String str : getZhang()) {
+//            String url = "http://www.23hh.com/book/43/43149/" + i + ".html";
+            String url = "http://www.23hh.com/book/43/43149/" + str;
+            JSoupParser parser = new JSoupParser(url);
+            Document doc = parser.parse();
+            String head = doc.select("div#amain dd > h1").get(0).text();
+            System.out.println(head);
+            pw.println(head);
+            String text = doc.select("dd#contents").get(0).html().replace("<br />", "\r\n").replace("&nbsp;", " ");
+//            System.out.println(text);
+//            System.out.println(doc.html());
+            pw.print(text);
+            pw.println("\r\n");
+            pw.flush();
+        }
+        pw.close();
+    }
+
+    public List<String> getZhang() throws IOException {
+        String url = "http://www.23hh.com/book/43/43149/";
+        JSoupParser parser = new JSoupParser(url);
+        Document doc = parser.parse();
+        Elements elements = doc.select("div.bdsub dd > table td a");
+        boolean flag = false;
+        List<String> list = new ArrayList<String>();
+        for (Element element : elements) {
+            String head = element.text();
+            String urlStr  = element.attr("href");
+            System.out.println(head + " --> " + urlStr);
+            if ("第一千零一十六章：两个人的战争".equals(head)) {
+                flag = true;
+            }
+            if (flag) {
+                list.add(urlStr);
+            }
+        }
+        return list;
     }
 }

@@ -8,7 +8,7 @@ import com.meteorite.core.ui.ILayoutConfig;
  * @author wei_jc
  * @since 1.0.0
  */
-public class BaseLayoutConfig implements ConfigConst {
+public abstract class BaseLayoutConfig<T> implements ConfigConst, Comparable<T> {
     protected ILayoutConfig config;
 
     public BaseLayoutConfig(ILayoutConfig config) {

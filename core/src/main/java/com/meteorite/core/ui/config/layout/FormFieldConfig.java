@@ -11,7 +11,7 @@ import com.meteorite.core.ui.ILayoutConfig;
  * @author wei_jc
  * @since 1.0.0
  */
-public class FormFieldConfig extends BaseLayoutConfig {
+public class FormFieldConfig extends BaseLayoutConfig<FormFieldConfig> {
     private MetaField metaField;
     private FormConfig formConfig;
 
@@ -125,5 +125,10 @@ public class FormFieldConfig extends BaseLayoutConfig {
 
     public void setMetaField(MetaField metaField) {
         this.metaField = metaField;
+    }
+
+    @Override
+    public int compareTo(FormFieldConfig o) {
+        return o.getSortNum() - this.getSortNum();
     }
 }
