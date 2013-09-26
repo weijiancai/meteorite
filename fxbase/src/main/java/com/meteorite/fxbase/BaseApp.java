@@ -34,13 +34,16 @@ import netscape.javascript.JSObject;
 public abstract class BaseApp extends Application {
     /** 是否APPLET运行方式 */
     public static boolean IS_APPLET;
+    private static BaseApp instance;
 
     private IFacade facade;
 
     protected static FxDesktop desktop;
     protected Scene scene;
+    private Stage stage;
 
     public BaseApp() {
+        instance = this;
         try {
             JSObject browser = getHostServices().getWebContext();
             IS_APPLET =  browser != null;
@@ -53,6 +56,7 @@ public abstract class BaseApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        this.stage = stage;
         final ProjectConfig projectConfig = facade.getProjectConfig();
         stage.setTitle(projectConfig.getDisplayName());
 
@@ -126,4 +130,22 @@ public abstract class BaseApp extends Application {
      * @return 返回Facade
      */
     protected abstract IFacade getFacade();
+
+    /**
+     * 获取BaseApp实例
+     *
+     * @return 返回BaseApp实例
+     */
+    public static BaseApp getInstance() {
+        return instance;
+    }
+
+    /**
+     * 获取JavaFx主Stage
+     *
+     * @return 返回JavaFx主Stage
+     */
+    public Stage getStage() {
+        return stage;
+    }
 }

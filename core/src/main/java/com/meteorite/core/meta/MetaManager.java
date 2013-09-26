@@ -26,7 +26,7 @@ public class MetaManager {
     static {
         try {
             addMeta(ProjectConfig.class);
-//            addMeta(DataSource.class);
+            addMeta(DataSource.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

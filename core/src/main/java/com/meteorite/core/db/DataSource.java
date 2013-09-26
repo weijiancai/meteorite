@@ -1,5 +1,8 @@
 package com.meteorite.core.db;
 
+import com.meteorite.core.meta.annotation.MetaElement;
+import com.meteorite.core.meta.annotation.MetaFieldElement;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -10,6 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType(propOrder = {"driverClass", "url", "username", "password", "dbVersion", "filePath"})
+@MetaElement(displayName = "数据源")
 public class DataSource {
     private String name;
     private String driverClass;
@@ -31,6 +35,7 @@ public class DataSource {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "名称")
     public String getName() {
         return name;
     }
@@ -39,6 +44,7 @@ public class DataSource {
         this.name = name;
     }
 
+    @MetaFieldElement(displayName = "驱动类")
     public String getDriverClass() {
         return driverClass;
     }
@@ -47,6 +53,7 @@ public class DataSource {
         this.driverClass = driverClass;
     }
 
+    @MetaFieldElement(displayName = "数据库URL")
     public String getUrl() {
         return url;
     }
@@ -55,6 +62,7 @@ public class DataSource {
         this.url = url;
     }
 
+    @MetaFieldElement(displayName = "用户名")
     public String getUsername() {
         return username;
     }
@@ -63,6 +71,7 @@ public class DataSource {
         this.username = username;
     }
 
+    @MetaFieldElement(displayName = "密码")
     public String getPassword() {
         return password;
     }
@@ -71,6 +80,7 @@ public class DataSource {
         this.password = password;
     }
 
+    @MetaFieldElement(displayName = "数据库文件路径")
     public String getFilePath() {
         return filePath;
     }
@@ -79,6 +89,7 @@ public class DataSource {
         this.filePath = filePath;
     }
 
+    @MetaFieldElement(displayName = "数据库版本")
     public String getDbVersion() {
         return dbVersion;
     }
