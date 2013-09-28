@@ -1,11 +1,18 @@
-package com.meteorite.fxbase.ui.valuectl;
+package com.meteorite.core.dict;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author weijiancai
+ * 数据字典代码
+ *
+ * @author wei_jc
+ * @since 1.0.0
  */
+@XmlRootElement
 public class DictCode implements Serializable {
     private String id;
     private String name;
@@ -16,6 +23,7 @@ public class DictCode implements Serializable {
 
     private DictCategory category;
 
+    @XmlAttribute
     public String getId() {
         return id;
     }
@@ -24,6 +32,7 @@ public class DictCode implements Serializable {
         this.id = id;
     }
 
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -32,6 +41,7 @@ public class DictCode implements Serializable {
         this.name = name;
     }
 
+    @XmlAttribute
     public String getValue() {
         return value;
     }
@@ -40,6 +50,7 @@ public class DictCode implements Serializable {
         this.value = value;
     }
 
+    @XmlAttribute
     public boolean isValid() {
         return isValid;
     }
@@ -48,6 +59,7 @@ public class DictCode implements Serializable {
         isValid = valid;
     }
 
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -56,6 +68,7 @@ public class DictCode implements Serializable {
         this.sortNum = sortNum;
     }
 
+    @XmlAttribute
     public Date getInputDate() {
         return inputDate;
     }
@@ -64,6 +77,7 @@ public class DictCode implements Serializable {
         this.inputDate = inputDate;
     }
 
+    @XmlTransient
     public DictCategory getCategory() {
         return category;
     }
@@ -74,6 +88,6 @@ public class DictCode implements Serializable {
 
     @Override
     public String toString() {
-        return name;
+        return value;
     }
 }

@@ -1,45 +1,64 @@
 package com.meteorite.core.meta;
 
+import com.meteorite.core.dict.annotation.DictElement;
+
 /**
  * 显示样式
  *
  * @author wei_jc
  * @since 1.0.0
  */
+@DictElement(categoryName = "显示样式")
 public enum DisplayStyle {
     /**
      * 0. 文本框
      */
-    TEXT_FIELD,
+    TEXT_FIELD("文本框"),
     /**
      * 1. 文本域
      */
-    TEXT_AREA,
+    TEXT_AREA("文本域"),
     /**
      * 2. 密码
      */
-    PASSWORD,
+    PASSWORD("密码"),
     /**
      * 3. 下拉框
      */
-    COMBO_BOX,
+    COMBO_BOX("下拉框"),
     /**
      * 4. 数据源
      */
-    DATA_SOURCE
+    DATA_SOURCE("数据源"),
+    /**
+     * 5. Boolean
+     */
+    BOOLEAN("是/否")
     ;
 
+    private String displayName;
+
+    private DisplayStyle(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
     public static DisplayStyle getStyle(String styleStr) {
-        if ("0".equals(styleStr)) {
+        if (TEXT_FIELD.name().equalsIgnoreCase(styleStr)) {
             return TEXT_FIELD;
-        } else if ("1".equals(styleStr)) {
+        } else if (TEXT_AREA.name().equalsIgnoreCase(styleStr)) {
             return TEXT_AREA;
-        } else if ("2".equals(styleStr)) {
+        } else if (PASSWORD.name().equalsIgnoreCase(styleStr)) {
             return PASSWORD;
-        } else if ("3".equals(styleStr)) {
+        } else if (COMBO_BOX.name().equalsIgnoreCase(styleStr)) {
             return COMBO_BOX;
-        } else if ("4".equals(styleStr)) {
+        } else if (DATA_SOURCE.name().equalsIgnoreCase(styleStr)) {
             return DATA_SOURCE;
+        } else if (BOOLEAN.name().equalsIgnoreCase(styleStr)) {
+            return BOOLEAN;
         }
 
         return TEXT_FIELD;

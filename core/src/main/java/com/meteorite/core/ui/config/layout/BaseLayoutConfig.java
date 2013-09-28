@@ -30,4 +30,8 @@ public abstract class BaseLayoutConfig<T> implements ConfigConst, Comparable<T> 
     public void setValue(String propName, String propValue) {
         config.setPropValue(propName, propValue);
     }
+
+    public ILayoutConfig getLayoutConfig() {
+        return config;
+    }
 }

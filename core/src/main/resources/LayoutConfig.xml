@@ -30,11 +30,14 @@
                     <Properties>
                         <Property id="0" name="name" displayName="名称" sortNum="0"/>
                         <Property id="0" name="displayName" displayName="显示名" sortNum="0"/>
-                        <Property id="0" name="isSingleLine" displayName="独行" defaultValue="false" sortNum="0"/>
-                        <Property id="0" name="isDisplay" displayName="显示" defaultValue="true" sortNum="0"/>
+                        <Property id="0" name="isSingleLine" displayName="独行" defaultValue="false" dataType="BOOLEAN" sortNum="0"/>
+                        <Property id="0" name="isDisplay" displayName="显示" defaultValue="true" dataType="BOOLEAN" sortNum="0"/>
                         <Property id="0" name="width" displayName="宽" defaultValue="180" sortNum="0"/>
                         <Property id="0" name="height" displayName="高" sortNum="0"/>
-                        <Property id="0" name="displayStyle" displayName="显示风格" defaultValue="0" sortNum="0"/>
+                        <Property id="0" name="displayStyle" displayName="显示风格" defaultValue="TEXT_FIELD" dataType="DICT" dictId="com.meteorite.core.meta.DisplayStyle" sortNum="0"/>
+                        <Property id="0" name="dataType" displayName="数据类型" defaultValue="STRING" dataType="DICT" dictId="com.meteorite.core.meta.MetaDataType" sortNum="0"/>
+                        <Property id="0" name="dictId" displayName="数据字典" defaultValue="ROOT" dataType="DICT" dictId="ROOT" sortNum="0"/>
+                        <Property id="0" name="value" displayName="数据值" defaultValue="" sortNum="0"/>
                         <Property id="0" name="sortNum" displayName="排序号" sortNum="0"/>
                     </Properties>
                     <children/>

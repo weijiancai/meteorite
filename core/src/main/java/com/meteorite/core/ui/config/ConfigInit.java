@@ -15,7 +15,7 @@ public class ConfigInit {
     public static IViewConfig getProjectConfig() {
         IViewConfig viewConfig = ViewConfigFactory.createFormConfig(MetaManager.getMeta(ProjectConfig.class));
         FormConfig formConfig = new FormConfig(viewConfig.getLayoutConfig());
-        formConfig.setColCount(2);
+        formConfig.setColCount(1);
         return viewConfig;
     }
 }

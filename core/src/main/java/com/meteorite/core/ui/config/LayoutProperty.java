@@ -31,6 +31,8 @@ public class LayoutProperty implements ILayoutProperty {
     private String value;
     /** 数据类型 */
     private MetaDataType dataType;
+    /** 数据字典ID */
+    private String dictId;
     /** 排序号*/
     private int sortNum;
 
@@ -57,6 +59,10 @@ public class LayoutProperty implements ILayoutProperty {
 
     public void setDataType(MetaDataType dataType) {
         this.dataType = dataType;
+    }
+
+    public void setDictId(String dictId) {
+        this.dictId = dictId;
     }
 
     public void setDefaultValue(String defaultValue) {
@@ -118,6 +124,12 @@ public class LayoutProperty implements ILayoutProperty {
     @XmlAttribute
     public MetaDataType getDataType() {
         return dataType;
+    }
+
+    @Override
+    @XmlAttribute
+    public String getDictId() {
+        return dictId;
     }
 
     @Override

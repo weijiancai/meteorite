@@ -27,6 +27,8 @@ public interface ConfigConst {
     String FORM_FIELD_WIDTH = "width";
     String FORM_FIELD_HEIGHT = "height";
     String FORM_FIELD_DISPLAY_STYLE = "displayStyle";
+    String FORM_FIELD_DICT_ID = "dictId"; // 数据字典ID
     String FORM_FIELD_DATA_TYPE = "dataType";
     String FORM_FIELD_SORT_NUM = "sortNum";
+    String FORM_FIELD_VALUE = "value";  // 字段值
 }

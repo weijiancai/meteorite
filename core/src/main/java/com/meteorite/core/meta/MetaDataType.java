@@ -1,69 +1,100 @@
 package com.meteorite.core.meta;
 
+import com.meteorite.core.dict.annotation.DictElement;
+
 /**
  * 元数据数据类型枚举
  *
  * @author wei_jc
  * @version 1.0.0
  */
+@DictElement(categoryName = "数据类型")
 public enum MetaDataType {
     /**
      * 0. 字符串
      */
-    STRING,
+    STRING("字符串"),
     /**
      * 1. 整数
      */
-    INTEGER,
+    INTEGER("整数"),
     /**
      * 2. 小数
      */
-    DOUBLE,
+    DOUBLE("小数"),
     /**
      * 3. 数字类型（包括整数和小数）
      */
-    NUMBER,
+    NUMBER("数字"),
     /**
      * 4. 日期类型
      */
-    DATE,
+    DATE("日期"),
     /**
      * 5. EMAIL
      */
-    EMAIL,
+    EMAIL("邮件"),
     /**
      * 6. IP
      */
-    IP,
+    IP("IP"),
     /**
      * 7. URL
      */
-    URL,
+    URL("URL"),
     /**
      * 8. DATA_SOURCE
      */
-    DATA_SOURCE
+    DATA_SOURCE("数据源"),
+    /**
+     * 9. 密码
+     */
+    PASSWORD("密码"),
+    /**
+     * 10. 数据字典
+     */
+    DICT("数据字典"),
+    /**
+     * 11.
+     */
+    BOOLEAN("是/否")
     ;
 
+    private String displayName;
+
+    private MetaDataType(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
     public static MetaDataType getDataType(String dataTypeStr) {
-        if ("0".equals(dataTypeStr)) {
+        if (STRING.name().equalsIgnoreCase(dataTypeStr)) {
             return STRING;
-        } else if ("1".equals(dataTypeStr)) {
+        } else if (INTEGER.name().equalsIgnoreCase(dataTypeStr)) {
             return INTEGER;
-        } else if ("2".equals(dataTypeStr)) {
+        } else if (DOUBLE.name().equalsIgnoreCase(dataTypeStr)) {
             return DOUBLE;
-        } else if ("3".equals(dataTypeStr)) {
+        } else if (NUMBER.name().equalsIgnoreCase(dataTypeStr)) {
             return NUMBER;
-        } else if ("4".equals(dataTypeStr)) {
+        } else if (DATE.name().equalsIgnoreCase(dataTypeStr)) {
             return DATE;
-        } else if ("5".equals(dataTypeStr)) {
+        } else if (EMAIL.name().equalsIgnoreCase(dataTypeStr)) {
             return EMAIL;
-        } else if ("6".equals(dataTypeStr)) {
+        } else if (IP.name().equalsIgnoreCase(dataTypeStr)) {
             return IP;
-        } else if ("7".equals(dataTypeStr)) {
+        } else if (URL.name().equalsIgnoreCase(dataTypeStr)) {
             return URL;
-        } else if ("8".equals(dataTypeStr)) {
+        } else if (DATA_SOURCE.name().equalsIgnoreCase(dataTypeStr)) {
             return DATA_SOURCE;
+        } else if (PASSWORD.name().equalsIgnoreCase(dataTypeStr)) {
+            return PASSWORD;
+        } else if (BOOLEAN.name().equalsIgnoreCase(dataTypeStr)) {
+            return BOOLEAN;
+        } else if (DICT.name().equalsIgnoreCase(dataTypeStr)) {
+            return DICT;
         }
 
         return STRING;

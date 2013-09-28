@@ -8,7 +8,6 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaForm;
 import com.meteorite.core.meta.model.MetaFormField;
-import com.meteorite.core.util.ClassUtil;
 import com.meteorite.core.util.UString;
 
 import java.lang.reflect.Method;
@@ -93,9 +92,10 @@ public class MetaManager {
                 metaField.setInputDate(new Date());
                 metaField.setSortNum(metaFieldElement.sortNum());
                 metaField.setDataType(metaFieldElement.dataType());
+                metaField.setDictId(metaFieldElement.dictId());
                 if (UString.isEmpty(metaFieldElement.defaultValue())) {
                     /*Object obj = method.invoke(metaObj);
-                    if (obj != null && ClassUtil.isPrimitive(obj.getClass())) {
+                    if (obj != null && UClass.isPrimitive(obj.getClass())) {
                         metaField.setDefaultValue(obj.toString());
                     }*/
                 } else {

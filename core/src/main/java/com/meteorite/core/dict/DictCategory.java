@@ -1,21 +1,31 @@
-package com.meteorite.fxbase.ui.valuectl;
+package com.meteorite.core.dict;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
- * @author weijiancai
+ * 数据字典分类
+ *
+ * @author wei_jc
+ * @since 1.0.0
  */
+@XmlRootElement
 public class DictCategory implements Serializable {
     private String id;
     private String name;
     private boolean isValid;
+    private boolean isSystem;
     private int sortNum;
     private Date inputDate;
 
     private List<DictCode> codeList;
 
+    @XmlAttribute
     public String getId() {
         return id;
     }
@@ -24,6 +34,7 @@ public class DictCategory implements Serializable {
         this.id = id;
     }
 
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -32,6 +43,7 @@ public class DictCategory implements Serializable {
         this.name = name;
     }
 
+    @XmlAttribute
     public boolean isValid() {
         return isValid;
     }
@@ -40,6 +52,16 @@ public class DictCategory implements Serializable {
         isValid = valid;
     }
 
+    @XmlAttribute
+    public boolean isSystem() {
+        return isSystem;
+    }
+
+    public void setSystem(boolean system) {
+        isSystem = system;
+    }
+
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -48,6 +70,7 @@ public class DictCategory implements Serializable {
         this.sortNum = sortNum;
     }
 
+    @XmlAttribute
     public Date getInputDate() {
         return inputDate;
     }
@@ -56,6 +79,8 @@ public class DictCategory implements Serializable {
         this.inputDate = inputDate;
     }
 
+    @XmlElementWrapper(name = "codes")
+    @XmlElement(name = "DictCode")
     public List<DictCode> getCodeList() {
         return codeList;
     }
@@ -76,14 +101,12 @@ public class DictCategory implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("DictCategory");
-        sb.append("{id='").append(id).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", isValid=").append(isValid);
-        sb.append(", sortNum=").append(sortNum);
-        sb.append(", inputDate=").append(inputDate);
-        sb.append('}');
-        return sb.toString();
+        return "DictCategory{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", isSystem=" + isSystem +
+                ", sortNum=" + sortNum +
+                ", codeList=" + codeList +
+                '}';
     }
 }

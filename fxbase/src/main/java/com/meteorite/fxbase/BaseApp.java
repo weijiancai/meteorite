@@ -13,6 +13,7 @@ import com.meteorite.fxbase.ui.Dialogs;
 import com.meteorite.fxbase.ui.FxDesktop;
 import com.meteorite.fxbase.ui.calendar.FXCalendar;
 import com.meteorite.fxbase.ui.dialog.DialogOptions;
+import com.meteorite.fxbase.ui.view.FxView;
 import com.meteorite.fxbase.ui.view.FxViewFactory;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -75,7 +76,8 @@ public abstract class BaseApp extends Application {
 
         // 检查是否配置了项目
         if (!SystemManager.isConfigured(projectConfig)) {
-            IView<Pane> projectConfigView = FxViewFactory.getView(ConfigInit.getProjectConfig());
+//            IView<Pane> projectConfigView = FxViewFactory.getView(ConfigInit.getProjectConfig());
+            IView<Pane> projectConfigView = new FxView(ConfigInit.getProjectConfig());
             Dialogs.showCustomDialog(stage, projectConfigView.layout(), "masthead", "项目信息配置", DialogOptions.OK, new Callback<Void, Void>() {
                 @Override
                 public Void call(Void aVoid) {

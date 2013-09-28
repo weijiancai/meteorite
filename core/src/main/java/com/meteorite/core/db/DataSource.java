@@ -1,5 +1,6 @@
 package com.meteorite.core.db;
 
+import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 
@@ -12,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0.0
  */
 @XmlRootElement
-@XmlType(propOrder = {"driverClass", "url", "username", "password", "dbVersion", "filePath"})
+@XmlType(propOrder = {"databaseType", "driverClass", "url", "username", "password", "dbVersion", "filePath"})
 @MetaElement(displayName = "数据源")
 public class DataSource {
     private String name;
@@ -22,6 +23,7 @@ public class DataSource {
     private String password;
     private String filePath; // 数据库文件路径
     private String dbVersion; // 数据库版本
+    private DatabaseType databaseType; // 数据库类型
 
     public DataSource() {}
 
@@ -32,6 +34,16 @@ public class DataSource {
         this.username = username;
         this.password = password;
         this.dbVersion = dbVersion;
+    }
+
+    @XmlAttribute
+    @MetaFieldElement(displayName = "数据库类型", dataType = MetaDataType.DICT, dictId = "com.meteorite.core.db.DatabaseType")
+    public DatabaseType getDatabaseType() {
+        return databaseType;
+    }
+
+    public void setDatabaseType(DatabaseType databaseType) {
+        this.databaseType = databaseType;
     }
 
     @XmlAttribute
@@ -71,7 +83,7 @@ public class DataSource {
         this.username = username;
     }
 
-    @MetaFieldElement(displayName = "密码")
+    @MetaFieldElement(displayName = "密码", dataType = MetaDataType.PASSWORD)
     public String getPassword() {
         return password;
     }

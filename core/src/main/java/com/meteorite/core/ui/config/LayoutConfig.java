@@ -29,6 +29,8 @@ public class LayoutConfig implements ILayoutConfig {
     private String displayName;
     /** 描述 */
     private String desc;
+    /** 是否设计视图 */
+    private boolean isDesign;
     /** 排序号*/
     private int sortNum;
 
@@ -127,7 +129,7 @@ public class LayoutConfig implements ILayoutConfig {
     @XmlElementWrapper(name = "children")
     public List<ILayoutConfig> getChildren() {
         if (children == null) {
-            children = new ArrayList<ILayoutConfig>();
+            children = new ArrayList<>();
         }
         return children;
     }
@@ -137,7 +139,7 @@ public class LayoutConfig implements ILayoutConfig {
     @XmlElementWrapper(name = "Actions")
     public List<IActionConfig> getActionConfigs() {
         if (actionConfigs == null) {
-            actionConfigs = new ArrayList<IActionConfig>();
+            actionConfigs = new ArrayList<>();
         }
         return actionConfigs;
     }
@@ -147,7 +149,7 @@ public class LayoutConfig implements ILayoutConfig {
     @XmlElementWrapper(name = "Properties")
     public List<ILayoutProperty> getProperties() {
         if (properties == null) {
-            properties = new ArrayList<ILayoutProperty>();
+            properties = new ArrayList<>();
         }
         return properties;
     }
@@ -160,7 +162,7 @@ public class LayoutConfig implements ILayoutConfig {
             }
         }
 
-        return null;
+        throw new RuntimeException(String.format("布局【%s】没有找到属性【%s】", getName(), propName));
     }
 
     @Override

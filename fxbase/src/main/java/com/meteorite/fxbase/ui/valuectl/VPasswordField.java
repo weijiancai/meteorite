@@ -1,8 +1,13 @@
 package com.meteorite.fxbase.ui.valuectl;
 
+import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.fxbase.ui.IValue;
+import com.meteorite.fxbase.ui.event.FxLayoutEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 /**
  * @author weijiancai
@@ -11,9 +16,19 @@ import javafx.scene.layout.HBox;
 public class VPasswordField extends HBox implements IValue {
     private PasswordField passwordField;
 
-    public VPasswordField() {
+    public VPasswordField(final ILayoutConfig layoutConfig, boolean isDesign) {
         passwordField = new PasswordField();
         this.getChildren().add(passwordField);
+        HBox.setHgrow(passwordField, Priority.ALWAYS);
+
+        if (isDesign) {
+            passwordField.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    passwordField.fireEvent(new FxLayoutEvent(layoutConfig));
+                }
+            });
+        }
     }
 
     @Override

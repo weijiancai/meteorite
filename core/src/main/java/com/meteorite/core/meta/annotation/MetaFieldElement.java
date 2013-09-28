@@ -59,6 +59,13 @@ public @interface MetaFieldElement {
     MetaDataType dataType() default MetaDataType.STRING;
 
     /**
+     * 数据字典ID
+     *
+     * @return 返回数据字典ID
+     */
+    String dictId() default "";
+
+    /**
      * 排序号
      *
      * @return 返回排序号

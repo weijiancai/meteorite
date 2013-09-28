@@ -9,9 +9,9 @@ import static com.meteorite.core.ui.ConfigConst.LAYOUT_FORM;
  * @version 1.0.0
  */
 public class FxLayoutFactory {
-    public static Pane create(IViewConfig viewConfig) {
+    public static Pane create(IViewConfig viewConfig, boolean isDesign) {
         if (LAYOUT_FORM.equals(viewConfig.getLayoutConfig().getName())) {
-            return new FxFormLayout(viewConfig).layout();
+            return new FxFormLayout(viewConfig, isDesign).layout();
         }
 
         return null;

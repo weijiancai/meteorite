@@ -12,9 +12,12 @@ import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.FxDataSource;
+import com.meteorite.fxbase.ui.component.FxFormPane;
 import com.meteorite.fxbase.ui.valuectl.VPasswordField;
 import com.meteorite.fxbase.ui.valuectl.VTextArea;
 import com.meteorite.fxbase.ui.valuectl.VTextField;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,9 +31,11 @@ public class FxFormLayout {
 //    private List<Action> actions;
     private IViewConfig viewConfig;
     private FormConfig formConfig;
+    private boolean isDesign;
 
-    public FxFormLayout(IViewConfig viewConfig) {
+    public FxFormLayout(IViewConfig viewConfig, boolean isDesign) {
         this.viewConfig = viewConfig;
+        this.isDesign = isDesign;
         this.formConfig = new FormConfig(viewConfig.getLayoutConfig());
     }
 
@@ -45,7 +50,8 @@ public class FxFormLayout {
     public BorderPane layout() {
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(getTop());
-        borderPane.setCenter(getCenter());
+//        borderPane.setCenter(getCenter());
+        borderPane.setCenter(new FxFormPane(formConfig, isDesign));
         return borderPane;
     }
 
@@ -93,12 +99,12 @@ public class FxFormLayout {
                 int prefWidth = formConfig.getColCount() * formConfig.getColWidth() + formConfig.getColCount() * formConfig.getLabelGap() + (formConfig.getColCount() - 1) * formConfig.getFieldGap()
                         + formConfig.getColCount() * formConfig.getHgap();
 //                System.out.println(prefWidth);
-                System.out.println(formGrid.getPrefWidth());
 //                System.out.println(node.getPrefWidth());
 //                node.setPrefWidth(prefWidth);
-                GridPane.setHgrow(node, Priority.ALWAYS);
-                node.prefWidthProperty().bindBidirectional(formGrid.prefWidthProperty());
                 formGrid.add(node, 2, idxRow, formConfig.getColCount() * 4 - 2, 1);
+                System.out.println(formGrid.getPrefWidth());
+                GridPane.setHgrow(node, Priority.ALWAYS);
+//                node.prefWidthProperty().bindBidirectional(formGrid.prefWidthProperty());
                 idxCol = 0;
                 idxRow++;
 
@@ -130,7 +136,12 @@ public class FxFormLayout {
             }
         }
 
-        formGrid.layout();
+        /*for (int i = 0; i < formConfig.getColCount() * 4; i++) {
+            if (i % 4 == 0) {
+                ColumnConstraints column = new ColumnConstraints(100);
+                formGrid.getColumnConstraints().add(column);
+            }
+        }*/
 
         return formGrid;
     }
@@ -139,11 +150,11 @@ public class FxFormLayout {
         Pane node;
         DisplayStyle displayStyle = field.getDisplayStyle();
         if (DisplayStyle.TEXT_AREA == displayStyle) {
-            VTextArea textArea = new VTextArea();
+            VTextArea textArea = new VTextArea(field.getLayoutConfig(), false);
             textArea.setPrefHeight(field.getHeight());
             node = textArea;
         } else if (DisplayStyle.PASSWORD == displayStyle) {
-            VPasswordField passwordField = new VPasswordField();
+            VPasswordField passwordField = new VPasswordField(field.getLayoutConfig(), false);
             passwordField.setPrefWidth(field.getWidth());
             node = passwordField;
         } else if (DisplayStyle.COMBO_BOX == displayStyle) {
@@ -152,7 +163,7 @@ public class FxFormLayout {
             node = comboBox;*/
             node = null;
         } else if (DisplayStyle.DATA_SOURCE == displayStyle) {
-            FxDataSource dataSource = new FxDataSource();
+            FxDataSource dataSource = new FxDataSource(field.getLayoutConfig(), false);
 //            dataSource.setPrefWidth(field.getFormConfig().getColWidth() * 2);
             node = dataSource;
 
@@ -169,7 +180,7 @@ public class FxFormLayout {
                 }*/
                 node = null;
             } else {
-                VTextField textField = new VTextField();
+                VTextField textField = new VTextField(field.getLayoutConfig(), false);
                 textField.setPrefWidth(field.getWidth());
                 node = textField;
             }

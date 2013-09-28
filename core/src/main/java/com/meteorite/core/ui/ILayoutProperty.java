@@ -57,6 +57,13 @@ public interface ILayoutProperty extends Cloneable {
     MetaDataType getDataType();
 
     /**
+     * 获得数据字典ID
+     *
+     * @return 返回数据字典ID
+     */
+    String getDictId();
+
+    /**
      * 获得属性排序号
      *
      * @return 返回属性排序号

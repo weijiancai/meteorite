@@ -1,11 +1,14 @@
 package com.meteorite.core.db;
 
+import com.meteorite.core.dict.annotation.DictElement;
+
 /**
  * 数据库类型
  *
  * @author wei_jc
  * @since 1.0.0
  */
+@DictElement(categoryName = "数据库类型")
 public enum DatabaseType {
     ORACLE("ORACLE", "Oracle"),
     MYSQL("MYSQL", "MySQL"),

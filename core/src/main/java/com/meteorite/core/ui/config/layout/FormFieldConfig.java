@@ -1,9 +1,12 @@
 package com.meteorite.core.ui.config.layout;
 
+import com.meteorite.core.dict.DictCategory;
+import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ILayoutConfig;
+import com.meteorite.core.util.UString;
 
 /**
  * 表单字段配置信息
@@ -44,6 +47,15 @@ public class FormFieldConfig extends BaseLayoutConfig<FormFieldConfig> {
         setValue(FORM_FIELD_IS_DISPLAY, isDisplay() + "");
     }
 
+    public DictCategory getDict() {
+        String dictId = getStringValue(FORM_FIELD_DICT_ID);
+        if (UString.isNotEmpty(dictId)) {
+            return DictManager.getDict(dictId);
+        }
+
+        return null;
+    }
+
     /*@XmlAttribute
     public boolean isValid() {
         return isValid;
@@ -54,7 +66,8 @@ public class FormFieldConfig extends BaseLayoutConfig<FormFieldConfig> {
     }*/
 
     public int getWidth() {
-        return getIntValue(FORM_FIELD_WIDTH);
+        int width = getIntValue(FORM_FIELD_WIDTH);
+        return width == 0 ? getFormConfig().getColWidth() : width;
     }
 
     public void setWidth(int width) {
@@ -102,6 +115,14 @@ public class FormFieldConfig extends BaseLayoutConfig<FormFieldConfig> {
         setValue(FORM_FIELD_DATA_TYPE, dataType.ordinal() + "");
     }
 
+    public String getValue() {
+        return getStringValue(FORM_FIELD_VALUE);
+    }
+
+    public void setValue(String value) {
+        setValue(FORM_FIELD_VALUE, value);
+    }
+
     /*@XmlTransient
     public MetaForm getForm() {
         return form;
@@ -129,6 +150,11 @@ public class FormFieldConfig extends BaseLayoutConfig<FormFieldConfig> {
 
     @Override
     public int compareTo(FormFieldConfig o) {
-        return o.getSortNum() - this.getSortNum();
+        return this.getSortNum() - o.getSortNum();
+    }
+
+    @Override
+    public String toString() {
+        return getDisplayName();
     }
 }

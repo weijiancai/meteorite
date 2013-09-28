@@ -1,7 +1,11 @@
 package com.meteorite.fxbase.ui.valuectl;
 
+import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.fxbase.ui.IValue;
+import com.meteorite.fxbase.ui.event.FxLayoutEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 /**
@@ -11,9 +15,18 @@ import javafx.scene.layout.HBox;
 public class VTextArea extends HBox implements IValue {
     private TextArea textArea;
 
-    public VTextArea() {
+    public VTextArea(final ILayoutConfig layoutConfig, boolean isDesign) {
         textArea = new TextArea();
         this.getChildren().add(textArea);
+
+        if (isDesign) {
+            textArea.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    textArea.fireEvent(new FxLayoutEvent(layoutConfig));
+                }
+            });
+        }
     }
 
     @Override
