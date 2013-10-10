@@ -4,24 +4,23 @@ import com.meteorite.core.db.DataSource;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.core.ui.IView;
-import com.meteorite.core.ui.IViewConfig;
 import com.meteorite.core.ui.config.ViewConfigFactory;
+import com.meteorite.core.ui.config.layout.FormFieldConfig;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.ui.Dialogs;
-import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.dialog.DialogOptions;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
-import com.meteorite.fxbase.ui.view.FxFormView;
+import com.meteorite.fxbase.ui.view.FxFormField;
+import com.meteorite.fxbase.ui.view.FxPane;
 import com.meteorite.fxbase.ui.view.FxViewFactory;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -30,7 +29,8 @@ import javafx.scene.layout.Priority;
  * @author wei_jc
  * @version 1.0.0
  */
-public class FxDataSource extends HBox implements IValue {
+public class FxDataSource extends FxFormField {
+    private HBox hbox;
     private TextField textField;
     private Button settingButton;
     private Button testButton;
@@ -39,7 +39,9 @@ public class FxDataSource extends HBox implements IValue {
 
     private DataSource dataSource;
 
-    public FxDataSource(final ILayoutConfig layoutConfig, boolean isDesign) {
+    public FxDataSource(FormFieldConfig fieldConfig) {
+        super(fieldConfig);
+        hbox = new HBox();
         textField = new TextField();
         textField.setEditable(false);
         settingButton = new Button("设置");
@@ -52,44 +54,64 @@ public class FxDataSource extends HBox implements IValue {
         testHyperlink.setOnAction(new TestAction());
 
 //        this.getChildren().addAll(textField, settingButton, testButton);
-        this.getChildren().addAll(textField, settingHyperlink, testHyperlink);
-        textField.prefWidthProperty().bind(this.prefWidthProperty().subtract(60));
+        hbox.getChildren().addAll(textField, settingHyperlink, testHyperlink);
+        textField.prefWidthProperty().bind(hbox.prefWidthProperty().subtract(60));
         HBox.setHgrow(textField, Priority.ALWAYS);
 
-        if (isDesign) {
+        /*if (isDesign) {
             textField.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     textField.fireEvent(new FxLayoutEvent(layoutConfig));
                 }
             });
+        }*/
+        if(fieldConfig.getFormConfig().getColCount() == 1) {
+            hbox.setMaxWidth(fieldConfig.getFormConfig().getColWidth());
         }
     }
 
     @Override
-    public String[] values() {
-        return new String[0];
+    public Node getNode() {
+        return hbox;
     }
 
     @Override
-    public String value() {
-        return textField.getText();
+    public void setValue(String... values) {
+        textField.setText(values[0]);
     }
 
     @Override
-    public void setValue(String[] value) {
+    public String getValue() {
+        return textField.getText().trim();
     }
 
     @Override
-    public void setValue(String value) {
-        textField.setText(value);
+    public String[] getValues() {
+        return new String[]{getValue()};
     }
+
+    @Override
+    public StringProperty textProperty() {
+        return textField.textProperty();
+    }
+
+    @Override
+    public void registLayoutEvent() {
+        textField.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                textField.fireEvent(new FxLayoutEvent<>(fieldConfig.getLayoutConfig(), this));
+            }
+        });
+    }
+
 
     public class SettingAction implements EventHandler<ActionEvent> {
 
         @Override
         public void handle(ActionEvent actionEvent) {
-            IView<Pane> view = FxViewFactory.getView(ViewConfigFactory.createFormConfig(MetaManager.getMeta(DataSource.class)));
+            IView<FxPane> view = FxViewFactory.getView(ViewConfigFactory.createFormConfig(MetaManager.getMeta(DataSource.class)));
             Dialogs.showCustomDialog(BaseApp.getInstance().getStage(),view.layout(), null, "数据源配置", DialogOptions.OK, null);
         }
     }

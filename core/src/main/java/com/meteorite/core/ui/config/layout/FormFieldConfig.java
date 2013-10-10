@@ -7,6 +7,8 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.core.util.UString;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * 表单字段配置信息
@@ -17,10 +19,19 @@ import com.meteorite.core.util.UString;
 public class FormFieldConfig extends BaseLayoutConfig<FormFieldConfig> {
     private MetaField metaField;
     private FormConfig formConfig;
+    private StringProperty valueProperty = new SimpleStringProperty();
 
     public FormFieldConfig(FormConfig formConfig, ILayoutConfig config) {
         super(config);
         this.formConfig = formConfig;
+    }
+
+    public String getName() {
+        return getStringValue(FORM_FIELD_NAME);
+    }
+
+    public void setName(String name) {
+        setValue(FORM_FIELD_NAME, name);
     }
 
     public String getDisplayName() {
@@ -121,6 +132,11 @@ public class FormFieldConfig extends BaseLayoutConfig<FormFieldConfig> {
 
     public void setValue(String value) {
         setValue(FORM_FIELD_VALUE, value);
+        valueProperty.set(value);
+    }
+
+    public StringProperty valueProperty() {
+        return valueProperty;
     }
 
     /*@XmlTransient

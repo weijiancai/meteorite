@@ -2,22 +2,21 @@ package com.meteorite.fxbase.ui.component;
 
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.ui.IActionConfig;
 import com.meteorite.core.ui.ILayoutConfig;
+import com.meteorite.core.ui.IViewConfig;
 import com.meteorite.core.ui.config.layout.FormConfig;
 import com.meteorite.core.ui.config.layout.FormFieldConfig;
+import com.meteorite.fxbase.ui.IFormField;
+import com.meteorite.fxbase.ui.config.FxFormConfig;
+import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
-import com.meteorite.fxbase.ui.valuectl.VComboBox;
-import com.meteorite.fxbase.ui.valuectl.VPasswordField;
-import com.meteorite.fxbase.ui.valuectl.VTextArea;
-import com.meteorite.fxbase.ui.valuectl.VTextField;
+import com.meteorite.fxbase.ui.view.FxPane;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,50 +27,69 @@ import java.util.List;
  * @author wei_jc
  * @since 1.0.0
  */
-public class FxFormPane extends GridPane {
-    private FormConfig formConfig;
-    private boolean isDesign;
+public class FxFormPane extends FxPane {
+    protected FxFormConfig formConfig;
+    protected List<IFormField> formFieldList;
 
-    public FxFormPane(FormConfig formConfig, boolean isDesign) {
-        this.formConfig = formConfig;
-        this.isDesign = isDesign;
-        init();
-//        this.setGridLinesVisible(true);
+    public FxFormPane(ILayoutConfig layoutConfig, boolean isShowTop) {
+        super(layoutConfig, isShowTop);
     }
 
-    public void init() {
-        this.setHgap(formConfig.getHgap());
-        this.setVgap(formConfig.getVgap());
+    public FxFormPane(ILayoutConfig layoutConfig) {
+        this(layoutConfig, true);
+    }
+
+    public HBox createTop() {
+        HBox box = new HBox(10);
+        box.setPrefHeight(30);
+        Region region = new Region();
+        box.getChildren().add(region);
+        HBox.setHgrow(region, Priority.ALWAYS);
+        for (IActionConfig action : layoutConfig.getActionConfigs()) {
+            Button button = new Button(action.getDisplayName());
+            button.setId(action.getName());
+            box.getChildren().add(button);
+        }
+        return box;
+    }
+
+    public GridPane createCenter() {
+        this.formConfig = new FxFormConfig(layoutConfig);
+        formFieldList = new ArrayList<>();
+
+        GridPane gridPane = new GridPane();
+//        gridPane.setGridLinesVisible(true);
+        gridPane.setHgap(formConfig.getHgap());
+        gridPane.setVgap(formConfig.getVgap());
 
         Label label;
         Region labelGap;
-        Node node;
+        IFormField formField;
         Region fieldGap;
         int idxRow = 0;
         int idxCol = 0;
 
-        for (FormFieldConfig field : formConfig.getFormFields()) {
+        for (FxFormFieldConfig field : formConfig.getFxFormFields()) {
             if (!field.isDisplay()) { // 不显示
                 continue;
             }
-//            columnNameMap.put(field.getMetaField().getName().toLowerCase(), field);
-//            fieldMap.put(field.getId(), field);
 
-            node = getValueNode(field);
+            formField = getFormField(field);
+            formFieldList.add(formField);
             // 单行
             if (field.isSingleLine()) {
                 idxRow++;
                 label = new Label(field.getDisplayName());
-                this.add(label, 0, idxRow);
+                gridPane.add(label, 0, idxRow);
 
                 labelGap = new Region();
                 labelGap.setPrefWidth(formConfig.getLabelGap());
-                this.add(labelGap, 1, idxRow);
+                gridPane.add(labelGap, 1, idxRow);
 
-//                fieldNodeMap.put(field.getId(), node);
-                this.add(node, 2, idxRow, formConfig.getColCount() * 4 - 2, 1);
+                formField.setLabel(label);
+                gridPane.add(formField.getNode(), 2, idxRow, formConfig.getColCount() * 4 - 2, 1);
 
-                GridPane.setHgrow(node, Priority.ALWAYS);
+                GridPane.setHgrow(formField.getNode(), Priority.ALWAYS);
                 idxCol = 0;
                 idxRow++;
 
@@ -79,14 +97,14 @@ public class FxFormPane extends GridPane {
             }
 
             label = new Label(field.getDisplayName());
-            this.add(label, idxCol++, idxRow);
+            gridPane.add(label, idxCol++, idxRow);
 
             labelGap = new Region();
             labelGap.setPrefWidth(formConfig.getLabelGap());
-            this.add(labelGap, idxCol++, idxRow);
+            gridPane.add(labelGap, idxCol++, idxRow);
 
-//            fieldNodeMap.put(field.getId(), node);
-            this.add(node, idxCol++, idxRow);
+            formField.setLabel(label);
+            gridPane.add(formField.getNode(), idxCol++, idxRow);
 
             if (formConfig.getColCount() == 1) { // 单列
                 idxCol = 0;
@@ -98,34 +116,25 @@ public class FxFormPane extends GridPane {
                 } else {
                     fieldGap = new Region();
                     fieldGap.setPrefWidth(formConfig.getFieldGap());
-                    this.add(fieldGap, idxCol++, idxRow);
+                    gridPane.add(fieldGap, idxCol++, idxRow);
                 }
             }
         }
+
+        return gridPane;
     }
 
-    private Node getValueNode(FormFieldConfig field) {
-        Node node;
+    private IFormField getFormField(FxFormFieldConfig field) {
+        IFormField node;
         DisplayStyle displayStyle = field.getDisplayStyle();
         if (DisplayStyle.TEXT_AREA == displayStyle) {
-            VTextArea textArea = new VTextArea(field.getLayoutConfig(), false);
-            textArea.setPrefHeight(field.getHeight());
-            node = textArea;
+            return new FxTextArea(field);
         } else if (DisplayStyle.PASSWORD == displayStyle) {
-            VPasswordField passwordField = new VPasswordField(field.getLayoutConfig(), false);
-            passwordField.setPrefWidth(field.getWidth());
-            node = passwordField;
+            return new FxPasswordField(field);
         } else if (DisplayStyle.COMBO_BOX == displayStyle || DisplayStyle.BOOLEAN == displayStyle) {
-            VComboBox comboBox = new VComboBox(field.getDict(), field.getLayoutConfig(), false);
-            comboBox.setPrefWidth(field.getWidth());
-            comboBox.setValue(field.getValue());
-            node = comboBox;
+            return new FxComboBox(field);
         } else if (DisplayStyle.DATA_SOURCE == displayStyle) {
-            FxDataSource dataSource = new FxDataSource(field.getLayoutConfig(), isDesign);
-            if(formConfig.getColCount() == 1) {
-                dataSource.setMaxWidth(formConfig.getColWidth());
-            }
-            node = dataSource;
+            return new FxDataSource(field);
         } else {
             if (MetaDataType.DATE == field.getDataType()) {
                 /*if ("0".equals(field.getForm().getFormType())) {
@@ -139,12 +148,16 @@ public class FxFormPane extends GridPane {
                 }*/
                 node = null;
             } else {
-                VTextField textField = new VTextField(field.getLayoutConfig(), isDesign);
-                textField.setPrefWidth(field.getWidth());
-                textField.setValue(field.getValue());
-                node = textField;
+                return new FxTextField(field);
             }
         }
         return node;
+    }
+
+    @Override
+    public void registLayoutEvent() {
+        for (IFormField field : formFieldList) {
+            field.registLayoutEvent();
+        }
     }
 }

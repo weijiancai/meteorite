@@ -1,5 +1,6 @@
 package com.meteorite.core.parser.http;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -18,5 +19,9 @@ public class JSoupParser {
 
     public Document parse() throws IOException {
         return Jsoup.connect(url).get();
+    }
+
+    public Connection connect() {
+        return Jsoup.connect(url);
     }
 }

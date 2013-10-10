@@ -20,7 +20,7 @@ import javafx.scene.layout.Pane;
 public class FxViewDesigner extends BorderPane {
     private IViewConfig viewConfig;
     private FxView view;
-    private Pane pane;
+    private FxPane pane;
 
     public FxViewDesigner(IViewConfig config) {
         this.viewConfig = config;
@@ -35,9 +35,10 @@ public class FxViewDesigner extends BorderPane {
         pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                pane.fireEvent(new FxLayoutEvent(viewConfig.getLayoutConfig()));
+                pane.fireEvent(new FxLayoutEvent<>(viewConfig.getLayoutConfig(), pane));
             }
         });
+        pane.registLayoutEvent();
 
 
         this.setPrefWidth(1000);
@@ -57,7 +58,7 @@ public class FxViewDesigner extends BorderPane {
 
     public void setBottom(ILayoutConfig layoutConfig) {
         ILayoutConfig config = LayoutConfigManager.createFormLayout(layoutConfig);
-        setBottom(new FxFormPane(new FormConfig(config), false));
+        setBottom(new FxFormPane(config, false));
     }
 
 }

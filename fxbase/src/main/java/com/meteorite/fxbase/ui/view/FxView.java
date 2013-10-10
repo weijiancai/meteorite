@@ -15,12 +15,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 /**
+ * JavaFx 视图
+ *
  * @author wei_jc
  * @since 1.0.0
  */
-public class FxView implements IView<Pane> {
+public class FxView implements IView<FxPane> {
     protected IViewConfig viewConfig;
-    protected Pane pane;
+    protected FxPane pane;
     protected boolean isDesign; // 是否设计模式
     protected ContextMenu contextMenu = new ContextMenu();
 
@@ -66,7 +68,7 @@ public class FxView implements IView<Pane> {
     }
 
     @Override
-    public Pane layout() {
+    public FxPane layout() {
         return pane;
     }
 }

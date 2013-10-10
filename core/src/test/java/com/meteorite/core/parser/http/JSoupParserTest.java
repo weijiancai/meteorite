@@ -1,5 +1,6 @@
 package com.meteorite.core.parser.http;
 
+import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -117,5 +118,15 @@ public class JSoupParserTest {
             }
         }
         return list;
+    }
+
+    @Test
+    public void testConnect() throws IOException {
+        String url = "http://www.capub.cn/pdm";
+        JSoupParser parser = new JSoupParser(url);
+        Connection conn = parser.connect().userAgent("Mozilla/5.0 (Windows NT 6.1; rv:23.0) Gecko/20100101 Firefox/23.0");
+        Document doc = conn.get();
+        System.out.println(conn.response().cookies());
+        System.out.println(doc.html());
     }
 }
