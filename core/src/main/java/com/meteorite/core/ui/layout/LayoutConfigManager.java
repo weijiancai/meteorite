@@ -95,7 +95,7 @@ public class LayoutConfigManager {
      */
     public static ILayoutConfig createFormLayout(ILayoutConfig layoutConfig) {
         ILayoutConfig form = getLayout(R.layout.FORM);
-        form.setPropValue(FORM_NAME, layoutConfig.getName() + "Form");
+        form.setPropValue(FORM_NAME, LAYOUT_FORM);
         form.setPropValue(FORM_DISPLAY_NAME, layoutConfig.getDisplayName() + "表单");
 
         List<ILayoutConfig> children = new ArrayList<>();

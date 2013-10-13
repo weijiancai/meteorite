@@ -1,9 +1,8 @@
 package com.meteorite.core.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * @author wei_jc
@@ -60,5 +59,17 @@ public class UtilFile {
             file.createNewFile();
         }
         return file;
+    }
+
+    public static void createFile(File file, URL url) throws IOException {
+        URLConnection conn = url.openConnection();
+        InputStream is = conn.getInputStream();
+        FileOutputStream os = new FileOutputStream(file);
+        int i;
+        while ((i = is.read()) != -1) {
+            os.write(i);
+        }
+        os.close();
+        is.close();
     }
 }

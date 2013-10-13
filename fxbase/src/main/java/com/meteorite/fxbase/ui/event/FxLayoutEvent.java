@@ -10,12 +10,12 @@ import javafx.event.EventType;
  * @author wei_jc
  * @since 1.0.0
  */
-public class FxLayoutEvent<T> extends Event {
+public class FxLayoutEvent extends Event {
     public static EventType<FxLayoutEvent> EVENT_TYPE = new EventType<>("LAYOUT_EVENT_TYPE");
     private ILayoutConfig layoutConfig;
-    private T source;
+    private Object source;
 
-    public FxLayoutEvent(ILayoutConfig layoutConfig, T source) {
+    public FxLayoutEvent(ILayoutConfig layoutConfig, Object source) {
         super(EVENT_TYPE);
         this.layoutConfig = layoutConfig;
         this.source = source;
@@ -25,7 +25,7 @@ public class FxLayoutEvent<T> extends Event {
         return layoutConfig;
     }
 
-    public T getSource() {
+    public Object getLayoutSource() {
         return source;
     }
 }

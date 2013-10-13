@@ -1,5 +1,7 @@
 package com.meteorite.fxbase.ui;
 
+import com.meteorite.fxbase.ui.event.FxLayoutEvent;
+
 /**
  * 面板接口
  *
@@ -11,6 +13,14 @@ public interface IPane {
      * 注册布局事件
      */
     void registLayoutEvent();
+
+    /**
+     * 注册布局配置改变事件
+     *
+     * @param layoutEvent 布局事件
+     */
+    void registLayoutConfigChangeEvent(FxLayoutEvent layoutEvent);
+
 
     /**
      * 是否显示Top

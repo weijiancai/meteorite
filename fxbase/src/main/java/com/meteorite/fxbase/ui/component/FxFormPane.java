@@ -2,20 +2,20 @@ package com.meteorite.fxbase.ui.component;
 
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.ui.ConfigConst;
 import com.meteorite.core.ui.IActionConfig;
 import com.meteorite.core.ui.ILayoutConfig;
-import com.meteorite.core.ui.IViewConfig;
-import com.meteorite.core.ui.config.layout.FormConfig;
-import com.meteorite.core.ui.config.layout.FormFieldConfig;
+import com.meteorite.core.util.UNumber;
+import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IFormField;
 import com.meteorite.fxbase.ui.config.FxFormConfig;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxPane;
-import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
@@ -158,6 +158,43 @@ public class FxFormPane extends FxPane {
     public void registLayoutEvent() {
         for (IFormField field : formFieldList) {
             field.registLayoutEvent();
+        }
+    }
+
+    @Override
+    public void registLayoutConfigChangeEvent(FxLayoutEvent layoutEvent) {
+        if (layoutEvent.getLayoutSource() instanceof FxFormPane) {
+            FxFormPane formPane = (FxFormPane) layoutEvent.getLayoutSource();
+        } else if(layoutEvent.getLayoutSource() instanceof IFormField) {
+            final IFormField formField = (IFormField) layoutEvent.getLayoutSource();
+            for (final IFormField field : formFieldList) {
+                field.textProperty().addListener(new ChangeListener<String>() {
+                    @Override
+                    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                        if (ConfigConst.FORM_FIELD_NAME.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setName(newValue);
+                        } else if (ConfigConst.FORM_FIELD_DISPLAY_NAME.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setDisplayName(newValue);
+                        } else if (ConfigConst.FORM_FIELD_WIDTH.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setWidth(UNumber.toInt(newValue));
+                        } else if (ConfigConst.FORM_FIELD_HEIGHT.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setHeight(UNumber.toInt(newValue));
+                        } else if (ConfigConst.FORM_FIELD_IS_DISPLAY.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setDisplay(UString.toBoolean(newValue));
+                        } else if (ConfigConst.FORM_FIELD_IS_SINGLE_LINE.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setSingleLine(UString.toBoolean(newValue));
+                        } else if (ConfigConst.FORM_FIELD_DISPLAY_STYLE.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setDisplayStyle(DisplayStyle.getStyle(newValue));
+                        } else if (ConfigConst.FORM_FIELD_DATA_TYPE.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setDataType(MetaDataType.getDataType(newValue));
+                        } else if (ConfigConst.FORM_FIELD_DICT_ID.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setDict(newValue);
+                        } else if (ConfigConst.FORM_FIELD_SORT_NUM.equals(field.getFormFieldConfig().getName())) {
+                            formField.getFormFieldConfig().setSortNum(UNumber.toInt(newValue));
+                        }
+                    }
+                });
+            }
         }
     }
 }

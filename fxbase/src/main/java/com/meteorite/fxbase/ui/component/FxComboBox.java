@@ -5,9 +5,11 @@ import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.ui.config.layout.FormFieldConfig;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.ui.Dialogs;
+import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
 import com.meteorite.fxbase.ui.dialog.DialogOptions;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,7 +31,7 @@ public class FxComboBox extends FxFormField {
     private DictCategory category;
     private ComboBox<DictCode> comboBox;
 
-    public FxComboBox(FormFieldConfig fieldConfig) {
+    public FxComboBox(FxFormFieldConfig fieldConfig) {
         super(fieldConfig);
 
         comboBox = new ComboBox<>();
@@ -94,12 +96,22 @@ public class FxComboBox extends FxFormField {
     }
 
     @Override
+    public DoubleProperty widthProperty() {
+        return comboBox.prefWidthProperty();
+    }
+
+    @Override
+    public DoubleProperty heightProperty() {
+        return comboBox.prefHeightProperty();
+    }
+
+    @Override
     public void registLayoutEvent() {
         comboBox.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (newValue) {
-                    comboBox.fireEvent(new FxLayoutEvent<>(fieldConfig.getLayoutConfig(), this));
+                    comboBox.fireEvent(new FxLayoutEvent(fieldConfig.getLayoutConfig(), FxComboBox.this));
                 }
             }
         });

@@ -1,6 +1,9 @@
 package com.meteorite.fxbase.ui;
 
+import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.ui.config.layout.FormFieldConfig;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -18,6 +21,13 @@ public interface IFormField {
      * @param label Label
      */
     void setLabel(Label label);
+
+    /**
+     * 设置显示风格
+     *
+     * @param displayStyle 显示风格
+     */
+    void setDisplayStyle(DisplayStyle displayStyle);
 
     /**
      * 获得Label
@@ -60,6 +70,20 @@ public interface IFormField {
      * @return 返回Field Text属性
      */
     StringProperty textProperty();
+
+    /**
+     * Field Width属性
+     *
+     * @return 返回Field Width属性
+     */
+    DoubleProperty widthProperty();
+
+    /**
+     * Field Height属性
+     *
+     * @return 返回Field Height属性
+     */
+    DoubleProperty heightProperty();
 
     /**
      * 获得表单字段配置信息

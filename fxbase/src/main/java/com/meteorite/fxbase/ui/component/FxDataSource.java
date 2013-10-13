@@ -8,11 +8,13 @@ import com.meteorite.core.ui.config.ViewConfigFactory;
 import com.meteorite.core.ui.config.layout.FormFieldConfig;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.ui.Dialogs;
+import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
 import com.meteorite.fxbase.ui.dialog.DialogOptions;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
 import com.meteorite.fxbase.ui.view.FxPane;
 import com.meteorite.fxbase.ui.view.FxViewFactory;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -39,7 +41,7 @@ public class FxDataSource extends FxFormField {
 
     private DataSource dataSource;
 
-    public FxDataSource(FormFieldConfig fieldConfig) {
+    public FxDataSource(FxFormFieldConfig fieldConfig) {
         super(fieldConfig);
         hbox = new HBox();
         textField = new TextField();
@@ -97,11 +99,21 @@ public class FxDataSource extends FxFormField {
     }
 
     @Override
+    public DoubleProperty widthProperty() {
+        return hbox.prefWidthProperty();
+    }
+
+    @Override
+    public DoubleProperty heightProperty() {
+        return hbox.prefHeightProperty();
+    }
+
+    @Override
     public void registLayoutEvent() {
         textField.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                textField.fireEvent(new FxLayoutEvent<>(fieldConfig.getLayoutConfig(), this));
+                textField.fireEvent(new FxLayoutEvent(fieldConfig.getLayoutConfig(), FxDataSource.this));
             }
         });
     }

@@ -67,6 +67,10 @@ public class FormFieldConfig extends BaseLayoutConfig<FormFieldConfig> {
         return null;
     }
 
+    public void setDict(String dictId) {
+        setValue(FORM_FIELD_DICT_ID, dictId);
+    }
+
     /*@XmlAttribute
     public boolean isValid() {
         return isValid;

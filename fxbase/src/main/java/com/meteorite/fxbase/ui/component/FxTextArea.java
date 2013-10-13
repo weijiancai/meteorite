@@ -1,9 +1,9 @@
 package com.meteorite.fxbase.ui.component;
 
-import com.meteorite.core.ui.ILayoutConfig;
-import com.meteorite.core.ui.config.layout.FormFieldConfig;
+import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -19,7 +19,7 @@ import javafx.scene.input.MouseEvent;
 public class FxTextArea extends FxFormField {
     private TextArea textArea;
 
-    public FxTextArea(FormFieldConfig fieldConfig) {
+    public FxTextArea(FxFormFieldConfig fieldConfig) {
         super(fieldConfig);
 
         textArea = new TextArea();
@@ -52,11 +52,21 @@ public class FxTextArea extends FxFormField {
     }
 
     @Override
+    public DoubleProperty widthProperty() {
+        return textArea.prefWidthProperty();
+    }
+
+    @Override
+    public DoubleProperty heightProperty() {
+        return textArea.prefHeightProperty();
+    }
+
+    @Override
     public void registLayoutEvent() {
         textArea.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                textArea.fireEvent(new FxLayoutEvent<>(fieldConfig.getLayoutConfig(), this));
+                textArea.fireEvent(new FxLayoutEvent(fieldConfig.getLayoutConfig(), FxTextArea.this));
             }
         });
     }

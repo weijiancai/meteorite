@@ -1,9 +1,9 @@
 package com.meteorite.fxbase.ui.component;
 
-import com.meteorite.core.ui.ILayoutConfig;
-import com.meteorite.core.ui.config.layout.FormFieldConfig;
+import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -19,7 +19,7 @@ import javafx.scene.input.MouseEvent;
 public class FxPasswordField extends FxFormField {
     private PasswordField passwordField;
 
-    public FxPasswordField(FormFieldConfig fieldConfig) {
+    public FxPasswordField(FxFormFieldConfig fieldConfig) {
         super(fieldConfig);
 
         passwordField = new PasswordField();
@@ -52,11 +52,21 @@ public class FxPasswordField extends FxFormField {
     }
 
     @Override
+    public DoubleProperty widthProperty() {
+        return passwordField.prefWidthProperty();
+    }
+
+    @Override
+    public DoubleProperty heightProperty() {
+        return passwordField.prefHeightProperty();
+    }
+
+    @Override
     public void registLayoutEvent() {
         passwordField.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                passwordField.fireEvent(new FxLayoutEvent<>(fieldConfig.getLayoutConfig(), this));
+                passwordField.fireEvent(new FxLayoutEvent(fieldConfig.getLayoutConfig(), FxPasswordField.this));
             }
         });
     }

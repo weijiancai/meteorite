@@ -8,6 +8,10 @@ package com.meteorite.core.util;
  */
 public class UNumber {
     public static int toInt(String str) {
-        return UString.isEmpty(str) ? 0 : Integer.parseInt(str);
+        try {
+            return UString.isEmpty(str) ? 0 : Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

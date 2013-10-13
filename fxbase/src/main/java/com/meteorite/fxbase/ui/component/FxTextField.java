@@ -1,15 +1,17 @@
 package com.meteorite.fxbase.ui.component;
 
-import com.meteorite.core.ui.config.layout.FormFieldConfig;
-import com.meteorite.fxbase.ui.IFormField;
+import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
@@ -21,21 +23,19 @@ import javafx.scene.input.MouseEvent;
  */
 public class FxTextField extends FxFormField {
     private TextField textField;
+    private FxFormFieldConfig fieldConfig;
 
     public FxTextField(final FxFormFieldConfig fieldConfig) {
         super(fieldConfig);
+        this.fieldConfig = fieldConfig;
 
         textField = new TextField();
         textField.setPrefWidth(fieldConfig.getWidth());
         textField.setText(fieldConfig.getValue());
-//        textField.textProperty().bindBidirectional(fieldConfig.);
-//        getLabel().textProperty().bindBidirectional(fieldConfig.displayNameProperty());
-        textField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
-                fieldConfig.setDisplayName(newValue);
-            }
-        });
+    }
+
+    @Override
+    public void setDisplayStyle(DisplayStyle displayStyle) {
     }
 
     @Override
@@ -64,11 +64,21 @@ public class FxTextField extends FxFormField {
     }
 
     @Override
+    public DoubleProperty widthProperty() {
+        return textField.prefWidthProperty();
+    }
+
+    @Override
+    public DoubleProperty heightProperty() {
+        return textField.prefHeightProperty();
+    }
+
+    @Override
     public void registLayoutEvent() {
         textField.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                textField.fireEvent(new FxLayoutEvent<>(fieldConfig.getLayoutConfig(), this));
+                textField.fireEvent(new FxLayoutEvent(fieldConfig.getLayoutConfig(), FxTextField.this));
             }
         });
     }
