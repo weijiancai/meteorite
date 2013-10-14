@@ -55,21 +55,32 @@ public class UtilFile {
      */
     public static File createFile(File parentDir, String fileName) throws IOException {
         File file = new File(parentDir, fileName);
-        if (!file.exists()) {
-            file.createNewFile();
+        try {
+            if(!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (Exception e) {
+            throw new IOException(file.getAbsolutePath(), e);
         }
         return file;
     }
 
     public static void createFile(File file, URL url) throws IOException {
-        URLConnection conn = url.openConnection();
-        InputStream is = conn.getInputStream();
-        FileOutputStream os = new FileOutputStream(file);
-        int i;
-        while ((i = is.read()) != -1) {
-            os.write(i);
+        try {
+            URLConnection conn = url.openConnection();
+            InputStream is = conn.getInputStream();
+            FileOutputStream os = new FileOutputStream(file);
+            int i;
+            while ((i = is.read()) != -1) {
+                os.write(i);
+            }
+            os.close();
+            is.close();
+        } catch (IOException e) {
+
         }
-        os.close();
-        is.close();
     }
 }

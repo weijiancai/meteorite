@@ -1,5 +1,6 @@
 package com.meteorite.core.parser.http;
 
+import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UtilFile;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -7,11 +8,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
 
 /**
  * @author wei_jc
@@ -20,12 +20,13 @@ import java.net.HttpURLConnection;
 public class FetchWebSite {
     private String baseUrl;
     private File baseDir;
+    private File errorFile;
+    private PrintWriter pw;
 
-    public FetchWebSite(String baseUrl, File saveToDir) throws IOException {
-        this.baseUrl = baseUrl;
+    public FetchWebSite(File saveToDir) throws IOException {
         this.baseDir = saveToDir;
-
-        fetch(baseUrl);
+        errorFile = UtilFile.createFile(baseDir, "error.txt");
+        pw = new PrintWriter(errorFile);
     }
 
     public static void main(String[] args) throws IOException {
@@ -74,25 +75,172 @@ public class FetchWebSite {
         LINK, MEDIA, IMPORT
     }
 
-    private void fetch(String url) throws IOException {
-        if (!url.startsWith(baseUrl)) {
-            return;
+    private Set<String> urlList = new HashSet<>();
+    private Set<String> pathList = new HashSet<>();
+    private Set<String> excludeList = new HashSet<>();
+    private static final int MAX_LEVEL = 1;
+
+    public void addExcludeUrl(String url) {
+        excludeList.add(url);
+    }
+
+    public void fetch(String url, int level) throws IOException {
+
+        if(baseUrl == null) {
+            baseUrl = url;
         }
-        System.out.println("Fetch URL: " + url);
+
+        System.out.println("Fetch URL: " + url + "    " + level);
+
+        HttpURLConnection httpConn = (HttpURLConnection) new URL(url).openConnection();
+        Map<String, List<String>> headerMap = httpConn.getHeaderFields();
+//        System.out.println(headerMap);
+
         String path = url.substring(baseUrl.length());
-
-        Connection conn = Jsoup.connect(url);
-        Document doc = conn.get();
-        // 保存当前文档
-
-        File file;
+        String parentDir = "";
+        File file = null;
         if (url.equals(baseUrl)) {
             file = UtilFile.createFile(baseDir, "index.html");
         } else {
-            file = UtilFile.createFile(baseDir, path);
+            if (path.contains("?")) {
+                path = path.substring(0, path.indexOf("?"));
+            } else if(path.endsWith("#")) {
+                path = path.substring(0, path.lastIndexOf("#"));
+            } else if (path.endsWith("/")) {
+                path = path + "index.html";
+            }
         }
 
-        path = path.toLowerCase();
+        /*if (pathList.contains(path)) {
+            return;
+        } else {
+            pathList.add(path);
+        }*/
+
+        if (file == null) {
+            if (UString.isEmpty(path)) {
+                return;
+            }
+            file = new File(baseDir, path);
+            if (file.exists()) {
+                return;
+            }
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+        }
+        if (path.contains("/")) {
+            File tmpFile = file;
+            while(!tmpFile.getAbsolutePath().equals(baseDir.getAbsolutePath())) {
+                parentDir += "../";
+                tmpFile = tmpFile.getParentFile();
+            }
+            parentDir = parentDir.substring(3);
+        }
+
+        List<String> contentTypeList = headerMap.get("Content-Type");
+        if (contentTypeList != null && contentTypeList.size() > 0) {
+            String str = contentTypeList.get(0);
+            String contentType = "";
+            String charset = "UTF-8";
+            if(str.contains(";")) {
+                contentType = str.substring(0, str.indexOf(";"));
+                int charsetIdx = str.indexOf("=") ;
+                if(charsetIdx != -1) {
+                    charset = str.substring(charsetIdx + 1).trim();
+                }
+            }
+
+            if (contentType.contains("text/html")) {
+                if(level > MAX_LEVEL) {
+                    return;
+                }
+
+                Document doc = Jsoup.parse(httpConn.getInputStream(), charset, baseUrl);
+                Document.OutputSettings settings = new Document.OutputSettings();
+                settings.indentAmount(4);
+                doc.outputSettings(settings.prettyPrint(true));
+
+                Elements links = doc.select("a[href]");
+                Elements media = doc.select("[src]");
+                Elements imports = doc.select("link[href]");
+                Set<String> hrefList = new HashSet<>();
+
+                for (Element src : media) {
+                    String href = src.attr("abs:src");
+                    hrefList.add(href);
+                    if (src.attr("src").startsWith("/")) {
+                        src.attr("src", parentDir + src.attr("src").substring(1));
+                    }
+                }
+
+                for (Element link : imports) {
+                    String href = link.attr("abs:href");
+                    hrefList.add(href);
+                    if (link.attr("href").startsWith("/")) {
+                        link.attr("href", parentDir + link.attr("href").substring(1));
+                    }
+                }
+
+                for (Element link : links) {
+                    String href = link.attr("abs:href");
+                    hrefList.add(href);
+                    if (link.attr("href").startsWith("/")) {
+                        link.attr("href", parentDir + link.attr("href").substring(1));
+                    }
+                    if (href.endsWith("/")) {
+                        link.attr("href", parentDir + link.attr("href") + "index.html");
+                    }
+                }
+
+                try {
+                    PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), charset));
+                    pw.write(doc.html());
+                    pw.flush();
+                    pw.close();
+                } catch (Exception e) {
+                    pw.println(url);
+                    pw.flush();
+                    System.out.println(e.getMessage());
+                }
+
+                Set<String> result = new HashSet<>();
+                for (String href : hrefList) {
+                    boolean flag = false;
+
+                    for (String exclude : excludeList) {
+                        if (href.startsWith(exclude)) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag && !urlList.contains(href) && href.startsWith(baseUrl)) {
+                        result.add(href);
+                        urlList.add(href);
+                    }
+                }
+
+                for (String href : result) {
+                    fetch(href, level + 1);
+                }
+            } else {
+                try {
+                    InputStream is = httpConn.getInputStream();
+                    FileOutputStream fos = new FileOutputStream(file);
+                    int i;
+                    while ((i = is.read()) != -1) {
+                        fos.write(i);
+                    }
+                    fos.close();
+                } catch (Exception e) {
+                    pw.println(url);
+                    pw.flush();
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+
+        /*path = path.toLowerCase();
         if(path.endsWith(".jpg") || path.endsWith(".jpeg") || path.endsWith(".gif") || path.endsWith(".png")) {
             byte[] bytes = conn.response().bodyAsBytes();
             FileOutputStream fos = new FileOutputStream(file);
@@ -104,22 +252,10 @@ public class FetchWebSite {
             pw.flush();
             pw.close();
         }
-        /*if (!file.getParentFile().exists()) {
-            file.getParentFile()
-        }*/
 
 
         Elements links = doc.select("a[href]");
         Elements media = doc.select("[src]");
-        Elements imports = doc.select("link[href]");
-
-        for (Element src : media) {
-            if (src.tagName().equals("img")) {
-
-            } else {
-
-            }
-            fetch(src.attr("abs:src"));
-        }
+        Elements imports = doc.select("link[href]");*/
     }
 }

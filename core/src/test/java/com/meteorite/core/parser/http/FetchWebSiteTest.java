@@ -14,6 +14,8 @@ public class FetchWebSiteTest {
     public void testFetchWebSite() throws IOException {
         String baseUrl = "http://www.0731hunjia.com/";
         File dir = new File("D:\\fetch\\0731hunjia");
-        new FetchWebSite(baseUrl, dir);
+        FetchWebSite fetchWebSite = new FetchWebSite(dir);
+        fetchWebSite.addExcludeUrl("http://www.0731hunjia.com/bbs");
+        fetchWebSite.fetch(baseUrl, 0);
     }
 }
