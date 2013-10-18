@@ -85,16 +85,22 @@ public class FetchWebSite {
     }
 
     public void fetch(String url, int level) throws IOException {
-
         if(baseUrl == null) {
             baseUrl = url;
         }
 
         System.out.println("Fetch URL: " + url + "    " + level);
 
-        HttpURLConnection httpConn = (HttpURLConnection) new URL(url).openConnection();
+        HttpURLConnection httpConn;
+        try {
+            httpConn = (HttpURLConnection) new URL(url).openConnection();
+        } catch (Exception e) {
+            pw.println(url);
+            pw.flush();
+            System.out.println(e.getMessage());
+            return;
+        }
         Map<String, List<String>> headerMap = httpConn.getHeaderFields();
-//        System.out.println(headerMap);
 
         String path = url.substring(baseUrl.length());
         String parentDir = "";
@@ -110,12 +116,6 @@ public class FetchWebSite {
                 path = path + "index.html";
             }
         }
-
-        /*if (pathList.contains(path)) {
-            return;
-        } else {
-            pathList.add(path);
-        }*/
 
         if (file == null) {
             if (UString.isEmpty(path)) {
@@ -152,9 +152,9 @@ public class FetchWebSite {
             }
 
             if (contentType.contains("text/html")) {
-                if(level > MAX_LEVEL) {
+                /*if(level > MAX_LEVEL) {
                     return;
-                }
+                }*/
 
                 Document doc = Jsoup.parse(httpConn.getInputStream(), charset, baseUrl);
                 Document.OutputSettings settings = new Document.OutputSettings();
@@ -166,20 +166,22 @@ public class FetchWebSite {
                 Elements imports = doc.select("link[href]");
                 Set<String> hrefList = new HashSet<>();
 
-                for (Element src : media) {
-                    String href = src.attr("abs:src");
-                    hrefList.add(href);
-                    if (src.attr("src").startsWith("/")) {
-                        src.attr("src", parentDir + src.attr("src").substring(1));
-                    }
-                }
-
                 for (Element link : imports) {
                     String href = link.attr("abs:href");
-                    hrefList.add(href);
+//                    hrefList.add(href);
                     if (link.attr("href").startsWith("/")) {
                         link.attr("href", parentDir + link.attr("href").substring(1));
                     }
+                    fetch(href, level + 1);
+                }
+
+                for (Element src : media) {
+                    String href = src.attr("abs:src");
+//                    hrefList.add(href);
+                    if (src.attr("src").startsWith("/")) {
+                        src.attr("src", parentDir + src.attr("src").substring(1));
+                    }
+                    fetch(href, level + 1);
                 }
 
                 for (Element link : links) {

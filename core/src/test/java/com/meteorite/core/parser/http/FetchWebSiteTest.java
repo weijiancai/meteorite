@@ -18,4 +18,12 @@ public class FetchWebSiteTest {
         fetchWebSite.addExcludeUrl("http://www.0731hunjia.com/bbs");
         fetchWebSite.fetch(baseUrl, 0);
     }
+
+    @Test
+    public void testFetchNCargo() throws IOException {
+        String baseUrl = "http://cargo2.ce-air.com/MU/";
+        File dir = new File("D:\\fetch\\ncargo");
+        FetchWebSite fetchWebSite = new FetchWebSite(dir);
+        fetchWebSite.fetch(baseUrl, 0);
+    }
 }
