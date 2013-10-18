@@ -1,6 +1,7 @@
 package com.meteorite.fxbase.ui.component;
 
 import com.meteorite.core.db.DataSource;
+import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.core.ui.IView;
@@ -71,6 +72,10 @@ public class FxDataSource extends FxFormField {
         if(fieldConfig.getFormConfig().getColCount() == 1) {
             hbox.setMaxWidth(fieldConfig.getFormConfig().getColWidth());
         }
+    }
+
+    @Override
+    public void setDisplayStyle(DisplayStyle displayStyle) {
     }
 
     @Override

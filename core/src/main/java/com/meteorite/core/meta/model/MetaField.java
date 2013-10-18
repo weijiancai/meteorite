@@ -1,6 +1,8 @@
 package com.meteorite.core.meta.model;
 
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.meta.annotation.MetaElement;
+import com.meteorite.core.meta.annotation.MetaFieldElement;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,6 +18,7 @@ import java.util.Date;
  */
 @XmlRootElement
 @XmlType(propOrder = {"id", "name", "displayName", "dataType", "defaultValue", "dictId", "valid", "sortNum", "inputDate", "desc"})
+@MetaElement(displayName = "元数据字段")
 public class MetaField {
     private long id;
     private String name;
@@ -31,6 +34,7 @@ public class MetaField {
     private Meta meta;
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "ID", dataType = MetaDataType.NUMBER)
     public long getId() {
         return id;
     }
@@ -40,6 +44,7 @@ public class MetaField {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "名称")
     public String getName() {
         return name;
     }
@@ -49,6 +54,7 @@ public class MetaField {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "显示名", sortNum = -1)
     public String getDisplayName() {
         return displayName;
     }
@@ -58,6 +64,7 @@ public class MetaField {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "数据字典")
     public String getDictId() {
         return dictId;
     }
@@ -67,6 +74,7 @@ public class MetaField {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "数据类型")
     public MetaDataType getDataType() {
         return dataType;
     }
@@ -76,6 +84,7 @@ public class MetaField {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "描述")
     public String getDesc() {
         return desc;
     }
@@ -85,6 +94,7 @@ public class MetaField {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "默认值")
     public String getDefaultValue() {
         return defaultValue;
     }
@@ -94,6 +104,7 @@ public class MetaField {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "是否有效")
     public boolean isValid() {
         return isValid;
     }
@@ -103,6 +114,7 @@ public class MetaField {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "排序号")
     public int getSortNum() {
         return sortNum;
     }
@@ -112,6 +124,7 @@ public class MetaField {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "录入时间")
     public Date getInputDate() {
         return inputDate;
     }

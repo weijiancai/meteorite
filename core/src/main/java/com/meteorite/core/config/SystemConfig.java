@@ -20,6 +20,10 @@ public class SystemConfig {
      * 布局配置文件名
      */
     public static final String FILE_NAME_LAYOUT_CONFIG = "/LayoutConfig.xml";
+    /**
+     * 元数据字段配置文件名
+     */
+    public static final String FILE_NAME_META_FIELD_CONFIG = "MetaFieldConfig.xml";
 
     public static String userHome = System.getProperty("user.home");
     public static String userDir = System.getProperty("user.dir");

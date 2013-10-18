@@ -1,5 +1,6 @@
 package com.meteorite.fxbase.ui.component;
 
+import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
@@ -24,6 +25,10 @@ public class FxPasswordField extends FxFormField {
 
         passwordField = new PasswordField();
         passwordField.setPrefWidth(fieldConfig.getWidth());
+    }
+
+    @Override
+    public void setDisplayStyle(DisplayStyle displayStyle) {
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.meteorite.fxbase.ui;
 
+import com.meteorite.fxbase.ui.component.MetaPane;
 import com.meteorite.fxbase.ui.view.FxTreeView;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -18,13 +21,25 @@ public class FxDesktop extends BorderPane {
 
     public FxDesktop(final Stage stage) {
         banner = new Banner(stage);
-        this.setTop(banner);
+//        this.setTop(banner);
         /*moduleMenu = new ModuleMenu(this);
         this.setLeft(moduleMenu);*/
         treeView = new FxTreeView(null);
-        this.setLeft(treeView.layout());
+//        this.setLeft(treeView.layout());
         workbench = new Workbench();
         this.setCenter(workbench);
+        initUI();
+    }
+
+    public void initUI() {
+        TreeItem<Hyperlink> root = new TreeItem<>(new Hyperlink("Root"));
+        Hyperlink metaLink = new Hyperlink("元数据");
+        root.getChildren().add(new TreeItem<>(metaLink));
+        TreeView<Hyperlink> tree = new TreeView<>();
+        tree.setRoot(root);
+        tree.setShowRoot(false);
+        this.setLeft(tree);
+        this.setCenter(new MetaPane());
     }
 
     public void showDialog(Dialog dialog) {

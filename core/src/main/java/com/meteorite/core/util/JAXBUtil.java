@@ -34,6 +34,12 @@ public class JAXBUtil {
         return marshalToString(listBean, classes);
     }
 
+    public static <T> void marshalListToFile(List<T> list, File file, Class<?> classes) throws Exception {
+        ListBean<T> listBean = new ListBean<>(list);
+
+        marshalToFile(listBean, file, classes);
+    }
+
     private static Marshaller getMarshaller(Object obj, Class<?>... classes) throws JAXBException {
         Class<?>[] cs = getClasses(obj.getClass(), classes);
         JAXBContext context = JAXBContext.newInstance(cs);
@@ -78,6 +84,13 @@ public class JAXBUtil {
     @SuppressWarnings("unchecked")
     public static <T> List<T> unmarshalList(String xmlStr, Class<?>... classes) throws Exception {
         ListBean<T> listBean = (ListBean<T>) getUnmarshaller(classes).unmarshal(new StringReader(xmlStr));
+
+        return listBean.getList();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> List<T> unmarshalList(InputStream inputStream, Class<?>... classes) throws Exception {
+        ListBean<T> listBean = (ListBean<T>) getUnmarshaller(classes).unmarshal(inputStream);
 
         return listBean.getList();
     }

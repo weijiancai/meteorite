@@ -2,6 +2,8 @@ package com.meteorite.fxbase.ui;
 
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 
+import java.util.Map;
+
 /**
  * 面板接口
  *
@@ -28,4 +30,9 @@ public interface IPane {
      * @param isShow 是否显示
      */
     void setShowTop(boolean isShow);
+
+    /**
+     * 获得值Map
+     */
+    Map<String, String> getValueMap();
 }

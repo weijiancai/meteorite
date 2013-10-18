@@ -19,7 +19,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 表单面板
@@ -196,5 +198,14 @@ public class FxFormPane extends FxPane {
                 });
             }
         }
+    }
+
+    @Override
+    public Map<String, String> getValueMap() {
+        Map<String, String> map = new HashMap<>();
+        for (IFormField field : formFieldList) {
+            map.put(field.getFormFieldConfig().getName(), field.getValue());
+        }
+        return map;
     }
 }

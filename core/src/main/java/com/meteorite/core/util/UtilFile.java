@@ -1,6 +1,7 @@
 package com.meteorite.core.util;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -82,5 +83,16 @@ public class UtilFile {
         } catch (IOException e) {
 
         }
+    }
+
+    /**
+     * 从类路径下创建文件
+     *
+     * @param path 文件路径
+     * @return 返回类路径创建的文件
+     * @throws URISyntaxException
+     */
+    public static File createCPFile(String path) throws URISyntaxException {
+        return new File(new File(UtilFile.class.getResource("/").toURI()), path);
     }
 }

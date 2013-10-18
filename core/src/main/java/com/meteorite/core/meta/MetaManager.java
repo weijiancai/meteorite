@@ -8,10 +8,17 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaForm;
 import com.meteorite.core.meta.model.MetaFormField;
+import com.meteorite.core.util.JAXBUtil;
+import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.UString;
+import com.meteorite.core.util.UtilFile;
 
+import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.*;
+
+import static com.meteorite.core.config.SystemConfig.*;
 
 /**
  * 元数据管理
@@ -20,20 +27,47 @@ import java.util.*;
  * @version 1.0.0
  */
 public class MetaManager {
-    private static Map<String, Meta> metaMap = new HashMap<String, Meta>();
+    private static Map<String, Meta> metaMap = new HashMap<>();
+    private static List<MetaField> metaFieldList;
 
     static {
         try {
             addMeta(ProjectConfig.class);
             addMeta(DataSource.class);
+            addMeta(MetaField.class);
+
+            loadMetaFieldConfig();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * 加载布局配置信息
+     */
+    private static void loadMetaFieldConfig() throws Exception {
+        File file = new File(DIR_SYSTEM, FILE_NAME_META_FIELD_CONFIG);
+
+        if(!file.exists()) {
+            metaFieldList = new ArrayList<>();
+        } else {
+            InputStream is = UIO.getInputStream(file.getAbsolutePath(), UIO.FROM.FS);
+            metaFieldList = JAXBUtil.unmarshalList(is, MetaField.class);
+        }
+    }
+
+    public static void saveMetaFieldConfig() throws Exception {
+        JAXBUtil.marshalListToFile(metaFieldList, UtilFile.createFile(DIR_SYSTEM, FILE_NAME_META_FIELD_CONFIG), MetaField.class);
+    }
+
     public static void addMeta(Class<?> clazz) throws Exception {
         Meta meta = toMeta(clazz);
         metaMap.put(meta.getName(), meta);
+    }
+
+    public static void addMetaField(MetaField metaField) throws Exception {
+        metaFieldList.add(metaField);
+        saveMetaFieldConfig();
     }
 
     /**
@@ -152,5 +186,13 @@ public class MetaManager {
         metaForm.setFormFields(formFields);
 
         return metaForm;
+    }
+
+    public static List<MetaField> getMetaFieldList() {
+        /*List<MetaField> result = new ArrayList<>();
+        for(Meta meta : metaMap.values()) {
+            result.addAll(meta.getFileds());
+        }*/
+        return metaFieldList;
     }
 }

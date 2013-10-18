@@ -123,7 +123,7 @@ public class SystemManager {
      */
     public static boolean isConfigured(ProjectConfig projectConfig) throws Exception {
         // 检查项目名称
-        if (UString.isEmpty(projectConfig.getName())) {
+        /*if (UString.isEmpty(projectConfig.getName())) {
             return false;
         }
         // 检查sys数据源
@@ -133,7 +133,7 @@ public class SystemManager {
         // 检查版本表
         if (!DBUtil.existsTable(SystemConfig.SYS_DB_VERSION_TABLE_NAME)) {
             return false;
-        }
+        }*/
 
         return true;
     }

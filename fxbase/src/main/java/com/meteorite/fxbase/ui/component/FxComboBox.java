@@ -2,6 +2,7 @@ package com.meteorite.fxbase.ui.component;
 
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
+import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.ui.config.layout.FormFieldConfig;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.ui.Dialogs;
@@ -62,6 +63,10 @@ public class FxComboBox extends FxFormField {
         this.setValue(fieldConfig.getValue());
     }
 
+
+    @Override
+    public void setDisplayStyle(DisplayStyle displayStyle) {
+    }
 
     @Override
     public Node getNode() {
