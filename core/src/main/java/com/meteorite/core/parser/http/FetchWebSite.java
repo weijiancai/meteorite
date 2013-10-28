@@ -86,7 +86,8 @@ public class FetchWebSite {
 
     public void fetch(String url, int level) throws IOException {
         if(baseUrl == null) {
-            baseUrl = url;
+            int end = url.indexOf("/", 7);
+            baseUrl = url.substring(0, end == -1 ? url.length() : end);
         }
 
         System.out.println("Fetch URL: " + url + "    " + level);
@@ -222,8 +223,10 @@ public class FetchWebSite {
                     }
                 }
 
-                for (String href : result) {
-                    fetch(href, level + 1);
+                if(level > 0) {
+                    for (String href : result) {
+                        fetch(href, level + 1);
+                    }
                 }
             } else {
                 try {

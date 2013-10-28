@@ -26,4 +26,13 @@ public class FetchWebSiteTest {
         FetchWebSite fetchWebSite = new FetchWebSite(dir);
         fetchWebSite.fetch(baseUrl, 0);
     }
+
+    @Test
+    public void testFetchPage() throws IOException {
+        String baseUrl = "http://www.0731hunjia.com/Hotel/2_C0_A3_Pr0_Z0_X0.html";
+        File dir = new File("D:\\fetch\\0731");
+        FetchWebSite fetchWebSite = new FetchWebSite(dir);
+        fetchWebSite.addExcludeUrl("http://www.0731hunjia.com/bbs");
+        fetchWebSite.fetch(baseUrl, 0);
+    }
 }
