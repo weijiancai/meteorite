@@ -111,7 +111,7 @@ public class FetchWebSite {
         } else {
             if (path.contains("?")) {
                 path = path.substring(0, path.indexOf("?"));
-            } else if(path.endsWith("#")) {
+            } else if(path.contains("#")) {
                 path = path.substring(0, path.lastIndexOf("#"));
             } else if (path.endsWith("/")) {
                 path = path + "index.html";
@@ -173,6 +173,9 @@ public class FetchWebSite {
                     if (link.attr("href").startsWith("/")) {
                         link.attr("href", parentDir + link.attr("href").substring(1));
                     }
+                    if (!href.contains(".css")) {
+                        continue;
+                    }
                     fetch(href, level + 1);
                 }
 
@@ -181,6 +184,9 @@ public class FetchWebSite {
 //                    hrefList.add(href);
                     if (src.attr("src").startsWith("/")) {
                         src.attr("src", parentDir + src.attr("src").substring(1));
+                    }
+                    if (href.contains(".html") || href.contains(".php") || href.endsWith("/")) {
+                        continue;
                     }
                     fetch(href, level + 1);
                 }
