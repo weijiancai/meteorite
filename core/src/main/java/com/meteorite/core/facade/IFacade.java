@@ -12,7 +12,7 @@ public interface IFacade {
      * 获得项目配置信息
      *
      * @return 返回项目配置信息
-     * @version 1.0.0
+     * @since 1.0.0
      */
     ProjectConfig getProjectConfig();
 

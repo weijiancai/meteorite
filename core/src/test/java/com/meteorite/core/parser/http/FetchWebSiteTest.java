@@ -33,10 +33,10 @@ public class FetchWebSiteTest {
 
     @Test
     public void testFetchPage() throws IOException {
-        String baseUrl = "http://www.0731hunjia.com/bbs/forum.php";
-        File dir = new File("D:\\fetch\\0731");
+        String baseUrl = "http://passport.jd.com/uc/login?ltype=logout";
+        File dir = new File("D:\\fetch\\jd");
         FetchWebSite fetchWebSite = new FetchWebSite(dir);
-        fetchWebSite.addExcludeUrl("http://www.0731hunjia.com/bbs");
+        /*fetchWebSite.addExcludeUrl("http://www.0731hunjia.com/bbs");*/
         fetchWebSite.fetch(baseUrl, 0);
     }
 

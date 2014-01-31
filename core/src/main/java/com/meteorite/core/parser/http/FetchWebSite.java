@@ -31,7 +31,7 @@ public class FetchWebSite {
 
     public static void main(String[] args) throws IOException {
 //        Validate.isTrue(args.length == 1, "usage: supply baseUrl to fetch");
-        String url = "http://www.0731hunjia.com/";
+        /*String url = "http://www.0731hunjia.com/";
         print("Fetching %s...", url);
 
         Document doc = Jsoup.connect(url).get();
@@ -57,7 +57,13 @@ public class FetchWebSite {
         print("\nLinks: (%d)", links.size());
         for (Element link : links) {
             print(" * a: <%s>  (%s)", link.attr("abs:href"), trim(link.text(), 35));
-        }
+        }*/
+
+        String baseUrl = args[0];
+        File dir = new File(args[1]);
+        FetchWebSite fetchWebSite = new FetchWebSite(dir);
+        /*fetchWebSite.addExcludeUrl("http://www.0731hunjia.com/bbs");*/
+        fetchWebSite.fetch(baseUrl, 0);
     }
 
     private static void print(String msg, Object... args) {
@@ -89,6 +95,9 @@ public class FetchWebSite {
             int end = url.indexOf("/", 7);
             baseUrl = url.substring(0, end == -1 ? url.length() : end);
         }
+        if (url.contains("../")) {
+            url = url.replace("../", "");
+        }
 
         System.out.println("Fetch URL: " + url + "    " + level);
 
@@ -115,6 +124,9 @@ public class FetchWebSite {
                 path = path.substring(0, path.lastIndexOf("#"));
             } else if (path.endsWith("/")) {
                 path = path + "index.html";
+            }
+            if (!path.contains(".")) {
+                path += ".html";
             }
         }
 
