@@ -1,6 +1,6 @@
 metauiServices.factory('MUConfig', ['$http', function($http) {
     var formConfigCache = {};
-    var metaCache = [];
+    var metaCache = new ObjMap();
     var viewCache = [];
     var layoutList = [];
     var propMap = new ObjMap();
@@ -39,13 +39,17 @@ metauiServices.factory('MUConfig', ['$http', function($http) {
                     return _getMeta(name);
                 });
             }*/
-
-            $http.get("/meta", {name: name}).success(function(data) {
-                metaCache = data;
-                return _getMeta(name);
-            });
-
-            return _getMeta(name);
+            var obj = metaCache.get(name);
+            if(obj) {
+                return obj;
+            } else {
+                obj = {};
+                metaCache.push(name, obj);
+                $http({url:"/meta", method: "post", params:{name: name}}).success(function(data) {
+                    metaCache.push(name, data);
+                });
+            }
+            return obj;
         },
         getMetaField: function(id) {
             for(var i = 0; i < metaCache.length; i++) {
@@ -79,4 +83,10 @@ metauiServices.factory('MUConfig', ['$http', function($http) {
 
         return null;
     }
+}]);
+
+metauiServices.factory('Meta', ['$http', function($http) {
+    var metaCache = new ObjMap();
+
+    return metaCache;
 }]);

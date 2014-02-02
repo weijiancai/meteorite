@@ -26,9 +26,10 @@
         alert(data);
     });*/
     appModule.controller('TestCtl', function($scope, $http, MUConfig) {
-        $http.post({url:"/meta", method: 'post', data:{name: 'ProjectConfig'}}).success(function(data) {
+        /*$http({url:"/meta", method: 'post', params:{name: 'ProjectConfig'}}).success(function(data) {
             $scope.meta = data;
-        });
+        });*/
+        $scope.meta = MUConfig.getMeta('ProjectConfig');
     });
 </script>
 </body>
