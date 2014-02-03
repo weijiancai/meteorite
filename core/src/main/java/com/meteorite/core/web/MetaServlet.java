@@ -15,7 +15,13 @@ import java.io.IOException;
  */
 public class MetaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        this.doPost(req, res);
+//        this.doPost(req, res);
+        if (req.getRequestURI().endsWith("/meta")) {
+            writeJsonObject(res, MetaManager.getMetaList());
+        } else {
+            String metaName = req.getRequestURI().substring(5);
+            writeJsonObject(res, MetaManager.getMeta(metaName));
+        }
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

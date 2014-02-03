@@ -15,21 +15,29 @@
 
 <script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="js/lib/angular.js"></script>
+<script type="text/javascript" src="js/lib/angular-resource.js"></script>
 <script type="text/javascript" src="js/lib/ng-grid/ng-grid-2.0.7.debug.js"></script>
 <script type="text/javascript" src="js/metaui/namespace.js"></script>
 <script type="text/javascript" src="js/metaui/Utils.js"></script>
 <script type="text/javascript" src="js/metaui/services/mu-config.js"></script>
 
 <script type="text/javascript">
-    var appModule = angular.module('app', ['metaui']);
+    var appModule = angular.module('app', ['metaui', 'ngResource']);
     /*$.post('/meta', {name: 'ProjectConfig'}, function(data) {
         alert(data);
     });*/
-    appModule.controller('TestCtl', function($scope, $http, MUConfig) {
+    appModule.controller('TestCtl', function($scope, $http, MUConfig, Meta, Phone) {
         /*$http({url:"/meta", method: 'post', params:{name: 'ProjectConfig'}}).success(function(data) {
             $scope.meta = data;
         });*/
-        $scope.meta = MUConfig.getMeta('ProjectConfig');
+        /*$scope.meta = MUConfig.getMeta('ProjectConfig');
+        $scope.meta = Meta.getMeta('ProjectConfig');
+        if(!$scope.meta) {
+            Meta.reqMeta('ProjectConfig').success(function(data) {
+                $scope.meta = data;
+            })
+        }*/
+        $scope.meta = Phone.query();
     });
 </script>
 </body>

@@ -195,4 +195,8 @@ public class MetaManager {
         }*/
         return metaFieldList;
     }
+
+    public static List<Meta> getMetaList() {
+        return new ArrayList<>(metaMap.values());
+    }
 }

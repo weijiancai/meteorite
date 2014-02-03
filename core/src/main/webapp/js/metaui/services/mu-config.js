@@ -40,15 +40,15 @@ metauiServices.factory('MUConfig', ['$http', function($http) {
                 });
             }*/
             var obj = metaCache.get(name);
-            if(obj) {
+            /*if(obj) {
                 return obj;
             } else {
                 obj = {};
-                metaCache.push(name, obj);
+                metaCache.put(name, obj);
                 $http({url:"/meta", method: "post", params:{name: name}}).success(function(data) {
                     metaCache.push(name, data);
                 });
-            }
+            }*/
             return obj;
         },
         getMetaField: function(id) {
@@ -88,5 +88,22 @@ metauiServices.factory('MUConfig', ['$http', function($http) {
 metauiServices.factory('Meta', ['$http', function($http) {
     var metaCache = new ObjMap();
 
-    return metaCache;
+    return {
+        getMeta: function(name) {
+            return metaCache.get(name);
+        },
+        reqMeta: function(name) {
+            return $http({url: '/meta', params: {name: name}, method: 'POST'});
+        },
+        setMeta: function(name, meta) {
+            metaCache.put(name, meta);
+        }
+    };
 }]);
+
+metauiServices.factory('Phone', ['$resource',
+    function($resource){
+        return $resource('/meta', {}, {
+            query: {method:'GET', params:{name:'ProjectConfig'}, isArray:true}
+        });
+    }]);

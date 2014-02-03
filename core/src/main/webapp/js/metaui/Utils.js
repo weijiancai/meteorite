@@ -13,7 +13,7 @@ function ObjMap() {
      * @param key
      * @param value
      */
-    this.push = function(key, value) {
+    this.put = function(key, value) {
         this._keys.push(key);
         this._obj[key] = value;
     };
