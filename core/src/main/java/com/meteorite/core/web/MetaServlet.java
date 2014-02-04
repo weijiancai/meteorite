@@ -19,7 +19,7 @@ public class MetaServlet extends HttpServlet {
         if (req.getRequestURI().endsWith("/meta")) {
             writeJsonObject(res, MetaManager.getMetaList());
         } else {
-            String metaName = req.getRequestURI().substring(5);
+            String metaName = req.getRequestURI().substring(6);
             writeJsonObject(res, MetaManager.getMeta(metaName));
         }
     }

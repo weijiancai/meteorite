@@ -37,7 +37,8 @@
                 $scope.meta = data;
             })
         }*/
-        $scope.meta = Phone.query();
+//        $scope.meta = Phone.query();
+        $scope.meta = Phone.get({name: 'ProjectConfig'})
     });
 </script>
 </body>

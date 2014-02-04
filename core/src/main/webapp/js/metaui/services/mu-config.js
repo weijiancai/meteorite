@@ -103,7 +103,8 @@ metauiServices.factory('Meta', ['$http', function($http) {
 
 metauiServices.factory('Phone', ['$resource',
     function($resource){
-        return $resource('/meta', {}, {
-            query: {method:'GET', params:{name:'ProjectConfig'}, isArray:true}
+        return $resource('/meta/:name', {}, {
+            query: {method:'GET', params:{}, isArray:true}
         });
-    }]);
+    }
+]);

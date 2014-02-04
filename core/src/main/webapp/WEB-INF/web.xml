@@ -24,6 +24,6 @@
 
     <servlet-mapping>
         <servlet-name>MetaServlet</servlet-name>
-        <url-pattern>/meta</url-pattern>
+        <url-pattern>/meta/*</url-pattern>
     </servlet-mapping>
 </web-app>
