@@ -108,3 +108,7 @@ metauiServices.factory('Phone', ['$resource',
         });
     }
 ]);
+
+metauiServices.factory('Layout', ['$resource', function($resource) {
+    return $resource('/layout/:id');
+}]);

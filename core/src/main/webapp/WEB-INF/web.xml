@@ -18,12 +18,20 @@
     </listener>
 
     <servlet>
-        <servlet-name>MetaServlet</servlet-name>
-        <servlet-class>com.meteorite.core.web.MetaServlet</servlet-class>
+        <servlet-name>MetaRest</servlet-name>
+        <servlet-class>com.meteorite.core.web.rest.MetaRest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LayoutRest</servlet-name>
+        <servlet-class>com.meteorite.core.web.rest.LayoutRest</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>MetaServlet</servlet-name>
+        <servlet-name>MetaRest</servlet-name>
         <url-pattern>/meta/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LayoutRest</servlet-name>
+        <url-pattern>/layout/*</url-pattern>
     </servlet-mapping>
 </web-app>
