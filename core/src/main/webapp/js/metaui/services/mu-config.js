@@ -88,17 +88,22 @@ metauiServices.factory('MUConfig', ['$http', function($http) {
 metauiServices.factory('Meta', ['$http', function($http) {
     var metaCache = new ObjMap();
 
-    return {
+    /*return {
         getMeta: function(name) {
             return metaCache.get(name);
         },
-        reqMeta: function(name) {
-            return $http({url: '/meta', params: {name: name}, method: 'POST'});
+        reqMeta: function() {
+            return $http({url: '/layout', method: 'POST'}).then(function(data) {
+                alert(data);
+                return data;
+            });
         },
         setMeta: function(name, meta) {
             metaCache.put(name, meta);
         }
-    };
+    };*/
+
+    return metaCache;
 }]);
 
 metauiServices.factory('Phone', ['$resource',
