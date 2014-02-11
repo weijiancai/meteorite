@@ -1,4 +1,4 @@
-metauiServices.factory('MUConfig', ['$http', function($http) {
+metauiServices.factory('MUConfig', ['$resource', '$http', function($resource, $http) {
     var formConfigCache = {};
     var metaCache = new ObjMap();
     var viewCache = [];
@@ -26,30 +26,22 @@ metauiServices.factory('MUConfig', ['$http', function($http) {
         getFormConfig: function(name) {
             return formConfigCache[name];
         },
+
         /**
          * 根据名称查找元数据
-         *
          * @param name
-         * @returns {*}
+         * @param onSuccess
          */
-        getMeta: function(name) {
-            /*if(metaCache.length == 0) {
-                $http.get("test/meta.json").success(function(data) {
-                    metaCache = data;
-                    return _getMeta(name);
-                });
-            }*/
+        getMeta: function(name, onSuccess) {
             var obj = metaCache.get(name);
-            /*if(obj) {
-                return obj;
+            if(obj) {
+                onSuccess(obj);
             } else {
-                obj = {};
-                metaCache.put(name, obj);
                 $http({url:"/meta", method: "post", params:{name: name}}).success(function(data) {
-                    metaCache.push(name, data);
+                    metaCache.put(name, data);
+                    onSuccess(data);
                 });
-            }*/
-            return obj;
+            }
         },
         getMetaField: function(id) {
             for(var i = 0; i < metaCache.length; i++) {
@@ -71,7 +63,8 @@ metauiServices.factory('MUConfig', ['$http', function($http) {
         },
         getLayoutPropery: function(propId) {
             return propMap.get(propId);
-        }
+        },
+        meta: $resource('/meta/:name', {name: '@name'})
     };
 
     function _getMeta(name) {
@@ -85,7 +78,7 @@ metauiServices.factory('MUConfig', ['$http', function($http) {
     }
 }]);
 
-metauiServices.factory('Meta', ['$http', function($http) {
+metauiServices.factory('Meta', ['$resource', function($resource) {
     var metaCache = new ObjMap();
 
     /*return {
@@ -102,6 +95,10 @@ metauiServices.factory('Meta', ['$http', function($http) {
             metaCache.put(name, meta);
         }
     };*/
+
+    metaCache.query = function() {
+        return $resource('/meta').query();
+    };
 
     return metaCache;
 }]);

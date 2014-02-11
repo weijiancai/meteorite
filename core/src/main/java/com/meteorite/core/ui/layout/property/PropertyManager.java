@@ -29,7 +29,7 @@ public class PropertyManager {
 
         int sortNum = 0;
         List<FormFieldProperty> formFields = new ArrayList<FormFieldProperty>();
-        for (MetaField field : meta.getFileds()) {
+        for (MetaField field : meta.getFields()) {
             FormFieldProperty formField = new FormFieldProperty();
 //            formField.setInputDate(new Date());
             formField.setSortNum(sortNum += 10);
@@ -65,7 +65,7 @@ public class PropertyManager {
 
         int sortNum = 0;
         List<FormFieldProperty> formFields = new ArrayList<FormFieldProperty>();
-        for (MetaField field : meta.getFileds()) {
+        for (MetaField field : meta.getFields()) {
             FormFieldProperty formField = new FormFieldProperty();
 //            formField.setInputDate(new Date());
             formField.setSortNum(sortNum += 10);

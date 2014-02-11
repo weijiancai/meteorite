@@ -34,6 +34,7 @@ public class MetaManager {
         try {
             addMeta(ProjectConfig.class);
             addMeta(DataSource.class);
+            addMeta(Meta.class);
             addMeta(MetaField.class);
 
             loadMetaFieldConfig();
@@ -147,7 +148,7 @@ public class MetaManager {
             }
         });
 
-        meta.setFileds(fieldList);
+        meta.setFields(fieldList);
 
         return meta;
     }
@@ -167,7 +168,7 @@ public class MetaManager {
 
         int sortNum = 0;
         List<MetaFormField> formFields = new ArrayList<MetaFormField>();
-        for (MetaField field : meta.getFileds()) {
+        for (MetaField field : meta.getFields()) {
             MetaFormField formField = new MetaFormField();
             formField.setInputDate(new Date());
             formField.setSortNum(sortNum += 10);
@@ -191,7 +192,7 @@ public class MetaManager {
     public static List<MetaField> getMetaFieldList() {
         /*List<MetaField> result = new ArrayList<>();
         for(Meta meta : metaMap.values()) {
-            result.addAll(meta.getFileds());
+            result.addAll(meta.getFields());
         }*/
         return metaFieldList;
     }

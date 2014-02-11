@@ -13,20 +13,34 @@
     <h1>Hello</h1>
 
     <div ng-view></div>
+    <img src="img/file.png">
+    <img src="img/folder-closed.png">
+    <img src="img/folder.png">
 
 <script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="js/lib/angularjs/angular.js"></script>
 <script type="text/javascript" src="js/lib/angularjs/angular-resource.js"></script>
 <script type="text/javascript" src="js/lib/angularjs/angular-route.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/ui-bootstrap-tpls-0.10.0.js"></script>
 <script type="text/javascript" src="js/lib/ng-grid/ng-grid-2.0.7.debug.js"></script>
 <script type="text/javascript" src="js/metaui/namespace.js"></script>
 <script type="text/javascript" src="js/metaui/Utils.js"></script>
 <script type="text/javascript" src="js/metaui/services/mu-config.js"></script>
 <script type="text/javascript" src="js/metaui/directives/mu-tree.js"></script>
+<script type="text/javascript" src="js/metaui/directives/mu-table.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
 <script type="text/javascript" src="js/controllers.js"></script>
 
 <script type="text/javascript">
+    function show(img) {
+//        alert(img.src);
+
+    }
+    $(function() {
+        $('img').attr({width: '25px', height: '25px', onclick: 'show(this)'}).each(function() {
+            var img = $(this).clone();
+        });
+    });
 //    var appModule = angular.module('app', ['metaui', 'ngRoute']);
     /*$.post('/meta', {name: 'ProjectConfig'}, function(data) {
         alert(data);

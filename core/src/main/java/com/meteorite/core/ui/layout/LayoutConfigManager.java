@@ -2,7 +2,6 @@ package com.meteorite.core.ui.layout;
 
 import com.meteorite.core.R;
 import com.meteorite.core.config.SystemManager;
-import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.dict.EnumBoolean;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
@@ -62,7 +61,7 @@ public class LayoutConfigManager {
         form.setPropValue(FORM_DISPLAY_NAME, meta.getDisplayName() + "表单");
 
         List<ILayoutConfig> children = new ArrayList<>();
-        for (MetaField field : meta.getFileds()) {
+        for (MetaField field : meta.getFields()) {
             ILayoutConfig formField = getLayout(R.layout.FORM_FIELD);
             formField.setPropValue(FORM_FIELD_NAME, field.getName());
             formField.setPropValue(FORM_FIELD_DISPLAY_NAME, field.getDisplayName());

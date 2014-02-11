@@ -74,6 +74,7 @@ metauiDirectives.directive('treeModel', ['$compile', function($compile) {
         }
     };
 }]);
+/*
 
 metauiDirectives.directive('muTree', ['$compile', function($compile) {
     var treeOption = {};
@@ -137,4 +138,4 @@ metauiDirectives.directive('muTree', ['$compile', function($compile) {
 //            alert('Controller = ' + $scope.treeOption.id);
         }
     }
-}]);
+}]);*/

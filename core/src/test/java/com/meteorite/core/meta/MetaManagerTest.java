@@ -30,7 +30,7 @@ public class MetaManagerTest {
         assertThat(meta.getDisplayName(), equalTo("项目配置"));
         assertThat(meta.getDesc(), equalTo(""));
         assertThat(meta.isValid(), equalTo(true));
-        assertThat(meta.getFileds().size(), equalTo(3));
+        assertThat(meta.getFields().size(), equalTo(3));
 
         String metaXml = JAXBUtil.marshalToString(meta, Meta.class);
         System.out.println(metaXml);
