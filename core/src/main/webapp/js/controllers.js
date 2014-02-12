@@ -48,7 +48,7 @@ app.controller('MainCtl', ['$scope', '$resource', 'Layout', 'MUConfig', function
         };
     });*/
 
-    $scope.colDefs = [];
+    /*$scope.colDefs = [];
 
     $scope.gridOptions = {
         enableColumnResize: true,
@@ -58,7 +58,7 @@ app.controller('MainCtl', ['$scope', '$resource', 'Layout', 'MUConfig', function
     var Meta = $resource('/meta/:name', {userId:'@name'});
     var meta = Meta.get({name:'Meta'}, function() {
         $scope.colDefs = meta.fields;
-    });
+    });*/
 
 }]);
 

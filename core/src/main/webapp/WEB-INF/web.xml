@@ -25,6 +25,10 @@
         <servlet-name>LayoutRest</servlet-name>
         <servlet-class>com.meteorite.core.web.rest.LayoutRest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DictRest</servlet-name>
+        <servlet-class>com.meteorite.core.web.rest.DictRest</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>MetaRest</servlet-name>
@@ -33,5 +37,9 @@
     <servlet-mapping>
         <servlet-name>LayoutRest</servlet-name>
         <url-pattern>/layout/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DictRest</servlet-name>
+        <url-pattern>/dict/*</url-pattern>
     </servlet-mapping>
 </web-app>

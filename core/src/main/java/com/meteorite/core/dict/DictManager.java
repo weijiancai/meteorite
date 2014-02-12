@@ -114,4 +114,13 @@ public class DictManager {
     public static DictCategory getDict(String dictId) {
         return categoryMap.get(dictId);
     }
+
+    /**
+     * 获得数据字典列表
+     *
+     * @return 返回所有数据字典列表
+     */
+    public static List<DictCategory> getDictList() {
+        return new ArrayList<>(categoryMap.values());
+    }
 }
