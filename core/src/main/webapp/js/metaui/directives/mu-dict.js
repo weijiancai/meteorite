@@ -1,9 +1,28 @@
-metauiDirectives.directive('muDict', ['MUDict', function(MUDict) {
+metauiDirectives.directive('muDict', function($resource, $http) {
     return {
-        restrict: 'A'
+        restrict: 'A',
+        replace: true,
+        controller: function($scope, $element, $attrs) {
+            $scope.isDisplayText = $attrs['isDisplayText'];
+            $scope.codeList = [];
 
+            /*$resource('/dict/:id', {id: '@id'}, function(res) {
+                $scope.codeList = res.codeList;
+            }).get({id: $attrs['muDict']});*/
+
+            var dictId = $attrs['muDict'];
+            $http({url: '/dict', method: "get", params: {id: dictId}}).success(function(data) {
+                $scope.codeList = data.codeList;
+            });
+        },
+        link: function(scope, element, attrs) {
+
+        },
+        template:
+            '<div><div ng-show="isDisplayText"></div>' +
+            '<select ng-show="!isDisplayText"><option ng-repeat="code in codeList" value="{{code.name}}">{{code.value}}</option></select></div>'
     }
-}]);
+});
 
 metauiDirectives.directive('muCurrentTime', function($timeout, $filter) {
     return function($scope, $element, $attrs) {

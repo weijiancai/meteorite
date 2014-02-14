@@ -68,7 +68,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "是否有效")
+    @MetaFieldElement(displayName = "是否有效", dictId = "com.meteorite.core.dict.EnumBoolean")
     public boolean isValid() {
         return isValid;
     }

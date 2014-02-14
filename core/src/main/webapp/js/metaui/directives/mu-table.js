@@ -1,4 +1,4 @@
-metauiDirectives.directive('muTable', ['MUConfig', '$compile', function(MUConfig, $compile) {
+metauiDirectives.directive('muTable', ['MUConfig', 'MUDict', '$compile', function(MUConfig, MUDict, $compile) {
     return {
         transclude: true,
         /*scope: {muTableOptions: '@'},*/
@@ -30,6 +30,14 @@ metauiDirectives.directive('muTable', ['MUConfig', '$compile', function(MUConfig
                 MUConfig.get('PreviewForm').fields.push(aobj);
             }*/
 
+            $scope.getDictDisplayName = function(dictId, value) {
+                return MUDict.getDisplayName(dictId, value);
+            };
+            $scope.getDict = function(dictId) {
+                return MUDict.getDict(dictId);
+            };
+
+//            $scope.dict = MUDict.getDict('com.meteorite.core.dict.EnumBoolean');
 
             MUConfig.getMeta(metaName, function(meta) {
                 var cols = [];
@@ -43,6 +51,11 @@ metauiDirectives.directive('muTable', ['MUConfig', '$compile', function(MUConfig
                      //                    obj.cellTemplate = '<span ng-cell-text>{{col.field + col.displayName + col.index + row.entity[col.field] + col.colDef.dictId}}</span>';
                      obj.cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{getDictDisplayName(col.colDef.dictId, row.entity[col.field])}}</span></div>';
                      }*/
+                    /*if(meta.fields[i].dictId) {
+                        obj.editableCellTemplate = '<select ng-class="col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" ng-options="m.value as m.name for m in getDict(col.colDef.dictId)"></select>';
+                        //                    obj.cellTemplate = '<span ng-cell-text>{{col.field + col.displayName + col.index + row.entity[col.field] + col.colDef.dictId}}</span>';
+                        obj.cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{getDictDisplayName(col.colDef.dictId, row.entity[col.field])}}</span></div>';
+                    }*/
                     cols.push(obj);
                 }
 

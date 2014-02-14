@@ -1,6 +1,7 @@
 metauiServices.factory('MUConfig', ['$resource', '$http', function($resource, $http) {
     var formConfigCache = {};
     var metaCache = new ObjMap();
+    var dictCache = new ObjMap();
     var viewCache = [];
     var layoutList = [];
     var propMap = new ObjMap();
@@ -25,6 +26,24 @@ metauiServices.factory('MUConfig', ['$resource', '$http', function($resource, $h
         },
         getFormConfig: function(name) {
             return formConfigCache[name];
+        },
+
+        /**
+         * 根据ID查找数据字典
+         *
+         * @param id
+         * @param onSuccess
+         */
+        getDict: function(id, onSuccess) {
+            var obj = dictCache.get(id);
+            if(obj) {
+                onSuccess(obj);
+            } else {
+                $http({url:"/dict", method: "post", params:{id: id}}).success(function(data) {
+                    dictCache.put(id, data);
+                    onSuccess(data);
+                });
+            }
         },
 
         /**

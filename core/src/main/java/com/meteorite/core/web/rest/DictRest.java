@@ -1,6 +1,7 @@
 package com.meteorite.core.web.rest;
 
 import com.meteorite.core.dict.DictManager;
+import com.meteorite.core.util.UString;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +16,16 @@ import java.io.IOException;
 public class DictRest extends BaseRest {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        if (UString.isNotEmpty(id)) {
+            writeJsonObject(res, DictManager.getDict(id));
+            return;
+        }
         if (req.getRequestURI().endsWith("/dict")) {
             writeJsonObject(res, DictManager.getDictList());
         } else {
-            String dictName = req.getRequestURI().substring(6);
-            writeJsonObject(res, DictManager.getDict(dictName));
+            String dictId = req.getRequestURI().substring(6);
+            writeJsonObject(res, DictManager.getDict(dictId));
         }
     }
 }
