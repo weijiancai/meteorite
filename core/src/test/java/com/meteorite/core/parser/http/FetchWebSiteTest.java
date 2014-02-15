@@ -57,4 +57,12 @@ public class FetchWebSiteTest {
         }
         br.close();
     }
+
+    @Test
+    public void testFetchQstbook() throws IOException {
+        String baseUrl = "http://www.qstbook.com/search.html?goodsCatalogCode=0901";
+        File dir = new File("D:\\fetch\\qstbook");
+        FetchWebSite fetchWebSite = new FetchWebSite(dir);
+        fetchWebSite.fetch(baseUrl, 0);
+    }
 }

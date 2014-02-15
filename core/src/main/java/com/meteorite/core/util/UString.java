@@ -120,4 +120,24 @@ public class UString {
     public static boolean toBoolean(String str) {
         return !isEmpty(str) && ("T".equalsIgnoreCase(str) || "true".equalsIgnoreCase(str));
     }
+
+    /**
+     * 左边填充n个字符
+     *
+     * @param str 要填充的字符串
+     * @param c 填充字符
+     * @param n 填充个数
+     * @return 返回填充后的字符串
+     */
+    public static String leftPadding(String str, char c, int n) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append(c);
+        }
+        return sb.toString() + str;
+    }
+
+    public static String substringByByte(String str, int i, int length) {
+        return str.substring(i, i + length);
+    }
 }

@@ -4,7 +4,7 @@ import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaForm;
-import com.meteorite.core.util.JAXBUtil;
+import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

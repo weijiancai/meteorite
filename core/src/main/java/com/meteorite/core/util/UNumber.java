@@ -14,4 +14,12 @@ public class UNumber {
             return 0;
         }
     }
+
+    public static double toDouble(String str) {
+        try {
+            return UString.isEmpty(str) ? 0 : Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }

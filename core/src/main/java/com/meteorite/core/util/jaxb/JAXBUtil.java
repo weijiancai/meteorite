@@ -1,6 +1,4 @@
-package com.meteorite.core.util;
-
-import com.meteorite.core.util.jaxb.ListBean;
+package com.meteorite.core.util.jaxb;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

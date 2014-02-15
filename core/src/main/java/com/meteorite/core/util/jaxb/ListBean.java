@@ -10,7 +10,7 @@ import java.util.List;
 public class ListBean<T> {
     private List<T> list;
 
-    private ListBean() {}
+    public ListBean() {}
 
     public ListBean(List<T> list) {
         this.list = list;

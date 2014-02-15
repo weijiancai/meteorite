@@ -95,4 +95,17 @@ public class UtilFile {
     public static File createCPFile(String path) throws URISyntaxException {
         return new File(new File(UtilFile.class.getResource("/").toURI()), path);
     }
+
+    /**
+     * 将字节数据写入到目标文件
+     *
+     * @param bytes 字节数据
+     * @param target 目标文件
+     */
+    public static void write(byte[] bytes, File target) throws IOException {
+        BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(target));
+        os.write(bytes, 0, bytes.length);
+        os.flush();
+        os.close();
+    }
 }

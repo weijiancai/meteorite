@@ -1,7 +1,7 @@
 package com.meteorite.core.ui.layout;
 
 import com.meteorite.core.ui.config.LayoutConfig;
-import com.meteorite.core.util.JAXBUtil;
+import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.junit.Test;
 
 /**

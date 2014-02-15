@@ -1,15 +1,14 @@
 package com.meteorite.core.config;
 
 import com.meteorite.core.db.DBManager;
-import com.meteorite.core.db.DBUtil;
 import com.meteorite.core.db.DataSource;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.util.*;
+import com.meteorite.core.util.jaxb.JAXBUtil;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
