@@ -62,7 +62,7 @@ public class DictManager {
 
             DictCategory category = new DictCategory();
             if ("##default".equals(dict.categoryId())) {
-                category.setId(clazz.getName());
+                category.setId(clazz.getName().replace('.', '_'));
             } else {
                 category.setId(dict.categoryId());
             }

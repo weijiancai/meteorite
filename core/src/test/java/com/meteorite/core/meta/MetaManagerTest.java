@@ -1,5 +1,6 @@
 package com.meteorite.core.meta;
 
+import com.alibaba.fastjson.JSON;
 import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.meta.model.Meta;
@@ -24,16 +25,17 @@ public class MetaManagerTest {
             assertThat(e.getMessage(), equalTo("不能将非MetaElement的对象【java.lang.String】转化为Meta对象！"));
         }
 
-        Meta meta = MetaManager.getMeta(ProjectConfig.class);
-        assertThat(meta, notNullValue());
+        Meta meta = MetaManager.toMeta(Meta.class);
+        /*assertThat(meta, notNullValue());
         assertThat(meta.getName(), equalTo("ProjectConfig"));
         assertThat(meta.getDisplayName(), equalTo("项目配置"));
         assertThat(meta.getDesc(), equalTo(""));
         assertThat(meta.isValid(), equalTo(true));
-        assertThat(meta.getFields().size(), equalTo(3));
+        assertThat(meta.getFields().size(), equalTo(3));*/
 
         String metaXml = JAXBUtil.marshalToString(meta, Meta.class);
         System.out.println(metaXml);
+        System.out.println(JSON.toJSONString(meta));
     }
 
     @Test

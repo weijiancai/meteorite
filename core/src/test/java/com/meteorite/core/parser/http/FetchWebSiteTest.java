@@ -60,7 +60,7 @@ public class FetchWebSiteTest {
 
     @Test
     public void testFetchQstbook() throws IOException {
-        String baseUrl = "http://www.qstbook.com/search.html?goodsCatalogCode=0901";
+        String baseUrl = "http://www.qstbook.com/member/logon.html?returnUrl=http://www.qstbook.com/";
         File dir = new File("D:\\fetch\\qstbook");
         FetchWebSite fetchWebSite = new FetchWebSite(dir);
         fetchWebSite.fetch(baseUrl, 0);

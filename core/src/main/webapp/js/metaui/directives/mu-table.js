@@ -56,6 +56,22 @@ metauiDirectives.directive('muTable', ['MUConfig', 'MUDict', '$compile', functio
                         //                    obj.cellTemplate = '<span ng-cell-text>{{col.field + col.displayName + col.index + row.entity[col.field] + col.colDef.dictId}}</span>';
                         obj.cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{getDictDisplayName(col.colDef.dictId, row.entity[col.field])}}</span></div>';
                     }*/
+                    var dictId = obj.dictId;
+                    if(meta.fields[i].dictId) {
+                        /*$scope[dictId] = [
+                            {name: 'true', value: '是'},
+                            {name: 'false', value: '否'}
+                        ];*/
+                        $scope[dictId] = [];
+                        MUConfig.getDict(dictId, function(data) {
+                            $scope[data.id] = data.codeList;
+                        });
+//                        obj.editableCellTemplate = '<select ng-class="col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" ng-options="m.name as m.value for m in ' + dictId + '"></select>';
+                        //                    obj.cellTemplate = '<span ng-cell-text>{{col.field + col.displayName + col.index + row.entity[col.field] + col.colDef.dictId}}</span>';
+                        obj.cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()">' +
+                            '<span mu-dict="' + dictId + '" is-display-text="true" data="row.entity[col.field]"></span></div>';
+//                        obj.cellTemplate = '<select><option ng-repeat="o in ' + dictId + '" value="o.name">{{o.value}}</option></select>';
+                    }
                     cols.push(obj);
                 }
 

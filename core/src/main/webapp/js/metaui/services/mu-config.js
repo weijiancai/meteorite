@@ -39,7 +39,7 @@ metauiServices.factory('MUConfig', ['$resource', '$http', function($resource, $h
             if(obj) {
                 onSuccess(obj);
             } else {
-                $http({url:"/dict", method: "post", params:{id: id}}).success(function(data) {
+                $http({url:"/dict", method: "get", params:{id: id}}).success(function(data) {
                     dictCache.put(id, data);
                     onSuccess(data);
                 });

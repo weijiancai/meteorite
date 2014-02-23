@@ -1,10 +1,13 @@
 metauiDirectives.directive('muDict', function($resource, $http) {
     return {
         restrict: 'A',
-        replace: true,
+        replace: false,
+        scope: {},
         controller: function($scope, $element, $attrs) {
-            $scope.isDisplayText = $attrs['isDisplayText'];
+            $scope.isDisplayText = $attrs['isDisplayText'] == 'true';
+            $scope.data = $attrs['data'];
             $scope.codeList = [];
+            $scope.displayText = '';
 
             /*$resource('/dict/:id', {id: '@id'}, function(res) {
                 $scope.codeList = res.codeList;
@@ -13,14 +16,22 @@ metauiDirectives.directive('muDict', function($resource, $http) {
             var dictId = $attrs['muDict'];
             $http({url: '/dict', method: "get", params: {id: dictId}}).success(function(data) {
                 $scope.codeList = data.codeList;
+                for(var i = 0; i < data.codeList.length; i++) {
+                    if($scope.data.toLowerCase() == data.codeList[i]['name'].toLowerCase()) {
+                        $scope.displayText = data.codeList[i]['value'];
+                        alert($scope.displayText);
+                        break;
+                    }
+
+                }
             });
         },
         link: function(scope, element, attrs) {
 
         },
         template:
-            '<div><div ng-show="isDisplayText"></div>' +
-            '<select ng-show="!isDisplayText"><option ng-repeat="code in codeList" value="{{code.name}}">{{code.value}}</option></select></div>'
+            '<div><div ng-show="isDisplayText">{{displayText}}</div>' +
+            '<select ng-show="!isDisplayText"><option></option><option ng-repeat="code in codeList" value="{{code.name}}" ng-selected="code.name == data">{{code.value}}</option></select></div>'
     }
 });
 
