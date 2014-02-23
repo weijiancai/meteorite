@@ -47,6 +47,23 @@ metauiServices.factory('MUConfig', ['$resource', '$http', function($resource, $h
         },
 
         /**
+         * 获得字典显示名
+         *
+         * @param dictId
+         * @param value
+         * @returns {*}
+         */
+        getDictDisplayName: function (dictId, value) {
+            var codeList = dictCache.get(dictId).codeList;
+            for (var i = 0; i < codeList.length; i++) {
+                if (codeList[i].name.toLowerCase() == ('' + value).toLowerCase()) {
+                    return codeList[i].value;
+                }
+            }
+            return "Not Found";
+        },
+
+        /**
          * 根据名称查找元数据
          * @param name
          * @param onSuccess
@@ -85,16 +102,6 @@ metauiServices.factory('MUConfig', ['$resource', '$http', function($resource, $h
         },
         meta: $resource('/meta/:name', {name: '@name'})
     };
-
-    function _getMeta(name) {
-        for(var i = 0; i < metaCache.length; i++) {
-            if(metaCache[i]['name'] == name) {
-                return metaCache[i];
-            }
-        }
-
-        return null;
-    }
 }]);
 
 metauiServices.factory('Meta', ['$resource', function($resource) {
