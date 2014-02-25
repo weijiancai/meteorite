@@ -9,7 +9,7 @@ app.controller('MainCtl', ['$scope', '$resource', 'Layout', 'MUConfig', function
     };
 
 
-    $scope.metas = MUConfig.meta.query();
+//    $scope.metas = MUConfig.meta.query();
 
     $scope.treeOption = {
         id: 'Tree1',

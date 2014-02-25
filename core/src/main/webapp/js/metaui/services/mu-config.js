@@ -105,28 +105,19 @@ metauiServices.factory('MUConfig', ['$resource', '$http', function($resource, $h
 }]);
 
 metauiServices.factory('Meta', ['$resource', function($resource) {
-    var metaCache = new ObjMap();
-
-    /*return {
-        getMeta: function(name) {
-            return metaCache.get(name);
-        },
-        reqMeta: function() {
-            return $http({url: '/layout', method: 'POST'}).then(function(data) {
-                alert(data);
-                return data;
-            });
-        },
-        setMeta: function(name, meta) {
-            metaCache.put(name, meta);
+    return $resource('/meta/:name', {}, {
+        update: {
+            method: 'PUT'
         }
-    };*/
+    });
+}]);
 
-    metaCache.query = function() {
-        return $resource('/meta').query();
-    };
-
-    return metaCache;
+metauiServices.factory('Dict', ['$resource', function($resource) {
+    return $resource('/dict/:id', {}, {
+        update: {
+            method: 'PUT'
+        }
+    });
 }]);
 
 metauiServices.factory('Phone', ['$resource',
