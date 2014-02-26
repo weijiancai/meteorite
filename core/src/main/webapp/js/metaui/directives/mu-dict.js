@@ -1,4 +1,4 @@
-metauiDirectives.directive('muDict', function($resource, $http) {
+metauiDirectives.directive('muDict', function($resource, $http, Dict) {
     return {
         restrict: 'A',
         replace: false,
@@ -14,7 +14,17 @@ metauiDirectives.directive('muDict', function($resource, $http) {
             }).get({id: $attrs['muDict']});*/
 
             var dictId = $attrs['muDict'];
-            $http({url: '/dict', method: "get", params: {id: dictId}}).success(function(data) {
+
+            var dictCache = $scope.dictCache;
+            var dict = dictCache.get(dictId);
+            if(dict) {
+
+            } else {
+                Dict.get({id: dictId}, function(dict) {
+
+                });
+            }
+            /*$http({url: '/dict', method: "get", params: {id: dictId}}).success(function(data) {
                 $scope.codeList = data.codeList;
                 for(var i = 0; i < data.codeList.length; i++) {
                     if($scope.data.toLowerCase() == data.codeList[i]['name'].toLowerCase()) {
@@ -24,7 +34,7 @@ metauiDirectives.directive('muDict', function($resource, $http) {
                     }
 
                 }
-            });
+            });*/
         },
         link: function(scope, element, attrs) {
 

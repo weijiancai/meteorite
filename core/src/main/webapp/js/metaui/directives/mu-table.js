@@ -5,10 +5,13 @@ metauiDirectives.directive('muTable', ['MUConfig', 'MUDict', '$compile', 'Meta',
         /*scope: {},*/
         template: '<div class="gridStyle" ng-grid="gridOptions" style="height: 300px;"></div>',
         controller: function($scope, $element, $attrs, $transclude) {
+            var metaCache = $scope.metaCache;
+            var dictCache = $scope.dictCache;
+
             var metaName = $element.attr('mu-table');
             $scope.colDefs = [];
             $scope.metas = [];
-            $scope.meta = {};
+            var meta = metaCache.get(metaName);
 
             $scope.gridOptions = {
                 data: 'metas',
@@ -56,8 +59,17 @@ metauiDirectives.directive('muTable', ['MUConfig', 'MUDict', '$compile', 'Meta',
                 $scope.metas = MUConfig.meta.query();
             });*/
 
-            $scope.meta = Meta.get({name: metaName}, function() {
-                var meta = $scope.meta;
+            if(meta) {
+                initTable(meta);
+            } else {
+                Meta.get({name: metaName}, function(meta) {
+                    metaCache.put(meta.name, meta);
+                    initTable(meta);
+                });
+            }
+
+
+            function initTable(meta) {
                 var cols = [];
                 for(var i = 0; i < meta.fields.length; i++) {
                     var obj = {};
@@ -67,26 +79,25 @@ metauiDirectives.directive('muTable', ['MUConfig', 'MUDict', '$compile', 'Meta',
 
                     var dictId = obj.dictId;
                     if(meta.fields[i].dictId) {
-                        $scope[dictId] = [];
-                        /*MUConfig.getDict(dictId, function(data) {
-                            $scope[data.id] = data.codeList;
-                        });*/
                         Dict.get({id: dictId}, function(data) {
-                            $scope[data.id] = data.codeList;
+                            $scope.dictCache[data.id] = data;
+
                             for(var i = 0; i < data.codeList.length; i++) {
                                 var code = data.codeList[i];
-                                $scope[data.id][code.name.toLowerCase()] = code.value;
+                                $scope.dictCache[data.id][code.name.toLowerCase()] = code.value;
                             }
                         });
-                        obj.editableCellTemplate = '<select ng-class="col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" ng-options="m.name.toLowerCase() as m.value for m in ' + dictId + '"></select>';
-                        obj.cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{' + dictId + '["" + row.entity[col.field]]}}</span></div>';
+                        obj.editableCellTemplate = '<select ng-class="col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" ng-options="m.name.toLowerCase() as m.value for m in dictCache.' + dictId + '.codeList"></select>';
+//                        obj.cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{' + dictId + '["" + row.entity[col.field]]}}</span></div>';
+//                        obj.cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{dictCache.' + dictId + '["" + row.entity[col.field]]}}</span></div>';
+                        obj.cellTemplate = '<div class="ngCellText" ng-class="col.colIndex()"><span ng-cell-text>{{dictCache.getDisplayValue(col.colDef.dictId, row.entity[col.field])}}</span></div>';
                     }
                     cols.push(obj);
                 }
 
                 $scope.colDefs = cols;
                 $scope.metas = MUConfig.meta.query();
-            });
+            }
         }
     }
 }]);

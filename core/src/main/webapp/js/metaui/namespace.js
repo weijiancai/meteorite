@@ -5,4 +5,14 @@ var metauiServices = angular.module('metaui.services', []);
 var metauiFilters = angular.module('metaui.filters', []);
 
 // initialization of services into the main module
-angular.module('metaui', ['metaui.directives', 'metaui.services', 'metaui.filters', 'ngGrid']);
+var metaui = angular.module('metaui', ['metaui.directives', 'metaui.services', 'metaui.filters', 'ngGrid']);
+
+metaui.run(['$rootScope', function($rootScope) {
+    // 元数据缓存
+    $rootScope.metaCache = new ObjMap();
+    // 数据字典缓存
+    $rootScope.dictCache = new ObjMap();
+    $rootScope.dictCache.getDisplayValue = function(dictId, data) {
+        return this[dictId]['' + data];
+    }
+}]);
