@@ -117,6 +117,11 @@ public class DBSchemaImpl implements DBSchema {
         return DBObjectType.SCHEMA;
     }
 
+    @Override
+    public DBSchema getSchema() {
+        return this;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title></title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+    <link href="css/bootstrap.css" type="text/css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet">
+    <link href="css/angular.treeview.css" type="text/css" rel="stylesheet">
+    <link href="js/lib/ng-grid/ng-grid.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div ng-controller="MainCtrl">
+        <div class="container">
+            <h1 ng-show="posts.length">Posts</h1>
+            <table class="table table-striped" ng-show="posts.length">
+                <thead>
+                <th>名称</th>
+                <th>显示名</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="post in posts">
+                    <td ng-click="activePost(post)">{{post.name}}</td>
+                    <td>{{post.displayName}}</td>
+                    <td><button class="btn btn-danger" ng-click="delete(post)">Delete</button></td>
+                </tr>
+                </tbody>
+            </table>
+            <h3 ng-if="!editing">New Post</h3>
+            <h3 ng-if="editing">Edit Post</h3>
+            <form ng-submit="save(post)">
+                名称：<input ng-model="post.name"><br/>
+                显示名：<input ng-model="post.displayName"><br/>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <button ng-if="editing" class="btn btn-success" ng-click="newPost()">New Post</button>
+        </div>
+    </div>
+
+    <div id="target"></div>
+
+<script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/angular.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/angular-resource.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/angular-route.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/ui-bootstrap-tpls-0.10.0.js"></script>
+<script type="text/javascript" src="js/lib/ng-grid/ng-grid-2.0.7.debug.js"></script>
+<script type="text/javascript" src="js/metaui/namespace.js"></script>
+<script type="text/javascript" src="js/metaui/Utils.js"></script>
+<script type="text/javascript" src="js/metaui/services/mu-dict.js"></script>
+<script type="text/javascript" src="js/metaui/services/mu-config.js"></script>
+<script type="text/javascript" src="js/metaui/directives/mu-tree.js"></script>
+<script type="text/javascript" src="js/metaui/directives/mu-table.js"></script>
+<script type="text/javascript" src="js/metaui/directives/mu-dict.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/controllers.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        var str = $('h3').clone();
+        $('#target').append(str);
+    });
+    var app = angular.module('app', ['ngResource', 'ngRoute']);
+    app.provider('Post', function() {
+        this.$get = ['$resource', function($resource) {
+            var Post = $resource('http://localhost:8080/meta/:_id', {}, {
+                update: {
+                    method: 'PUT'
+                }
+            });
+
+            return Post;
+        }];
+    });
+
+    app.controller('MainCtrl', ['$scope', '$route', 'Post', function($scope, $route, Post) {
+        $scope.post = new Post();
+        $scope.posts = Post.query();
+
+        $scope.newPost  = function() {
+            $scope.post = new Post();
+            $scope.editing = false;
+        };
+
+        $scope.activePost = function(post) {
+            $scope.post = post;
+            $scope.editing = true;
+        };
+
+        $scope.save = function(post) {
+            if ($scope.post._id) {
+
+                Post.update({_id: $scope.post._id}, $scope.post);
+            } else {
+                $scope.post.$save().then(function(response) {
+                    $scope.posts.push(response)
+                });
+            }
+            $scope.editing = false;
+            $scope.post = new Post();
+        };
+
+        $scope.delete = function(post) {
+            Post.delete(post)
+            _.remove($scope.posts, post)
+        }
+    }]);
+</script>
+</body>
+</html>

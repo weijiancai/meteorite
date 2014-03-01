@@ -3,24 +3,24 @@ package com.meteorite.core.datasource.db.object.impl;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObjectType;
 import com.meteorite.core.datasource.db.object.DBSchema;
-import com.meteorite.core.datasource.db.object.DBTable;
 
-import javax.xml.bind.annotation.*;
-import java.util.List;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 /**
- * 数据库表实现类
+ * 数据库列信息实现类
  *
  * @author wei_jc
  * @since 1.0.0
  */
-@XmlRootElement(name = "Table")
-@XmlType(propOrder = {"name", "comment", "columns"})
-public class DBTableImpl implements DBTable {
+@XmlRootElement(name = "Column")
+@XmlType(propOrder = {"name", "comment"})
+public class DBColumnImpl implements DBColumn {
     private String name;
     private String comment;
     private DBSchema schema;
-    private List<DBColumn> columns;
 
     @Override @XmlAttribute
     public String getName() {
@@ -34,19 +34,12 @@ public class DBTableImpl implements DBTable {
 
     @Override
     public DBObjectType getObjectType() {
-        return DBObjectType.TABLE;
+        return DBObjectType.COLUMN;
     }
 
     @Override @XmlTransient
     public DBSchema getSchema() {
         return schema;
-    }
-
-    @Override
-    @XmlElementWrapper(name = "Columns")
-    @XmlAnyElement
-    public List<DBColumn> getColumns() {
-        return columns;
     }
 
     public void setName(String name) {
@@ -55,10 +48,6 @@ public class DBTableImpl implements DBTable {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public void setColumns(List<DBColumn> columns) {
-        this.columns = columns;
     }
 
     public void setSchema(DBSchema schema) {

@@ -24,4 +24,11 @@ public interface DBObject {
      * @return 返回数据库对象类型
      */
     DBObjectType getObjectType();
+
+    /**
+     * 获得数据库Schema
+     *
+     * @return 返回数据库Schema
+     */
+    DBSchema getSchema();
 }

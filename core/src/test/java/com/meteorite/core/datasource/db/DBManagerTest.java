@@ -4,6 +4,7 @@ import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.DBSchema;
+import com.meteorite.core.datasource.db.object.impl.DBColumnImpl;
 import com.meteorite.core.datasource.db.object.impl.DBTableImpl;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class DBManagerTest {
         assertNotNull(conn);
         assertThat(conn.getDatabaseType(), equalTo(DatabaseType.HSQLDB));
         DBSchema schema = conn.getSchema();
-        String str = JAXBUtil.marshalToString(schema, DBTableImpl.class);
+        String str = JAXBUtil.marshalToString(schema, DBTableImpl.class, DBColumnImpl.class);
         System.out.println(str);
     }
 }
