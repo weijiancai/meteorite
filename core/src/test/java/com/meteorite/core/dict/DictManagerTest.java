@@ -1,6 +1,6 @@
 package com.meteorite.core.dict;
 
-import com.meteorite.core.db.DatabaseType;
+import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.meta.DisplayStyle;
 import org.junit.Test;
 

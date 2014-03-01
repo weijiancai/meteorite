@@ -17,7 +17,7 @@ import java.util.Date;
  * @version 1.0.0
  */
 @XmlRootElement
-@XmlType(propOrder = {"id", "name", "displayName", "dataType", "defaultValue", "dictId", "valid", "sortNum", "inputDate", "desc"})
+@XmlType(propOrder = {"id", "name", "displayName", "dataType", "value", "defaultValue", "dictId", "valid", "sortNum", "inputDate", "desc"})
 @MetaElement(displayName = "元数据字段")
 public class MetaField {
     private long id;
@@ -26,12 +26,26 @@ public class MetaField {
     private MetaDataType dataType;
     private String desc;
     private String defaultValue;
+    private String value;
     private String dictId;
     private boolean isValid;
     private int sortNum;
     private Date inputDate;
 
     private Meta meta;
+
+    public MetaField() {}
+
+    public MetaField(String name, String displayName) {
+        this.name = name;
+        this.displayName = displayName;
+    }
+
+    public MetaField(String name, String displayName, String dictId) {
+        this.name = name;
+        this.displayName = displayName;
+        this.dictId = dictId;
+    }
 
     @XmlAttribute
     @MetaFieldElement(displayName = "ID", dataType = MetaDataType.NUMBER)
@@ -101,6 +115,16 @@ public class MetaField {
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    @XmlAttribute
+    @MetaFieldElement(displayName = "字段值")
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @XmlAttribute

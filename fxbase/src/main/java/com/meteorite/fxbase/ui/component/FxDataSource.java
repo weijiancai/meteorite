@@ -1,12 +1,10 @@
 package com.meteorite.fxbase.ui.component;
 
-import com.meteorite.core.db.DataSource;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaManager;
-import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.core.ui.IView;
 import com.meteorite.core.ui.config.ViewConfigFactory;
-import com.meteorite.core.ui.config.layout.FormFieldConfig;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.ui.Dialogs;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
@@ -25,7 +23,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 
 /**
@@ -40,7 +37,7 @@ public class FxDataSource extends FxFormField {
     private Hyperlink settingHyperlink;
     private Hyperlink testHyperlink;
 
-    private DataSource dataSource;
+    private DBDataSource dataSource;
 
     public FxDataSource(FxFormFieldConfig fieldConfig) {
         super(fieldConfig);
@@ -128,7 +125,7 @@ public class FxDataSource extends FxFormField {
 
         @Override
         public void handle(ActionEvent actionEvent) {
-            IView<FxPane> view = FxViewFactory.getView(ViewConfigFactory.createFormConfig(MetaManager.getMeta(DataSource.class)));
+            IView<FxPane> view = FxViewFactory.getView(ViewConfigFactory.createFormConfig(MetaManager.getMeta(DBDataSource.class)));
             Dialogs.showCustomDialog(BaseApp.getInstance().getStage(),view.layout(), null, "数据源配置", DialogOptions.OK, null);
         }
     }

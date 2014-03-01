@@ -21,12 +21,16 @@ metauiDirectives.directive('muTable', ['MUConfig', 'MUDict', '$compile', 'Meta',
 
             $scope.addRow = function() {
                 var meta = $scope.meta;
-                var aobj = {};
+                $scope.rowObj = new Meta();
                 for(var i = 0; i < meta.fields.length; i++) {
-                    aobj[meta.fields[i].name] = '';
+                    $scope.rowObj[meta.fields[i].name] = '';
                 }
 
-                $scope.metas.push(aobj);
+                $scope.metas.push($scope.rowObj);
+            };
+
+            $scope.save = function() {
+                $scope.rowObj.$save();
             };
 
             $scope.getDictDisplayName = function(dictId, value) {

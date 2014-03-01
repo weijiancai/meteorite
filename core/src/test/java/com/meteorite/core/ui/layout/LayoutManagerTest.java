@@ -10,7 +10,7 @@ public class LayoutManagerTest {
     @Test
     public void testToJson() {
        /* LayoutConfigManager.load();
-        ILayoutConfig layoutConfig = LayoutConfigManager.createFormLayout(MetaManager.getMeta(DataSource.class));
+        ILayoutConfig layoutConfig = LayoutConfigManager.createFormLayout(MetaManager.getMeta(DBDataSource.class));
         FormConfig formConfig = new FormConfig(layoutConfig);
         String jsonStr = JSON.toJSONString(formConfig, SerializerFeature.PrettyFormat);
         System.out.println(jsonStr);*/

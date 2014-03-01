@@ -1,7 +1,7 @@
 package com.meteorite.core.config;
 
-import com.meteorite.core.db.DBManager;
-import com.meteorite.core.db.DataSource;
+import com.meteorite.core.datasource.db.DBDataSource;
+import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.util.*;
 import com.meteorite.core.util.jaxb.JAXBUtil;
@@ -72,13 +72,14 @@ public class SystemManager {
         // 加载系统默认Hsqldb数据源
         File sysDbFile = UtilFile.createFile(DIR_SYSTEM_HSQL_DB, "sys");
         HSqlDBServer.getInstance().addDbFile("sys", sysDbFile.getAbsolutePath());
-//        DBManager.addDataSource(DBManager.getSysDataSource());
+        DBManager.addDataSource(DBManager.getSysDataSource());
 
         for (ProjectConfig config : cache.values()) {
-            List<DataSource> list = config.getDataSources();
+            List<DBDataSource> list = config.getDataSources();
             if (list != null) {
-                for (DataSource dataSource : list) {
+                for (DBDataSource dataSource : list) {
                     DBManager.addDataSource(dataSource);
+                    // 如果存在hsqldb文件路径，则加载hsqldb数据库文件
                     if (dataSource.getFilePath() != null) {
                         HSqlDBServer.getInstance().addDbFile(dataSource.getName(), dataSource.getFilePath());
                     }
@@ -89,7 +90,7 @@ public class SystemManager {
 
     public ProjectConfig createProjectConfig(String projectName) throws Exception {
         ProjectConfig projectConfig = new ProjectConfig(projectName);
-        Class<?>[] clazz = new Class[]{ProjectConfig.class, DataSource.class};
+        Class<?>[] clazz = new Class[]{ProjectConfig.class, DBDataSource.class};
         JAXBUtil.marshalToFile(projectConfig, projectConfig.getProjectConfigFile(), clazz);
 
         return projectConfig;
@@ -100,7 +101,7 @@ public class SystemManager {
     }
 
     public static void save(ProjectConfig projectConfig) throws Exception {
-        JAXBUtil.marshalToFile(projectConfig, projectConfig.getProjectConfigFile(), ProjectConfig.class, DataSource.class);
+        JAXBUtil.marshalToFile(projectConfig, projectConfig.getProjectConfigFile(), ProjectConfig.class, DBDataSource.class);
     }
 
     /**

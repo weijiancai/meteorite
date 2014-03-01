@@ -29,6 +29,10 @@
         <servlet-name>DictRest</servlet-name>
         <servlet-class>com.meteorite.core.web.rest.DictRest</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SystemAction</servlet-name>
+        <servlet-class>com.meteorite.core.web.action.SystemAction</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>MetaRest</servlet-name>
@@ -41,5 +45,10 @@
     <servlet-mapping>
         <servlet-name>DictRest</servlet-name>
         <url-pattern>/dict/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SystemAction</servlet-name>
+        <url-pattern>/getSystemInfo</url-pattern>
     </servlet-mapping>
 </web-app>

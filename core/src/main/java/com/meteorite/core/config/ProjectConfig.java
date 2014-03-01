@@ -1,6 +1,6 @@
 package com.meteorite.core.config;
 
-import com.meteorite.core.db.DataSource;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
@@ -24,7 +24,7 @@ public class ProjectConfig {
     private String name;
     private String displayName;
 
-    private List<DataSource> dataSources = new ArrayList<DataSource>();
+    private List<DBDataSource> dataSources = new ArrayList<DBDataSource>();
 
     public ProjectConfig() {}
 
@@ -51,13 +51,13 @@ public class ProjectConfig {
     }
 
     @XmlElementWrapper(name = "DataSources")
-    @XmlElement(name = "DataSource")
+    @XmlElement(name = "DBDataSource")
     @MetaFieldElement(displayName = "数据源", sortNum = 40, dataType = MetaDataType.DATA_SOURCE)
-    public List<DataSource> getDataSources() {
+    public List<DBDataSource> getDataSources() {
         return dataSources;
     }
 
-    public void setDataSources(List<DataSource> dataSources) {
+    public void setDataSources(List<DBDataSource> dataSources) {
         this.dataSources = dataSources;
     }
 

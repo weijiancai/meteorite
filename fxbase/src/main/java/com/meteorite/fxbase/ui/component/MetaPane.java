@@ -1,6 +1,5 @@
 package com.meteorite.fxbase.ui.component;
 
-import com.meteorite.core.db.DataSource;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.IView;

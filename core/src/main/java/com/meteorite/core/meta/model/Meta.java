@@ -5,6 +5,7 @@ import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,14 @@ public class Meta {
     private int sortNum;
     private Date inputDate;
 
-    private List<MetaField> fields;
+    private List<MetaField> fields = new ArrayList<>();
+
+    public Meta() {}
+
+    public Meta(String name, String displayName) {
+        this.name = name;
+        this.displayName = displayName;
+    }
 
     @XmlAttribute
     @MetaFieldElement(displayName = "ID", dataType = MetaDataType.NUMBER)
@@ -105,5 +113,24 @@ public class Meta {
 
     public void setFields(List<MetaField> fields) {
         this.fields = fields;
+    }
+
+    public void setFieldValue(String fieldName, String value) {
+        for (MetaField field : fields) {
+            if (field.getName().equals(fieldName)) {
+                field.setValue(value);
+                break;
+            }
+        }
+    }
+
+    public String getFieldValue(String fieldName) {
+        for (MetaField field : fields) {
+            if (field.getName().equals(fieldName)) {
+                return field.getValue();
+            }
+        }
+
+        return null;
     }
 }

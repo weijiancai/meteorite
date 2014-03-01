@@ -1,6 +1,6 @@
 package com.meteorite.core.dict;
 
-import com.meteorite.core.db.DatabaseType;
+import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.dict.annotation.DictElement;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
@@ -102,7 +102,7 @@ public class DictManager {
      * @return 返回数据字典
      */
     public static DictCategory getDict(Class<?> clazz) {
-        return getDict(clazz.getName());
+        return getDict(clazz.getName().replace(".", "_"));
     }
 
     /**

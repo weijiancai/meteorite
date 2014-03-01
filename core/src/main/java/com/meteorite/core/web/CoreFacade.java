@@ -1,7 +1,7 @@
 package com.meteorite.core.web;
 
 import com.meteorite.core.config.SystemManager;
-import com.meteorite.core.db.DataSource;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.facade.impl.BaseFacade;
 import com.meteorite.core.util.HSqlDBServer;
 import com.meteorite.core.util.UtilFile;
@@ -29,7 +29,7 @@ public class CoreFacade extends BaseFacade {
         if (projectConfig == null) {
             projectConfig = factory.createProjectConfig(PROJECT_NAME);
             projectConfig.setDisplayName("基础类库");
-            DataSource coreDS = new DataSource(PROJECT_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/core", "sa", "", "1.0.0");
+            DBDataSource coreDS = new DBDataSource(PROJECT_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/core", "sa", "", "1.0.0");
             coreDS.setFilePath(UtilFile.createFile(projectConfig.getHsqldbDir(), PROJECT_NAME).getAbsolutePath());
             projectConfig.getDataSources().add(coreDS);
 

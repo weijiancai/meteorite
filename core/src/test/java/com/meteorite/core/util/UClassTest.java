@@ -1,6 +1,6 @@
 package com.meteorite.core.util;
 
-import com.meteorite.core.db.DatabaseType;
+import com.meteorite.core.datasource.db.DatabaseType;
 import org.junit.Test;
 
 /**

@@ -1,7 +1,7 @@
 package com.meteorite.core.meta;
 
 import com.meteorite.core.config.ProjectConfig;
-import com.meteorite.core.db.DataSource;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
@@ -33,7 +33,7 @@ public class MetaManager {
     static {
         try {
             addMeta(ProjectConfig.class);
-            addMeta(DataSource.class);
+            addMeta(DBDataSource.class);
             addMeta(Meta.class);
             addMeta(MetaField.class);
 
