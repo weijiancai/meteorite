@@ -125,6 +125,11 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
+    public List<DBSchema> getSchemas() throws Exception {
+        return schemas;
+    }
+
+    @Override
     public void execSqlFile(File sqlFile) throws Exception {
         String[] sqls = UtilFile.readString(sqlFile).split(";");
         Connection conn = null;

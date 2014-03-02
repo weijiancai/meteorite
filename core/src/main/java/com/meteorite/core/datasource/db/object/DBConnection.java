@@ -48,6 +48,14 @@ public interface DBConnection {
     DBSchema getSchema() throws Exception;
 
     /**
+     * 获得当前数据库的所有schema
+     *
+     * @return 返回当前数据库的所有schema
+     * @throws Exception
+     */
+    List<DBSchema> getSchemas() throws Exception;
+
+    /**
      * 执行SQL脚本文件
      *
      * @param sqlFile SQL脚本文件

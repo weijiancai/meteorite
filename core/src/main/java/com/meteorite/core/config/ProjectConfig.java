@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
+import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UtilFile;
 
 import javax.xml.bind.annotation.*;
@@ -43,7 +44,7 @@ public class ProjectConfig {
 
     @MetaFieldElement(displayName = "项目中文名", sortNum = 20)
     public String getDisplayName() {
-        return displayName;
+        return UString.isEmpty(displayName, name);
     }
 
     public void setDisplayName(String displayName) {

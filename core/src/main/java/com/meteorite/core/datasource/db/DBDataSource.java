@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
 import com.meteorite.core.dict.DictManager;
@@ -78,6 +79,7 @@ public class DBDataSource implements DataSource {
 
     @XmlAttribute
     @MetaFieldElement(displayName = "名称")
+    @JSONField(name = "displayName")
     public String getName() {
         return name;
     }
@@ -88,8 +90,9 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Meta getProperties() {
-        return null;
+        return properties;
     }
 
     public void setName(String name) {

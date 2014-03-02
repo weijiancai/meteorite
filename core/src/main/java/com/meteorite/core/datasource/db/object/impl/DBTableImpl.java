@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.object.impl;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObjectType;
 import com.meteorite.core.datasource.db.object.DBSchema;
@@ -45,6 +46,7 @@ public class DBTableImpl implements DBTable {
     @Override
     @XmlElementWrapper(name = "Columns")
     @XmlAnyElement
+    @JSONField(name = "children")
     public List<DBColumn> getColumns() {
         return columns;
     }

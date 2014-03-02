@@ -1,5 +1,7 @@
 package com.meteorite.core.datasource.db;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.db.object.DBConnection;
@@ -28,5 +30,8 @@ public class DBManagerTest {
         DBSchema schema = conn.getSchema();
         String str = JAXBUtil.marshalToString(schema, DBTableImpl.class, DBColumnImpl.class);
         System.out.println(str);
+
+        System.out.println("==========================");
+        System.out.println(JSON.toJSONString(schema, SerializerFeature.PrettyFormat));
     }
 }

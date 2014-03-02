@@ -9,6 +9,7 @@ import com.meteorite.core.util.jaxb.JAXBUtil;
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,6 +99,10 @@ public class SystemManager {
 
     public ProjectConfig getProjectConfig(String projectName) {
         return cache.get(projectName);
+    }
+
+    public List<ProjectConfig> getProjectConfigs() {
+        return new ArrayList<>(cache.values());
     }
 
     public static void save(ProjectConfig projectConfig) throws Exception {
