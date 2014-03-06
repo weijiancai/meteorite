@@ -4,7 +4,9 @@ import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +36,15 @@ public class DBManager {
      */
     public static DBDataSource getDataSource(String dataSourceName) {
         return dataSourceMap.get(dataSourceName);
+    }
+
+    /**
+     * 获得所有数据源
+     *
+     * @return 返回所有数据源
+     */
+    public static List<DBDataSource> getDataSources() {
+        return new ArrayList<>(dataSourceMap.values());
     }
 
     /**

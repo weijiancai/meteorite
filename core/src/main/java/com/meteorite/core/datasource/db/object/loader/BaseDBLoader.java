@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.impl.DBColumnImpl;
 import com.meteorite.core.datasource.db.object.impl.DBSchemaImpl;
 import com.meteorite.core.datasource.db.object.impl.DBTableImpl;
+import com.meteorite.core.datasource.db.object.impl.DBViewImpl;
 import com.meteorite.core.util.UObject;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public abstract class BaseDBLoader implements DBLoader {
     protected abstract String getSchemaSql();
     // 获得Table sql语句
     protected abstract String getTableSql();
+    // 获得View Sql语句
+    protected abstract String getViewSql();
     // 获得Column Sql语句
     protected abstract String getColumnSql();
 
@@ -38,6 +41,8 @@ public abstract class BaseDBLoader implements DBLoader {
             schema.setComment(schema.getName());
             // 加载Table
             schema.setTables(loadTables(schema));
+            // 加载View
+            schema.setViews(loadViews(schema));
 
             result.add(schema);
         }
@@ -70,6 +75,22 @@ public abstract class BaseDBLoader implements DBLoader {
             column.setComment(UObject.toString(map.get("COLUMN_COMMENT")));
 
             result.add(column);
+        }
+        return result;
+    }
+
+    @Override
+    public List<DBView> loadViews(DBSchema schema) throws Exception {
+        List<DBView> result = new ArrayList<>();
+        List<Map<String, Object>> list = conn.getResultSet(String.format(getViewSql(), schema.getName()));
+        for (Map<String, Object> map : list) {
+            DBViewImpl view = new DBViewImpl();
+            view.setName(UObject.toString(map.get("VIEW_NAME")));
+//            view.setComment(UObject.toString(map.get("TABLE_COMMENT")));
+            view.setSchema(schema);
+            // 加载列
+//            view.setColumns(loadColumns(view));
+            result.add(view);
         }
         return result;
     }

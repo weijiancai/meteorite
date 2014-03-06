@@ -21,7 +21,9 @@ public class DBSchemaImpl implements DBSchema {
     private String comment;
 
     private List<DBTable> tables;
+    private List<DBView> views;
     private Map<String, DBTable> tableMap = new HashMap<String, DBTable>();
+    private Map<String, DBView> viewMap = new HashMap<>();
 
     @Override
     public String getCatalog() {
@@ -46,7 +48,15 @@ public class DBSchemaImpl implements DBSchema {
 
     @Override
     public List<DBView> getViews() {
-        return null;
+        return views;
+    }
+
+    public void setViews(List<DBView> views) {
+        this.views = views;
+        viewMap.clear();
+        for (DBView view : views) {
+            viewMap.put(view.getName(), view);
+        }
     }
 
     @Override
@@ -66,7 +76,7 @@ public class DBSchemaImpl implements DBSchema {
 
     @Override
     public DBView getView(String name) {
-        return null;
+        return viewMap.get(name);
     }
 
     @Override
@@ -105,6 +115,7 @@ public class DBSchemaImpl implements DBSchema {
     }
 
     @Override @XmlAttribute
+    @JSONField(name = "displayName")
     public String getName() {
         return name;
     }

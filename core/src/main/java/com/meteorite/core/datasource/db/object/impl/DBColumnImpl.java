@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.object.impl;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObjectType;
 import com.meteorite.core.datasource.db.object.DBSchema;
@@ -23,6 +24,7 @@ public class DBColumnImpl implements DBColumn {
     private DBSchema schema;
 
     @Override @XmlAttribute
+    @JSONField(name = "displayName")
     public String getName() {
         return name;
     }

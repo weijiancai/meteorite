@@ -3,6 +3,7 @@ package com.meteorite.core.datasource.db;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
+import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
@@ -151,5 +152,10 @@ public class DBDataSource implements DataSource {
 
     public void setDbVersion(String dbVersion) {
         properties.setFieldValue(DB_VERSION, dbVersion);
+    }
+
+    @JSONField(name = "children")
+    public List<DBSchema> getSchemas() throws Exception {
+        return DBManager.getConnection(this).getSchemas();
     }
 }

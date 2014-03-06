@@ -1,23 +1,20 @@
 package com.meteorite.core.datasource.db.object.impl;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.meteorite.core.datasource.db.object.DBColumn;
-import com.meteorite.core.datasource.db.object.DBObjectType;
-import com.meteorite.core.datasource.db.object.DBSchema;
-import com.meteorite.core.datasource.db.object.DBTable;
+import com.meteorite.core.datasource.db.object.*;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
- * 数据库表实现类
+ * 数据库视图实现类
  *
  * @author wei_jc
  * @since 1.0.0
  */
-@XmlRootElement(name = "Table")
+@XmlRootElement(name = "View")
 @XmlType(propOrder = {"name", "comment", "columns"})
-public class DBTableImpl implements DBTable {
+public class DBViewImpl implements DBView {
     private String name;
     private String comment;
     private DBSchema schema;
@@ -36,7 +33,7 @@ public class DBTableImpl implements DBTable {
 
     @Override
     public DBObjectType getObjectType() {
-        return DBObjectType.TABLE;
+        return DBObjectType.VIEW;
     }
 
     @Override @XmlTransient
@@ -44,13 +41,13 @@ public class DBTableImpl implements DBTable {
         return schema;
     }
 
-    @Override
+    /*@Override
     @XmlElementWrapper(name = "Columns")
     @XmlAnyElement
     @JSONField(name = "children")
     public List<DBColumn> getColumns() {
         return columns;
-    }
+    }*/
 
     public void setName(String name) {
         this.name = name;

@@ -13,5 +13,7 @@ public interface DBLoader {
 
     List<DBTable> loadTables(DBSchema schema) throws Exception;
 
+    List<DBView> loadViews(DBSchema schema) throws Exception;
+
     List<DBColumn> loadColumns(DBTable table) throws Exception;
 }

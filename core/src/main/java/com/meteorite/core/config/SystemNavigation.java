@@ -28,7 +28,7 @@ public class SystemNavigation {
         Map<String, Object> dataSourceManager = new HashMap<>();
         dataSourceManager.put("id", "DataSourceManager");
         dataSourceManager.put("displayName", "数据源管理");
-//        dataSourceManager.put("children", DBManager.);
+        dataSourceManager.put("children", DBManager.getDataSources());
         children.add(dataSourceManager);
     }
 
