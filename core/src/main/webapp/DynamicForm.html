@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title></title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+    <link href="css/bootstrap.css" type="text/css" rel="stylesheet">
+    <link href="css/bootstrap-theme.css" type="text/css" rel="stylesheet">
+    <link href="css/angular.treeview.css" type="text/css" rel="stylesheet">
+    <link href="js/lib/ng-grid/ng-grid.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h3 >Dynamic form fields AngularJS</h3>
+<div ng-app ng-controller="Controller" class="container">
+    <h4>Inputs</h4>
+    <ul ng-repeat="input in inputs">
+        <li><span>{{input.name}} : </span>
+            <div ng-switch="input.type">
+                <div  ng-switch-when="text" >
+                    <input  type="text"
+                            ng-model="outputs[input.name]">
+                    </input>
+                </div>
+                <div ng-switch-when="checkbox">
+                    <input  type="checkbox"
+                            ng-model="outputs[input.name]"
+                            ng-checked="outputs[input.name]"
+                            value="outputs[input.name]" >
+                    </input>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <h4>Outputs</h4>
+    <ul ng-repeat="input in inputs">
+        <li>
+            {{input.name}} : {{outputs[input.name]}}
+        </li>
+    </ul>
+</div>
+
+<script type="text/javascript" src="js/lib/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/angular.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/angular-resource.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/angular-route.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/angular-animate.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/angular-sanitize.js"></script>
+<script type="text/javascript" src="js/lib/angularjs/ui-bootstrap-tpls-0.10.0.js"></script>
+<script type="text/javascript" src="js/lib/ng-grid/ng-grid-2.0.7.debug.js"></script>
+<script type="text/javascript" src="js/metaui/namespace.js"></script>
+<script type="text/javascript" src="js/metaui/Utils.js"></script>
+<script type="text/javascript" src="js/metaui/services/mu-dict.js"></script>
+<script type="text/javascript" src="js/metaui/services/mu-config.js"></script>
+<script type="text/javascript" src="js/metaui/directives/mu-tree.js"></script>
+<script type="text/javascript" src="js/metaui/directives/mu-table.js"></script>
+<script type="text/javascript" src="js/metaui/directives/mu-dict.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/controllers.js"></script>
+
+<script type="text/javascript">
+    function Controller($scope) {
+        $scope.outputs = {};
+        $scope.inputs = [{
+            type: "text",
+            name: "first_field"
+        }, {
+            type: "text",
+            name: "second_field"
+        }, {
+            type: "checkbox",
+            name: "third_field"
+        }];
+
+    }
+</script>
+</body>
+</html>

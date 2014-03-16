@@ -1,0 +1,44 @@
+<form role="form">
+    <div ng-switch on="formConfig.layoutType">
+        <div ng-switch-when="F">
+            <table>
+                <tr ng-repeat="tr in trs">
+                    <td>
+                        <span ng-repeat="td in tr" colspan="{{td.colspan}}">
+                            <span ng-if="td.label">{{td.label}}</span>
+                            <span ng-if="td.gap" style="{{td.gap}}"></span>
+                            <span ng-if="td.displayStyle" ng-switch on="td.displayStyle">
+                                <input ng-model="{{td.name}}" type="text" ng-switch-when="10" style="{{td.style}}" value="{{td.defaultValue}}"/>
+                                <textarea ng-switch-when="1" style="{{td.style}}"></textarea>
+                                <input type="password" ng-switch-when="2" style="{{td.style}}">
+                                <select ng-switch-when="3" style="{{td.style}}"></select>
+                                <button type="button" ng-switch-when="4">{{td.displayName}}</button>
+                                <input type="text" ng-switch-default style="{{td.style}}" value="{{td.defaultValue}}"/>
+                            </span>
+                        </span>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+        <div ng-switch-when="T">
+            <table>
+                <tr ng-repeat="tr in trs">
+                    <td ng-repeat="td in tr" colspan="{{td.colspan}}" style="vertical-align: top" class="form-group input-group-sm">
+                        <label ng-if="td.label" style="margin-top: 5px;" ng-style="{'margin-right': formConfig.labelGap}" >{{td.label}}</label>
+                        <div ng-if="td.displayStyle" ng-switch on="td.displayStyle" ng-style="{'margin-right': formConfig.fieldGap}">
+                            <input type="text" ng-switch-when="10" ng-model="muForm[td.name]" style="{{td.style}}" class="form-control input-sm"/>
+                            <textarea ng-switch-when="1" style="{{td.style}}"></textarea>
+                            <input type="password" ng-switch-when="2" style="{{td.style}}">
+                            <select ng-switch-when="3" ng-style="{'margin-left': td.labelGap,'margin-right': td.fieldGap}">
+                                <option ng-repeat="op in td.dict" value="{{op.value}}">{{op.name}}</option>
+                            </select>
+                            <button type="button" ng-switch-when="4">{{td.displayName}}</button>
+                            <input type="text" ng-switch-default style="{{td.style}}"/>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>

@@ -1,49 +1,73 @@
-metauiDirectives.directive('treeModel', ['$compile', function($compile) {
+metauiDirectives.directive('muTree', ['$compile', function($compile) {
     return {
         restrict: 'A',
+        /*scope: {},*/
         link: function ( scope, element, attrs ) {
+            var options = {
+                treeId: attrs['muTree'],
+                nodeId: attrs.nodeId,
+                nodeLabel: attrs.nodeLabel,
+                nodeChildren: attrs.nodeChildren,
+                nodeLabelTemplate: attrs['nodeLabelTemplate'],
+                onNodeClick: attrs['onNodeClick'],
+                data: []
+            };
+
+            var treeOptions = attrs['treeOptions'];
+            if(treeOptions) {
+                options = $.extend(options, scope[treeOptions]);
+            }
+
+            var tree =  new M.Tree(options);
+            var config = tree.config;
+
             //tree id
-            var treeId = attrs.treeId;
-
+            var treeId = config.treeId;
             //tree model
-            var treeModel = attrs.treeModel;
-
+            var treeModel = attrs['treeModel'] || 'treeModel';
             //node id
-            var nodeId = attrs.nodeId || 'id';
-
+            var nodeId = config.nodeId;
             //node label
-            var nodeLabel = attrs.nodeLabel || 'label';
-
+            var nodeLabel = config.nodeLabel;
             //children
-            var nodeChildren = attrs.nodeChildren || 'children';
+            var nodeChildren = config.nodeChildren;
+            // is root
+            var isRoot = attrs['isRoot'] || true;
+
+            scope[treeModel] = config.data;
+            scope.hasLabelTemplate = config.nodeLabelTemplate != undefined;
 
             //tree template
             var template =
-                '<ul>' +
+                '<ul class="nav nav-list nav-pills nav-stacked mu-tree">' +
                     '<li data-ng-repeat="node in ' + treeModel + '">' +
-                    '<i class="collapsed" data-ng-show="node.' + nodeChildren + '.length && node.collapsed" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
-                    '<i class="expanded" data-ng-show="node.' + nodeChildren + '.length && !node.collapsed" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
-                    '<i class="normal" data-ng-hide="node.' + nodeChildren + '.length"></i> ' +
-                    '<span data-ng-class="node.selected" data-ng-click="' + treeId + '.selectNodeLabel(node)">{{node.' + nodeLabel + '}}</span>' +
-                    '<div data-ng-hide="node.collapsed" data-tree-id="' + treeId + '" data-tree-model="node.' + nodeChildren + '" data-node-id=' + nodeId + ' data-node-label=' + nodeLabel + ' data-node-children=' + nodeChildren + '></div>' +
+                        '<a href="#">' +
+                            '<img ng-src="{{node.icon}}" data-ng-click="' + treeId + '.selectNodeHead(node)"/>' +
+                            '<i class="collapsed" data-ng-show="node.' + nodeChildren + '.length && node.collapsed && !node.icon" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
+                            '<i class="expanded" data-ng-show="node.' + nodeChildren + '.length && !node.collapsed && !node.icon" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
+                            '<i class="normal" data-ng-hide="node.' + nodeChildren + '.length || node.icon"></i> ' +
+                            '<span data-ng-class="node.selected" ng-dblclick="' + treeId + '.selectNodeHead(node)" data-ng-click="' + treeId + '.selectNodeLabel(node)">' +
+                                '<span data-ng-show="!hasLabelTemplate">{{node.' + nodeLabel + '}}</span>' +
+                                '<span data-ng-show="hasLabelTemplate" data-ng-bind-html="' + config.nodeLabelTemplate + '(node)"></span>' +
+                            '</span>' +
+                        '</a>' +
+                        '<div data-tree-options="' + treeOptions + '" data-is-root="false" data-mu-tree="' + treeId + '" data-ng-show="node.expanded" data-tree-id="' + treeId + '" data-tree-model="node.' + nodeChildren + '" data-node-id=' + nodeId + ' data-node-label=' + nodeLabel + ' data-node-children=' + nodeChildren + '' +
+                            ' data-node-label-template="' + config.nodeLabelTemplate + '"></div>' +
                     '</li>' +
-                    '</ul>';
-
+                '</ul>';
 
             //check tree id, tree model
             if( treeId && treeModel ) {
-
                 //root node
-                if( attrs.angularTreeview ) {
-
+                if(isRoot) {
                     //create tree object if not exists
                     scope[treeId] = scope[treeId] || {};
 
                     //if node head clicks,
                     scope[treeId].selectNodeHead = scope[treeId].selectNodeHead || function( selectedNode ){
-
                         //Collapse or Expand
-                        selectedNode.collapsed = !selectedNode.collapsed;
+//                        selectedNode.collapsed = !selectedNode.collapsed;
+                        selectedNode.expanded = !selectedNode.expanded;
                     };
 
                     //if node label clicks,
@@ -56,11 +80,8 @@ metauiDirectives.directive('treeModel', ['$compile', function($compile) {
 
                         //set highlight to selected node
                         selectedNode.selected = 'selected';
-                        if(scope.onTreeNodeClick) {
-                            for (var prop in selectedNode) {
-                                alert(prop);
-                            }
-                            scope.onTreeNodeClick(selectedNode.selected);
+                        if(config.onNodeClick) {
+                            scope[config.onNodeClick](selectedNode);
                         }
 
                         //set currentNode
@@ -74,68 +95,3 @@ metauiDirectives.directive('treeModel', ['$compile', function($compile) {
         }
     };
 }]);
-/*
-
-metauiDirectives.directive('muTree', ['$compile', function($compile) {
-    var treeOption = {};
-
-    return {
-        link: function(scope, element, attrs) {
-            var treeId = attrs['muTree'];
-            if(treeId) {
-                var options = scope.treeOption;
-                // node id
-                var nodeId = options.id || 'id';
-                // node label
-                var nodeLabel = options.label || 'label';
-                // node children
-                var nodeChildren = options.children || 'children';
-                // tree model
-                var treeModel = options.data || [];
-
-                //tree template
-                var template =
-                    '<ul>' +
-                        '<li data-ng-repeat="node in ' + treeModel + '">' +
-                            '<i class="collapsed" data-ng-show="node.' + nodeChildren + '.length && node.collapsed" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
-                            '<i class="expanded" data-ng-show="node.' + nodeChildren + '.length && !node.collapsed" data-ng-click="' + treeId + '.selectNodeHead(node)"></i>' +
-                            '<i class="normal" data-ng-hide="node.' + nodeChildren + '.length"></i> ' +
-                            '<span data-ng-class="node.selected" data-ng-click="' + treeId + '.selectNodeLabel(node)">{{node.' + nodeLabel + '}}</span>' +
-                            '<div data-ng-hide="node.collapsed" data-tree-id="' + treeId + '" data-tree-model="node.' + nodeChildren + '" data-node-id=' + nodeId + ' data-node-label=' + nodeLabel + ' data-node-children=' + nodeChildren + '></div>' +
-                        '</li>' +
-                    '</ul>';
-
-                //create tree object if not exists
-                scope[treeId] = scope[treeId] || {};
-
-                //if node head clicks,
-                scope[treeId].selectNodeHead = scope[treeId].selectNodeHead || function(selectedNode) {
-                    //Collapse or Expand
-                    selectedNode.collapsed = !selectedNode.collapsed;
-                };
-
-                //if node label clicks,
-                scope[treeId].selectNodeLabel = scope[treeId].selectNodeLabel || function(selectedNode){
-                    //remove highlight from previous node
-                    if( scope[treeId].currentNode && scope[treeId].currentNode.selected ) {
-                        scope[treeId].currentNode.selected = undefined;
-                    }
-
-                    //set highlight to selected node
-                    selectedNode.selected = 'selected';
-
-                    //set currentNode
-                    scope[treeId].currentNode = selectedNode;
-                };
-
-                //Rendering template.
-                element.html('').append( $compile( template )( scope ) );
-            }
-        },
-        controller: function($scope, $element, $attrs) {
-//            var treeId = $attrs['muTree'];
-//            var nodeLabel = $scope.treeOption.label || 'label';
-//            alert('Controller = ' + $scope.treeOption.id);
-        }
-    }
-}]);*/

@@ -1,12 +1,14 @@
 package com.meteorite.core.datasource.db.object.impl;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.db.object.DBColumn;
+import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.DBObjectType;
-import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.DBTable;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,21 +18,11 @@ import java.util.List;
  * @since 1.0.0
  */
 @XmlRootElement(name = "Table")
-@XmlType(propOrder = {"name", "comment", "columns"})
-public class DBTableImpl implements DBTable {
-    private String name;
-    private String comment;
-    private DBSchema schema;
+public class DBTableImpl extends DBObjectImpl implements DBTable {
     private List<DBColumn> columns;
 
-    @Override @XmlAttribute
-    public String getName() {
-        return name;
-    }
-
-    @Override @XmlAttribute
-    public String getComment() {
-        return comment;
+    public DBTableImpl() {
+        setObjectType(DBObjectType.TABLE);
     }
 
     @Override
@@ -38,32 +30,19 @@ public class DBTableImpl implements DBTable {
         return DBObjectType.TABLE;
     }
 
-    @Override @XmlTransient
-    public DBSchema getSchema() {
-        return schema;
+    @Override
+    public List<DBObject> getChildren() {
+        return new ArrayList<DBObject>(columns);
     }
 
     @Override
     @XmlElementWrapper(name = "Columns")
     @XmlAnyElement
-    @JSONField(name = "children")
     public List<DBColumn> getColumns() {
         return columns;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
     public void setColumns(List<DBColumn> columns) {
         this.columns = columns;
-    }
-
-    public void setSchema(DBSchema schema) {
-        this.schema = schema;
     }
 }

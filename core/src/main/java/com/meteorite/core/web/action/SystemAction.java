@@ -19,7 +19,7 @@ public class SystemAction extends HttpServlet {
         response.setContentType("application/json;charset=UTF-8");
         SystemNavigation nav = new SystemNavigation();
         String json = JSON.toJSONString(nav, SerializerFeature.PrettyFormat);
-        System.out.println(json);
+//        System.out.println(json);
         response.getWriter().println(json);
     }
 

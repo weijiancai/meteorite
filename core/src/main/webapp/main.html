@@ -54,14 +54,15 @@
 
 
 <div>
-    <div
-            data-angular-treeview="true"
-            data-tree-id="mytree"
-            data-tree-model="layout"
-            data-node-label="displayName"
-            data-on-node-click="">
-    </div>
+    <!--<div style="width: 250px;display: inline-block"
+            data-mu-tree="" data-tree-options="treeOptions">
+    </div>-->
 
+    <div data-mu-tree="dbTree" data-tree-model="layout" data-node-label="displayName" data-node-label-template="dbTreeNodeLabelTemplate"
+         data-on-node-click="dbTreeNodeClick" style="display: inline-block"></div>
+
+    <div data-mu-form=""></div>
+    <div mu-table=""></div>
     <hr/>
     <!--<div data-mu-tree="Tree1"></div>-->
     <hr/>

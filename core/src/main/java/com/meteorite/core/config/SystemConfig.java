@@ -1,6 +1,6 @@
 package com.meteorite.core.config;
 
-import com.meteorite.core.util.UtilFile;
+import com.meteorite.core.util.UFile;
 
 import java.io.File;
 
@@ -31,12 +31,24 @@ public class SystemConfig {
     /**
      * 系统默认目录
      */
-    public static File DIR_SYSTEM = UtilFile.makeDirs(userHome, DIR_NAME_METEORITE);
+    public static File DIR_SYSTEM = UFile.makeDirs(userHome, DIR_NAME_METEORITE);
+    /**
+     * 类路径目录
+     */
+    public static File DIR_CLASS_PATH = UFile.getClassPathDir();
     /**
      * 系统默认数据库目录
      */
-    public static File DIR_SYSTEM_HSQL_DB = UtilFile.makeDirs(DIR_SYSTEM, DIR_NAME_SQLDB);
+    public static File DIR_SYSTEM_HSQL_DB = UFile.makeDirs(DIR_SYSTEM, DIR_NAME_SQLDB);
+    /**
+     * 数据库升级脚本目录
+     */
+    public static File DIR_DB_UPGRADE = UFile.makeDirs(DIR_CLASS_PATH, "dbversion");
 
+    /**
+     * 系统名称
+     */
+    public static final String SYS_NAME = "core";
     /**
      * 系统数据库版本
      */

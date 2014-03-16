@@ -1,20 +1,28 @@
 package com.meteorite.core.datasource.db;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
+import com.meteorite.core.datasource.db.object.DBConnection;
+import com.meteorite.core.datasource.db.object.DBSchema;
+import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.util.MyMap;
+import com.meteorite.core.util.UObject;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库数据源
@@ -151,5 +159,36 @@ public class DBDataSource implements DataSource {
 
     public void setDbVersion(String dbVersion) {
         properties.setFieldValue(DB_VERSION, dbVersion);
+    }
+
+    @JSONField(name = "children")
+    public List<DBSchema> getSchemas() throws Exception {
+        return DBManager.getConnection(this).getSchemas();
+    }
+
+    /**
+     * 获得某个系统的最大版本号
+     *
+     * @param systemName 系统名称
+     * @return 返回某个系统的最大版本号
+     */
+    public String getMaxVersion(String systemName) throws Exception {
+        String sql = SqlBuilder.getInstance()
+                .from(SystemConfig.SYS_DB_VERSION_TABLE_NAME)
+                .max("db_version")
+                .where(String.format("sys_name='%s'", systemName))
+                .group("sys_name")
+                .build();
+
+        DBConnection conn = DBManager.getConnection(this);
+        if (DBUtil.existsTable(conn, SystemConfig.SYS_DB_VERSION_TABLE_NAME)) {
+            List<MyMap<String, Object>> result = conn.getResultSet(sql);
+            if(result.size() > 0) {
+                // TODO 处理大小写
+                return result.get(0).getString("max_db_version".toUpperCase());
+            }
+        }
+
+        return "0.0.0";
     }
 }

@@ -19,6 +19,12 @@ public class SystemNavigation {
     private List<Object> children = new ArrayList<>();
 
     public SystemNavigation() {
+        Map<String, Object> metaManager = new HashMap<>();
+        metaManager.put("id", "MetaManager");
+        metaManager.put("displayName", "元数据管理");
+        metaManager.put("action", "/view/meta_view");
+        children.add(metaManager);
+
         Map<String, Object> projectManager = new HashMap<>();
         projectManager.put("id", "ProjectManager");
         projectManager.put("displayName", "项目管理");
@@ -28,7 +34,7 @@ public class SystemNavigation {
         Map<String, Object> dataSourceManager = new HashMap<>();
         dataSourceManager.put("id", "DataSourceManager");
         dataSourceManager.put("displayName", "数据源管理");
-//        dataSourceManager.put("children", DBManager.);
+        dataSourceManager.put("children", DBManager.getDataSources());
         children.add(dataSourceManager);
     }
 

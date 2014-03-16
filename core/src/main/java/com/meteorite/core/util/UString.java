@@ -1,8 +1,10 @@
 package com.meteorite.core.util;
 
 /**
+ * 字符串处理工具类
+ *
  * @author wei_jc
- * @version 1.0.0
+ * @since  1.0.0
  */
 public class UString {
     public static final String EMPTY = "";
@@ -12,7 +14,7 @@ public class UString {
     }
 
     public static boolean isEmpty(String str) {
-        return str == null || str.length() == 0;
+        return str == null || str.trim().length() == 0;
     }
 
     public static boolean isNotEmpty(String str) {

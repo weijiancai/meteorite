@@ -1,6 +1,8 @@
 package com.meteorite.core.datasource.db.object;
 
 
+import java.util.List;
+
 /**
  * 数据库对象
  *
@@ -31,4 +33,18 @@ public interface DBObject {
      * @return 返回数据库Schema
      */
     DBSchema getSchema();
+
+    /**
+     * 获得数据库子对象列表
+     *
+     * @return 返回数据库子对象列表
+     */
+    List<DBObject> getChildren();
+
+    /**
+     * 获得数据库对象图标路径
+     *
+     * @return 返回数据库对象图标路径
+     */
+    String getIcon();
 }

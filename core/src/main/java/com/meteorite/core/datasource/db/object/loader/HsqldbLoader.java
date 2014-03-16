@@ -38,6 +38,19 @@ public class HsqldbLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getViewSql() {
+        return "select\n" +
+                "  TABLE_NAME VIEW_NAME,\n" +
+                "  (select comment from INFORMATION_SCHEMA.system_comments where object_schema='%1$s' AND OBJECT_NAME=TABLE_NAME AND OBJECT_TYPE='VIEW') as VIEW_COMMENT,\n" +
+                "  'N' as IS_SYSTEM_VIEW\n" +
+                "from  INFORMATION_SCHEMA.TABLES\n" +
+                "where\n" +
+                "  TABLE_SCHEMA = '%1$s' and\n" +
+                "  TABLE_TYPE = 'VIEW'\n" +
+                "order by TABLE_NAME asc";
+    }
+
+    @Override
     protected String getColumnSql() {
         return "select\n" +
                 "                col.COLUMN_NAME,\n" +

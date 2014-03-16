@@ -1,8 +1,7 @@
 package com.meteorite.core.parser.http;
 
+import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
-import com.meteorite.core.util.UtilFile;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,7 +10,10 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author wei_jc
@@ -25,7 +27,7 @@ public class FetchWebSite {
 
     public FetchWebSite(File saveToDir) throws IOException {
         this.baseDir = saveToDir;
-        errorFile = UtilFile.createFile(baseDir, "error.txt");
+        errorFile = UFile.createFile(baseDir, "error.txt");
         pw = new PrintWriter(errorFile);
     }
 
@@ -116,7 +118,7 @@ public class FetchWebSite {
         String parentDir = "";
         File file = null;
         if (url.equals(baseUrl)) {
-            file = UtilFile.createFile(baseDir, "index.html");
+            file = UFile.createFile(baseDir, "index.html");
         } else {
             if (path.contains("?")) {
                 path = path.substring(0, path.indexOf("?"));

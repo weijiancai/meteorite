@@ -18,6 +18,8 @@ metauiServices.factory('MUConfig', ['$resource', '$http', function($resource, $h
 
     return {
         get: function(name) {
+            if(!name) return null;
+
             var config = muConfig[name];
             if(!config) {
                config =  muConfig[name] = {fields: []};

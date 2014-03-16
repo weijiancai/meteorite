@@ -22,6 +22,10 @@ public class DBUtil {
 
     public static boolean exitsTable(String dataSourceName, String tableName) throws Exception {
         DBConnection conn = DBManager.getConnection(dataSourceName);
+        return existsTable(conn, tableName);
+    }
+
+    public static boolean existsTable(DBConnection conn, String tableName) throws Exception {
         return conn.getSchema().getTable(tableName) != null;
     }
 }

@@ -1,10 +1,13 @@
 package com.meteorite.core.datasource.db;
 
 import com.meteorite.core.config.SystemConfig;
+import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,7 +45,22 @@ public class DBManager {
      * @return 返回系统数据库sys
      */
     public static DBDataSource getSysDataSource() {
-        return new DBDataSource(SystemConfig.SYS_DB_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/sys", "sa", "", SystemConfig.SYS_DB_VERSION);
+        DBDataSource dataSource = dataSourceMap.get(SystemConfig.SYS_DB_NAME);
+        if (dataSource == null) {
+            dataSource = new DBDataSource(SystemConfig.SYS_DB_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/sys", "sa", "", SystemConfig.SYS_DB_VERSION);
+            dataSourceMap.put(SystemConfig.SYS_DB_NAME, dataSource);
+        }
+        return dataSource;
+    }
+
+    /**
+     * 获得所有数据库数据源
+     *
+     * @since 1.0.0
+     * @return 返回所有数据库数据源
+     */
+    public static List<DBDataSource> getDataSources() {
+        return new ArrayList<>(dataSourceMap.values());
     }
 
     /**

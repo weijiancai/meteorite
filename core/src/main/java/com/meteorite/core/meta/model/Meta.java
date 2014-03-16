@@ -19,7 +19,7 @@ import java.util.List;
 @XmlType(propOrder = {"id", "name", "displayName", "valid", "sortNum", "inputDate", "desc", "fields"})
 @MetaElement(displayName = "元数据")
 public class Meta {
-    private long id;
+    private String id;
     private String name;
     private String displayName;
     private String desc;
@@ -38,11 +38,11 @@ public class Meta {
 
     @XmlAttribute
     @MetaFieldElement(displayName = "ID", dataType = MetaDataType.NUMBER)
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

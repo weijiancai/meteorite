@@ -38,6 +38,21 @@ public class MySqlLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getViewSql() {
+        return "select\n" +
+                "                TABLE_NAME as VIEW_NAME,\n" +
+                "                TABLE_COMMENT VIEW_COMMENT,\n" +
+                "                null as VIEW_TYPE_OWNER,\n" +
+                "                null as VIEW_TYPE,\n" +
+                "                if (TABLE_TYPE = 'VIEW', 'N', 'Y') as IS_SYSTEM_VIEW\n" +
+                "            from INFORMATION_SCHEMA.TABLES\n" +
+                "            where\n" +
+                "                TABLE_SCHEMA = '%s' and\n" +
+                "                TABLE_TYPE in ('VIEW', 'SYSTEM VIEW')\n" +
+                "            order by TABLE_NAME asc";
+    }
+
+    @Override
     protected String getColumnSql() {
         return "select\n" +
                 "                col.COLUMN_NAME,\n" +

@@ -1,5 +1,6 @@
 package com.meteorite.core.meta.model;
 
+import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
@@ -20,7 +21,7 @@ import java.util.Date;
 @XmlType(propOrder = {"id", "name", "displayName", "dataType", "value", "defaultValue", "dictId", "valid", "sortNum", "inputDate", "desc"})
 @MetaElement(displayName = "元数据字段")
 public class MetaField {
-    private long id;
+    private String id;
     private String name;
     private String displayName;
     private MetaDataType dataType;
@@ -33,6 +34,7 @@ public class MetaField {
     private Date inputDate;
 
     private Meta meta;
+    private DBColumn column;
 
     public MetaField() {}
 
@@ -49,11 +51,11 @@ public class MetaField {
 
     @XmlAttribute
     @MetaFieldElement(displayName = "ID", dataType = MetaDataType.NUMBER)
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -164,5 +166,13 @@ public class MetaField {
 
     public void setMeta(Meta meta) {
         this.meta = meta;
+    }
+
+    public DBColumn getColumn() {
+        return column;
+    }
+
+    public void setColumn(DBColumn column) {
+        this.column = column;
     }
 }

@@ -1,13 +1,17 @@
 package com.meteorite.core.config;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
+import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
-import com.meteorite.core.util.UtilFile;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +58,7 @@ public class ProjectConfig {
     @XmlElementWrapper(name = "DataSources")
     @XmlElement(name = "DBDataSource")
     @MetaFieldElement(displayName = "数据源", sortNum = 40, dataType = MetaDataType.DATA_SOURCE)
+    @JSONField(name = "children")
     public List<DBDataSource> getDataSources() {
         return dataSources;
     }
@@ -65,15 +70,15 @@ public class ProjectConfig {
 // ===================== 静态方法 ==================================
 
     public File getProjectDir() {
-        return UtilFile.makeDirs(SystemConfig.DIR_SYSTEM, name);
+        return UFile.makeDirs(SystemConfig.DIR_SYSTEM, name);
     }
 
     public File getHsqldbDir() {
-        return UtilFile.makeDirs(getProjectDir(), SystemConfig.DIR_NAME_SQLDB);
+        return UFile.makeDirs(getProjectDir(), SystemConfig.DIR_NAME_SQLDB);
     }
 
     public File getDbConfDir() {
-        return UtilFile.makeDirs(getProjectDir(), SystemConfig.DIR_NAME_DBCONF);
+        return UFile.makeDirs(getProjectDir(), SystemConfig.DIR_NAME_DBCONF);
     }
 
     public File getProjectConfigFile() {

@@ -1,21 +1,28 @@
 package com.meteorite.core.util;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
 /**
+ * 文件工具类
+ *
  * @author wei_jc
- * @version 1.0
+ * @since 1.0
  */
-public class UtilFile {
+public class UFile {
     public static String readString(File file) throws IOException {
+        return readString(file, "UTF-8");
+    }
+
+    public static String readString(File file, String charset) throws IOException {
         StringBuilder result = new StringBuilder();
-        BufferedReader br = new BufferedReader(new FileReader(file));
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset));
         String line;
         while ((line = br.readLine()) != null) {
-            result.append(line);
+            result.append(line).append("\r\n");
         }
         br.close();
         return  result.toString();
@@ -81,7 +88,7 @@ public class UtilFile {
             os.close();
             is.close();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -93,7 +100,7 @@ public class UtilFile {
      * @throws URISyntaxException
      */
     public static File createCPFile(String path) throws URISyntaxException {
-        return new File(new File(UtilFile.class.getResource("/").toURI()), path);
+        return new File(new File(UFile.class.getResource("/").toURI()), path);
     }
 
     /**
@@ -107,5 +114,15 @@ public class UtilFile {
         os.write(bytes, 0, bytes.length);
         os.flush();
         os.close();
+    }
+
+    public static File getClassPathDir() {
+        try {
+            return new File(UFile.class.getClassLoader().getResource("/").toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

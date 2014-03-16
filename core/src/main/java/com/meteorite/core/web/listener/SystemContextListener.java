@@ -19,7 +19,7 @@ public class SystemContextListener implements ServletContextListener {
         try { // 初始化配置信息
             SystemManager.getInstance();
             //  启动数据库
-            HSqlDBServer.getInstance().start();
+//            HSqlDBServer.getInstance().start();
         } catch (Exception e) {
             e.printStackTrace();
         }
