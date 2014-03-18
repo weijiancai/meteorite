@@ -2,13 +2,11 @@ package com.meteorite.core.ui.config;
 
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.ui.ILayoutProperty;
-import com.meteorite.core.ui.model.Layout;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * 布局属性信息

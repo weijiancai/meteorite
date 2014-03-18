@@ -4,6 +4,8 @@ import com.meteorite.core.datasource.db.RowMapper;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.ui.layout.model.Layout;
+import com.meteorite.core.ui.layout.model.LayoutProperty;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +15,8 @@ import java.sql.SQLException;
  * @since 1.0.0
  */
 public class MetaRowMapperFactory {
+
+    private static Object layout;
 
     public static RowMapper<Meta> getMeta() {
         return new RowMapper<Meta>() {
@@ -52,6 +56,43 @@ public class MetaRowMapperFactory {
                 field.setSortNum(rs.getInt("sort_num"));
 
                 return field;
+            }
+        };
+    }
+
+    public static RowMapper<Layout> getLayout() {
+        return new RowMapper<Layout>() {
+            @Override
+            public Layout mapRow(ResultSet rs) throws SQLException {
+                Layout layout = new Layout();
+
+                layout.setId(rs.getString("id"));
+                layout.setId(rs.getString("pid"));
+                layout.setName(rs.getString("name"));
+                layout.setDisplayName(rs.getString("display_name"));
+                layout.setDesc(rs.getString("desc"));
+                layout.setSortNum(rs.getInt("sort_num"));
+
+                return layout;
+            }
+        };
+    }
+
+    public static RowMapper<LayoutProperty> getLayoutProperty(final Layout layout) {
+        return new RowMapper<LayoutProperty>() {
+            @Override
+            public LayoutProperty mapRow(ResultSet rs) throws SQLException {
+                LayoutProperty prop = new LayoutProperty();
+
+                prop.setLayout(layout);
+                prop.setId(rs.getString("id"));
+                prop.setName(rs.getString("name"));
+                prop.setDisplayName(rs.getString("display_name"));
+                prop.setDefaultValue(rs.getString("default_value"));
+                prop.setDesc(rs.getString("desc"));
+                prop.setSortNum(rs.getInt("sort_num"));
+
+                return prop;
             }
         };
     }

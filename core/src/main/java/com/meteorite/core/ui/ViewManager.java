@@ -1,12 +1,8 @@
 package com.meteorite.core.ui;
 
-import com.meteorite.core.R;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.ui.config.ViewConfig;
-import com.meteorite.core.ui.layout.LayoutConfigManager;
-import com.meteorite.core.ui.model.Layout;
-import com.meteorite.core.ui.model.LayoutProperty;
 
 import java.util.ArrayList;
 import java.util.List;

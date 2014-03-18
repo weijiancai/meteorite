@@ -4,7 +4,7 @@ import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.facade.impl.BaseFacade;
 import com.meteorite.core.util.HSqlDBServer;
-import com.meteorite.core.util.UtilFile;
+import com.meteorite.core.util.UFile;
 
 /**
  * @author wei_jc
@@ -30,7 +30,7 @@ public class TaobaoFacade extends BaseFacade {
             projectConfig = factory.createProjectConfig(PROJECT_NAME);
             projectConfig.setDisplayName("淘宝助手");
             DBDataSource taobaoDS = new DBDataSource(PROJECT_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/taobao", "sa", "", "1.0.0");
-            taobaoDS.setFilePath(UtilFile.createFile(projectConfig.getHsqldbDir(), PROJECT_NAME).getAbsolutePath());
+            taobaoDS.setFilePath(UFile.createFile(projectConfig.getHsqldbDir(), PROJECT_NAME).getAbsolutePath());
             projectConfig.getDataSources().add(taobaoDS);
 
             factory.save(projectConfig);

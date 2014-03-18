@@ -3,13 +3,19 @@ package com.meteorite.core.config;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
+import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.config.LayoutConfig;
+import com.meteorite.core.ui.layout.model.Layout;
+import com.meteorite.core.ui.layout.model.LayoutProperty;
 import com.meteorite.core.util.*;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,11 +35,12 @@ public class SystemManager {
     private SystemManager() {
         try {
             loadProjectConfig();
-            loadLayoutConfig();
             loadDataSource();
             //  启动数据库
             HSqlDBServer.getInstance().start();
             checkDbVersion();
+            // 加载布局配置
+            loadLayoutConfig();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,8 +73,22 @@ public class SystemManager {
     /**
      * 加载布局配置信息
      */
-    private void loadLayoutConfig() throws FileNotFoundException, JAXBException {
-        layoutConfig = JAXBUtil.unmarshal(UIO.getInputStream(FILE_NAME_LAYOUT_CONFIG, UIO.FROM.CP), LayoutConfig.class);
+    private void loadLayoutConfig() throws Exception {
+//        layoutConfig = JAXBUtil.unmarshal(UIO.getInputStream(FILE_NAME_LAYOUT_CONFIG, UIO.FROM.CP), LayoutConfig.class);
+        Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
+        JdbcTemplate template = new JdbcTemplate(conn);
+        try {
+            String sql = "SELECT * FROM sys_layout";
+            List<Layout> layoutList = template.query(sql, MetaRowMapperFactory.getLayout());
+            for (Layout layout : layoutList) {
+                // 查询元数据字段
+                sql = "SELECT * FROM sys_layout_prop WHERE layout_id=?";
+                List<LayoutProperty> propList = template.query(sql, MetaRowMapperFactory.getLayoutProperty(layout), layout.getId());
+                layout.setProperties(propList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -64,8 +64,8 @@ public class MetaManager {
         try {
             if (SysInfo.isClassDefInit()) { // ClassDef 已经初始化
                 String sql = "SELECT * FROM sys_meta";
-                List<Meta> metaLis = template.query(sql, MetaRowMapperFactory.getMeta());
-                for (final Meta meta : metaLis) {
+                List<Meta> metaList = template.query(sql, MetaRowMapperFactory.getMeta());
+                for (final Meta meta : metaList) {
                     metaMap.put(meta.getName().toLowerCase(), meta);
                     metaIdMap.put(meta.getId(), meta);
                     // 查询元数据字段
@@ -125,11 +125,14 @@ public class MetaManager {
                 // 请空表sys_meta
                 template.clearTable("sys_meta");
                 DBConnection dbConn = DBManager.getConnection(DBManager.getSysDataSource());
-
+                dbConn.getLoader().loadSchemas();
                 for (DBTable table : dbConn.getSchema().getTables()) {
                     initMetaFromTable(template, table);
                     metaSortNum += 10;
                 }
+
+                SysInfo.setClassDefInit(true);
+                SysInfo.store();
             }
 
             conn.commit();
@@ -314,6 +317,7 @@ public class MetaManager {
 
         // 插入元数据信息
         template.save(MetaPDBFactory.getMeta(meta));
+        metaMap.put(meta.getName(), meta);
         metaIdMap.put(meta.getId(), meta);
 
         List<MetaField> fieldList = new ArrayList<>();

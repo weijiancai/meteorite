@@ -1,4 +1,6 @@
-package com.meteorite.core.ui.model;
+package com.meteorite.core.ui.layout.model;
+
+import com.meteorite.core.ui.model.Action;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -8,17 +10,19 @@ import java.util.List;
  * 布局信息
  *
  * @author wei_jc
- * @version 1.0.0
+ * @since  1.0.0
  */
 @XmlRootElement(name = "Layout")
-@XmlType(propOrder = {"id", "name", "cname", "sortNum", "desc", "actions", "properties", "children"})
+@XmlType(propOrder = {"id", "name", "displayName", "sortNum", "desc", "actions", "properties", "children"})
 public class Layout implements Cloneable {
-    /** 布局ID*/
-    private int id;
+    /** 布局ID */
+    private String id;
+    /** 父布局ID */
+    private String pid;
     /** 布局名称 */
     private String name;
-    /** 布局中文名 */
-    private String cname;
+    /** 布局显示名 */
+    private String displayName;
     /** 描述 */
     private String desc;
     /** 排序号*/
@@ -31,17 +35,17 @@ public class Layout implements Cloneable {
 
     public Layout() {}
 
-    public Layout(int id, String name, String cname, String desc, int sortNum) {
+    public Layout(String id, String name, String displayName, String desc, int sortNum) {
         this.id = id;
         this.name = name;
-        this.cname = cname;
+        this.displayName = displayName;
         this.desc = desc;
         this.sortNum = sortNum;
     }
 
-    public Layout(String name, String cname, String desc, Layout parent) {
+    public Layout(String name, String displayName, String desc, Layout parent) {
         this.name = name;
-        this.cname = cname;
+        this.displayName = displayName;
         this.desc = desc;
         this.parent = parent;
         // 将子节点添加到父节点中
@@ -51,12 +55,20 @@ public class Layout implements Cloneable {
     }
 
     @XmlAttribute
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
     @XmlAttribute
@@ -69,12 +81,12 @@ public class Layout implements Cloneable {
     }
 
     @XmlAttribute
-    public String getCname() {
-        return cname;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setCname(String cname) {
-        this.cname = cname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @XmlAttribute

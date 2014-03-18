@@ -40,15 +40,6 @@ public class DBManager {
     }
 
     /**
-     * 获得所有数据源
-     *
-     * @return 返回所有数据源
-     */
-    public static List<DBDataSource> getDataSources() {
-        return new ArrayList<>(dataSourceMap.values());
-    }
-
-    /**
      * 获得系统数据库sys
      *
      * @return 返回系统数据库sys

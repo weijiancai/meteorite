@@ -1,6 +1,6 @@
 package com.meteorite.taobao;
 
-import com.meteorite.core.util.UtilFile;
+import com.meteorite.core.util.UFile;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeView;
@@ -65,7 +65,7 @@ public class TaobaoController implements Initializable {
     public void createCategoryTable() throws Exception {
         // 读取初始化脚本
         File initSqlFile = new File(getClass().getResource("/dbscript/init.sql").toURI());
-        String[] sqls = UtilFile.readString(initSqlFile).split(";");
+        String[] sqls = UFile.readString(initSqlFile).split(";");
         Connection conn = getConn();
         for (String sql : sqls) {
             System.out.println(sql);

@@ -4,9 +4,9 @@ import com.meteorite.core.R;
 import com.meteorite.core.ui.config.ActionConfig;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.ui.config.LayoutProperty;
-import com.meteorite.core.ui.model.Layout;
 
-import static com.meteorite.core.ui.ConfigConst.*;
+import static com.meteorite.core.ui.ConfigConst.FORM_FIELD_DISPLAY_NAME;
+import static com.meteorite.core.ui.ConfigConst.FORM_FIELD_NAME;
 
 /**
  * 布局初始化
@@ -54,10 +54,5 @@ public class LayoutInit {
         formLayout.getActionConfigs().add(new ActionConfig("form_exit", "退出"));
 
         return root;
-    }
-
-    private static void addChild(Layout parent, Layout child) {
-        child.setSortNum(parent.getChildren().size() + 1);
-        parent.getChildren().add(child);
     }
 }

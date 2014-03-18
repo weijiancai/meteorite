@@ -1,5 +1,7 @@
 package com.meteorite.core.ui.model;
 
+import com.meteorite.core.ui.layout.model.Layout;
+
 /**
  * @author wei_jc
  * @version 1.0.0
