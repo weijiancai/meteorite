@@ -1,7 +1,10 @@
-package com.meteorite.core.ui.layout.model;
+package com.meteorite.core.ui.model;
+
+import com.meteorite.core.ui.layout.PropertyType;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -11,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0.0
  */
 @XmlRootElement(name = "Property")
-@XmlType(propOrder = {"id", "name", "displayName", "defaultValue", "sortNum"})
+@XmlType(propOrder = {"id", "name", "displayName", "defaultValue", "propType", "desc", "sortNum"})
 public class LayoutProperty {
     /** 属性ID */
     private String id;
@@ -21,6 +24,8 @@ public class LayoutProperty {
     private String displayName;
     /** 默认值 */
     private String defaultValue;
+    /** 属性类型 */
+    private PropertyType propType;
     /** 描述 */
     private String desc;
     /** 排序号*/
@@ -71,6 +76,15 @@ public class LayoutProperty {
         return defaultValue;
     }
 
+    @XmlAttribute
+    public PropertyType getPropType() {
+        return propType;
+    }
+
+    public void setPropType(PropertyType propType) {
+        this.propType = propType;
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -84,6 +98,7 @@ public class LayoutProperty {
         return sortNum;
     }
 
+    @XmlTransient
     public Layout getLayout() {
         return layout;
     }

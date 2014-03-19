@@ -1,9 +1,7 @@
 package com.meteorite.core.ui;
 
 import com.meteorite.core.meta.MetaDataType;
-import com.meteorite.core.ui.config.LayoutConfig;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
 
 /**
@@ -18,7 +16,7 @@ public interface ILayoutConfig extends ConfigConst, Cloneable {
      *
      * @return 返回布局ID
      */
-    int getId();
+    String getId();
 
     /**
      * 获得布局名称

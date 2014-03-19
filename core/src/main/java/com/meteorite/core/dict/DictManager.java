@@ -1,12 +1,20 @@
 package com.meteorite.core.dict;
 
+import com.meteorite.core.config.SystemInfo;
+import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.datasource.persist.MetaPDBFactory;
+import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
 import com.meteorite.core.dict.annotation.DictElement;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.ui.layout.PropertyType;
 import com.meteorite.core.util.UObject;
 
 import java.lang.reflect.Method;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +28,7 @@ import java.util.Map;
  */
 public class DictManager {
     private static Map<String, DictCategory> categoryMap = new HashMap<>();
+    private static DictCategory root = new DictCategory();
 
     static {
         try {
@@ -27,16 +36,17 @@ public class DictManager {
             addDict(MetaDataType.class);
             addDict(DisplayStyle.class);
             addDict(EnumBoolean.class);
+            addDict(PropertyType.class);
 
-            DictCategory root = new DictCategory();
             root.setId("ROOT");
             root.setName("数据字典");
             List<DictCode> codeList = new ArrayList<>();
             for (DictCategory category : categoryMap.values()) {
                 DictCode code = new DictCode();
+                code.setCategory(category);
                 code.setId(category.getId());
                 code.setName(category.getName());
-                code.setValue(category.getName());
+                code.setDisplayName(category.getName());
 
                 codeList.add(code);
             }
@@ -44,6 +54,46 @@ public class DictManager {
             categoryMap.put("ROOT", root);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+    }
+
+    public static void load() throws Exception {
+        SystemInfo sysInfo = SystemManager.getSystemInfo();
+        Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
+        JdbcTemplate template = new JdbcTemplate(conn);
+
+        if (sysInfo.isDictInit()) {
+            // 查询布局
+            String sql = "SELECT * FROM sys_dz_category";
+            List<DictCategory> categoryList = template.query(sql, MetaRowMapperFactory.getDictCategory());
+            for (DictCategory category : categoryList) {
+                categoryMap.put(category.getId(), category);
+                // 查询布局属性
+                sql = "SELECT * FROM sys_dz_code WHERE category_id=?";
+                List<DictCode> codeList = template.query(sql, MetaRowMapperFactory.getDictCode(category), category.getId());
+                category.setCodeList(codeList);
+            }
+        } else { // 初始化数据字典
+            // 清空表
+            template.clearTable("sys_dz_category");
+
+            // 保存字典分类到数据库
+            for (DictCategory category : getDictList()) {
+                if ("ROOT".equals(category.getId())) {
+                    continue;
+                }
+                template.save(MetaPDBFactory.getDictCategory(category));
+                for (DictCode code : category.getCodeList()) {
+                    // 保存字典代码到数据库
+                    template.save(MetaPDBFactory.getDictCode(code));
+                }
+            }
+
+            template.commit();
+
+            sysInfo.setDictInit(true);
+            sysInfo.store();
         }
     }
 
@@ -62,7 +112,7 @@ public class DictManager {
 
             DictCategory category = new DictCategory();
             if ("##default".equals(dict.categoryId())) {
-                category.setId(clazz.getName().replace('.', '_'));
+                category.setId(clazz.getSimpleName());
             } else {
                 category.setId(dict.categoryId());
             }
@@ -82,7 +132,7 @@ public class DictManager {
                     code.setName(em.ordinal() + "");
                 }
                 Method codeValueMethod = clazz.getMethod(dict.codeValueMethod());
-                code.setValue(UObject.toString(codeValueMethod.invoke(em)));
+                code.setDisplayName(UObject.toString(codeValueMethod.invoke(em)));
                 code.setSortNum(sortNum++);
                 code.setValid(true);
                 code.setCategory(category);
@@ -102,7 +152,7 @@ public class DictManager {
      * @return 返回数据字典
      */
     public static DictCategory getDict(Class<?> clazz) {
-        return getDict(clazz.getName().replace(".", "_"));
+        return getDict(clazz.getSimpleName());
     }
 
     /**
@@ -122,5 +172,15 @@ public class DictManager {
      */
     public static List<DictCategory> getDictList() {
         return new ArrayList<>(categoryMap.values());
+    }
+
+    /**
+     * 获得数据字典的根节点
+     *
+     * @return 返回数据字典的根节点
+     * @since 1.0.0
+     */
+    public static DictCategory getRoot() {
+        return root;
     }
 }

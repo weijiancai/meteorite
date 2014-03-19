@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(propOrder = {"id", "name", "displayName", "defaultValue", "sortNum"})
 public class LayoutProperty implements ILayoutProperty {
     /** 属性ID */
-    private int id;
+    private String id;
     /** 属性名称 */
     private String name;
     /** 属性显示名 */
@@ -71,7 +71,7 @@ public class LayoutProperty implements ILayoutProperty {
         this.displayName = displayName;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -90,7 +90,7 @@ public class LayoutProperty implements ILayoutProperty {
 
     @Override
     @XmlAttribute
-    public int getId() {
+    public String getId() {
         return id;
     }
 

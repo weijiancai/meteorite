@@ -3,7 +3,6 @@ package com.meteorite.fxbase.ui.component;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.DisplayStyle;
-import com.meteorite.core.ui.config.layout.FormFieldConfig;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.ui.Dialogs;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
@@ -43,7 +42,7 @@ public class FxComboBox extends FxFormField {
             List<DictCode> list = category.getCodeList();
             comboBox.setItems(FXCollections.observableArrayList(list));
             if (list.size() > 0) {
-                comboBox.setPromptText(list.get(0).getValue());
+                comboBox.setPromptText(list.get(0).getDisplayName());
             }
         }
 
@@ -87,7 +86,7 @@ public class FxComboBox extends FxFormField {
     @Override
     public String getValue() {
         DictCode code = comboBox.getValue();
-        return code == null ? "" : code.getValue();
+        return code == null ? "" : code.getDisplayName();
     }
 
     @Override

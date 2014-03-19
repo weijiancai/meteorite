@@ -118,7 +118,11 @@ public class UFile {
 
     public static File getClassPathDir() {
         try {
-            return new File(UFile.class.getClassLoader().getResource("/").toURI());
+            URL url = UFile.class.getClassLoader().getResource("/");
+            if (url == null) {
+                url = UFile.class.getResource("/");
+            }
+            return new File(url.toURI());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

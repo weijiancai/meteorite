@@ -16,6 +16,7 @@ public class SystemConfig {
     public static final String DIR_NAME_DBCONF = "dbconf"; // 数据库配置信息目录名
 
     public static final String FILE_NAME_PROJECT_CONFIG = "ProjectConfig.xml"; // 项目配置文件名
+    public static final String FILE_NAME_SYSTEM_INFO = "SystemInfo.xml"; // 系统信息文件名
     /**
      * 布局配置文件名
      */
@@ -24,6 +25,10 @@ public class SystemConfig {
      * 元数据字段配置文件名
      */
     public static final String FILE_NAME_META_FIELD_CONFIG = "MetaFieldConfig.xml";
+    /**
+     * 数据字典配置文件名
+     */
+    public static final String FILE_NAME_DICT_CATEGORY = "DictCategory.xml";
 
     public static String userHome = System.getProperty("user.home");
     public static String userDir = System.getProperty("user.dir");

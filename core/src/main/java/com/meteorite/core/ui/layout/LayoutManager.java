@@ -1,7 +1,12 @@
 package com.meteorite.core.ui.layout;
 
 import com.meteorite.core.R;
+import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.db.DBManager;
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.datasource.persist.MetaPDBFactory;
+import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
 import com.meteorite.core.dict.EnumBoolean;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
@@ -9,9 +14,11 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.core.ui.ILayoutProperty;
-import com.meteorite.core.ui.config.LayoutConfig;
+import com.meteorite.core.ui.model.Layout;
+import com.meteorite.core.ui.model.LayoutProperty;
 import com.meteorite.core.util.UString;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,24 +26,66 @@ import java.util.Map;
 
 import static com.meteorite.core.ui.ConfigConst.*;
 /**
+ * 布局管理
  *
  * @author wei_jc
- * @version 1.0.0
+ * @since 1.0.0
  */
-public class LayoutConfigManager {
-    private static Map<String, ILayoutConfig> cache = new HashMap<String, ILayoutConfig>();
+public class LayoutManager {
+    private static Map<String, ILayoutConfig> cache = new HashMap<>();
+    private static Map<String, Layout> layoutIdMap = new HashMap<>();
+    private static Map<String, Layout> layoutNameMap = new HashMap<>();
+    private static Layout root;
 
-    public static void load() {
-        LayoutConfig root = SystemManager.getInstance().getLayoutConfig();
-        if (root != null) {
+    public static void load() throws Exception {
+        SystemInfo sysInfo = SystemManager.getSystemInfo();
+        Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
+        JdbcTemplate template = new JdbcTemplate(conn);
+
+        if (sysInfo.isLayoutInit()) {
+            // 查询布局
+            String sql = "SELECT * FROM sys_layout";
+            List<Layout> layoutList = template.query(sql, MetaRowMapperFactory.getLayout());
+            for (Layout layout : layoutList) {
+                layoutIdMap.put(layout.getId(), layout);
+                layoutNameMap.put(layout.getName(), layout);
+                // 查询布局属性
+                sql = "SELECT * FROM sys_layout_prop WHERE layout_id=?";
+                List<LayoutProperty> propList = template.query(sql, MetaRowMapperFactory.getLayoutProperty(layout), layout.getId());
+                layout.setProperties(propList);
+            }
+        } else { // 初始化Layout
+            if (root == null) {
+                root = new Layout();
+                root.load();
+            }
+            // 清空表
+            template.clearTable("sys_layout");
             iterator(root);
+
+            // 保存Layout到数据库
+            for (Layout layout : getLayoutList()) {
+                layoutIdMap.put(layout.getId(), layout);
+                layoutNameMap.put(layout.getName(), layout);
+                template.save(MetaPDBFactory.getLayout(layout));
+                for (LayoutProperty property : layout.getProperties()) {
+                    property.setLayout(layout);
+                    // 保存布局属性到数据库
+                    template.save(MetaPDBFactory.getLayoutProperty(property));
+                }
+            }
+
+            template.commit();
+
+            sysInfo.setLayoutInit(true);
+            sysInfo.store();
         }
     }
 
-    private static void iterator(ILayoutConfig layout) {
-        cache.put(layout.getName(), layout);
-        if (layout.getChildren() != null && layout.getChildren().size() > 0) {
-            for (ILayoutConfig child : layout.getChildren()) {
+    private static void iterator(Layout parent) {
+        if (parent.getChildren() != null && parent.getChildren().size() > 0) {
+            for (Layout child : parent.getChildren()) {
+                child.setParent(parent);
                 iterator(child);
             }
         }
@@ -127,5 +176,29 @@ public class LayoutConfigManager {
         form.setChildren(children);
 
         return form;
+    }
+
+    public static List<Layout> getLayoutList() {
+        return new ArrayList<>(layoutIdMap.values());
+    }
+
+    /**
+     * 根据布局Id获得布局信息
+     *
+     * @param id 布局ID
+     * @return 返回布局信息
+     */
+    public static Layout getLayoutById(String id) {
+        return layoutIdMap.get(id);
+    }
+
+    /**
+     * 根据布局名称获得布局信息
+     *
+     * @param name 布局名称
+     * @return 返回布局信息
+     */
+    public static Layout getLayoutByName(String name) {
+        return layoutNameMap.get(name);
     }
 }

@@ -5,7 +5,6 @@ import com.meteorite.core.ui.IActionConfig;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * Action配置
@@ -16,7 +15,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 @XmlRootElement(name = "Action")
 @XmlType(propOrder = {"id", "name", "displayName", "sortNum"})
 public class ActionConfig implements IActionConfig {
-    private int id;
+    private String id;
     private String name;
     private String displayName;
     private int sortNum;
@@ -32,7 +31,7 @@ public class ActionConfig implements IActionConfig {
         this.displayName = displayName;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -46,7 +45,7 @@ public class ActionConfig implements IActionConfig {
 
     @Override
     @XmlAttribute
-    public int getId() {
+    public String getId() {
         return id;
     }
 

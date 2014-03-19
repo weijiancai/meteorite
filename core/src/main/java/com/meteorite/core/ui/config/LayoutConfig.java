@@ -8,7 +8,6 @@ import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
 
 import javax.xml.bind.annotation.*;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import java.util.List;
 @XmlType(propOrder = {"id", "name", "displayName", "sortNum", "desc", "actionConfigs", "properties", "children"})
 public class LayoutConfig implements ILayoutConfig {
     /** 布局ID */
-    private int id;
+    private String id;
     /** 布局名称 */
     private String name;
     /** 布局显示名 */
@@ -52,7 +51,7 @@ public class LayoutConfig implements ILayoutConfig {
         }
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -90,7 +89,7 @@ public class LayoutConfig implements ILayoutConfig {
 
     @Override
     @XmlAttribute
-    public int getId() {
+    public String getId() {
         return id;
     }
 

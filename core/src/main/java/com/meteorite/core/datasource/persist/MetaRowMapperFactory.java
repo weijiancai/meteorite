@@ -1,11 +1,14 @@
 package com.meteorite.core.datasource.persist;
 
 import com.meteorite.core.datasource.db.RowMapper;
+import com.meteorite.core.dict.DictCategory;
+import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.ui.layout.model.Layout;
-import com.meteorite.core.ui.layout.model.LayoutProperty;
+import com.meteorite.core.ui.layout.PropertyType;
+import com.meteorite.core.ui.model.Layout;
+import com.meteorite.core.ui.model.LayoutProperty;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,9 +18,6 @@ import java.sql.SQLException;
  * @since 1.0.0
  */
 public class MetaRowMapperFactory {
-
-    private static Object layout;
-
     public static RowMapper<Meta> getMeta() {
         return new RowMapper<Meta>() {
             @Override
@@ -67,7 +67,7 @@ public class MetaRowMapperFactory {
                 Layout layout = new Layout();
 
                 layout.setId(rs.getString("id"));
-                layout.setId(rs.getString("pid"));
+                layout.setPid(rs.getString("pid"));
                 layout.setName(rs.getString("name"));
                 layout.setDisplayName(rs.getString("display_name"));
                 layout.setDesc(rs.getString("desc"));
@@ -89,10 +89,50 @@ public class MetaRowMapperFactory {
                 prop.setName(rs.getString("name"));
                 prop.setDisplayName(rs.getString("display_name"));
                 prop.setDefaultValue(rs.getString("default_value"));
+                prop.setPropType(PropertyType.getType(rs.getString("prop_type")));
                 prop.setDesc(rs.getString("desc"));
                 prop.setSortNum(rs.getInt("sort_num"));
 
                 return prop;
+            }
+        };
+    }
+
+    public static RowMapper<DictCategory> getDictCategory() {
+        return new RowMapper<DictCategory>() {
+            @Override
+            public DictCategory mapRow(ResultSet rs) throws SQLException {
+                DictCategory category = new DictCategory();
+
+                category.setId(rs.getString("id"));
+                category.setName(rs.getString("name"));
+                category.setSystem("T".equals(rs.getString("is_system")));
+                category.setDesc(rs.getString("desc"));
+                category.setValid("T".equals(rs.getString("is_valid")));
+                category.setInputDate(rs.getDate("input_date"));
+                category.setSortNum(rs.getInt("sort_num"));
+
+                return category;
+            }
+        };
+    }
+
+    public static RowMapper<DictCode> getDictCode(final DictCategory category) {
+        return new RowMapper<DictCode>() {
+            @Override
+            public DictCode mapRow(ResultSet rs) throws SQLException {
+                DictCode code = new DictCode();
+
+                code.setCategory(category);
+                code.setId(rs.getString("id"));
+                code.setName(rs.getString("name"));
+                code.setDisplayName(rs.getString("display_name"));
+                code.setDesc(rs.getString("desc"));
+                code.setValid("T".equals(rs.getString("is_valid")));
+                code.setInputDate(rs.getDate("input_date"));
+                code.setSortNum(rs.getInt("sort_num"));
+
+                return code;
             }
         };
     }

@@ -18,6 +18,7 @@ import java.util.List;
 public class DictCategory implements Serializable {
     private String id;
     private String name;
+    private String desc;
     private boolean isValid;
     private boolean isSystem;
     private int sortNum;
@@ -41,6 +42,14 @@ public class DictCategory implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     @XmlAttribute
@@ -91,7 +100,7 @@ public class DictCategory implements Serializable {
 
     public String getCodeName(String codeValue) {
         for (DictCode code : codeList) {
-            if (codeValue.equals(code.getValue())) {
+            if (codeValue.equals(code.getDisplayName())) {
                 return code.getName();
             }
         }

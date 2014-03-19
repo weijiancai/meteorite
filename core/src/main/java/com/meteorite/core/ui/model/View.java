@@ -1,34 +1,38 @@
 package com.meteorite.core.ui.model;
 
-import com.meteorite.core.ui.layout.model.Layout;
+import java.util.Date;
+import java.util.List;
 
 /**
+ * 视图
+ *
  * @author wei_jc
- * @version 1.0.0
+ * @since  1.0.0
  */
 public class View {
-    /** 视图ID*/
-    private int id;
+    /** 视图ID */
+    private String id;
     /** 视图名称 */
     private String name;
     /** 显示名 */
     private String displayName;
+    /** 描述 */
+    private String desc;
+    /** 是否有效 */
+    private boolean isValid;
+    /** 录入时间 */
+    private Date inputDate;
     /** 排序号 */
     private int sortNum;
 
     private Layout layout;
+    private List<ViewConfig> configs;
 
-    public View(int id, String name, Layout layout) {
-        this.id = id;
-        this.name = name;
-        this.layout = layout;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -48,6 +52,30 @@ public class View {
         this.displayName = displayName;
     }
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean isValid) {
+        this.isValid = isValid;
+    }
+
+    public Date getInputDate() {
+        return inputDate;
+    }
+
+    public void setInputDate(Date inputDate) {
+        this.inputDate = inputDate;
+    }
+
     public int getSortNum() {
         return sortNum;
     }
@@ -62,5 +90,13 @@ public class View {
 
     public void setLayout(Layout layout) {
         this.layout = layout;
+    }
+
+    public List<ViewConfig> getConfigs() {
+        return configs;
+    }
+
+    public void setConfigs(List<ViewConfig> configs) {
+        this.configs = configs;
     }
 }
