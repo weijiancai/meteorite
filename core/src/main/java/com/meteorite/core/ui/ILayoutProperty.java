@@ -14,7 +14,7 @@ public interface ILayoutProperty extends Cloneable {
      *
      * @return 返回属性Id
      */
-    int getId();
+    String getId();
 
     /**
      * 获得属性名称

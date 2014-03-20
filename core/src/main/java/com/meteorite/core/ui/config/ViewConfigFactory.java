@@ -1,9 +1,9 @@
 package com.meteorite.core.ui.config;
 
-import com.meteorite.core.ui.layout.model.Layout;
+import com.meteorite.core.ui.model.Layout;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.IViewConfig;
-import com.meteorite.core.ui.layout.LayoutConfigManager;
+import com.meteorite.core.ui.layout.LayoutManager;
 
 /**
  * @author wei_jc
@@ -20,7 +20,7 @@ public class ViewConfigFactory {
         ViewConfig config = new ViewConfig();
         config.setName(meta.getName() + "View");
         config.setDisplayName(meta.getDisplayName() + "视图");
-        config.setLayoutConfig(LayoutConfigManager.createFormLayout(meta));
+        config.setLayoutConfig(LayoutManager.createFormLayout(meta));
 
         return config;
     }

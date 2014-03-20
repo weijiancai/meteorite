@@ -16,7 +16,8 @@ import java.util.Date;
 public class DictCode implements Serializable {
     private String id;
     private String name;
-    private String value;
+    private String displayName;
+    private String desc;
     private boolean isValid;
     private int sortNum;
     private Date inputDate;
@@ -42,12 +43,20 @@ public class DictCode implements Serializable {
     }
 
     @XmlAttribute
-    public String getValue() {
-        return value;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     @XmlAttribute
@@ -88,6 +97,6 @@ public class DictCode implements Serializable {
 
     @Override
     public String toString() {
-        return value;
+        return displayName;
     }
 }

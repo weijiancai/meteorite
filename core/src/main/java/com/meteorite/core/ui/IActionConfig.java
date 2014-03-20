@@ -12,7 +12,7 @@ public interface IActionConfig extends Cloneable {
      *
      * @return 返回Action Id
      */
-    int getId();
+    String getId();
 
     /**
      * 获得Action名称

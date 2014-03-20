@@ -3,19 +3,14 @@ package com.meteorite.core.config;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
-import com.meteorite.core.datasource.db.util.JdbcTemplate;
-import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
-import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.dict.DictManager;
+import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.config.LayoutConfig;
-import com.meteorite.core.ui.layout.model.Layout;
-import com.meteorite.core.ui.layout.model.LayoutProperty;
+import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.util.*;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,18 +24,34 @@ import static com.meteorite.core.config.SystemConfig.*;
  */
 public class SystemManager {
     private static SystemManager instance;
+    private static SystemInfo sysInfo;
     private Map<String, ProjectConfig> cache = new HashMap<String, ProjectConfig>();
     private LayoutConfig layoutConfig;
 
+    static {
+        // 加载系统信息
+        sysInfo = new SystemInfo();
+        try {
+            sysInfo.load();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private SystemManager() {
         try {
-            loadProjectConfig();
             loadDataSource();
             //  启动数据库
             HSqlDBServer.getInstance().start();
             checkDbVersion();
+            // 加载数据字典
+            DictManager.load();
             // 加载布局配置
-            loadLayoutConfig();
+            LayoutManager.load();
+            // 加载视图
+            ViewManager.load();
+            // 加载项目
+            loadProjectConfig();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,27 +78,6 @@ public class SystemManager {
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * 加载布局配置信息
-     */
-    private void loadLayoutConfig() throws Exception {
-//        layoutConfig = JAXBUtil.unmarshal(UIO.getInputStream(FILE_NAME_LAYOUT_CONFIG, UIO.FROM.CP), LayoutConfig.class);
-        Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
-        JdbcTemplate template = new JdbcTemplate(conn);
-        try {
-            String sql = "SELECT * FROM sys_layout";
-            List<Layout> layoutList = template.query(sql, MetaRowMapperFactory.getLayout());
-            for (Layout layout : layoutList) {
-                // 查询元数据字段
-                sql = "SELECT * FROM sys_layout_prop WHERE layout_id=?";
-                List<LayoutProperty> propList = template.query(sql, MetaRowMapperFactory.getLayoutProperty(layout), layout.getId());
-                layout.setProperties(propList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -183,5 +173,14 @@ public class SystemManager {
         }*/
 
         return true;
+    }
+
+    /**
+     * 获得系统信息
+     *
+     * @return 返回系统信息
+     */
+    public static SystemInfo getSystemInfo() {
+        return sysInfo;
     }
 }

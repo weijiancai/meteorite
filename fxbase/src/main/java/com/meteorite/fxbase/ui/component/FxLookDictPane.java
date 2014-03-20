@@ -15,7 +15,7 @@ public class FxLookDictPane extends TilePane {
     public FxLookDictPane(DictCategory dictCategory) {
         this.setPrefColumns(2);
         for (DictCode code : dictCategory.getCodeList()) {
-            this.getChildren().addAll(new Label(code.getName()), new Label(code.getValue()));
+            this.getChildren().addAll(new Label(code.getName()), new Label(code.getDisplayName()));
         }
     }
 }

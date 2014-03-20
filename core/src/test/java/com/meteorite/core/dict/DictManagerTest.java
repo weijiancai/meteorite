@@ -2,7 +2,10 @@ package com.meteorite.core.dict;
 
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.meta.DisplayStyle;
+import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * @author wei_jc

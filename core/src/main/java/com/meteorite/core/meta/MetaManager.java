@@ -1,10 +1,11 @@
 package com.meteorite.core.meta;
 
 import com.meteorite.core.config.ProjectConfig;
-import com.meteorite.core.config.SysInfo;
+import com.meteorite.core.config.SystemInfo;
+import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
-import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.DBTable;
@@ -17,6 +18,9 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaForm;
 import com.meteorite.core.meta.model.MetaFormField;
+import com.meteorite.core.ui.ViewManager;
+import com.meteorite.core.ui.model.View;
+import com.meteorite.core.ui.model.ViewConfig;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.UString;
@@ -59,10 +63,11 @@ public class MetaManager {
     }
 
     private static void initFromDB() throws Exception {
+        SystemInfo sysInfo = SystemManager.getSystemInfo();
         Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
         JdbcTemplate template = new JdbcTemplate(conn);
         try {
-            if (SysInfo.isClassDefInit()) { // ClassDef 已经初始化
+            if (sysInfo.isMetaInit()) { // ClassDef 已经初始化
                 String sql = "SELECT * FROM sys_meta";
                 List<Meta> metaList = template.query(sql, MetaRowMapperFactory.getMeta());
                 for (final Meta meta : metaList) {
@@ -125,20 +130,23 @@ public class MetaManager {
                 // 请空表sys_meta
                 template.clearTable("sys_meta");
                 DBConnection dbConn = DBManager.getConnection(DBManager.getSysDataSource());
-                dbConn.getLoader().loadSchemas();
+//                dbConn.getLoader().loadSchemas();
                 for (DBTable table : dbConn.getSchema().getTables()) {
                     initMetaFromTable(template, table);
                     metaSortNum += 10;
                 }
 
-                SysInfo.setClassDefInit(true);
-                SysInfo.store();
+                template.commit();
+
+                sysInfo.setMetaInit(true);
+                sysInfo.store();
             }
 
-            conn.commit();
+
         } catch (Exception e) {
             e.printStackTrace();
             conn.rollback();
+            ConnectionUtil.closeConnection(conn);
         } finally {
             template.close();
         }
@@ -343,6 +351,14 @@ public class MetaManager {
         }
         meta.setFields(fieldList);
 
+        // 创建表单视图
+        View view = ViewManager.createFormView(meta);
+        view.setSortNum(metaSortNum);
+        template.save(MetaPDBFactory.getView(view));
+        // 保存视图明细
+        for (ViewConfig config : view.getConfigs()) {
+            template.save(MetaPDBFactory.getViewConfig(config));
+        }
         // 插入sys_class_table信息
         /*ClassTable classTable = new ClassTable();
         classTable.setName("default");

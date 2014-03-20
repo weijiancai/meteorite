@@ -2,14 +2,12 @@ package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.core.ui.IViewConfig;
-import com.meteorite.core.ui.config.layout.FormConfig;
-import com.meteorite.core.ui.layout.LayoutConfigManager;
+import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.fxbase.ui.component.FxFormPane;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 
 /**
  * JavaFx 视图设计器
@@ -58,7 +56,7 @@ public class FxViewDesigner extends BorderPane {
     }
 
     public void setBottom(FxLayoutEvent event) {
-        ILayoutConfig config = LayoutConfigManager.createFormLayout(event.getLayoutConfig());
+        ILayoutConfig config = LayoutManager.createFormLayout(event.getLayoutConfig());
         FxFormPane formPane = new FxFormPane(config, false);
         formPane.registLayoutConfigChangeEvent(event);
         setBottom(formPane);

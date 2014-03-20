@@ -1,8 +1,12 @@
-package com.meteorite.core.ui.layout.model;
+package com.meteorite.core.ui.model;
 
-import com.meteorite.core.ui.model.Action;
+import com.meteorite.core.config.SystemConfig;
+import com.meteorite.core.ui.layout.LayoutManager;
+import com.meteorite.core.util.UString;
+import com.meteorite.core.util.jaxb.AbstractXmlSerialization;
 
 import javax.xml.bind.annotation.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +17,8 @@ import java.util.List;
  * @since  1.0.0
  */
 @XmlRootElement(name = "Layout")
-@XmlType(propOrder = {"id", "name", "displayName", "sortNum", "desc", "actions", "properties", "children"})
-public class Layout implements Cloneable {
+@XmlType(propOrder = {"id", "pid", "name", "displayName", "sortNum", "desc", "properties", "children"})
+public class Layout extends AbstractXmlSerialization implements Cloneable {
     /** 布局ID */
     private String id;
     /** 父布局ID */
@@ -28,19 +32,16 @@ public class Layout implements Cloneable {
     /** 排序号*/
     private int sortNum;
 
-    private List<Action> actions;
     private List<LayoutProperty> properties;
     private List<Layout> children;
     private Layout parent;
 
     public Layout() {}
 
-    public Layout(String id, String name, String displayName, String desc, int sortNum) {
+    public Layout(String id, String name, String displayName) {
         this.id = id;
         this.name = name;
         this.displayName = displayName;
-        this.desc = desc;
-        this.sortNum = sortNum;
     }
 
     public Layout(String name, String displayName, String desc, Layout parent) {
@@ -107,21 +108,11 @@ public class Layout implements Cloneable {
         this.sortNum = sortNum;
     }
 
-    @XmlElement(name = "Action")
-    @XmlElementWrapper(name = "Actions")
-    public List<Action> getActions() {
-        return actions;
-    }
-
-    public void setActions(List<Action> actions) {
-        this.actions = actions;
-    }
-
     @XmlElement(name = "Property")
     @XmlElementWrapper(name = "Properties")
     public List<LayoutProperty> getProperties() {
         if (properties == null) {
-            properties = new ArrayList<LayoutProperty>();
+            properties = new ArrayList<>();
         }
         return properties;
     }
@@ -130,10 +121,11 @@ public class Layout implements Cloneable {
         this.properties = properties;
     }
 
-    @XmlElement(name = "Layout")
+    @XmlElement(type = Layout.class, name = "Layout")
+    @XmlElementWrapper(name = "children")
     public List<Layout> getChildren() {
         if (children == null) {
-            children = new ArrayList<Layout>();
+            children = new ArrayList<>();
         }
         return children;
     }
@@ -144,6 +136,9 @@ public class Layout implements Cloneable {
 
     @XmlTransient
     public Layout getParent() {
+        if (parent == null && UString.isNotEmpty(pid)) {
+            parent = LayoutManager.getLayoutById(pid);
+        }
         return parent;
     }
 
@@ -163,5 +158,25 @@ public class Layout implements Cloneable {
 
     public void setPropertyValue(String propName, String value) {
 
+    }
+
+    @Override
+    protected File getXmlFile() {
+        return new File(SystemConfig.DIR_CLASS_PATH, SystemConfig.FILE_NAME_LAYOUT_CONFIG);
+    }
+
+    @Override
+    public String toString() {
+        return "Layout{" +
+                "id='" + id + '\'' +
+                ", pid='" + pid + '\'' +
+                ", name='" + name + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", desc='" + desc + '\'' +
+                ", sortNum=" + sortNum +
+                ", properties=" + properties +
+                ", children=" + children +
+                ", parent=" + parent +
+                '}';
     }
 }
