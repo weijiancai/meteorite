@@ -38,5 +38,11 @@
                 </Layout>
             </children>
         </Layout>
+
+        <Layout id="L03" name="TREE" displayName="树" sortNum="20" desc="树形结构">
+            <Properties>
+                <Property id="L03_P01" name="nodeLabel" displayName="节点标签" propType="P" defaultValue="displayName" sortNum="10"/>
+            </Properties>
+        </Layout>
     </children>
 </Layout>
