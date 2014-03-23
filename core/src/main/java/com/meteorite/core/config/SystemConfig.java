@@ -66,4 +66,9 @@ public class SystemConfig {
      * 系统数据库版本表名
      */
     public static final String SYS_DB_VERSION_TABLE_NAME = "sys_db_version";
+
+    /**
+     * 是否是开发模式
+     */
+    public static final boolean isDebug = true;
 }

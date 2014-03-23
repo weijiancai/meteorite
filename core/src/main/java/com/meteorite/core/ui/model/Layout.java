@@ -8,6 +8,7 @@ import com.meteorite.core.util.jaxb.AbstractXmlSerialization;
 import javax.xml.bind.annotation.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  * @since  1.0.0
  */
 @XmlRootElement(name = "Layout")
-@XmlType(propOrder = {"id", "pid", "name", "displayName", "sortNum", "desc", "properties", "children"})
+@XmlType(propOrder = {"id", "pid", "name", "displayName", "valid", "inputDate", "sortNum", "desc", "properties", "children"})
 public class Layout extends AbstractXmlSerialization implements Cloneable {
     /** 布局ID */
     private String id;
@@ -29,6 +30,10 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
     private String displayName;
     /** 描述 */
     private String desc;
+    /** 是否有效 */
+    private boolean isValid;
+    /** 录入时间 */
+    private Date inputDate;
     /** 排序号*/
     private int sortNum;
 
@@ -97,6 +102,22 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean isValid) {
+        this.isValid = isValid;
+    }
+
+    public Date getInputDate() {
+        return inputDate;
+    }
+
+    public void setInputDate(Date inputDate) {
+        this.inputDate = inputDate;
     }
 
     @XmlAttribute

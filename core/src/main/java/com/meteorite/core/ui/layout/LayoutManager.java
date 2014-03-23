@@ -35,6 +35,7 @@ public class LayoutManager {
     private static Map<String, ILayoutConfig> cache = new HashMap<>();
     private static Map<String, Layout> layoutIdMap = new HashMap<>();
     private static Map<String, Layout> layoutNameMap = new HashMap<>();
+    private static Map<String, LayoutProperty> propMap = new HashMap<>();
     private static Layout root;
 
     public static void load() throws Exception {
@@ -52,6 +53,9 @@ public class LayoutManager {
                 // 查询布局属性
                 sql = "SELECT * FROM sys_layout_prop WHERE layout_id=?";
                 List<LayoutProperty> propList = template.query(sql, MetaRowMapperFactory.getLayoutProperty(layout), layout.getId());
+                for (LayoutProperty prop : propList) {
+                    propMap.put(prop.getId(), prop);
+                }
                 layout.setProperties(propList);
             }
         } else { // 初始化Layout
@@ -65,24 +69,26 @@ public class LayoutManager {
 
             // 保存Layout到数据库
             for (Layout layout : getLayoutList()) {
-                layoutIdMap.put(layout.getId(), layout);
-                layoutNameMap.put(layout.getName(), layout);
                 template.save(MetaPDBFactory.getLayout(layout));
                 for (LayoutProperty property : layout.getProperties()) {
                     property.setLayout(layout);
                     // 保存布局属性到数据库
                     template.save(MetaPDBFactory.getLayoutProperty(property));
+                    propMap.put(property.getId(), property);
                 }
             }
-
-            template.commit();
 
             sysInfo.setLayoutInit(true);
             sysInfo.store();
         }
+
+        template.commit();
+        template.close();
     }
 
     private static void iterator(Layout parent) {
+        layoutIdMap.put(parent.getId(), parent);
+        layoutNameMap.put(parent.getName(), parent);
         if (parent.getChildren() != null && parent.getChildren().size() > 0) {
             for (Layout child : parent.getChildren()) {
                 child.setParent(parent);
@@ -187,6 +193,7 @@ public class LayoutManager {
      *
      * @param id 布局ID
      * @return 返回布局信息
+     * @since 1.0.0
      */
     public static Layout getLayoutById(String id) {
         return layoutIdMap.get(id);
@@ -197,8 +204,20 @@ public class LayoutManager {
      *
      * @param name 布局名称
      * @return 返回布局信息
+     * @since 1.0.0
      */
     public static Layout getLayoutByName(String name) {
         return layoutNameMap.get(name);
+    }
+
+    /**
+     * 根据布局属性ID，获得布局信息
+     *
+     * @param propId 布局属性ID
+     * @return 返回布局信息
+     * @since 1.0.0
+     */
+    public static LayoutProperty getLayoutProperty(String propId) {
+        return propMap.get(propId);
     }
 }

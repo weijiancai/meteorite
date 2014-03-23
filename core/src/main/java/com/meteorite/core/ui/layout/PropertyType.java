@@ -10,9 +10,10 @@ import com.meteorite.core.dict.annotation.DictElement;
  */
 @DictElement(categoryId = "LayoutPropertyType", categoryName = "布局属性类型")
 public enum PropertyType {
-    N("未知"),
-    P("属性"),
-    A("Action")
+    NP("未知"),
+    MP("主属性"),
+    IP("明细属性"),
+    AP("Action")
     ;
 
     private String displayName;
@@ -26,12 +27,14 @@ public enum PropertyType {
     }
 
     public static PropertyType getType(String typeStr) {
-        if (P.name().equals(typeStr)) {
-            return P;
-        } else if (A.name().equals(typeStr)) {
-            return A;
+        if (MP.name().equals(typeStr)) {
+            return MP;
+        } else if (IP.name().equals(typeStr)) {
+            return IP;
+        } else if (AP.name().equals(typeStr)) {
+            return AP;
         }
 
-        return N;
+        return NP;
     }
 }

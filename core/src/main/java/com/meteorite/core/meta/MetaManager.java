@@ -19,6 +19,7 @@ import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaForm;
 import com.meteorite.core.meta.model.MetaFormField;
 import com.meteorite.core.ui.ViewManager;
+import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.ui.model.ViewConfig;
 import com.meteorite.core.util.UFile;
@@ -53,8 +54,6 @@ public class MetaManager {
             addMeta(DBDataSource.class);
 //            addMeta(Meta.class);
 //            addMeta(MetaField.class);
-            // 从数据库中加载元数据
-            initFromDB();
 
             loadMetaFieldConfig();
         } catch (Exception e) {
@@ -62,7 +61,7 @@ public class MetaManager {
         }
     }
 
-    private static void initFromDB() throws Exception {
+    public static void load() throws Exception {
         SystemInfo sysInfo = SystemManager.getSystemInfo();
         Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
         JdbcTemplate template = new JdbcTemplate(conn);
@@ -136,12 +135,12 @@ public class MetaManager {
                     metaSortNum += 10;
                 }
 
-                template.commit();
-
                 sysInfo.setMetaInit(true);
                 sysInfo.store();
             }
 
+            template.commit();
+            template.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,7 +149,6 @@ public class MetaManager {
         } finally {
             template.close();
         }
-
     }
 
     /**
@@ -199,6 +197,28 @@ public class MetaManager {
      */
     public static Meta getMeta(Class<?> clazz) {
         return metaMap.get(clazz.getSimpleName());
+    }
+
+    /**
+     * 根据元数据字段ID，获得元数据字段信息
+     *
+     * @param fieldId 元字段ID
+     * @return 返回元字段信息
+     * @since 1.0.0
+     */
+    public static MetaField getMetaField(String fieldId) {
+        return fieldIdMap.get(fieldId);
+    }
+
+    /**
+     * 根据元数据ID，获得元数据信息
+     *
+     * @param metaId 元数据ID
+     * @return 返回元数据信息
+     * @since 1.0.0
+     */
+    public static Meta getMetaById(String metaId) {
+        return metaIdMap.get(metaId);
     }
 
     /**
@@ -351,14 +371,8 @@ public class MetaManager {
         }
         meta.setFields(fieldList);
 
-        // 创建表单视图
-        View view = ViewManager.createFormView(meta);
-        view.setSortNum(metaSortNum);
-        template.save(MetaPDBFactory.getView(view));
-        // 保存视图明细
-        for (ViewConfig config : view.getConfigs()) {
-            template.save(MetaPDBFactory.getViewConfig(config));
-        }
+        // 创建视图
+        ViewManager.createView(meta, template);
         // 插入sys_class_table信息
         /*ClassTable classTable = new ClassTable();
         classTable.setName("default");

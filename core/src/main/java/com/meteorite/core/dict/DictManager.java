@@ -37,6 +37,7 @@ public class DictManager {
             addDict(DisplayStyle.class);
             addDict(EnumBoolean.class);
             addDict(PropertyType.class);
+            addDict(EnumAlign.class);
 
             root.setId("ROOT");
             root.setName("数据字典");
@@ -90,11 +91,12 @@ public class DictManager {
                 }
             }
 
-            template.commit();
-
             sysInfo.setDictInit(true);
             sysInfo.store();
         }
+
+        template.commit();
+        template.close();
     }
 
     /**

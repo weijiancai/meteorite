@@ -2,7 +2,9 @@
 drop table if exists sys_db_version;
 drop table if exists sys_dz_code;
 drop table if exists sys_dz_category;
+drop table if exists sys_module;
 drop table if exists sys_view_config;
+drop table if exists sys_view_layout;
 drop table if exists sys_view;
 drop table if exists sys_meta_field;
 drop table if exists sys_meta;
@@ -145,6 +147,8 @@ create table sys_layout
    name                 varchar(64) not null,
    display_name         varchar(128) not null,
    desc               varchar(1024),
+   is_valid             char(1) not null,
+   input_date           datetime not null,
    sort_num             int not null,
    primary key (id)
 );
@@ -155,6 +159,8 @@ comment on column sys_layout.pid is '布局父ID';
 comment on column sys_layout.name is '布局名称';
 comment on column sys_layout.display_name is '布局显示名';
 comment on column sys_layout.desc is '描述';
+comment on column sys_layout.is_valid is '是否有效';
+comment on column sys_layout.input_date is '录入时间';
 comment on column sys_layout.sort_num is '排序号';
 
 
@@ -167,7 +173,7 @@ create table sys_layout_prop
    layout_id            varchar(32) not null,
    name                 varchar(64) not null,
    display_name         varchar(128) not null,
-   prop_type            char(1) not null,
+   prop_type            char(2) not null,
    default_value        varchar(128),
    desc        varchar(1024),
    sort_num             int not null,
@@ -192,7 +198,6 @@ create table sys_view
    id                   varchar(32) not null,
    name                 varchar(64) not null,
    display_name         varchar(128),
-   layout_id            varchar(32) not null,
    desc               varchar(1024),
    is_valid             char(1) not null,
    input_date           datetime not null,
@@ -204,11 +209,28 @@ comment on table sys_view is '视图';
 comment on column sys_view.id is '视图ID';
 comment on column sys_view.name is '视图名称';
 comment on column sys_view.display_name is '视图ID';
-comment on column sys_view.layout_id is '布局ID';
 comment on column sys_view.desc is '描述';
 comment on column sys_view.is_valid is '是否有效';
 comment on column sys_view.input_date is '录入时间';
 comment on column sys_view.sort_num is '排序号';
+
+/*==============================================================*/
+/* Table: sys_view_layout                                       */
+/*==============================================================*/
+create table sys_view_layout
+(
+  id                   varchar(32) not null,
+  view_id              varchar(32) not null,
+  layout_id            varchar(32) not null,
+  meta_id              varchar(32),
+  primary key (id)
+);
+
+comment on table sys_view_layout is '视图布局';
+comment on column sys_view_layout.id is '视图布局ID';
+comment on column sys_view_layout.view_id is '视图ID';
+comment on column sys_view_layout.layout_id is '布局ID';
+comment on column sys_view_layout.meta_id is '元数据ID';
 
 /*==============================================================*/
 /* Table: sys_view_config                                       */
@@ -216,16 +238,16 @@ comment on column sys_view.sort_num is '排序号';
 create table sys_view_config
 (
    id                   varchar(32) not null,
-   view_id              varchar(32) not null,
+   view_layout_id       varchar(32) not null,
    prop_id              varchar(32) not null,
-   meta_field_id        varchar(32) not null,
+   meta_field_id        varchar(32),
    value                varchar(128),
    primary key (id)
 );
 
 comment on table sys_view_config is '视图配置';
 comment on column sys_view_config.id is '视图配置ID';
-comment on column sys_view_config.view_id is '视图ID';
+comment on column sys_view_config.view_layout_id is '视图布局ID';
 comment on column sys_view_config.prop_id is '属性ID';
 comment on column sys_view_config.meta_field_id is '元字段ID';
 comment on column sys_view_config.value is '属性值';
@@ -240,8 +262,14 @@ alter table sys_meta_field add constraint FK_meta_field_metaId foreign key (meta
 alter table sys_layout_prop add constraint FK_layout_prop_layoutId foreign key (layout_id)
       references sys_layout (id) on delete cascade on update cascade;
 
-alter table sys_view add constraint FK_view_layoutId foreign key (layout_id)
-      references sys_layout (id) on delete cascade on update cascade;
+alter table sys_view_layout add constraint FK_view_layout_viewId foreign key (view_id)
+      references sys_view (id) on delete restrict on update restrict;
+
+alter table sys_view_layout add constraint FK_view_layout_layoutId foreign key (layout_id)
+      references sys_layout (id) on delete restrict on update restrict;
+
+alter table sys_view_layout add constraint FK_view_layout_metaId foreign key (meta_id)
+      references sys_meta (id) on delete restrict on update restrict;
 
 alter table sys_view_config add constraint FK_view_config_layoutPropId foreign key (prop_id)
       references sys_layout_prop (id) on delete cascade on update cascade;
@@ -249,8 +277,10 @@ alter table sys_view_config add constraint FK_view_config_layoutPropId foreign k
 alter table sys_view_config add constraint FK_view_config_metaFieldId foreign key (meta_field_id)
       references sys_meta_field (id) on delete cascade on update cascade;
 
-alter table sys_view_config add constraint FK_view_config_viewId foreign key (view_id)
-      references sys_view (id) on delete cascade on update cascade;
+alter table sys_view_config add constraint FK_view_config_viewLayoutId foreign key (view_layout_id)
+    references sys_view_layout (id) on delete restrict on update restrict;
+
+
 
 -- 索引
 create unique index IUX_NAME on sys_layout
@@ -260,7 +290,7 @@ create unique index IUX_NAME on sys_layout
 
 create unique index idx_view_config_prop on sys_view_config
 (
-   view_id,
+   view_layout_id,
    prop_id,
    meta_field_id
 );

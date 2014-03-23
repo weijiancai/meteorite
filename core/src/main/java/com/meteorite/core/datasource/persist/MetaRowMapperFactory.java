@@ -4,11 +4,13 @@ import com.meteorite.core.datasource.db.RowMapper;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.ui.ViewManager;
+import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.PropertyType;
-import com.meteorite.core.ui.model.Layout;
-import com.meteorite.core.ui.model.LayoutProperty;
+import com.meteorite.core.ui.model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -71,6 +73,8 @@ public class MetaRowMapperFactory {
                 layout.setName(rs.getString("name"));
                 layout.setDisplayName(rs.getString("display_name"));
                 layout.setDesc(rs.getString("desc"));
+                layout.setValid("T".equals(rs.getString("is_valid")));
+                layout.setInputDate(rs.getDate("input_date"));
                 layout.setSortNum(rs.getInt("sort_num"));
 
                 return layout;
@@ -133,6 +137,58 @@ public class MetaRowMapperFactory {
                 code.setSortNum(rs.getInt("sort_num"));
 
                 return code;
+            }
+        };
+    }
+
+    public static RowMapper<View> getView() {
+        return new RowMapper<View>() {
+            @Override
+            public View mapRow(ResultSet rs) throws SQLException {
+                View view = new View();
+
+                view.setId(rs.getString("id"));
+                view.setName(rs.getString("name"));
+                view.setDisplayName(rs.getString("display_name"));
+                view.setDesc(rs.getString("desc"));
+                view.setValid("T".equals(rs.getString("is_valid")));
+                view.setInputDate(rs.getDate("input_date"));
+                view.setSortNum(rs.getInt("sort_num"));
+
+                return view;
+            }
+        };
+    }
+
+    public static RowMapper<ViewLayout> getViewLayout(final View view) {
+        return new RowMapper<ViewLayout>() {
+            @Override
+            public ViewLayout mapRow(ResultSet rs) throws SQLException {
+                ViewLayout viewLayout = new ViewLayout();
+
+                viewLayout.setId(rs.getString("id"));
+                viewLayout.setView(view);
+                viewLayout.setLayout(LayoutManager.getLayoutById(rs.getString("layout_id")));
+                viewLayout.setMeta(MetaManager.getMetaById(rs.getString("field_id")));
+
+                return viewLayout;
+            }
+        };
+    }
+
+    public static RowMapper<ViewConfig> getViewConfig(final ViewLayout viewLayout) {
+        return new RowMapper<ViewConfig>() {
+            @Override
+            public ViewConfig mapRow(ResultSet rs) throws SQLException {
+                ViewConfig config = new ViewConfig();
+
+                config.setId(rs.getString("id"));
+                config.setViewLayout(viewLayout);
+                config.setProperty(LayoutManager.getLayoutProperty(rs.getString("prop_id")));
+                config.setField(MetaManager.getMetaField(rs.getString("field_id")));
+                config.setValue(rs.getString("value"));
+
+                return config;
             }
         };
     }

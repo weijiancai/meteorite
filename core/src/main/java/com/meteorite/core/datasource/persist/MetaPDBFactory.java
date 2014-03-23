@@ -4,15 +4,13 @@ import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.ui.model.Layout;
-import com.meteorite.core.ui.model.LayoutProperty;
-import com.meteorite.core.ui.model.View;
-import com.meteorite.core.ui.model.ViewConfig;
+import com.meteorite.core.ui.model.*;
 import com.meteorite.core.util.UUIDUtil;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author wei_jc
@@ -131,6 +129,8 @@ public class MetaPDBFactory {
                 map.put("name", layout.getName());
                 map.put("display_name", layout.getDisplayName());
                 map.put("desc", layout.getDesc());
+                map.put("is_valid", layout.isValid() ? "T" : "F");
+                map.put("input_date", new Date());
                 map.put("sort_num", layout.getSortNum());
 
                 result.put("sys_layout", map);
@@ -174,12 +174,32 @@ public class MetaPDBFactory {
                 map.put("name", view.getName());
                 map.put("display_name", view.getDisplayName());
                 map.put("desc", view.getDesc());
-                map.put("layout_id", view.getLayout().getId());
                 map.put("is_valid", view.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", view.getSortNum());
 
                 result.put("sys_view", map);
+
+                return result;
+            }
+        };
+    }
+
+    public static IPDB getViewLayout(final ViewLayout viewLayout) {
+        return new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("id", UUIDUtil.getUUID());
+                map.put("view_id", viewLayout.getView().getId());
+                map.put("layout_id", viewLayout.getLayout().getId());
+                if (viewLayout.getMeta() != null) {
+                    map.put("meta_id", viewLayout.getMeta().getId());
+                }
+
+                result.put("sys_view_layout", map);
 
                 return result;
             }
@@ -194,9 +214,11 @@ public class MetaPDBFactory {
 
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("id", config.getId());
-                map.put("view_id", config.getView().getId());
+                map.put("view_layout_id", config.getViewLayout().getId());
                 map.put("prop_id", config.getProperty().getId());
-                map.put("meta_field_id", config.getField().getId());
+                if (config.getField() != null) {
+                    map.put("meta_field_id", config.getField().getId());
+                }
                 map.put("value", config.getValue());
 
                 result.put("sys_view_config", map);

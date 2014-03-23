@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.dict.DictManager;
+import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.ui.layout.LayoutManager;
@@ -48,6 +49,8 @@ public class SystemManager {
             DictManager.load();
             // 加载布局配置
             LayoutManager.load();
+            // 加载元数据
+            MetaManager.load();
             // 加载视图
             ViewManager.load();
             // 加载项目

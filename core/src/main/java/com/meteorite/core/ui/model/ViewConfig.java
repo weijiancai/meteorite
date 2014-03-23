@@ -14,7 +14,7 @@ public class ViewConfig {
     /** 属性值*/
     private String value;
 
-    private View view;
+    private ViewLayout viewLayout;
     private MetaField field;
     private LayoutProperty property;
 
@@ -34,12 +34,12 @@ public class ViewConfig {
         this.value = value;
     }
 
-    public View getView() {
-        return view;
+    public ViewLayout getViewLayout() {
+        return viewLayout;
     }
 
-    public void setView(View view) {
-        this.view = view;
+    public void setViewLayout(ViewLayout viewLayout) {
+        this.viewLayout = viewLayout;
     }
 
     public MetaField getField() {

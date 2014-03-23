@@ -4,23 +4,36 @@
     <children>
         <Layout id="L01" name="FORM" displayName="表单" sortNum="10" desc="">
             <Properties>
-                <!-- Action -->
-                <Property id="L01_A01" name="form_save" displayName="保存" propType="A" sortNum="10"/>
-                <Property id="L01_A02" name="form_exit" displayName="退出" propType="A" sortNum="20"/>
+                <!-- Action Property-->
+                <Property id="L01_A01" name="form_save" displayName="保存" propType="AP" sortNum="10"/>
+                <Property id="L01_A02" name="form_exit" displayName="退出" propType="AP" sortNum="20"/>
 
-                <!-- Property -->
-                <Property id="L01_P01" name="name" displayName="名称" propType="P" sortNum="10"/>
-                <Property id="L01_P02" name="displayName" displayName="显示名" propType="P" sortNum="20"/>
-                <Property id="L01_P03" name="formType" displayName="表单类型" propType="P" sortNum="30"/>
-                <Property id="L01_P04" name="colCount" displayName="列数" propType="P" defaultValue="3" sortNum="40"/>
-                <Property id="L01_P05" name="colWidth" displayName="列宽" propType="P" defaultValue="180" sortNum="50"/>
-                <Property id="L01_P06" name="labelGap" displayName="labelGap" propType="P" defaultValue="5" sortNum="60"/>
-                <Property id="L01_P07" name="fieldGap" displayName="fieldGap" propType="P" defaultValue="15" sortNum="70"/>
-                <Property id="L01_P08" name="hgap" displayName="hgap" propType="P" defaultValue="3" sortNum="80"/>
-                <Property id="L01_P09" name="vgap" displayName="vgap" propType="P" defaultValue="5" sortNum="90"/>
+                <!-- Main Property -->
+                <Property id="L01_MP01" name="name" displayName="名称" propType="MP" sortNum="10"/>
+                <Property id="L01_MP02" name="displayName" displayName="显示名" propType="MP" sortNum="20"/>
+                <Property id="L01_MP03" name="formType" displayName="表单类型" propType="MP" sortNum="30"/>
+                <Property id="L01_MP04" name="colCount" displayName="列数" propType="MP" defaultValue="3" sortNum="40"/>
+                <Property id="L01_MP05" name="colWidth" displayName="列宽" propType="MP" defaultValue="180" sortNum="50"/>
+                <Property id="L01_MP06" name="labelGap" displayName="labelGap" propType="MP" defaultValue="5" sortNum="60"/>
+                <Property id="L01_MP07" name="fieldGap" displayName="fieldGap" propType="MP" defaultValue="15" sortNum="70"/>
+                <Property id="L01_MP08" name="hgap" displayName="hgap" propType="MP" defaultValue="3" sortNum="80"/>
+                <Property id="L01_MP09" name="vgap" displayName="vgap" propType="MP" defaultValue="5" sortNum="90"/>
+
+                <!-- Item Property -->
+                <Property id="L01_IP01" name="name" displayName="名称" propType="IP" sortNum="10"/>
+                <Property id="L01_IP02" name="displayName" displayName="显示名" propType="IP" sortNum="20"/>
+                <Property id="L01_IP03" name="isSingleLine" displayName="独行" propType="IP" defaultValue="false" dataType="BOOLEAN" sortNum="30"/>
+                <Property id="L01_IP04" name="isDisplay" displayName="显示" propType="IP" defaultValue="true" dataType="BOOLEAN" sortNum="40"/>
+                <Property id="L01_IP05" name="width" displayName="宽" propType="IP" defaultValue="180" sortNum="50"/>
+                <Property id="L01_IP06" name="height" displayName="高" propType="IP" sortNum="60"/>
+                <Property id="L01_IP07" name="displayStyle" displayName="显示风格" propType="IP" defaultValue="TEXT_FIELD" dataType="DICT" dictId="DisplayStyle" sortNum="70"/>
+                <Property id="L01_IP08" name="dataType" displayName="数据类型" propType="IP" defaultValue="STRING" dataType="DICT" dictId="MetaDataType" sortNum="80"/>
+                <Property id="L01_IP09" name="dictId" displayName="数据字典" propType="IP" defaultValue="ROOT" dataType="DICT" dictId="ROOT" sortNum="90"/>
+                <Property id="L01_IP10" name="value" displayName="数据值" propType="IP" defaultValue="" sortNum="100"/>
+                <Property id="L01_IP11" name="sortNum" displayName="排序号" propType="IP" sortNum="110"/>
             </Properties>
             <children>
-                <Layout id="L02" name="FORM_FIELD" displayName="表单Field" sortNum="10" desc="">
+                <!--<Layout id="L02" name="FORM_FIELD" displayName="表单Field" sortNum="10" desc="">
                     <Properties>
                         <Property id="L02_P01" name="name" displayName="名称" propType="P" sortNum="10"/>
                         <Property id="L02_P02" name="displayName" displayName="显示名" propType="P" sortNum="20"/>
@@ -35,14 +48,38 @@
                         <Property id="L02_P11" name="sortNum" displayName="排序号" propType="P" sortNum="110"/>
                     </Properties>
                     <children/>
+                </Layout>-->
+            </children>
+        </Layout>
+
+        <Layout id="L03" name="TABLE" displayName="数据表格" sortNum="20" desc="数据表格">
+            <Properties/>
+            <children>
+                <Layout id="L04" name="TABLE" displayName="表格字段" sortNum="20" desc="表格字段">
+                    <Properties>
+                        <Property id="L04_P01" name="name" displayName="名称" propType="IP" sortNum="10" />
+                        <Property id="L04_P02" name="displayName" displayName="显示名" propType="IP" sortNum="20" />
+                        <Property id="L04_P03" name="isDisplay" displayName="显示" propType="IP" defaultValue="true" dataType="BOOLEAN" sortNum="30" />
+                        <Property id="L04_P04" name="width" displayName="宽" propType="IP" defaultValue="" sortNum="40" />
+                        <Property id="L04_P05" name="displayStyle" displayName="显示风格" propType="IP" defaultValue="TEXT_FIELD" dataType="DICT" dictId="DisplayStyle" sortNum="50" />
+                        <Property id="L04_P06" name="align" displayName="对齐" propType="IP" defaultValue="LEFT" dataType="DICT" dictId="EnumAlign" sortNum="60" />
+                        <Property id="L04_P07" name="sortNum" displayName="排序号" propType="IP" sortNum="70" />
+                    </Properties>
                 </Layout>
             </children>
         </Layout>
 
-        <Layout id="L03" name="TREE" displayName="树" sortNum="20" desc="树形结构">
+        <Layout id="L05" name="TREE" displayName="树" sortNum="30" desc="树形结构">
             <Properties>
-                <Property id="L03_P01" name="nodeLabel" displayName="节点标签" propType="P" defaultValue="displayName" sortNum="10"/>
+                <Property id="L05_P01" name="nodeLabel" displayName="节点标签" propType="MP" defaultValue="displayName" sortNum="10"/>
             </Properties>
+        </Layout>
+
+        <Layout id="L06" name="CRUD" displayName="CRUD" sortNum="60" desc="CRUD操作">
+            <children>
+                <Layout id="L07" name="FORM" displayName="表单" sortNum="10"/>
+                <Layout id="L08" name="TABLE" displayName="数据表格" sortNum="20"/>
+            </children>
         </Layout>
     </children>
 </Layout>

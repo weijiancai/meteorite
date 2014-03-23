@@ -15,7 +15,7 @@ import java.util.Date;
  * 元数据字段信息
  *
  * @author wei_jc
- * @version 1.0.0
+ * @since 1.0.0
  */
 @XmlRootElement
 @XmlType(propOrder = {"id", "name", "displayName", "dataType", "value", "defaultValue", "dictId", "valid", "sortNum", "inputDate", "desc"})

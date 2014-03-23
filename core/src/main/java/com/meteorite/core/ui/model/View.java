@@ -1,5 +1,6 @@
 package com.meteorite.core.ui.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class View {
     /** 排序号 */
     private int sortNum;
 
-    private Layout layout;
+    private List<ViewLayout> layoutList;
     private List<ViewConfig> configs;
 
     public String getId() {
@@ -84,19 +85,29 @@ public class View {
         this.sortNum = sortNum;
     }
 
-    public Layout getLayout() {
-        return layout;
+    public List<ViewLayout> getLayoutList() {
+        if (layoutList == null) {
+            layoutList = new ArrayList<>();
+        }
+        return layoutList;
     }
 
-    public void setLayout(Layout layout) {
-        this.layout = layout;
+    public void setLayoutList(List<ViewLayout> layoutList) {
+        this.layoutList = layoutList;
     }
 
     public List<ViewConfig> getConfigs() {
+        if (configs == null) {
+            configs = new ArrayList<>();
+        }
         return configs;
     }
 
     public void setConfigs(List<ViewConfig> configs) {
         this.configs = configs;
+    }
+
+    public void addConfig(ViewConfig config) {
+        getConfigs().add(config);
     }
 }
