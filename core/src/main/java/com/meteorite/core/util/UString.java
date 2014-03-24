@@ -56,6 +56,7 @@ public class UString {
      * @return 返回类名
      */
     public static String tableNameToClassName(String tableName) {
+        tableName = tableName.toLowerCase();
         StringBuilder result = new StringBuilder();
         int i = 0;
         for (String str : tableName.split("_")) {

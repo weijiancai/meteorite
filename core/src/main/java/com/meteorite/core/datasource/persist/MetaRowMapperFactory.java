@@ -73,6 +73,7 @@ public class MetaRowMapperFactory {
                 layout.setName(rs.getString("name"));
                 layout.setDisplayName(rs.getString("display_name"));
                 layout.setDesc(rs.getString("desc"));
+                layout.setRefId(rs.getString("ref_id"));
                 layout.setValid("T".equals(rs.getString("is_valid")));
                 layout.setInputDate(rs.getDate("input_date"));
                 layout.setSortNum(rs.getInt("sort_num"));

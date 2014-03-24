@@ -22,7 +22,7 @@ public class SystemInfo extends AbstractXmlSerialization {
     /** 布局是否已初始化 */
     private boolean isLayoutInit;
     /** 视图是否已初始化 */
-    private boolean isViewInit;
+    private boolean isViewInit = true;
 
     public boolean isDictInit() {
         return isDictInit;

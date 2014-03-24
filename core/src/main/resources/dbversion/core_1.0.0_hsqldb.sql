@@ -146,7 +146,8 @@ create table sys_layout
    pid                  varchar(32),
    name                 varchar(64) not null,
    display_name         varchar(128) not null,
-   desc               varchar(1024),
+   desc                 varchar(1024),
+   ref_id               varchar(32),
    is_valid             char(1) not null,
    input_date           datetime not null,
    sort_num             int not null,
@@ -159,6 +160,7 @@ comment on column sys_layout.pid is '布局父ID';
 comment on column sys_layout.name is '布局名称';
 comment on column sys_layout.display_name is '布局显示名';
 comment on column sys_layout.desc is '描述';
+comment on column sys_layout.ref_id is '引用布局ID';
 comment on column sys_layout.is_valid is '是否有效';
 comment on column sys_layout.input_date is '录入时间';
 comment on column sys_layout.sort_num is '排序号';
@@ -260,7 +262,7 @@ alter table sys_meta_field add constraint FK_meta_field_metaId foreign key (meta
       references sys_meta (id) on delete cascade on update cascade;
 
 alter table sys_layout_prop add constraint FK_layout_prop_layoutId foreign key (layout_id)
-      references sys_layout (id) on delete cascade on update cascade;
+      references sys_view (id) on delete restrict on update restrict;
 
 alter table sys_view_layout add constraint FK_view_layout_viewId foreign key (view_id)
       references sys_view (id) on delete restrict on update restrict;

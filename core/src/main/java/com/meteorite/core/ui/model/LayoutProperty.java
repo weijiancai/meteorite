@@ -35,6 +35,13 @@ public class LayoutProperty {
 
     public LayoutProperty() {}
 
+    public LayoutProperty(String name, String displayName, String defaultValue, PropertyType propType, String desc) {
+        this.name = name;
+        this.displayName = displayName;
+        this.defaultValue = defaultValue;
+        this.propType = propType;
+        this.desc = desc;
+    }
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;

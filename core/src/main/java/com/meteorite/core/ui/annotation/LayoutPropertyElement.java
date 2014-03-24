@@ -42,7 +42,7 @@ public @interface LayoutPropertyElement {
      *
      * @return 返回布局属性类型
      */
-    PropertyType type() default PropertyType.P;
+    PropertyType type() default PropertyType.MP;
 
     /**
      * 布局描述

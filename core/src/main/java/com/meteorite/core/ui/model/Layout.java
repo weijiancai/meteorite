@@ -18,7 +18,7 @@ import java.util.List;
  * @since  1.0.0
  */
 @XmlRootElement(name = "Layout")
-@XmlType(propOrder = {"id", "pid", "name", "displayName", "valid", "inputDate", "sortNum", "desc", "properties", "children"})
+@XmlType(propOrder = {"id", "pid", "name", "displayName", "valid", "inputDate", "sortNum", "desc", "refId", "properties", "children"})
 public class Layout extends AbstractXmlSerialization implements Cloneable {
     /** 布局ID */
     private String id;
@@ -30,6 +30,8 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
     private String displayName;
     /** 描述 */
     private String desc;
+    /** 引用布局ID */
+    private String refId;
     /** 是否有效 */
     private boolean isValid;
     /** 录入时间 */
@@ -40,6 +42,7 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
     private List<LayoutProperty> properties;
     private List<Layout> children;
     private Layout parent;
+    private Layout refLayout;
 
     public Layout() {}
 
@@ -102,6 +105,15 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    @XmlAttribute
+    public String getRefId() {
+        return refId;
+    }
+
+    public void setRefId(String refId) {
+        this.refId = refId;
     }
 
     public boolean isValid() {
@@ -167,6 +179,15 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
         this.parent = parent;
     }
 
+    @XmlTransient
+    public Layout getRefLayout() {
+        return refLayout;
+    }
+
+    public void setRefLayout(Layout refLayout) {
+        this.refLayout = refLayout;
+    }
+
     public LayoutProperty getProperty(String propName) {
         for (LayoutProperty property : getProperties()) {
             if (propName.equals(property.getName())) {
@@ -177,8 +198,9 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
         return null;
     }
 
-    public void setPropertyValue(String propName, String value) {
-
+    public void addProperty(LayoutProperty property) {
+        property.setLayout(this);
+        getProperties().add(property);
     }
 
     @Override

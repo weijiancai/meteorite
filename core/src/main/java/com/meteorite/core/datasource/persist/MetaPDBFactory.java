@@ -5,6 +5,7 @@ import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.model.*;
+import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UUIDUtil;
 
 import java.util.Date;
@@ -129,6 +130,7 @@ public class MetaPDBFactory {
                 map.put("name", layout.getName());
                 map.put("display_name", layout.getDisplayName());
                 map.put("desc", layout.getDesc());
+                map.put("ref_id", layout.getRefId());
                 map.put("is_valid", layout.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", layout.getSortNum());
@@ -192,7 +194,7 @@ public class MetaPDBFactory {
                 Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("id", UUIDUtil.getUUID());
+                map.put("id", viewLayout.getId());
                 map.put("view_id", viewLayout.getView().getId());
                 map.put("layout_id", viewLayout.getLayout().getId());
                 if (viewLayout.getMeta() != null) {

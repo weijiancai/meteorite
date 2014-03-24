@@ -53,20 +53,16 @@
         </Layout>
 
         <Layout id="L03" name="TABLE" displayName="数据表格" sortNum="20" desc="数据表格">
-            <Properties/>
-            <children>
-                <Layout id="L04" name="TABLE" displayName="表格字段" sortNum="20" desc="表格字段">
-                    <Properties>
-                        <Property id="L04_P01" name="name" displayName="名称" propType="IP" sortNum="10" />
-                        <Property id="L04_P02" name="displayName" displayName="显示名" propType="IP" sortNum="20" />
-                        <Property id="L04_P03" name="isDisplay" displayName="显示" propType="IP" defaultValue="true" dataType="BOOLEAN" sortNum="30" />
-                        <Property id="L04_P04" name="width" displayName="宽" propType="IP" defaultValue="" sortNum="40" />
-                        <Property id="L04_P05" name="displayStyle" displayName="显示风格" propType="IP" defaultValue="TEXT_FIELD" dataType="DICT" dictId="DisplayStyle" sortNum="50" />
-                        <Property id="L04_P06" name="align" displayName="对齐" propType="IP" defaultValue="LEFT" dataType="DICT" dictId="EnumAlign" sortNum="60" />
-                        <Property id="L04_P07" name="sortNum" displayName="排序号" propType="IP" sortNum="70" />
-                    </Properties>
-                </Layout>
-            </children>
+            <Properties>
+                <!-- Item Property -->
+                <Property id="L04_P01" name="name" displayName="名称" propType="IP" sortNum="10" />
+                <Property id="L04_P02" name="displayName" displayName="显示名" propType="IP" sortNum="20" />
+                <Property id="L04_P03" name="isDisplay" displayName="显示" propType="IP" defaultValue="true" dataType="BOOLEAN" sortNum="30" />
+                <Property id="L04_P04" name="width" displayName="宽" propType="IP" defaultValue="" sortNum="40" />
+                <Property id="L04_P05" name="displayStyle" displayName="显示风格" propType="IP" defaultValue="TEXT_FIELD" dataType="DICT" dictId="DisplayStyle" sortNum="50" />
+                <Property id="L04_P06" name="align" displayName="对齐" propType="IP" defaultValue="LEFT" dataType="DICT" dictId="EnumAlign" sortNum="60" />
+                <Property id="L04_P07" name="sortNum" displayName="排序号" propType="IP" sortNum="70" />
+            </Properties>
         </Layout>
 
         <Layout id="L05" name="TREE" displayName="树" sortNum="30" desc="树形结构">
@@ -77,8 +73,8 @@
 
         <Layout id="L06" name="CRUD" displayName="CRUD" sortNum="60" desc="CRUD操作">
             <children>
-                <Layout id="L07" name="FORM" displayName="表单" sortNum="10"/>
-                <Layout id="L08" name="TABLE" displayName="数据表格" sortNum="20"/>
+                <Layout id="L07" name="CRUD_FORM" refId="L01" displayName="表单" sortNum="10"/>
+                <Layout id="L08" name="CRUD_TABLE" refId="L03" displayName="数据表格" sortNum="20"/>
             </children>
         </Layout>
     </children>

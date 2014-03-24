@@ -85,12 +85,14 @@ public class ViewManager {
         template.save(MetaPDBFactory.getView(view));
 
         ViewLayout formLayout = createViewLayout(meta, LayoutManager.getLayoutByName("FORM"));
+        formLayout.setView(view);
         template.save(MetaPDBFactory.getViewLayout(formLayout));
         for (ViewConfig config : formLayout.getConfigs()) {
             template.save(MetaPDBFactory.getViewConfig(config));
         }
 
         ViewLayout tableLayout = createViewLayout(meta, LayoutManager.getLayoutByName("TABLE"));
+        tableLayout.setView(view);
         template.save(MetaPDBFactory.getViewLayout(tableLayout));
         for (ViewConfig config : tableLayout.getConfigs()) {
             template.save(MetaPDBFactory.getViewConfig(config));
@@ -123,6 +125,7 @@ public class ViewManager {
                 }
             }
         }
+        viewLayout.setConfigs(configList);
 
         return viewLayout;
     }

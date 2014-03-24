@@ -126,8 +126,8 @@ public class MetaManager {
                 }
             } else {
                 metaSortNum = 10;
-                // 请空表sys_meta
-                template.clearTable("sys_meta");
+                // 清空表sys_view_config, sys_view_layout, sys_view, sys_meta
+                template.clearTable("sys_view_config", "sys_view_layout", "sys_view", "sys_meta");
                 DBConnection dbConn = DBManager.getConnection(DBManager.getSysDataSource());
 //                dbConn.getLoader().loadSchemas();
                 for (DBTable table : dbConn.getSchema().getTables()) {
