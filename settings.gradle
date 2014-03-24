@@ -1,1 +1,1 @@
-include 'taobao', "core", "fxbase", "flexbase"
+include 'taobao', "core", "fxbase", "flexbase", "ectongs"
