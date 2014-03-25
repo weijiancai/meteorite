@@ -10,6 +10,8 @@ import cc.csdn.base.util.Debug;
 import cc.csdn.base.util.UtilBase64;
 import cc.csdn.base.util.UtilString;
 import cc.csdn.base.web.right.AuthorityChecker;
+import com.ectongs.http.HttpAccepter;
+import com.ectongs.util.xml.ModelMapping;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -21,7 +23,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
 
 import java.util.*;
 
@@ -30,10 +31,10 @@ import java.util.*;
  * @author wei_jc
  */
 public class BaseHttpService {
-    private static final Logger log = Logger.getLogger(BaseHttpService.class);
-    // »Îø⁄url
+//    private static final Logger log = Logger.getLogger(BaseHttpService.class);
+    // ÂÖ•Âè£url
     public static String ENTRY_URL = "";
-    // ”¶”√url
+    // Â∫îÁî®url
     public static String APP_URL = "http://115.29.163.55:11031/ectmss-server";
     private HttpClient client = new DefaultHttpClient();
 
@@ -43,7 +44,7 @@ public class BaseHttpService {
 
     public BaseHttpService(String serviceName) {
         this.serviceName = serviceName;
-        // ≥¨ ±
+        // Ë∂ÖÊó∂
         this.client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 2000);
     }
     
@@ -51,11 +52,11 @@ public class BaseHttpService {
         this.parameters.put(key, value);
     }
 
-    public String send() {
+    public HttpAccepter send() {
         return send(null);
     }
 
-    public String send(String jsessionid) {
+    public HttpAccepter send(String jsessionid) {
         String baseUrl = APP_URL;
 //        String jsessionid = "";
 
@@ -89,23 +90,36 @@ public class BaseHttpService {
 
             HttpResponse response = client.execute(postMethod);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                throw new Exception("http«Î«Û ß∞‹£°" +response.getStatusLine().getStatusCode());
+                throw new Exception("httpËØ∑Ê±ÇÂ§±Ë¥•ÔºÅ" +response.getStatusLine().getStatusCode());
             }
 
             HttpEntity resEntity = response.getEntity();
             byte[] bytes = EntityUtils.toByteArray(resEntity);
             if (bytes.length == 0) {
-                return "";
+                return null;
             }
 
             String result = UtilBase64.zlibDecode(bytes);
-            int dataStart = result.indexOf("<data><![CDATA[") + 15;
+
+            HttpAccepter accepter = ModelMapping.getModel(result, HttpAccepter.class);
+            accepter.setParams(parameters);
+            accepter.setReturnContent(result);
+
+            if (accepter.getReturnCode() == -99) {
+                throw new Exception("Êú™ÁôªÈôÜ");
+            } else if (accepter.getReturnCode() < 0) {
+                throw new Exception("ÊúçÂä°Âô®ÈîôËØØÔºö" + accepter.getError());
+            } else if(accepter.getReturnCode() == 99) {
+                throw new Exception("Ê∂àÊÅØÔºö " + accepter.getMessage());
+            }
+
+            /*int dataStart = result.indexOf("<data><![CDATA[") + 15;
             int dataEnd = result.indexOf("]]></data>");
             System.out.println(result);
             String data = result.substring(dataStart, dataEnd);
-            System.out.println(data);
+            System.out.println(data);*/
 
-            return data;
+            return accepter;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -120,13 +134,13 @@ public class BaseHttpService {
 
 
     /**
-     * http≥ı ºªØ. ≥ı ºªØ÷Æ∫ÛHttpService µ¿˝∑Ωø…÷¥––.
+     * httpÂàùÂßãÂåñ. ÂàùÂßãÂåñ‰πãÂêéHttpServiceÂÆû‰æãÊñπÂèØÊâßË°å.
      */
     public static boolean initHttp() throws Exception {
         HttpPost postMethod = null;
         try {
-            log.info("»Îø⁄URL£∫" + ENTRY_URL);
-            System.out.println("»Îø⁄URL£∫" + ENTRY_URL);
+//            log.info("ÂÖ•Âè£URLÔºö" + ENTRY_URL);
+            System.out.println("ÂÖ•Âè£URLÔºö" + ENTRY_URL);
 
             postMethod = new HttpPost(ENTRY_URL);
             String reqid = ReceiptUtil.getReceiptGUID();
@@ -138,18 +152,18 @@ public class BaseHttpService {
             postMethod.setEntity(new UrlEncodedFormEntity(nvps));
             
             HttpClient httpclient = new DefaultHttpClient();
-            // ≥¨ ±
+            // Ë∂ÖÊó∂
             httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 2000);            
             HttpResponse response = httpclient.execute(postMethod);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                throw new AppErrorException("http«Î«Û ß∞‹£° " + ENTRY_URL + "\n" + response.getStatusLine().toString());
+                throw new AppErrorException("httpËØ∑Ê±ÇÂ§±Ë¥•ÔºÅ " + ENTRY_URL + "\n" + response.getStatusLine().toString());
             }
 
             HttpEntity entity = response.getEntity();
 
             APP_URL = UtilBase64.zlibDecode(EntityUtils.toString(entity));
-            log.info("”¶”√URL£∫" + APP_URL);
-            System.out.println("”¶”√URL£∫" + APP_URL);
+//            log.info("Â∫îÁî®URLÔºö" + APP_URL);
+            System.out.println("Â∫îÁî®URLÔºö" + APP_URL);
             if (UtilString.isEmpty(APP_URL)) {
                 return false;
             }
@@ -168,7 +182,8 @@ public class BaseHttpService {
         BaseHttpService service = new BaseHttpService("flex/LoginAction");
         service.addParameter("userName", userName);
         service.addParameter("passwd", passwd);
-        String data = service.send();
-        System.out.println(data);
+        HttpAccepter accepter = service.send();
+        System.out.println(accepter);
     }
+
 }

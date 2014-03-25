@@ -3,9 +3,11 @@ package com.ectongs.dsconfig;
 import cc.csdn.base.basedata.dsconfig.info.DsColumnsInfo;
 import cc.csdn.base.basedata.dsconfig.info.DsEditColumnsInfo;
 import cc.csdn.base.db.dataobj.dsconfig.DataStoreConfig;
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
@@ -20,7 +22,7 @@ public class FxBaseGrid extends GridPane {
 
     private Map<String, Object> nameCtlMap = new HashMap<String, Object>();
     private Map<String, Object> colNameCtlMap = new HashMap<String, Object>();
-//    private Map<String, DataStoreColumn> columnNameMap = new HashMap<String, DataStoreColumn>();
+    private Map<String, DsEditColumnsInfo> columnNameMap = new HashMap<String, DsEditColumnsInfo>();
     private DataStoreConfig dsConfig;
     private boolean isReadOnly;
 
@@ -53,7 +55,7 @@ public class FxBaseGrid extends GridPane {
         int colIdx = 0;
 
         for (DsEditColumnsInfo column : dsConfig.getEditColumns().getColumnList()) {
-//            columnNameMap.put(column.getName().replace("_", "").toLowerCase(), column);
+            columnNameMap.put(column.getColname(), column);
 //            colNameCtlMap.put(column.getColName().toLowerCase(), column);
 
             if (!column.isShow()) {
@@ -73,6 +75,12 @@ public class FxBaseGrid extends GridPane {
                 if (column.getHeight() != null) {
                     ta.setPrefHeight(column.getHeight());
                 }
+                ta.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+
+                    }
+                });
 //                nameCtlMap.put(column.getName().toLowerCase(), ta);
 //                colNameCtlMap.put(column.getColName().replace("_", "").toLowerCase(), ta);
                 //tf.setText(map.get(colName).toString());

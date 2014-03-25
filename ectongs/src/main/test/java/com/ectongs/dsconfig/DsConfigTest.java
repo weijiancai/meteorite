@@ -3,6 +3,8 @@ package com.ectongs.dsconfig;
 import cc.csdn.base.db.dataobj.dsconfig.DataStoreConfig;
 import cc.csdn.base.util.UtilBase64;
 import cc.csdn.base.util.UtilObject;
+import com.ectongs.http.DataListOption;
+import com.ectongs.http.HttpAccepter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -28,7 +30,8 @@ public class DsConfigTest {
         service.addParameter("dsClassName", "Product");
         service.addParameter("isConfigFromDs", "false");
         service.addParameter("isReturnObj", "true");
-        String data = service.send("66540F58102FE173C81E621907A94BF8");
+        HttpAccepter accepter = service.send("66540F58102FE173C81E621907A94BF8");
+        String data = accepter.getData();
         DataStoreConfig dsConfig = (DataStoreConfig) UtilObject.byteToObject(UtilBase64.decode(data));
 //        System.out.println(dsConfig);
         BaseGrid grid = new BaseGrid(dsConfig);
@@ -38,5 +41,16 @@ public class DsConfigTest {
     @Test
     public void testLogin() {
         BaseHttpService.login("system", "1");
+    }
+
+    @Test
+    public void testDataList() {
+//        DataListSender sender = new DataListSender("base.datalist.codeedittypelist", null);
+//        DataListSender sender = new DataListSender("base.datalist.editstylelist", null);
+        DataListSender sender = new DataListSender("base.datalist.dscolumnformatlist", null);
+        DataListOption[] options = sender.getOptions();
+        for (DataListOption option : options) {
+            System.out.println(option.getData() + " --> " + option.getLabel());
+        }
     }
 }

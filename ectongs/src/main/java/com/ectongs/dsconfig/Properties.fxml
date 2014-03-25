@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ectongs.dsconfig.Properties">
 <children><Label text="列属性：" textFill="BLUE">
 <font>
 <Font name="System Bold" size="15.0" />
 </font></Label><GridPane>
   <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -20,7 +21,7 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
-<children><Label text="columnId" /><TextField GridPane.columnIndex="1" /><Label text="显示名" GridPane.rowIndex="1" /><TextField GridPane.columnIndex="1" GridPane.rowIndex="1" /><Label text="编辑风格" GridPane.rowIndex="2" /><Label text="属性" GridPane.rowIndex="3" /><CheckBox mnemonicParsing="false" text="是否可更新" GridPane.columnIndex="1" GridPane.rowIndex="3" /><ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+<children><Label text="columnId" /><TextField fx:id="colIdTF" GridPane.columnIndex="1" /><Label text="显示名" GridPane.rowIndex="1" /><TextField fx:id="displayNameTF" GridPane.columnIndex="1" GridPane.rowIndex="1" /><Label text="编辑风格" GridPane.rowIndex="2" /><Label text="属性" GridPane.rowIndex="3" /><CheckBox fx:id="isUpdateCB" mnemonicParsing="false" text="是否可更新" GridPane.columnIndex="1" GridPane.rowIndex="3" /><ChoiceBox fx:id="editStyleCB" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 </children>
 </GridPane><Label text="编辑界面属性：" textFill="BLUE">
 <font>
@@ -30,23 +31,62 @@
 <children>
 <Label text="类型" />
 <Label text="类属性" GridPane.rowIndex="1" />
-<TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+<TextField fx:id="classAttrTF" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 <Label text="分组名" GridPane.rowIndex="2" />
-<Label text="默认值" GridPane.rowIndex="3" /><ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" /><HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-<children><TextField /><CheckBox mnemonicParsing="false" text="打开状态" />
-</children></HBox><TextField GridPane.columnIndex="1" GridPane.rowIndex="3" /><HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-<children><CheckBox mnemonicParsing="false" text="使用前值" GridPane.columnIndex="1" GridPane.rowIndex="5" /><CheckBox mnemonicParsing="false" text="显示" />
+<Label text="默认值" GridPane.rowIndex="3" /><ChoiceBox fx:id="typeCB" prefWidth="150.0" GridPane.columnIndex="1" /><HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+<children><TextField fx:id="groupNameTF" prefHeight="23.0" prefWidth="112.0">
+<HBox.margin>
+<Insets right="10.0" />
+</HBox.margin></TextField><CheckBox fx:id="isGroupOpenCB" mnemonicParsing="false" text="打开状态" />
+</children>
+<GridPane.margin>
+<Insets />
+</GridPane.margin></HBox><TextField GridPane.columnIndex="1" GridPane.rowIndex="3" /><HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+<children><CheckBox fx:id="usePreValueCB" mnemonicParsing="false" text="使用前值" GridPane.columnIndex="1" GridPane.rowIndex="5">
+<HBox.margin>
+<Insets right="10.0" />
+</HBox.margin></CheckBox><CheckBox fx:id="isDisplayCB" mnemonicParsing="false" text="显示" />
 </children></HBox><Label text="属性" GridPane.rowIndex="5" /><HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-<children><CheckBox mnemonicParsing="false" text="只读" GridPane.columnIndex="1" GridPane.rowIndex="6" /><CheckBox mnemonicParsing="false" text="必须" /><CheckBox mnemonicParsing="false" text="独行" />
-</children></HBox><Label text="列跨度" GridPane.rowIndex="6" /><TextField GridPane.columnIndex="1" GridPane.rowIndex="6" /><Label text="排序号" GridPane.rowIndex="7" /><HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
-<children><TextField /><Label text="宽" /><TextField /><Label text="高" /><TextField />
-</children></HBox><Label text="范围限制" GridPane.rowIndex="8" /><HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
-<children><CheckBox mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="9" /><Label text="最小" /><TextField /><Label text="最大" /><TextField />
+<children><CheckBox fx:id="isReadonlyCB" mnemonicParsing="false" text="只读" GridPane.columnIndex="1" GridPane.rowIndex="6">
+<HBox.margin>
+<Insets right="10.0" />
+</HBox.margin></CheckBox><CheckBox fx:id="isRequireCB" mnemonicParsing="false" text="必须">
+<HBox.margin>
+<Insets right="10.0" />
+</HBox.margin></CheckBox><CheckBox fx:id="isSingleLineCB" mnemonicParsing="false" text="独行" />
+</children></HBox><Label text="列跨度" GridPane.rowIndex="6" /><TextField fx:id="colSpanTF" GridPane.columnIndex="1" GridPane.rowIndex="6" /><Label text="排序号" GridPane.rowIndex="7" /><HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+<children><TextField fx:id="sortNumTF" prefWidth="45.0">
+<HBox.margin>
+<Insets right="8.0" />
+</HBox.margin></TextField><Label text="宽">
+<HBox.margin>
+<Insets right="8.0" />
+</HBox.margin></Label><TextField fx:id="widthTF" prefWidth="45.0">
+<HBox.margin>
+<Insets right="8.0" />
+</HBox.margin></TextField><Label text="高">
+<HBox.margin>
+<Insets right="8.0" />
+</HBox.margin></Label><TextField fx:id="heightTF" prefWidth="45.0" />
+</children></HBox><Label text="范围限制" GridPane.rowIndex="8" /><HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+<children><CheckBox mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="9">
+<HBox.margin>
+<Insets right="12.0" />
+</HBox.margin></CheckBox><Label text="最小">
+<HBox.margin>
+<Insets right="8.0" />
+</HBox.margin></Label><TextField prefWidth="45.0">
+<HBox.margin>
+<Insets right="8.0" />
+</HBox.margin></TextField><Label text="最大">
+<HBox.margin>
+<Insets right="8.0" />
+</HBox.margin></Label><TextField prefWidth="45.0" />
 </children></HBox><TextField GridPane.columnIndex="1" GridPane.rowIndex="9" /><TextField GridPane.columnIndex="1" GridPane.rowIndex="10" /><Label text="正则式名称" GridPane.rowIndex="9" /><Label text="正则式" GridPane.rowIndex="10" />
 </children>
 <columnConstraints>
-<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="130.0" />
 </columnConstraints>
 <rowConstraints>
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -62,4 +102,7 @@
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 </rowConstraints>
 </GridPane>
-</children></VBox>
+</children>
+<padding>
+<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+</padding></VBox>

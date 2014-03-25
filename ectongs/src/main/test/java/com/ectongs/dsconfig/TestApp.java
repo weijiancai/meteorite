@@ -3,6 +3,7 @@ package com.ectongs.dsconfig;
 import cc.csdn.base.db.dataobj.dsconfig.DataStoreConfig;
 import cc.csdn.base.util.UtilBase64;
 import cc.csdn.base.util.UtilObject;
+import com.ectongs.http.HttpAccepter;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -31,7 +32,8 @@ public class TestApp extends Application {
         service.addParameter("dsClassName", "Product");
         service.addParameter("isConfigFromDs", "false");
         service.addParameter("isReturnObj", "true");
-        String data = service.send("66540F58102FE173C81E621907A94BF8");
+        HttpAccepter accepter = service.send("66540F58102FE173C81E621907A94BF8");
+        String data = accepter.getData();
         DataStoreConfig dsConfig = (DataStoreConfig) UtilObject.byteToObject(UtilBase64.decode(data));
 
 
