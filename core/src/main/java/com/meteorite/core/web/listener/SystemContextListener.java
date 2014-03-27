@@ -11,13 +11,13 @@ import javax.servlet.ServletContextListener;
  * 系统ServletContext监听器
  *
  * @author weijiancai
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class SystemContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         try { // 初始化配置信息
-            SystemManager.getInstance();
+            SystemManager.getInstance().init();
             //  启动数据库
 //            HSqlDBServer.getInstance().start();
         } catch (Exception e) {

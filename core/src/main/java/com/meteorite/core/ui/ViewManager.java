@@ -51,7 +51,7 @@ public class ViewManager {
                     // 查询视图配置
                     sql = "SELECT * FROM sys_view_config WHERE view_layout_id=?";
                     List<ViewConfig> configList = template.query(sql, MetaRowMapperFactory.getViewConfig(viewLayout), viewLayout.getId());
-                    view.setConfigs(configList);
+//                    view.setConfigs(configList);
                     for (ViewConfig config : configList) {
                         configMap.put(config.getId(), config);
                         view.addConfig(config);

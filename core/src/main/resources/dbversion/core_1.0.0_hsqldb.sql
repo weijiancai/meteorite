@@ -3,13 +3,14 @@ drop table if exists sys_db_version;
 drop table if exists sys_dz_code;
 drop table if exists sys_dz_category;
 drop table if exists sys_module;
+drop table if exists sys_layout_prop;
+drop table if exists sys_layout;
 drop table if exists sys_view_config;
 drop table if exists sys_view_layout;
 drop table if exists sys_view;
 drop table if exists sys_meta_field;
 drop table if exists sys_meta;
-drop table if exists sys_layout_prop;
-drop table if exists sys_layout;
+
 
 /*==============================================================*/
 /* Table: sys_db_version                                      */
@@ -262,7 +263,7 @@ alter table sys_meta_field add constraint FK_meta_field_metaId foreign key (meta
       references sys_meta (id) on delete cascade on update cascade;
 
 alter table sys_layout_prop add constraint FK_layout_prop_layoutId foreign key (layout_id)
-      references sys_view (id) on delete restrict on update restrict;
+      references sys_layout (id) on delete cascade on update cascade;
 
 alter table sys_view_layout add constraint FK_view_layout_viewId foreign key (view_id)
       references sys_view (id) on delete restrict on update restrict;

@@ -6,7 +6,7 @@ import com.meteorite.core.ui.layout.LayoutManager;
 
 /**
  * @author wei_jc
- * @version 1.0.0
+ * @since 1.0.0
  */
 public abstract class BaseFacade implements IFacade {
     protected ProjectConfig projectConfig;
@@ -22,8 +22,6 @@ public abstract class BaseFacade implements IFacade {
     private void initializeFacade() throws Exception {
         // 1. 初始化ProjectConfig
         initProjectConfig();
-        // 2. 加载Layout
-        LayoutManager.load();
     }
 
     @Override

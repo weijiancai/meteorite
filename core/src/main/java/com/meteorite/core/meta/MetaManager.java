@@ -67,13 +67,13 @@ public class MetaManager {
         JdbcTemplate template = new JdbcTemplate(conn);
         try {
             if (sysInfo.isMetaInit()) { // ClassDef 已经初始化
-                String sql = "SELECT * FROM sys_meta";
+                String sql = "SELECT * FROM sys_meta order by sort_num";
                 List<Meta> metaList = template.query(sql, MetaRowMapperFactory.getMeta());
                 for (final Meta meta : metaList) {
-                    metaMap.put(meta.getName().toLowerCase(), meta);
+                    metaMap.put(meta.getName(), meta);
                     metaIdMap.put(meta.getId(), meta);
                     // 查询元数据字段
-                    sql = "SELECT * FROM sys_meta_field WHERE meta_id=?";
+                    sql = "SELECT * FROM sys_meta_field WHERE meta_id=? order by sort_num";
                     List<MetaField> fieldList = template.query(sql, MetaRowMapperFactory.getMetaField(meta), meta.getId());
                     meta.setFields(fieldList);
                     for (MetaField field : fieldList) {
@@ -358,6 +358,7 @@ public class MetaManager {
             field.setMeta(meta);
             field.setColumn(column);
             field.setName(UString.columnNameToFieldName(column.getName()));
+            field.setDisplayName(column.getComment());
             field.setDesc(column.getComment());
             field.setDataType(MetaDataType.STRING);
 //            field.setType(column.getDataType());

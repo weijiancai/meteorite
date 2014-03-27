@@ -80,6 +80,6 @@ public class HsqldbLoader extends BaseDBLoader {
                 "            where\n" +
                 "                col.TABLE_SCHEMA = '%1$s' and\n" +
                 "                col.TABLE_NAME = '%2$s'\n" +
-                "            order by col.COLUMN_NAME asc";
+                "            order by col.ORDINAL_POSITION asc";
     }
 }

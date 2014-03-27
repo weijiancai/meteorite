@@ -35,6 +35,7 @@ public class LayoutManager {
     private static Map<String, ILayoutConfig> cache = new HashMap<>();
     private static Map<String, Layout> layoutIdMap = new HashMap<>();
     private static Map<String, Layout> layoutNameMap = new HashMap<>();
+    private static List<Layout> layoutList = new ArrayList<>();
     private static Map<String, LayoutProperty> propMap = new HashMap<>();
     private static Layout root;
 
@@ -64,7 +65,7 @@ public class LayoutManager {
                 root.load();
             }
             // 清空表
-            template.clearTable("sys_layout");
+            template.clearTable("sys_view_config", "sys_view_layout", "sys_layout");
             iterator(root);
 
             // 保存Layout到数据库
@@ -89,6 +90,7 @@ public class LayoutManager {
     private static void iterator(Layout parent) {
         layoutIdMap.put(parent.getId(), parent);
         layoutNameMap.put(parent.getName(), parent);
+        layoutList.add(parent);
         if (parent.getChildren() != null && parent.getChildren().size() > 0) {
             for (Layout child : parent.getChildren()) {
                 child.setParent(parent);
@@ -185,7 +187,7 @@ public class LayoutManager {
     }
 
     public static List<Layout> getLayoutList() {
-        return new ArrayList<>(layoutIdMap.values());
+        return layoutList;
     }
 
     /**

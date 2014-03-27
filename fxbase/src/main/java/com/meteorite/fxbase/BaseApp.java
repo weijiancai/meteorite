@@ -31,7 +31,7 @@ import netscape.javascript.JSObject;
  * JavaFX 主应用程序
  *
  * @author wei_jc
- * @version 1.0.0
+ * @since 1.0.0
  */
 public abstract class BaseApp extends Application {
     /** 是否APPLET运行方式 */
@@ -62,8 +62,8 @@ public abstract class BaseApp extends Application {
         final ProjectConfig projectConfig = facade.getProjectConfig();
         stage.setTitle(projectConfig.getDisplayName());
 
-        //  启动数据库
-        HSqlDBServer.getInstance().start();
+        //  系统初始化
+        SystemManager.getInstance().init();
 
         // 初始化完成
         facade.initAfter();

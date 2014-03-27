@@ -82,6 +82,6 @@ public class MySqlLoader extends BaseDBLoader {
                 "            where\n" +
                 "                col.TABLE_SCHEMA = '{0}' and\n" +
                 "                col.TABLE_NAME = '{1}'\n" +
-                "            order by col.COLUMN_NAME asc";
+                "            order by col.ORDINAL_POSITION asc";
     }
 }

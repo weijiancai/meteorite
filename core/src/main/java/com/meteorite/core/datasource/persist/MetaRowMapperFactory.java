@@ -170,7 +170,7 @@ public class MetaRowMapperFactory {
                 viewLayout.setId(rs.getString("id"));
                 viewLayout.setView(view);
                 viewLayout.setLayout(LayoutManager.getLayoutById(rs.getString("layout_id")));
-                viewLayout.setMeta(MetaManager.getMetaById(rs.getString("field_id")));
+                viewLayout.setMeta(MetaManager.getMetaById(rs.getString("meta_id")));
 
                 return viewLayout;
             }
@@ -186,7 +186,7 @@ public class MetaRowMapperFactory {
                 config.setId(rs.getString("id"));
                 config.setViewLayout(viewLayout);
                 config.setProperty(LayoutManager.getLayoutProperty(rs.getString("prop_id")));
-                config.setField(MetaManager.getMetaField(rs.getString("field_id")));
+                config.setField(MetaManager.getMetaField(rs.getString("meta_field_id")));
                 config.setValue(rs.getString("value"));
 
                 return config;

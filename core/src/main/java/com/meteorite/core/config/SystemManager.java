@@ -39,33 +39,32 @@ public class SystemManager {
         }
     }
 
-    private SystemManager() {
-        try {
-            loadDataSource();
-            //  启动数据库
-            HSqlDBServer.getInstance().start();
-            checkDbVersion();
-            // 加载数据字典
-            DictManager.load();
-            // 加载布局配置
-            LayoutManager.load();
-            // 加载元数据
-            MetaManager.load();
-            // 加载视图
-            ViewManager.load();
-            // 加载项目
-            loadProjectConfig();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static SystemManager getInstance() {
         if (instance == null) {
             instance = new SystemManager();
         }
 
         return instance;
+    }
+
+    /**
+     * 初始化系统
+     */
+    public void init() throws Exception {
+        loadDataSource();
+        //  启动数据库
+        HSqlDBServer.getInstance().start();
+        checkDbVersion();
+        // 加载数据字典
+        DictManager.load();
+        // 加载布局配置
+        LayoutManager.load();
+        // 加载元数据
+        MetaManager.load();
+        // 加载视图
+        ViewManager.load();
+        // 加载项目
+        loadProjectConfig();
     }
 
     private void loadProjectConfig() throws Exception {

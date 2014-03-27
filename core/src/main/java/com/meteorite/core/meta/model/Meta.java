@@ -37,7 +37,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "ID", dataType = MetaDataType.NUMBER)
+    @MetaFieldElement(displayName = "ID", dataType = MetaDataType.NUMBER, sortNum = 10)
     public String getId() {
         return id;
     }
@@ -47,7 +47,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "名称")
+    @MetaFieldElement(displayName = "名称", sortNum = 20)
     public String getName() {
         return name;
     }
@@ -57,7 +57,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "显示名", sortNum = -1)
+    @MetaFieldElement(displayName = "显示名", sortNum = 30)
     public String getDisplayName() {
         return displayName;
     }
@@ -66,7 +66,7 @@ public class Meta {
         this.displayName = displayName;
     }
 
-    @MetaFieldElement(displayName = "描述")
+    @MetaFieldElement(displayName = "描述", sortNum = 40)
     public String getDesc() {
         return desc;
     }
@@ -76,7 +76,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(name = "valid", displayName = "是否有效", dictId = "com_meteorite_core_dict_EnumBoolean")
+    @MetaFieldElement(name = "valid", displayName = "是否有效", dictId = "com_meteorite_core_dict_EnumBoolean", sortNum = 50)
     public boolean isValid() {
         return isValid;
     }
@@ -86,7 +86,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "排序号")
+    @MetaFieldElement(displayName = "排序号", sortNum = 60)
     public int getSortNum() {
         return sortNum;
     }
@@ -96,7 +96,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "录入时间")
+    @MetaFieldElement(displayName = "录入时间", sortNum = 70)
     public Date getInputDate() {
         return inputDate;
     }
