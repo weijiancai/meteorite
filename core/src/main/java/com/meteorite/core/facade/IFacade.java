@@ -14,7 +14,7 @@ public interface IFacade {
      * @return 返回项目配置信息
      * @since 1.0.0
      */
-    ProjectConfig getProjectConfig();
+    ProjectConfig getProjectConfig() throws Exception;
 
     /**
      * 初始化完成

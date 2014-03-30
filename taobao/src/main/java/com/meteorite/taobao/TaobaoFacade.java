@@ -1,5 +1,6 @@
 package com.meteorite.taobao;
 
+import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.facade.impl.BaseFacade;
@@ -15,7 +16,7 @@ public class TaobaoFacade extends BaseFacade {
      * 项目名称
      */
     public static final String PROJECT_NAME = "taobao";
-
+    private ProjectConfig projectConfig;
     private static TaobaoFacade instance;
 
     private TaobaoFacade() {
@@ -43,6 +44,11 @@ public class TaobaoFacade extends BaseFacade {
             instance = new TaobaoFacade();
         }
         return instance;
+    }
+
+    @Override
+    public ProjectConfig getProjectConfig() throws Exception {
+        return projectConfig;
     }
 
     @Override

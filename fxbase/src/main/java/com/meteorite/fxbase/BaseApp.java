@@ -3,25 +3,16 @@ package com.meteorite.fxbase;
 import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.facade.IFacade;
-import com.meteorite.core.meta.MetaManager;
-import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.IView;
 import com.meteorite.core.ui.config.ConfigInit;
-import com.meteorite.core.ui.config.ViewConfigFactory;
 import com.meteorite.core.util.HSqlDBServer;
-import com.meteorite.fxbase.ui.Dialogs;
 import com.meteorite.fxbase.ui.FxDesktop;
-import com.meteorite.fxbase.ui.calendar.FXCalendar;
-import com.meteorite.fxbase.ui.dialog.DialogOptions;
+import com.meteorite.fxbase.ui.component.MUDialog;
 import com.meteorite.fxbase.ui.view.FxPane;
 import com.meteorite.fxbase.ui.view.FxView;
-import com.meteorite.fxbase.ui.view.FxViewFactory;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -79,7 +70,7 @@ public abstract class BaseApp extends Application {
         if (!SystemManager.isConfigured(projectConfig)) {
 //            IView<Pane> projectConfigView = FxViewFactory.getView(ConfigInit.getProjectConfig());
             IView<FxPane> projectConfigView = new FxView(ConfigInit.getProjectConfig());
-            Dialogs.showCustomDialog(stage, projectConfigView.layout(), "masthead", "项目信息配置", DialogOptions.OK, new Callback<Void, Void>() {
+            MUDialog.showCustomDialog(stage, "项目信息配置", projectConfigView.layout(), new Callback<Void, Void>() {
                 @Override
                 public Void call(Void aVoid) {
                     try {
@@ -96,13 +87,11 @@ public abstract class BaseApp extends Application {
             desktop = new FxDesktop(stage);
             scene = new Scene(desktop);
             setSkin(R.skin.DEFAULT);
-            setCalendarStyle();
             // show stage
             stage.setScene(scene);
         }
 
         setSkin(R.skin.DEFAULT);
-        setCalendarStyle();
         // show stage
         stage.setScene(scene);
 
@@ -115,10 +104,6 @@ public abstract class BaseApp extends Application {
 
     public void setSkin(String skin) {
         scene.getStylesheets().addAll(R.class.getResource("skin/" + skin + "/" + skin + ".css").toExternalForm());
-    }
-
-    private void setCalendarStyle() {
-        scene.getStylesheets().addAll(FXCalendar.class.getResource("styles/calendar_styles.css").toExternalForm());
     }
 
     @Override

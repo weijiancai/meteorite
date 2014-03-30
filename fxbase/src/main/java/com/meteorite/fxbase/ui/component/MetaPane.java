@@ -6,8 +6,6 @@ import com.meteorite.core.ui.IView;
 import com.meteorite.core.ui.config.ViewConfigFactory;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.BaseApp;
-import com.meteorite.fxbase.ui.Dialogs;
-import com.meteorite.fxbase.ui.dialog.DialogOptions;
 import com.meteorite.fxbase.ui.view.FxPane;
 import com.meteorite.fxbase.ui.view.FxViewFactory;
 import javafx.collections.FXCollections;
@@ -40,7 +38,7 @@ public class MetaPane extends BorderPane {
             public void handle(MouseEvent mouseEvent) {
                 final IView<FxPane> view = FxViewFactory.getView(ViewConfigFactory.createFormConfig(MetaManager.getMeta(MetaField.class)));
 
-                Dialogs.showCustomDialog(BaseApp.getInstance().getStage(), view.layout(), null, "添加数据源", DialogOptions.OK, new Callback<Void, Void>() {
+                MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "添加数据源", view.layout(), new Callback<Void, Void>() {
                     @Override
                     public Void call(Void aVoid) {
                         FxPane pane = view.layout();

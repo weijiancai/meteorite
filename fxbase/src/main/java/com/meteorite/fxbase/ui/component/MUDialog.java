@@ -1,0 +1,43 @@
+package com.meteorite.fxbase.ui.component;
+
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.util.Callback;
+import org.controlsfx.control.action.AbstractAction;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.AbstractDialogAction;
+import org.controlsfx.dialog.Dialog;
+
+/**
+ * JavaFx 对话框
+ *
+ * @author wei_jc
+ * @since 1.0.0
+ */
+public class MUDialog extends Dialog {
+
+    public MUDialog(Object owner, String title) {
+        super(owner, title);
+    }
+
+    /**
+     * 显示自定义对话框
+     *
+     * @param owner 父容器
+     * @param title 对话框标题
+     * @param content 对话框内容节点
+     */
+    public static void showCustomDialog(Object owner, String title, Node content, final Callback<Void, Void> callback) {
+        MUDialog dialog = new MUDialog(owner, title);
+        dialog.setContent(content);
+        dialog.getActions().add(new AbstractDialogAction("CustomDialog", ActionTrait.CLOSING, ActionTrait.CANCEL) {
+            @Override
+            public void execute(ActionEvent event) {
+                if (callback != null) {
+                    callback.call(null);
+                }
+            }
+        });
+        dialog.show();
+    }
+}

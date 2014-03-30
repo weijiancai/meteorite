@@ -1,5 +1,6 @@
 package com.meteorite.core.web;
 
+import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.facade.impl.BaseFacade;
@@ -15,6 +16,8 @@ public class CoreFacade extends BaseFacade {
      * 项目名称
      */
     public static final String PROJECT_NAME = "core";
+
+    private ProjectConfig projectConfig;
 
     private static CoreFacade instance;
 
@@ -43,6 +46,11 @@ public class CoreFacade extends BaseFacade {
             instance = new CoreFacade();
         }
         return instance;
+    }
+
+    @Override
+    public ProjectConfig getProjectConfig() throws Exception {
+        return projectConfig;
     }
 
     @Override

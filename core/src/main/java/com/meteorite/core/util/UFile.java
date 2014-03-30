@@ -116,6 +116,21 @@ public class UFile {
         os.close();
     }
 
+    /**
+     * 将输入流中数据写入到输出流中
+     *
+     * @param is 输入流
+     * @param os 输出流
+     */
+    public static void write(InputStream is, OutputStream os) throws IOException {
+        int i;
+        byte[] arrays = new byte[4096];
+        while ((i = is.read(arrays)) != -1) {
+            os.write(arrays, 0, i);
+        }
+        os.flush();
+    }
+
     public static File getClassPathDir() {
         try {
             URL url = UFile.class.getClassLoader().getResource("/");
@@ -128,5 +143,15 @@ public class UFile {
         }
 
         return null;
+    }
+
+    /**
+     * 获得文件名的扩展名，如file.txt，返回txt
+     *
+     * @param fileName 文件名
+     * @return 返回扩展名
+     */
+    public static String getFileExt(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 }

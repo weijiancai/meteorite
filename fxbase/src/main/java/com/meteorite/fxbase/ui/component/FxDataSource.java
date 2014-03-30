@@ -6,9 +6,7 @@ import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.ui.IView;
 import com.meteorite.core.ui.config.ViewConfigFactory;
 import com.meteorite.fxbase.BaseApp;
-import com.meteorite.fxbase.ui.Dialogs;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
-import com.meteorite.fxbase.ui.dialog.DialogOptions;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
 import com.meteorite.fxbase.ui.view.FxPane;
@@ -126,7 +124,7 @@ public class FxDataSource extends FxFormField {
         @Override
         public void handle(ActionEvent actionEvent) {
             IView<FxPane> view = FxViewFactory.getView(ViewConfigFactory.createFormConfig(MetaManager.getMeta(DBDataSource.class)));
-            Dialogs.showCustomDialog(BaseApp.getInstance().getStage(),view.layout(), null, "数据源配置", DialogOptions.OK, null);
+            MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "数据源配置", view.layout(), null);
         }
     }
 

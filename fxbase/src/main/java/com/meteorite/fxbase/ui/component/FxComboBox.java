@@ -4,9 +4,7 @@ import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.fxbase.BaseApp;
-import com.meteorite.fxbase.ui.Dialogs;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
-import com.meteorite.fxbase.ui.dialog.DialogOptions;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
 import javafx.beans.property.DoubleProperty;
@@ -51,7 +49,7 @@ public class FxComboBox extends FxFormField {
         lookDictMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Dialogs.showCustomDialog(BaseApp.getInstance().getStage(), new FxLookDictPane(category), null, category.getName(), DialogOptions.OK, null);
+                MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), category.getName(), new FxLookDictPane(category), null);
             }
         });
         ContextMenu contextMenu = new ContextMenu();

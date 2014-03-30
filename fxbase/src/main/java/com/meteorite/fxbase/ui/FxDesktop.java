@@ -42,7 +42,7 @@ public class FxDesktop extends BorderPane {
         this.setCenter(new MetaPane());
     }
 
-    public void showDialog(Dialog dialog) {
+    /*public void showDialog(Dialog dialog) {
         if (workbench.getChildren().contains(dialog)) {
             return;
         }
@@ -59,7 +59,7 @@ public class FxDesktop extends BorderPane {
 
     public void closeDialog(Dialog dialog) {
         workbench.getChildren().removeAll(dialog.getModalPane(), dialog);
-    }
+    }*/
 
     public Banner getBanner() {
         return banner;

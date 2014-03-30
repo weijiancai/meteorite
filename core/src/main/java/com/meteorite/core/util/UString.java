@@ -124,23 +124,73 @@ public class UString {
         return !isEmpty(str) && ("T".equalsIgnoreCase(str) || "true".equalsIgnoreCase(str));
     }
 
+    public static String substringByByte(String str, int i, int length) {
+        return str.substring(i, i + length);
+    }
+
     /**
-     * 左边填充n个字符
+     * 字符串左边填充n个字符c
      *
-     * @param str 要填充的字符串
-     * @param c 填充字符
-     * @param n 填充个数
-     * @return 返回填充后的字符串
+     * @param str 字符串
+     * @param c 要填充的字符
+     * @param length 字符窜总长度
+     * @return 返回填充后的字符
      */
-    public static String leftPadding(String str, char c, int n) {
+    public static String leftPadding(String str, char c, int length) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < n; i++) {
+        while (sb.length() + str.length() < length) {
             sb.append(c);
         }
         return sb.toString() + str;
     }
 
-    public static String substringByByte(String str, int i, int length) {
-        return str.substring(i, i + length);
+    /**
+     * 去掉两边的空白符，包括中文空白符" "
+     *
+     * @param str 字符串
+     * @return 返回去掉空白符后的字符串
+     */
+    public static String trim(String str) {
+        if(str == null) return null;
+
+        str = str.trim();
+
+        while (str.length() > 0 && Character.isSpaceChar(str.charAt(0))) {
+            str = str.substring(1);
+        }
+
+        while (str.startsWith("　")) {
+            str = str.substring(1);
+        }
+
+        while (str.length() > 0 && Character.isSpaceChar(str.charAt(str.length() - 1))) {
+            str = str.substring(0, str.length() - 1);
+        }
+
+        while (str.endsWith("　")) {
+            str = str.substring(0, str.length() - 1);
+        }
+
+        return str;
+    }
+
+    /**
+     * 取字符串中数字和小数点
+     *
+     * @param str 字符串
+     * @return 返回数字字符串
+     */
+    public static String getNumber(String str) {
+        if(UString.isEmpty(str)) {
+            return str;
+        }
+        StringBuilder sb = new StringBuilder();
+        for(char c : str.toCharArray()) {
+            if((c >= '0' && c <= '9') || c == '.') {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
     }
 }

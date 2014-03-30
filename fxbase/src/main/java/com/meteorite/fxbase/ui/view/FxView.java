@@ -3,8 +3,7 @@ package com.meteorite.fxbase.ui.view;
 import com.meteorite.core.ui.IView;
 import com.meteorite.core.ui.IViewConfig;
 import com.meteorite.fxbase.BaseApp;
-import com.meteorite.fxbase.ui.Dialogs;
-import com.meteorite.fxbase.ui.dialog.DialogOptions;
+import com.meteorite.fxbase.ui.component.MUDialog;
 import com.meteorite.fxbase.ui.layout.FxLayoutFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,7 +11,6 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 
 /**
  * JavaFx 视图
@@ -45,7 +43,7 @@ public class FxView implements IView<FxPane> {
             @Override
             public void handle(ActionEvent event) {
                 FxViewDesigner designer = new FxViewDesigner(viewConfig);
-                Dialogs.showCustomDialog(BaseApp.getInstance().getStage(), designer, null, "设计视图", DialogOptions.OK, null);
+                MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "设计视图", designer, null);
             }
         });
         contextMenu.getItems().addAll(designMenu);

@@ -51,7 +51,7 @@ public class WindowButtons extends HBox {
         getChildren().addAll(minBtn, maxBtn, closeBtn);
     }
 
-    public WindowButtons(final Dialog dialog) {
+    /*public WindowButtons(final Dialog dialog) {
         super(4);
         // create buttons
         Button closeBtn = new Button();
@@ -62,7 +62,7 @@ public class WindowButtons extends HBox {
             }
         });
         getChildren().addAll(closeBtn);
-    }
+    }*/
 
     public void toogleMaximized() {
         final Screen screen = Screen.getScreensForRectangle(stage.getX(), stage.getY(), 1, 1).get(0);
