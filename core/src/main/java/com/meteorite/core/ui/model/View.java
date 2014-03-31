@@ -110,4 +110,14 @@ public class View {
     public void addConfig(ViewConfig config) {
         getConfigs().add(config);
     }
+
+    public ViewLayout getTableLayout() {
+        for (ViewLayout layout : layoutList) {
+            if (layout.getLayout().getName().equals("TABLE")) {
+                return layout;
+            }
+        }
+
+        return null;
+    }
 }

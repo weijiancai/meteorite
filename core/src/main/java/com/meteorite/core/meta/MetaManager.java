@@ -46,7 +46,7 @@ public class MetaManager {
     private static Map<String, Meta> metaMap = new HashMap<>();
     private static Map<String, Meta> metaIdMap = new HashMap<>();
     private static Map<String, MetaField> fieldIdMap = new HashMap<>();
-    private static List<MetaField> metaFieldList;
+    private static List<MetaField> metaFieldList = new ArrayList<>();
 
     static {
         try {
@@ -79,6 +79,7 @@ public class MetaManager {
                     for (MetaField field : fieldList) {
                         fieldIdMap.put(field.getId(), field);
                     }
+                    metaFieldList.addAll(fieldList);
 
                     // 查询类Form
                     /*sql = "SELECT * FROM sys_class_form WHERE class_id=?";

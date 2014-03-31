@@ -1,5 +1,7 @@
 package com.meteorite.core.meta.model;
 
+import com.meteorite.core.datasource.db.DBManager;
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
@@ -8,6 +10,7 @@ import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 元数据信息
@@ -132,5 +135,12 @@ public class Meta {
         }
 
         return null;
+    }
+
+    public List<Map<String, Object>> query() throws Exception {
+        JdbcTemplate template = new JdbcTemplate(DBManager.getSysConnection().getConnection());
+        List<Map<String,Object>> list = template.queryForList("SELECT * FROM sys_dz_category", null);
+        template.close();
+        return list;
     }
 }

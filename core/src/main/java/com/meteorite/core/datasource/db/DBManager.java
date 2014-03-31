@@ -87,4 +87,15 @@ public class DBManager {
     public static DBConnection getConnection(String dataSourceName) throws Exception {
         return getConnection(getDataSource(dataSourceName));
     }
+
+    /**
+     * 获得系统数据库连接
+     *
+     * @return 返回系统数据库连接
+     * @throws Exception
+     * @since 1.0.0
+     */
+    public static DBConnection getSysConnection() throws Exception {
+        return getConnection(SystemConfig.SYS_DB_NAME);
+    }
 }

@@ -1,7 +1,12 @@
 package com.meteorite.fxbase.ui;
 
+import com.meteorite.core.ui.ViewManager;
+import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.ui.component.MetaPane;
 import com.meteorite.fxbase.ui.view.FxTreeView;
+import com.meteorite.fxbase.ui.view.MUTable;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -35,6 +40,18 @@ public class FxDesktop extends BorderPane {
         TreeItem<Hyperlink> root = new TreeItem<>(new Hyperlink("Root"));
         Hyperlink metaLink = new Hyperlink("元数据");
         root.getChildren().add(new TreeItem<>(metaLink));
+
+        Hyperlink dictLink = new Hyperlink("数据字典");
+        dictLink.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                View view = ViewManager.getViewByName("DzCategoryView");
+                MUTable table = new MUTable(view.getTableLayout());
+                setCenter(table);
+            }
+        });
+        root.getChildren().add(new TreeItem<Hyperlink>(dictLink));
+
         TreeView<Hyperlink> tree = new TreeView<>();
         tree.setRoot(root);
         tree.setShowRoot(false);

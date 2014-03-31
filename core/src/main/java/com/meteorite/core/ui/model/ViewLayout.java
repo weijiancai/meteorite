@@ -1,7 +1,9 @@
 package com.meteorite.core.ui.model;
 
 import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.ui.layout.PropertyType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,5 +59,20 @@ public class ViewLayout {
 
     public void setConfigs(List<ViewConfig> configs) {
         this.configs = configs;
+    }
+
+    /**
+     * 获得明细属性配置
+     *
+     * @return 返回明细属性配置
+     */
+    public List<ViewConfig> getIPConfigs() {
+        List<ViewConfig> result = new ArrayList<>();
+        for (ViewConfig config : configs) {
+            if (config.getProperty().getPropType() == PropertyType.IP) {
+                result.add(config);
+            }
+        }
+        return result;
     }
 }

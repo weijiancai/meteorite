@@ -51,7 +51,7 @@ public class ViewManager {
                     // 查询视图配置
                     sql = "SELECT * FROM sys_view_config WHERE view_layout_id=?";
                     List<ViewConfig> configList = template.query(sql, MetaRowMapperFactory.getViewConfig(viewLayout), viewLayout.getId());
-//                    view.setConfigs(configList);
+                    viewLayout.setConfigs(configList);
                     for (ViewConfig config : configList) {
                         configMap.put(config.getId(), config);
                         view.addConfig(config);
@@ -152,5 +152,16 @@ public class ViewManager {
      */
     public static View getViewById(String viewId) {
         return viewIdMap.get(viewId);
+    }
+
+    /**
+     * 根据视图名称，获得视图信息
+     *
+     * @param viewName 视图名称
+     * @return 返回视图信息
+     * @since 1.0.0
+     */
+    public static View getViewByName(String viewName) {
+        return viewNameMap.get(viewName);
     }
 }
