@@ -4,7 +4,9 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.layout.PropertyType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 视图布局
@@ -20,6 +22,9 @@ public class ViewLayout {
     private Layout layout;
     private Meta meta;
     private List<ViewConfig> configs;
+
+    /** 元字段属性Map */
+    private Map<String, Map<String, String>> fieldPropMap = new HashMap<>();
 
     public String getId() {
         return id;
@@ -59,6 +64,19 @@ public class ViewLayout {
 
     public void setConfigs(List<ViewConfig> configs) {
         this.configs = configs;
+        for (ViewConfig config : configs) {
+            if (config.getField() == null) {
+                continue;
+            }
+
+            String fieldId = config.getField().getId();
+            Map<String, String> propMap = fieldPropMap.get(fieldId);
+            if (propMap == null) {
+                propMap = new HashMap<>();
+                fieldPropMap.put(fieldId, propMap);
+            }
+            propMap.put(config.getProperty().getName(), config.getValue());
+        }
     }
 
     /**
@@ -74,5 +92,15 @@ public class ViewLayout {
             }
         }
         return result;
+    }
+
+    /**
+     * 根据元字段Id获得此元字段的布局配置信息
+     *
+     * @param fieldId 元字段ID
+     * @return 返回元字段配置
+     */
+    public Map<String, String> getMetaFieldConfig(String fieldId) {
+        return fieldPropMap.get(fieldId);
     }
 }

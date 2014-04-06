@@ -3,7 +3,6 @@ package com.meteorite.fxbase.ui.view;
 import com.meteorite.core.ui.IView;
 import com.meteorite.core.ui.IViewConfig;
 import com.meteorite.fxbase.BaseApp;
-import com.meteorite.fxbase.ui.component.MUDialog;
 import com.meteorite.fxbase.ui.layout.FxLayoutFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

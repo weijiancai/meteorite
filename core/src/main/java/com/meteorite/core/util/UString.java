@@ -1,5 +1,7 @@
 package com.meteorite.core.util;
 
+import java.util.Arrays;
+
 /**
  * 字符串处理工具类
  *
@@ -192,5 +194,27 @@ public class UString {
         }
 
         return sb.toString();
+    }
+
+    /**
+     * 判读字符串是否在字符串数组中
+     *
+     * @param array 字符串数据
+     * @param str 字符串
+     * @param isIgnoreCase 是否忽略大小写
+     * @return 是否在数组中
+     * @since 1.0.0
+     */
+    public static boolean inArray(String[] array, String str, boolean isIgnoreCase) {
+        if (isIgnoreCase) {
+            for (String s : array) {
+                if (s.equalsIgnoreCase(str)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return Arrays.binarySearch(array, str) >= 0;
+        }
     }
 }

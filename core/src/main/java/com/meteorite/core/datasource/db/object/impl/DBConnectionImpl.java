@@ -8,7 +8,7 @@ import com.meteorite.core.datasource.db.object.DBLoader;
 import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.loader.HsqldbLoader;
 import com.meteorite.core.datasource.db.object.loader.MySqlLoader;
-import com.meteorite.core.util.MyMap;
+import com.meteorite.core.datasource.db.util.DBResult;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
 
@@ -93,16 +93,16 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
-    public List<MyMap<String, Object>> getResultSet(String sql) throws Exception {
+    public List<DBResult> getResultSet(String sql) throws Exception {
         Connection conn = getConnection();
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         ResultSetMetaData metaData = rs.getMetaData();
 
-        List<MyMap<String, Object>> list = new ArrayList<>();
+        List<DBResult> list = new ArrayList<>();
 
         while (rs.next()) {
-            MyMap<String, Object> map = new MyMap<>();
+            DBResult map = new DBResult();
 
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 map.put(metaData.getColumnLabel(i), rs.getObject(i));

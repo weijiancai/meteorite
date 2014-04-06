@@ -23,7 +23,7 @@ import static org.junit.Assert.assertThat;
 public class DBManagerTest {
     @Test
     public void testGetConnection() throws Exception {
-        SystemManager.getInstance();
+        SystemManager.getInstance().init();
         DBConnection conn = DBManager.getConnection(SystemConfig.SYS_DB_NAME);
         System.out.println(conn);
         assertNotNull(conn);

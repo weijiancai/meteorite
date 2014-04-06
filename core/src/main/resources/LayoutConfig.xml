@@ -58,10 +58,11 @@
                 <Property id="L04_P01" name="name" displayName="名称" propType="IP" sortNum="10" />
                 <Property id="L04_P02" name="displayName" displayName="显示名" propType="IP" sortNum="20" />
                 <Property id="L04_P03" name="isDisplay" displayName="显示" propType="IP" defaultValue="true" dataType="BOOLEAN" sortNum="30" />
-                <Property id="L04_P04" name="width" displayName="宽" propType="IP" defaultValue="" sortNum="40" />
+                <Property id="L04_P04" name="width" displayName="宽" propType="IP" defaultValue="80" sortNum="40" />
                 <Property id="L04_P05" name="displayStyle" displayName="显示风格" propType="IP" defaultValue="TEXT_FIELD" dataType="DICT" dictId="DisplayStyle" sortNum="50" />
                 <Property id="L04_P06" name="align" displayName="对齐" propType="IP" defaultValue="LEFT" dataType="DICT" dictId="EnumAlign" sortNum="60" />
-                <Property id="L04_P07" name="sortNum" displayName="排序号" propType="IP" sortNum="70" />
+                <Property id="L04_P07" name="dictId" displayName="数据字典" propType="IP" defaultValue="ROOT" dataType="DICT" dictId="ROOT" sortNum="70"/>
+                <Property id="L04_P08" name="sortNum" displayName="排序号" propType="IP" sortNum="80" />
             </Properties>
         </Layout>
 

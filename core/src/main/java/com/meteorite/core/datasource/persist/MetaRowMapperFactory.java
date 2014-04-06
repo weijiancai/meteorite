@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.persist;
 
+import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.RowMapper;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
@@ -47,7 +48,7 @@ public class MetaRowMapperFactory {
 
                 field.setMeta(meta);
                 field.setId(rs.getString("id"));
-                field.setName(rs.getString("name"));
+                field.setName(rs.getString("name").toLowerCase());
                 field.setDisplayName(rs.getString("display_name"));
                 field.setDataType(MetaDataType.getDataType(rs.getString("data_type")));
                 field.setDefaultValue(rs.getString("default_value"));
@@ -56,6 +57,7 @@ public class MetaRowMapperFactory {
                 field.setValid("T".equals(rs.getString("is_valid")));
                 field.setInputDate(rs.getDate("input_date"));
                 field.setSortNum(rs.getInt("sort_num"));
+                field.setColumn(DBManager.getCache().getColumn(rs.getString("db_column")));
 
                 return field;
             }

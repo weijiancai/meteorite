@@ -9,7 +9,7 @@ import com.meteorite.core.facade.impl.BaseFacade;
  * @author wei_jc
  * @since 1.0.0
  */
-public class BaseAppTest extends BaseApp {
+public class MetaUIApp extends BaseApp {
     @Override
     protected IFacade getFacade() {
         return new BaseFacade() {
@@ -31,6 +31,6 @@ public class BaseAppTest extends BaseApp {
     }
 
     public static void main(String[] args) {
-        launch(BaseAppTest.class);
+        launch(MetaUIApp.class);
     }
 }

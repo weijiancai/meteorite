@@ -13,16 +13,13 @@ import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.util.MyMap;
-import com.meteorite.core.util.UObject;
+import com.meteorite.core.datasource.db.util.DBResult;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 数据库数据源
@@ -182,10 +179,9 @@ public class DBDataSource implements DataSource {
 
         DBConnection conn = DBManager.getConnection(this);
         if (DBUtil.existsTable(conn, SystemConfig.SYS_DB_VERSION_TABLE_NAME)) {
-            List<MyMap<String, Object>> result = conn.getResultSet(sql);
+            List<DBResult> result = conn.getResultSet(sql);
             if(result.size() > 0) {
-                // TODO 处理大小写
-                return result.get(0).getString("max_db_version".toUpperCase());
+                return result.get(0).getString("max_db_version");
             }
         }
 

@@ -3,6 +3,7 @@ package com.meteorite.core.datasource.db.object.impl;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.DBObjectType;
+import com.meteorite.core.meta.MetaDataType;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "Column")
 public class DBColumnImpl extends DBObjectImpl implements DBColumn {
+    private MetaDataType dataType;
 
     public DBColumnImpl() {
         setObjectType(DBObjectType.COLUMN);
@@ -23,5 +25,14 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
     @Override
     public List<DBObject> getChildren() {
         return null;
+    }
+
+    @Override
+    public MetaDataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(MetaDataType dataType) {
+        this.dataType = dataType;
     }
 }

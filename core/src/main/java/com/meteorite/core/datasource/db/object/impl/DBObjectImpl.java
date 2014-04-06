@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource.db.object.impl;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.meteorite.core.datasource.db.DBObjCache;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.DBObjectType;
 import com.meteorite.core.datasource.db.object.DBSchema;
@@ -9,7 +10,9 @@ import com.meteorite.core.util.UString;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wei_jc
@@ -20,6 +23,7 @@ public class DBObjectImpl implements DBObject {
     private String comment;
     private DBSchema schema;
     private DBObjectType objectType;
+    private DBObject parent;
     private List<DBObject> children;
 
     private String icon;
@@ -27,7 +31,7 @@ public class DBObjectImpl implements DBObject {
     public DBObjectImpl() {}
 
     public DBObjectImpl(String name, String comment, List<DBObject> children) {
-        this.name = name;
+        setName(name);
         this.comment = comment;
         this.children = children;
     }
@@ -35,6 +39,14 @@ public class DBObjectImpl implements DBObject {
     @Override @XmlAttribute
     @JSONField(name = "displayName")
     public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getFullName() {
+        if (getParent() != null) {
+            return getParent().getFullName() + "." + name;
+        }
         return name;
     }
 
@@ -67,6 +79,8 @@ public class DBObjectImpl implements DBObject {
 
     public void setName(String name) {
         this.name = name;
+        // 放入缓存
+        DBObjCache.getInstance().addDbObject(getFullName(), this);
     }
 
     public void setComment(String comment) {
@@ -79,6 +93,14 @@ public class DBObjectImpl implements DBObject {
 
     public void setObjectType(DBObjectType objectType) {
         this.objectType = objectType;
+    }
+
+    public DBObject getParent() {
+        return parent;
+    }
+
+    public void setParent(DBObject parent) {
+        this.parent = parent;
     }
 
     public void setChildren(List<DBObject> children) {

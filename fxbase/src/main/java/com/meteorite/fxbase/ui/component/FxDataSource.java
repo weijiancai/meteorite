@@ -11,6 +11,7 @@ import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
 import com.meteorite.fxbase.ui.view.FxPane;
 import com.meteorite.fxbase.ui.view.FxViewFactory;
+import com.meteorite.fxbase.ui.view.MUDialog;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;

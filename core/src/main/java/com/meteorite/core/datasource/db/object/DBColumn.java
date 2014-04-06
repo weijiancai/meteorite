@@ -1,5 +1,7 @@
 package com.meteorite.core.datasource.db.object;
 
+import com.meteorite.core.meta.MetaDataType;
+
 /**
  * 数据库列
  *
@@ -7,4 +9,11 @@ package com.meteorite.core.datasource.db.object;
  * @since 1.0.0
  */
 public interface DBColumn extends DBObject {
+    /**
+     * 获得数据类型
+     *
+     * @return 返回数据类型
+     * @since 1.0.0
+     */
+    MetaDataType getDataType();
 }

@@ -3,6 +3,7 @@ package com.meteorite.core.datasource.db;
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.object.DBConnection;
+import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 
 import java.util.ArrayList;
@@ -97,5 +98,15 @@ public class DBManager {
      */
     public static DBConnection getSysConnection() throws Exception {
         return getConnection(SystemConfig.SYS_DB_NAME);
+    }
+
+    /**
+     * 获得数据库缓存对象
+     *
+     * @return 返回数据库缓存对象
+     * @since 1.0.0
+     */
+    public static DBObjCache getCache() {
+        return DBObjCache.getInstance();
     }
 }

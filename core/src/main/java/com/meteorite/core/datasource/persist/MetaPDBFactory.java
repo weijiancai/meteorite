@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.persist;
 
+import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.model.Meta;
@@ -61,6 +62,10 @@ public class MetaPDBFactory {
                 map.put("is_valid", field.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", field.getSortNum());
+                DBColumn column = field.getColumn();
+                if (column != null) {
+                    map.put("db_column", column.getFullName());
+                }
 
                 result.put("sys_meta_field", map);
 

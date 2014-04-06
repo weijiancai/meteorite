@@ -1,10 +1,8 @@
-package com.meteorite.fxbase.ui.component;
+package com.meteorite.fxbase.ui.view;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.util.Callback;
-import org.controlsfx.control.action.AbstractAction;
-import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.AbstractDialogAction;
 import org.controlsfx.dialog.Dialog;
 

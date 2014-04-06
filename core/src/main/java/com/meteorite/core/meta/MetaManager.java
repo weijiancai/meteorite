@@ -361,7 +361,11 @@ public class MetaManager {
             field.setName(UString.columnNameToFieldName(column.getName()));
             field.setDisplayName(column.getComment());
             field.setDesc(column.getComment());
-            field.setDataType(MetaDataType.STRING);
+            if (column.getName().toLowerCase().startsWith("is_")) {
+                field.setDataType(MetaDataType.BOOLEAN);
+            } else {
+                field.setDataType(column.getDataType());
+            }
 //            field.setType(column.getDataType());
             field.setValid(true);
             field.setSortNum(fieldSortNum += 10);

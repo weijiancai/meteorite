@@ -8,6 +8,7 @@ import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.ui.view.FxPane;
 import com.meteorite.fxbase.ui.view.FxViewFactory;
+import com.meteorite.fxbase.ui.view.MUDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -113,7 +114,7 @@ public class MetaPane extends BorderPane {
         inputDateCol.setText("录入时间");
         inputDateCol.setCellValueFactory(new PropertyValueFactory<>("inputDate"));
 
-
+        tableView.setEditable(true);
         tableView.getColumns().addAll(idCol, nameCol, displayNameCol, dataTypeCol, descCol, defaultValueCol, dictCol, isValidCol, sortNumCol, inputDateCol);
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         this.setCenter(tableView);

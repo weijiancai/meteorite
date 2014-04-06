@@ -1,6 +1,7 @@
 package com.meteorite.core.meta;
 
 import com.meteorite.core.dict.annotation.DictElement;
+import com.meteorite.core.util.UString;
 
 /**
  * 元数据数据类型枚举
@@ -60,6 +61,10 @@ public enum MetaDataType {
     BOOLEAN("是/否")
     ;
 
+    private static String[] stringArray = {STRING.name(), "CHARACTER VARYING"};
+    private static String[] intArray = {INTEGER.name(), "BIGINT", "INTEGER", "SMALLINT"};
+    private static String[] dateArray = {DATE.name(), "TIMESTAMP", "DATE"};
+
     private String displayName;
 
     private MetaDataType(String displayName) {
@@ -71,15 +76,15 @@ public enum MetaDataType {
     }
 
     public static MetaDataType getDataType(String dataTypeStr) {
-        if (STRING.name().equalsIgnoreCase(dataTypeStr)) {
+        if (UString.inArray(stringArray, dataTypeStr, true)) {
             return STRING;
-        } else if (INTEGER.name().equalsIgnoreCase(dataTypeStr)) {
+        } else if (UString.inArray(intArray, dataTypeStr, true)) {
             return INTEGER;
         } else if (DOUBLE.name().equalsIgnoreCase(dataTypeStr)) {
             return DOUBLE;
         } else if (NUMBER.name().equalsIgnoreCase(dataTypeStr)) {
             return NUMBER;
-        } else if (DATE.name().equalsIgnoreCase(dataTypeStr)) {
+        } else if (UString.inArray(dateArray, dataTypeStr, true)) {
             return DATE;
         } else if (EMAIL.name().equalsIgnoreCase(dataTypeStr)) {
             return EMAIL;

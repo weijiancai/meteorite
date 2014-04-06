@@ -7,7 +7,7 @@ import com.meteorite.core.ui.IView;
 import com.meteorite.core.ui.config.ConfigInit;
 import com.meteorite.core.util.HSqlDBServer;
 import com.meteorite.fxbase.ui.FxDesktop;
-import com.meteorite.fxbase.ui.component.MUDialog;
+import com.meteorite.fxbase.ui.view.MUDialog;
 import com.meteorite.fxbase.ui.view.FxPane;
 import com.meteorite.fxbase.ui.view.FxView;
 import javafx.application.Application;

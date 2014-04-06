@@ -10,7 +10,22 @@ import java.util.List;
  * @version 1.0.0
  */
 public interface DBObject {
+    /**
+     * 获得数据库对象名称
+     *
+     * @return 返回数据库对象名称
+     * @since 1.0.0
+     */
     String getName();
+
+    /**
+     * 获得数据库对象的全名：如schema.table.column
+     *
+     * @return 返回数据库对象的全名
+     * @since 1.0.0
+     */
+    String getFullName();
+
     String getComment();
 
     /**
@@ -33,6 +48,14 @@ public interface DBObject {
      * @return 返回数据库Schema
      */
     DBSchema getSchema();
+
+    /**
+     * 获得数据库对象的父对象
+     *
+     * @return 返回数据库对象的父对象
+     * @since 1.0.0
+     */
+    DBObject getParent();
 
     /**
      * 获得数据库子对象列表

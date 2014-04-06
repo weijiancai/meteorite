@@ -108,6 +108,16 @@ public class DictCategory implements Serializable {
         return "";
     }
 
+    public DictCode getDictCode(String codeId) {
+        for (DictCode code : codeList) {
+            if (code.getId().equals(codeId)) {
+                return code;
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public String toString() {
         return "DictCategory{" +

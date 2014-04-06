@@ -19,7 +19,7 @@ public class Base64Test {
         System.out.println(UBase64.decode("MzMyNDc1M19PU0dB"));
 
         System.out.println(UtilBase64.encode("3325394_OSGA".getBytes()));
-        System.out.println(UBase64.encode("3325000_OSGA"));
+        System.out.println(UBase64.encode("3328916_OSGA"));
     }
 
 }

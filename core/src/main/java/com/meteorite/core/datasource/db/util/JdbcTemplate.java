@@ -41,9 +41,9 @@ public class JdbcTemplate {
         }
     }
 
-    public List<Map<String, Object>> queryForList(String sql, Map<String, Object> conditionMap) throws Exception {
+    public List<DBResult> queryForList(String sql, Map<String, Object> conditionMap) throws Exception {
         if (conditionMap == null) {
-            conditionMap = new HashMap<String, Object>();
+            conditionMap = new HashMap<>();
         }
         StringBuilder sb = new StringBuilder();
         if (!sql.toLowerCase().contains("where")) {
@@ -64,10 +64,10 @@ public class JdbcTemplate {
         ResultSetMetaData md = rs.getMetaData();
         int columnCount = md.getColumnCount();
 //        System.out.println("------------------------------------------------");
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        Map<String, Object> map;
+        List<DBResult> list = new ArrayList<>();
+        DBResult map;
         while (rs.next()) {
-            map = new HashMap<String, Object>();
+            map = new DBResult();
             for (i = 1; i <= columnCount; i++) {
                 Object obj = rs.getObject(i);
                 map.put(md.getColumnLabel(i), obj);
