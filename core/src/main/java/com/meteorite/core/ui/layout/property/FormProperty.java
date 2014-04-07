@@ -1,10 +1,17 @@
 package com.meteorite.core.ui.layout.property;
 
-import com.meteorite.core.ui.model.Action;
+import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.ui.layout.LayoutManager;
+import com.meteorite.core.ui.model.ViewConfig;
+import com.meteorite.core.ui.model.ViewLayout;
+import com.meteorite.core.util.UNumber;
+import com.meteorite.core.util.UUIDUtil;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.meteorite.core.ui.ViewManager.createViewConfig;
 
 /**
  * 表单属性
@@ -13,8 +20,18 @@ import java.util.List;
  * @version 1.0.0
  */
 public class FormProperty {
+    public static final String NAME = "FORM.MP.name";
+    public static final String DISPLAY_NAME = "FORM.MP.displayName";
+    public static final String FORM_TYPE = "FORM.MP.formType";
+    public static final String COL_COUNT = "FORM.MP.colCount";
+    public static final String COL_WIDTH = "FORM.MP.colWidth";
+    public static final String LABEL_GAP = "FORM.MP.labelGap";
+    public static final String FIELD_GAP = "FORM.MP.fieldGap";
+    public static final String HGAP = "FORM.MP.hgap";
+    public static final String VGAP = "FORM.MP.vgap";
+
     private String name;
-    private String cname;
+    private String displayName;
     private String formType;
     private int colCount;
     private int colWidth;
@@ -24,9 +41,23 @@ public class FormProperty {
     private int vgap;
 
     private List<FormFieldProperty> formFields = new ArrayList<FormFieldProperty>();
-    private List<Action> actions;
-    
-    @XmlAttribute
+
+    public FormProperty(ViewLayout layout) {
+        name = layout.getConfigValue(NAME);
+        displayName = layout.getConfigValue(DISPLAY_NAME);
+        formType = layout.getConfigValue(FORM_TYPE);
+        colCount = UNumber.toInt(layout.getConfigValue(COL_COUNT));
+        colWidth = UNumber.toInt(layout.getConfigValue(COL_WIDTH));
+        labelGap = UNumber.toInt(layout.getConfigValue(LABEL_GAP));
+        fieldGap = UNumber.toInt(layout.getConfigValue(FIELD_GAP));
+        hgap = UNumber.toInt(layout.getConfigValue(HGAP));
+        vgap = UNumber.toInt(layout.getConfigValue(VGAP));
+
+        for (MetaField field : layout.getMeta().getFields()) {
+            formFields.add(new FormFieldProperty(field, layout.getMetaFieldConfig(field.getId())));
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -35,16 +66,14 @@ public class FormProperty {
         this.name = name;
     }
 
-    @XmlAttribute
-    public String getCname() {
-        return cname;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setCname(String cname) {
-        this.cname = cname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
-    @XmlAttribute
     public String getFormType() {
         return formType;
     }
@@ -53,7 +82,6 @@ public class FormProperty {
         this.formType = formType;
     }
 
-    @XmlAttribute
     public int getColCount() {
         return colCount;
     }
@@ -62,7 +90,6 @@ public class FormProperty {
         this.colCount = colCount;
     }
 
-    @XmlAttribute
     public int getColWidth() {
         return colWidth;
     }
@@ -71,7 +98,6 @@ public class FormProperty {
         this.colWidth = colWidth;
     }
 
-    @XmlAttribute
     public int getLabelGap() {
         return labelGap;
     }
@@ -80,7 +106,6 @@ public class FormProperty {
         this.labelGap = labelGap;
     }
 
-    @XmlAttribute
     public int getFieldGap() {
         return fieldGap;
     }
@@ -89,7 +114,6 @@ public class FormProperty {
         this.fieldGap = fieldGap;
     }
 
-    @XmlAttribute
     public int getHgap() {
         return hgap;
     }
@@ -98,7 +122,6 @@ public class FormProperty {
         this.hgap = hgap;
     }
 
-    @XmlAttribute
     public int getVgap() {
         return vgap;
     }
@@ -111,15 +134,30 @@ public class FormProperty {
         return formFields;
     }
 
-    public void setFormFields(List<FormFieldProperty> formFields) {
-        this.formFields = formFields;
-    }
+    public static ViewLayout createViewLayout(Meta meta) {
+        ViewLayout viewLayout = new ViewLayout();
+        viewLayout.setId(UUIDUtil.getUUID());
+        viewLayout.setMeta(meta);
+        viewLayout.setLayout(LayoutManager.getLayoutByName("FORM"));
 
-    public List<Action> getActions() {
-        return actions;
-    }
+        List<ViewConfig> configList = new ArrayList<>();
 
-    public void setActions(List<Action> actions) {
-        this.actions = actions;
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(NAME), null, meta.getName() + "Form"));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(DISPLAY_NAME), null, meta.getDisplayName() + "表单"));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(FORM_TYPE), null, null));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(COL_COUNT), null, null));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(COL_WIDTH), null, null));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(LABEL_GAP), null, null));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(FIELD_GAP), null, null));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(HGAP), null, null));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(VGAP), null, null));
+
+        // 创建属性配置
+        for (MetaField field : meta.getFields()) {
+            configList.addAll(FormFieldProperty.getViewConfigs(viewLayout, field));
+        }
+        viewLayout.setConfigs(configList);
+
+        return viewLayout;
     }
 }

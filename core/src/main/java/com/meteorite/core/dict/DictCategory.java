@@ -1,5 +1,7 @@
 package com.meteorite.core.dict;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -111,6 +113,16 @@ public class DictCategory implements Serializable {
     public DictCode getDictCode(String codeId) {
         for (DictCode code : codeList) {
             if (code.getId().equals(codeId)) {
+                return code;
+            }
+        }
+
+        return null;
+    }
+
+    public DictCode getDictCodeByName(String codeName) {
+        for (DictCode code : codeList) {
+            if (code.getName().equals(codeName)) {
                 return code;
             }
         }

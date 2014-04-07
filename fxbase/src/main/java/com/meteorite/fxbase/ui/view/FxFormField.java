@@ -2,6 +2,7 @@ package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.ui.config.layout.FormFieldConfig;
+import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.fxbase.ui.IFormField;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
 import javafx.beans.value.ChangeListener;

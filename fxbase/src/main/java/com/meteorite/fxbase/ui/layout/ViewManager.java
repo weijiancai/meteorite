@@ -10,7 +10,7 @@ import com.meteorite.core.ui.IViewConfig;
  */
 public class ViewManager {
     public static IViewConfig getFormView() {
-        /*FxFormLayout layout = new FxFormLayout();
+        /*MUFormLayout layout = new MUFormLayout();
         FxFormView view = new FxFormView(layout);
         return view;*/
         return null;

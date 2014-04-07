@@ -24,4 +24,13 @@ public enum EnumAlign {
     public String getDisplayName() {
         return displayName;
     }
+
+    public static EnumAlign getAlign(String align) {
+        if (CENTER.name().equals(align)) {
+            return CENTER;
+        } else if (RIGHT.name().equals(align)) {
+            return RIGHT;
+        }
+        return LEFT;
+    }
 }

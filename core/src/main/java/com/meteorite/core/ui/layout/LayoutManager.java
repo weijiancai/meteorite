@@ -37,6 +37,7 @@ public class LayoutManager {
     private static Map<String, Layout> layoutNameMap = new HashMap<>();
     private static List<Layout> layoutList = new ArrayList<>();
     private static Map<String, LayoutProperty> propMap = new HashMap<>();
+    private static Map<String, LayoutProperty> propNameMap = new HashMap<>();
     private static Layout root;
 
     public static void load() throws Exception {
@@ -56,6 +57,7 @@ public class LayoutManager {
                 List<LayoutProperty> propList = template.query(sql, MetaRowMapperFactory.getLayoutProperty(layout), layout.getId());
                 for (LayoutProperty prop : propList) {
                     propMap.put(prop.getId(), prop);
+                    propNameMap.put(layout.getName() + "." + prop.getPropType().name() + "." + prop.getName(), prop);
                 }
                 layout.setProperties(propList);
             }
@@ -76,6 +78,7 @@ public class LayoutManager {
                     // 保存布局属性到数据库
                     template.save(MetaPDBFactory.getLayoutProperty(property));
                     propMap.put(property.getId(), property);
+                    propNameMap.put(layout.getName() + "." + property.getPropType().name() + "." + property.getName(), property);
                 }
             }
 
@@ -219,7 +222,18 @@ public class LayoutManager {
      * @return 返回布局信息
      * @since 1.0.0
      */
-    public static LayoutProperty getLayoutProperty(String propId) {
+    public static LayoutProperty getLayoutPropById(String propId) {
         return propMap.get(propId);
+    }
+
+    /**
+     * 根据布局属性名称，获得布局信息。
+     *
+     * @param propName 属性名称（布局名称.属性类型.布局属性名称）
+     * @return 返回布局信息
+     * @since 1.0.0
+     */
+    public static LayoutProperty getLayoutPropByName(String propName) {
+        return propNameMap.get(propName);
     }
 }

@@ -2,6 +2,9 @@ package com.meteorite.core.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 
 /**
@@ -15,11 +18,36 @@ public class UDate {
         return new SimpleDateFormat(format).format(date);
     }
 
-    public static Date toDate(String date) throws ParseException {
-        return toDate(date, "yyyy-MM-dd HH:ss:mm");
+    public static Date toDate(String date) {
+        try {
+            return toDate(date, "yyyy-MM-dd HH:ss:mm");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static Date toDate(String date, String format) throws ParseException {
         return new SimpleDateFormat(format).parse(date);
+    }
+
+    public static LocalDate toLocalDate(String date) {
+        DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+        builder.parseCaseInsensitive()
+                .append(DateTimeFormatter.ISO_LOCAL_DATE)
+                .appendLiteral(' ')
+                .append(DateTimeFormatter.ISO_LOCAL_TIME);
+
+        return LocalDate.parse(date, builder.toFormatter());
+    }
+
+    public static String dateToString(LocalDate date) {
+        DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+        builder.parseCaseInsensitive()
+                .append(DateTimeFormatter.ISO_LOCAL_DATE)
+                .appendLiteral(' ')
+                .append(DateTimeFormatter.ISO_LOCAL_TIME);
+
+        return date.format(builder.toFormatter());
     }
 }

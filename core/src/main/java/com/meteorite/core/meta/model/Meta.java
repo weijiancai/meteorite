@@ -1,6 +1,9 @@
 package com.meteorite.core.meta.model;
 
 import com.meteorite.core.datasource.db.DBManager;
+import com.meteorite.core.datasource.db.object.DBColumn;
+import com.meteorite.core.datasource.db.object.DBObject;
+import com.meteorite.core.datasource.db.object.DBTable;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
@@ -31,6 +34,7 @@ public class Meta {
     private Date inputDate;
 
     private List<MetaField> fields = new ArrayList<>();
+    private DBTable dbTable;
 
     public Meta() {}
 
@@ -118,6 +122,14 @@ public class Meta {
         this.fields = fields;
     }
 
+    public DBTable getDbTable() {
+        return dbTable;
+    }
+
+    public void setDbTable(DBTable dbTable) {
+        this.dbTable = dbTable;
+    }
+
     public void setFieldValue(String fieldName, String value) {
         for (MetaField field : fields) {
             if (field.getName().equals(fieldName)) {
@@ -139,7 +151,16 @@ public class Meta {
 
     public List<DBResult> query() throws Exception {
         JdbcTemplate template = new JdbcTemplate(DBManager.getSysConnection().getConnection());
-        List<DBResult> list = template.queryForList("SELECT * FROM sys_dz_category", null);
+        DBColumn column = null;
+        for (MetaField field : getFields()) {
+            column = field.getColumn();
+            if (column != null) {
+                break;
+            }
+        }
+        assert column != null;
+        DBObject table = column.getParent();
+        List<DBResult> list = template.queryForList("SELECT * FROM " + table.getName(), null);
         template.close();
         return list;
     }

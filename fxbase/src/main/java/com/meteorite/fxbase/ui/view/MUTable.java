@@ -26,9 +26,7 @@ import javafx.util.Callback;
  * @author wei_jc
  * @since 1.0.0
  */
-public class MUTable extends BorderPane {
-    private TableView<DBResult> tableView;
-
+public class MUTable extends TableView<DBResult> {
     private ViewLayout viewLayout;
 
     public MUTable(ViewLayout viewLayout) {
@@ -37,25 +35,23 @@ public class MUTable extends BorderPane {
     }
 
     private void initUI() {
-        tableView = new TableView<>();
-        tableView.setEditable(true);
+//        tableView.setEditable(true);
         // 创建表格列头信息
         createTableColumns();
         // 创建表格数据
         createTableData();
-        this.setCenter(tableView);
     }
 
     private void createTableColumns() {
         TableProperty table = new TableProperty(viewLayout);
         for (final TableFieldProperty property : table.getFieldProperties()) {
-            tableView.getColumns().add(new BaseTableColumn(property));
+            this.getColumns().add(new BaseTableColumn(property));
         }
     }
 
     private void createTableData() {
         try {
-            tableView.setItems(FXCollections.observableArrayList(viewLayout.getMeta().query()));
+            this.setItems(FXCollections.observableArrayList(viewLayout.getMeta().query()));
         } catch (Exception e) {
             e.printStackTrace();
         }

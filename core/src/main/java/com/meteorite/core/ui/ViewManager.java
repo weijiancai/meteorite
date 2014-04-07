@@ -11,7 +11,10 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.PropertyType;
+import com.meteorite.core.ui.layout.property.FormProperty;
+import com.meteorite.core.ui.layout.property.TableProperty;
 import com.meteorite.core.ui.model.*;
+import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UUIDUtil;
 
 import java.sql.Connection;
@@ -84,14 +87,16 @@ public class ViewManager {
 
         template.save(MetaPDBFactory.getView(view));
 
-        ViewLayout formLayout = createViewLayout(meta, LayoutManager.getLayoutByName("FORM"));
+//        ViewLayout formLayout = createViewLayout(meta, LayoutManager.getLayoutByName("FORM"));
+        ViewLayout formLayout = FormProperty.createViewLayout(meta);
         formLayout.setView(view);
         template.save(MetaPDBFactory.getViewLayout(formLayout));
         for (ViewConfig config : formLayout.getConfigs()) {
             template.save(MetaPDBFactory.getViewConfig(config));
         }
 
-        ViewLayout tableLayout = createViewLayout(meta, LayoutManager.getLayoutByName("TABLE"));
+//        ViewLayout tableLayout = createViewLayout(meta, LayoutManager.getLayoutByName("TABLE"));
+        ViewLayout tableLayout = TableProperty.createViewLayout(meta);
         tableLayout.setView(view);
         template.save(MetaPDBFactory.getViewLayout(tableLayout));
         for (ViewConfig config : tableLayout.getConfigs()) {
@@ -114,12 +119,12 @@ public class ViewManager {
             for (LayoutProperty property : layout.getProperties()) {
                 switch (property.getPropType()) {
                     case MP: {
-                        configList.add(createViewConfig(viewLayout, property, null));
+                        configList.add(createViewConfig(viewLayout, property, null, null));
                         break;
                     }
                     case IP: {
                         for (MetaField field : meta.getFields()) {
-                            configList.add(createViewConfig(viewLayout, property, field));
+                            configList.add(createViewConfig(viewLayout, property, field, null));
                         }
                     }
                 }
@@ -130,7 +135,7 @@ public class ViewManager {
         return viewLayout;
     }
 
-    private static ViewConfig createViewConfig(ViewLayout viewLayout, LayoutProperty property, MetaField field) {
+    public static ViewConfig createViewConfig(ViewLayout viewLayout, LayoutProperty property, MetaField field, String value) {
         ViewConfig config = new ViewConfig();
         config.setId(UUIDUtil.getUUID());
         if (field != null) {
@@ -138,7 +143,7 @@ public class ViewManager {
         }
         config.setProperty(property);
         config.setViewLayout(viewLayout);
-        config.setValue(property.getDefaultValue());
+        config.setValue(UString.isEmpty(value) ? property.getDefaultValue() : value);
 
         return config;
     }

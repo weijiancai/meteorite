@@ -120,4 +120,14 @@ public class View {
 
         return null;
     }
+
+    public ViewLayout getFormLayout() {
+        for (ViewLayout layout : layoutList) {
+            if (layout.getLayout().getName().equals("FORM")) {
+                return layout;
+            }
+        }
+
+        return null;
+    }
 }

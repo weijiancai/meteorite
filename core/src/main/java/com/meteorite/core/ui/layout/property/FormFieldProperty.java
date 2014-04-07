@@ -1,10 +1,21 @@
 package com.meteorite.core.ui.layout.property;
 
+import com.meteorite.core.dict.DictCategory;
+import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.DisplayStyle;
+import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.ui.layout.LayoutManager;
+import com.meteorite.core.ui.model.ViewConfig;
+import com.meteorite.core.ui.model.ViewLayout;
+import com.meteorite.core.util.UNumber;
+import com.meteorite.core.util.UString;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static com.meteorite.core.ui.ViewManager.createViewConfig;
 
 /**
  * 表单字段布局器
@@ -13,27 +24,54 @@ import javax.xml.bind.annotation.XmlTransient;
  * @version 1.0.0
  */
 public class FormFieldProperty {
+    public static final String NAME = "FORM.IP.name";
+    public static final String DISPLAY_NAME = "FORM.IP.displayName";
+    public static final String IS_SINGLE_LINE = "FORM.IP.isSingleLine";
+    public static final String IS_DISPLAY = "FORM.IP.isDisplay";
+    public static final String WIDTH = "FORM.IP.width";
+    public static final String HEIGHT = "FORM.IP.height";
+    public static final String DISPLAY_STYLE = "FORM.IP.displayStyle";
+    public static final String DATA_TYPE = "FORM.IP.dataType";
+    public static final String DICT_ID = "FORM.IP.dictId";
+    public static final String VALUE = "FORM.IP.value";
+    public static final String SORT_NUM = "FORM.IP.sortNum";
+
     private String name;
+    private String columnName;
     private String displayName;
     private boolean isSingleLine;
     private boolean isDisplay;
     private int width;
     private int height;
     private DisplayStyle displayStyle;
+    private DictCategory dict;
+    private MetaDataType dataType;
+    private String value;
     private int sortNum;
-    /** 标签对齐 */
-    private String labelAlign;
-    /** 字段对齐 */
-    private String fieldAlign;
 
-    private FormProperty form;
-    private MetaField metaField;
-
-    public FormFieldProperty() {
-
+    public FormFieldProperty(MetaField field, Map<String, String> propMap) {
+        dataType = field.getDataType();
+        columnName = field.getColumn().getName();
+        name = propMap.get("name");
+        displayName = propMap.get("displayName");
+        isSingleLine = UString.toBoolean(propMap.get("isSingleLine"));
+        isDisplay = UString.toBoolean(propMap.get("isDisplay"));
+        width = UNumber.toInt(propMap.get("width"));
+        height = UNumber.toInt(propMap.get("height"));
+        displayStyle = DisplayStyle.getStyle(propMap.get("displayStyle"));
+        dict = DictManager.getDict(propMap.get("dictId"));
+        value = propMap.get("value");
+        sortNum = UNumber.toInt(propMap.get("sortNum"));
     }
 
-    @XmlAttribute
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDisplayName() {
         return displayName;
     }
@@ -42,34 +80,22 @@ public class FormFieldProperty {
         this.displayName = displayName;
     }
 
-    @XmlAttribute
     public boolean isSingleLine() {
         return isSingleLine;
     }
 
-    public void setSingleLine(boolean singleLine) {
-        this.isSingleLine = singleLine;
+    public void setSingleLine(boolean isSingleLine) {
+        this.isSingleLine = isSingleLine;
     }
 
-    @XmlAttribute
     public boolean isDisplay() {
         return isDisplay;
     }
 
-    public void setDisplay(boolean display) {
-        this.isDisplay = display;
+    public void setDisplay(boolean isDisplay) {
+        this.isDisplay = isDisplay;
     }
 
-    /*@XmlAttribute
-    public boolean isValid() {
-        return isValid;
-    }
-
-    public void setValid(boolean valid) {
-        isValid = valid;
-    }*/
-
-    @XmlAttribute
     public int getWidth() {
         return width;
     }
@@ -78,7 +104,6 @@ public class FormFieldProperty {
         this.width = width;
     }
 
-    @XmlAttribute
     public int getHeight() {
         return height;
     }
@@ -87,7 +112,6 @@ public class FormFieldProperty {
         this.height = height;
     }
 
-    @XmlAttribute
     public DisplayStyle getDisplayStyle() {
         return displayStyle;
     }
@@ -96,16 +120,30 @@ public class FormFieldProperty {
         this.displayStyle = displayStyle;
     }
 
-    /*@XmlAttribute
-    public Date getInputDate() {
-        return inputDate;
+    public DictCategory getDict() {
+        return dict;
     }
 
-    public void setInputDate(Date inputDate) {
-        this.inputDate = inputDate;
-    }*/
+    public void setDict(DictCategory dict) {
+        this.dict = dict;
+    }
 
-    @XmlAttribute
+    public MetaDataType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(MetaDataType dataType) {
+        this.dataType = dataType;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     public int getSortNum() {
         return sortNum;
     }
@@ -114,29 +152,39 @@ public class FormFieldProperty {
         this.sortNum = sortNum;
     }
 
-    /*@XmlTransient
-    public MetaForm getForm() {
-        return form;
+    public String getColumnName() {
+        return columnName;
     }
 
-    public void setForm(MetaForm form) {
-        this.form = form;
-    }*/
-
-    public FormProperty getForm() {
-        return form;
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
-    public void setForm(FormProperty form) {
-        this.form = form;
-    }
+    public static List<ViewConfig> getViewConfigs(ViewLayout viewLayout, MetaField field) {
+        List<ViewConfig> configList = new ArrayList<>();
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(NAME), field, field.getName()));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(DISPLAY_NAME), field, field.getDisplayName()));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(IS_DISPLAY), field, "true"));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(IS_SINGLE_LINE), field, "false"));
 
-    @XmlTransient
-    public MetaField getMetaField() {
-        return metaField;
-    }
+        String width = "180";
+        String height = "";
+        String displayStyle = DisplayStyle.TEXT_FIELD.name();
+        String dictId = field.getDictId();
+        if (MetaDataType.BOOLEAN == field.getDataType()) {
+            displayStyle = DisplayStyle.BOOLEAN.name();
+            dictId = "EnumBoolean";
+        } else if (MetaDataType.DICT == field.getDataType()) {
+            displayStyle = DisplayStyle.COMBO_BOX.name();
+        }
 
-    public void setMetaField(MetaField metaField) {
-        this.metaField = metaField;
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(WIDTH), field, width));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(HEIGHT), field, height));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(DISPLAY_STYLE), field, displayStyle));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(VALUE), field, field.getDefaultValue()));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(DICT_ID), field, dictId));
+        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(SORT_NUM), field, field.getSortNum() + ""));
+
+        return configList;
     }
 }

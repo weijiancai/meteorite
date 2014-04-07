@@ -8,7 +8,6 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.PropertyType;
 import com.meteorite.core.ui.model.*;
@@ -187,7 +186,7 @@ public class MetaRowMapperFactory {
 
                 config.setId(rs.getString("id"));
                 config.setViewLayout(viewLayout);
-                config.setProperty(LayoutManager.getLayoutProperty(rs.getString("prop_id")));
+                config.setProperty(LayoutManager.getLayoutPropById(rs.getString("prop_id")));
                 config.setField(MetaManager.getMetaField(rs.getString("meta_field_id")));
                 config.setValue(rs.getString("value"));
 

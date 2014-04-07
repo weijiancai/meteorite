@@ -343,6 +343,7 @@ public class MetaManager {
         meta.setValid(true);
         meta.setInputDate(new Date());
         meta.setSortNum(metaSortNum);
+        meta.setDbTable(table);
 
         // 插入元数据信息
         template.save(MetaPDBFactory.getMeta(meta));

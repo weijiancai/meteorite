@@ -25,6 +25,8 @@ public class ViewLayout {
 
     /** 元字段属性Map */
     private Map<String, Map<String, String>> fieldPropMap = new HashMap<>();
+    // 属性配置map
+    private Map<String, String> configValueMap = new HashMap<>();
 
     public String getId() {
         return id;
@@ -66,6 +68,7 @@ public class ViewLayout {
         this.configs = configs;
         for (ViewConfig config : configs) {
             if (config.getField() == null) {
+                configValueMap.put(layout.getName() + "." + config.getProperty().getPropType().name() + "." + config.getProperty().getName(), config.getValue());
                 continue;
             }
 
@@ -102,5 +105,15 @@ public class ViewLayout {
      */
     public Map<String, String> getMetaFieldConfig(String fieldId) {
         return fieldPropMap.get(fieldId);
+    }
+
+    /**
+     * 根据key，获得属性配置值
+     *
+     * @param key key值（布局名称.属性类型.布局属性名称）
+     * @return 返回属性配置值
+     */
+    public String getConfigValue(String key) {
+        return configValueMap.get(key);
     }
 }

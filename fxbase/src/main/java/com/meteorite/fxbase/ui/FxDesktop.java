@@ -1,10 +1,13 @@
 package com.meteorite.fxbase.ui;
 
 import com.meteorite.core.ui.ViewManager;
+import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.ui.component.MetaPane;
 import com.meteorite.fxbase.ui.view.FxTreeView;
+import com.meteorite.fxbase.ui.view.MUForm;
 import com.meteorite.fxbase.ui.view.MUTable;
+import com.meteorite.fxbase.ui.view.MuCrud;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Hyperlink;
@@ -45,12 +48,34 @@ public class FxDesktop extends BorderPane {
         dictLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                View view = ViewManager.getViewByName("DzCategoryView");
+                View view = ViewManager.getViewByName("DzCodeView");
                 MUTable table = new MUTable(view.getTableLayout());
                 setCenter(table);
             }
         });
-        root.getChildren().add(new TreeItem<Hyperlink>(dictLink));
+        root.getChildren().add(new TreeItem<>(dictLink));
+
+        Hyperlink formLink = new Hyperlink("表单测试");
+        formLink.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                View view = ViewManager.getViewByName("DzCodeView");
+                MUForm form = new MUForm(new FormProperty(view.getFormLayout()));
+                setCenter(form);
+            }
+        });
+        root.getChildren().add(new TreeItem<>(formLink));
+
+        Hyperlink crudLink = new Hyperlink("CRUD");
+        crudLink.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                View view = ViewManager.getViewByName("DzCodeView");
+                MuCrud crud = new MuCrud(view);
+                setCenter(crud);
+            }
+        });
+        root.getChildren().add(new TreeItem<>(crudLink));
 
         TreeView<Hyperlink> tree = new TreeView<>();
         tree.setRoot(root);
