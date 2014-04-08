@@ -2,6 +2,7 @@ package com.meteorite.core.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -32,13 +33,7 @@ public class UDate {
     }
 
     public static LocalDate toLocalDate(String date) {
-        DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
-        builder.parseCaseInsensitive()
-                .append(DateTimeFormatter.ISO_LOCAL_DATE)
-                .appendLiteral(' ')
-                .append(DateTimeFormatter.ISO_LOCAL_TIME);
-
-        return LocalDate.parse(date, builder.toFormatter());
+        return LocalDate.parse(date.replace(' ', 'T'), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
     public static String dateToString(LocalDate date) {

@@ -22,7 +22,7 @@ public class MuDate extends DatePicker implements IValue {
         this.setConverter(new StringConverter<LocalDate>() {
             @Override
             public String toString(LocalDate date) {
-                return date.format(DateTimeFormatter.ISO_DATE_TIME);
+                return date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             }
 
             @Override

@@ -9,6 +9,8 @@ import org.junit.Test;
 public class HSqlDBServerTest {
     @Test
     public void testStart() throws Exception {
-
+        HSqlDBServer.getInstance().addDbFile("sys", "C:\\Users\\wei_jc\\.meteorite\\hsqldb\\sys");
+        HSqlDBServer.getInstance().start();
+        Thread.sleep(500000);
     }
 }

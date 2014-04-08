@@ -41,7 +41,7 @@
 </children>
 <GridPane.margin>
 <Insets />
-</GridPane.margin></HBox><TextField GridPane.columnIndex="1" GridPane.rowIndex="3" /><HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+</GridPane.margin></HBox><TextField fx:id="defaultValueTF" GridPane.columnIndex="1" GridPane.rowIndex="3" /><HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
 <children><CheckBox fx:id="usePreValueCB" mnemonicParsing="false" text="使用前值" GridPane.columnIndex="1" GridPane.rowIndex="5">
 <HBox.margin>
 <Insets right="10.0" />

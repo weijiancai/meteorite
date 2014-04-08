@@ -51,6 +51,7 @@ public class OpenBookDataParser implements IProductParser {
 		try {
             id = UBase64.encode(UString.leftPadding(bookId + "", '0', 7) + "_OSGA");
             Document doc = Jsoup.connect(String.format(SEARCH_URL, id)).timeout(TIME_OUT).userAgent(USER_AGENT).get();
+            System.out.println(doc.html());
             prodList.add(parseProduct(doc, id));
         } catch (SocketTimeoutException e) {
 			log.warn("网络连接超时！ ");
