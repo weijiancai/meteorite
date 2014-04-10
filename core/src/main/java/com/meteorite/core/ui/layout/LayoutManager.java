@@ -74,6 +74,8 @@ public class LayoutManager {
             for (Layout layout : getLayoutList()) {
                 template.save(MetaPDBFactory.getLayout(layout));
                 for (LayoutProperty property : layout.getProperties()) {
+                    Map<String, Object> map = template.queryForMap(String.format("select * from sys_layout where id='%s'", layout.getId()));
+                    System.out.println(map);
                     property.setLayout(layout);
                     // 保存布局属性到数据库
                     template.save(MetaPDBFactory.getLayoutProperty(property));

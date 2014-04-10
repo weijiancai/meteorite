@@ -71,4 +71,11 @@ public class SystemConfig {
      * 是否是开发模式
      */
     public static final boolean isDebug = true;
+
+    static {
+        System.out.println("======================== 系统信息 ==========================================");
+        System.out.println("系统默认目录：" + DIR_SYSTEM.getAbsolutePath());
+        System.out.println("类路径目录：" + DIR_CLASS_PATH.getAbsolutePath());
+        System.out.println("==========================================================================");
+    }
 }
