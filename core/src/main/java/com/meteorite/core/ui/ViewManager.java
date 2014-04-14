@@ -31,6 +31,7 @@ public class ViewManager {
     private static Map<String, View> viewNameMap = new HashMap<>();
     private static Map<String, ViewLayout> viewLayoutMap = new HashMap<>();
     private static Map<String, ViewConfig> configMap = new HashMap<>();
+    private static Map<String, ViewProperty> propertyMap = new HashMap<>();
 
     public static void load() throws Exception {
         SystemInfo sysInfo = SystemManager.getSystemInfo();
@@ -59,6 +60,14 @@ public class ViewManager {
                         configMap.put(config.getId(), config);
                         view.addConfig(config);
                     }
+                }
+
+                // 查询视图属性
+                sql = "SELECT * FROM sys_view_prop WHERE view_id=?";
+                List<ViewProperty> configList = template.query(sql, MetaRowMapperFactory.getViewProperty(view), view.getId());
+                view.setViewProperties(configList);
+                for (ViewProperty config : configList) {
+                    propertyMap.put(config.getId(), config);
                 }
             }
         } else {
@@ -104,6 +113,29 @@ public class ViewManager {
         }
 
         return view;
+    }
+
+    /**
+     * 根据元数据和布局创建视图
+     *
+     * @param meta 元数据
+     * @return 返回视图信息
+     * @since 1.0.0
+     */
+    public static void createViews(Meta meta, JdbcTemplate template) throws Exception {
+        View formView = FormProperty.createFormView(meta);
+        template.save(MetaPDBFactory.getView(formView));
+
+        for (ViewProperty property : formView.getViewProperties()) {
+            template.save(MetaPDBFactory.getViewProperty(property));
+        }
+
+        View tableView = TableProperty.createTableView(meta);
+        template.save(MetaPDBFactory.getView(tableView));
+
+        for (ViewProperty property : tableView.getViewProperties()) {
+            template.save(MetaPDBFactory.getViewProperty(property));
+        }
     }
 
     public static ViewLayout createViewLayout(Meta meta, Layout layout) {

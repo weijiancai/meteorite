@@ -5,13 +5,13 @@ import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.ui.layout.LayoutManager;
-import com.meteorite.core.ui.model.ViewConfig;
-import com.meteorite.core.ui.model.ViewLayout;
+import com.meteorite.core.ui.layout.*;
+import com.meteorite.core.ui.model.*;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +23,7 @@ import static com.meteorite.core.ui.ViewManager.createViewConfig;
  * @author wei_jc
  * @version 1.0.0
  */
-public class FormFieldProperty {
+public class FormFieldProperty implements PropertyNames {
     public static final String NAME = "FORM.IP.name";
     public static final String DISPLAY_NAME = "FORM.IP.displayName";
     public static final String IS_SINGLE_LINE = "FORM.IP.isSingleLine";
@@ -184,6 +184,34 @@ public class FormFieldProperty {
         configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(VALUE), field, field.getDefaultValue()));
         configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(DICT_ID), field, dictId));
         configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(SORT_NUM), field, field.getSortNum() + ""));
+
+        return configList;
+    }
+
+    public static List<ViewProperty> getViewProperties(View view, MetaField field) {
+        List<ViewProperty> configList = new ArrayList<>();
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.NAME), field, field.getName()));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_DISPLAY), field, "true"));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_SINGLE_LINE), field, "false"));
+
+        String width = "180";
+        String height = "";
+        String displayStyle = DisplayStyle.TEXT_FIELD.name();
+        String dictId = field.getDictId();
+        if (MetaDataType.BOOLEAN == field.getDataType()) {
+            displayStyle = DisplayStyle.BOOLEAN.name();
+            dictId = "EnumBoolean";
+        } else if (MetaDataType.DICT == field.getDataType()) {
+            displayStyle = DisplayStyle.COMBO_BOX.name();
+        }
+
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.WIDTH), field, width));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.HEIGHT), field, height));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.DISPLAY_STYLE), field, displayStyle));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.VALUE), field, field.getDefaultValue()));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.DICT_ID), field, dictId));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.SORT_NUM), field, field.getSortNum() + ""));
 
         return configList;
     }

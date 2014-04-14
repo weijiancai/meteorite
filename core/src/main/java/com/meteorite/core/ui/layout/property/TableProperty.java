@@ -3,12 +3,12 @@ package com.meteorite.core.ui.layout.property;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.LayoutManager;
-import com.meteorite.core.ui.model.LayoutProperty;
-import com.meteorite.core.ui.model.ViewConfig;
-import com.meteorite.core.ui.model.ViewLayout;
+import com.meteorite.core.ui.layout.PropertyNames;
+import com.meteorite.core.ui.model.*;
 import com.meteorite.core.util.UUIDUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +16,7 @@ import java.util.Map;
  * @author wei_jc
  * @since 1.0.0
  */
-public class TableProperty {
+public class TableProperty implements PropertyNames {
     private List<TableFieldProperty> fieldProperties;
 
     public TableProperty(ViewLayout viewLayout) {
@@ -46,5 +46,26 @@ public class TableProperty {
         viewLayout.setConfigs(configList);
 
         return viewLayout;
+    }
+
+    public static View createTableView(Meta meta) {
+        View view = new View();
+        view.setId(UUIDUtil.getUUID());
+        view.setName(meta.getName() + "TableView");
+        view.setDisplayName(meta.getDisplayName() + "表格视图");
+        view.setValid(true);
+        view.setInputDate(new Date());
+        view.setSortNum(0);
+
+        List<ViewProperty> viewProperties = new ArrayList<>();
+
+
+        // 创建属性配置
+        for (MetaField field : meta.getFields()) {
+            viewProperties.addAll(TableFieldProperty.getViewProperties(view, field));
+        }
+        view.setViewProperties(viewProperties);
+
+        return view;
     }
 }

@@ -28,6 +28,7 @@ public class View {
 
     private List<ViewLayout> layoutList;
     private List<ViewConfig> configs;
+    private List<ViewProperty> viewProperties;
 
     public String getId() {
         return id;
@@ -129,5 +130,13 @@ public class View {
         }
 
         return null;
+    }
+
+    public List<ViewProperty> getViewProperties() {
+        return viewProperties;
+    }
+
+    public void setViewProperties(List<ViewProperty> viewProperties) {
+        this.viewProperties = viewProperties;
     }
 }

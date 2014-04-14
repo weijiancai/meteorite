@@ -155,7 +155,10 @@ public class MetaPDBFactory {
 
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("id", property.getId());
-                map.put("layout_id", property.getLayout().getId());
+                map.put("layout_type", property.getLayoutType().name());
+                if (property.getLayout() != null) {
+                    map.put("layout_id", property.getLayout().getId());
+                }
                 map.put("name", property.getName());
                 map.put("display_name", property.getDisplayName());
                 map.put("default_value", property.getDefaultValue());
@@ -229,6 +232,28 @@ public class MetaPDBFactory {
                 map.put("value", config.getValue());
 
                 result.put("sys_view_config", map);
+
+                return result;
+            }
+        };
+    }
+
+    public static IPDB getViewProperty(final ViewProperty property) {
+        return new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("id", UUIDUtil.getUUID());
+                map.put("view_id", property.getView().getId());
+                map.put("layout_prop_id", property.getProperty().getId());
+                if (property.getField() != null) {
+                    map.put("meta_field_id", property.getField().getId());
+                }
+                map.put("value", property.getValue());
+
+                result.put("sys_view_prop", map);
 
                 return result;
             }

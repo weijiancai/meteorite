@@ -13,20 +13,20 @@ import java.lang.annotation.Target;
  * @author wei_jc
  * @since 1.0.0
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LayoutPropertyElement {
     /**
-     * 布局属性ID
+     * 布局属性ID，如果值是"##default"，则取【类名 + name】作为属性的ID
      *
      * @return 返回布局属性ID
      */
-    String id();
+    String id() default "##default";
 
     /**
-     * 布局属性名称，如果值是"##default"，则取【类名 + Form】作为表单的名称
+     * 布局属性名称，如果值是"##default"，则取【字段名】作为属性的名称
      *
-     * @return 返回布局属性的名称，例如ProjectConfigForm
+     * @return 返回布局属性的名称
      */
     String name() default "##default";
 
@@ -42,7 +42,7 @@ public @interface LayoutPropertyElement {
      *
      * @return 返回布局属性类型
      */
-    PropertyType type() default PropertyType.MP;
+    PropertyType propType() default PropertyType.MP;
 
     /**
      * 布局描述

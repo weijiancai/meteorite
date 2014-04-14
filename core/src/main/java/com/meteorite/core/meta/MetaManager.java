@@ -379,7 +379,7 @@ public class MetaManager {
         meta.setFields(fieldList);
 
         // 创建视图
-        ViewManager.createView(meta, template);
+        ViewManager.createViews(meta, template);
         // 插入sys_class_table信息
         /*ClassTable classTable = new ClassTable();
         classTable.setName("default");

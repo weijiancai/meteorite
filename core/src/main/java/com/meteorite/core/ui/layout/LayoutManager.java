@@ -14,6 +14,7 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ILayoutConfig;
 import com.meteorite.core.ui.ILayoutProperty;
+import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.model.Layout;
 import com.meteorite.core.ui.model.LayoutProperty;
 import com.meteorite.core.util.UString;
@@ -38,6 +39,7 @@ public class LayoutManager {
     private static List<Layout> layoutList = new ArrayList<>();
     private static Map<String, LayoutProperty> propMap = new HashMap<>();
     private static Map<String, LayoutProperty> propNameMap = new HashMap<>();
+    private static Map<String, List<LayoutProperty>> layoutTypeMap = new HashMap<>();
     private static Layout root;
 
     public static void load() throws Exception {
@@ -47,7 +49,7 @@ public class LayoutManager {
 
         if (sysInfo.isLayoutInit()) {
             // 查询布局
-            String sql = "SELECT * FROM sys_layout";
+            /*String sql = "SELECT * FROM sys_layout";
             List<Layout> layoutList = template.query(sql, MetaRowMapperFactory.getLayout());
             for (Layout layout : layoutList) {
                 layoutIdMap.put(layout.getId(), layout);
@@ -60,18 +62,30 @@ public class LayoutManager {
                     propNameMap.put(layout.getName() + "." + prop.getPropType().name() + "." + prop.getName(), prop);
                 }
                 layout.setProperties(propList);
+            }*/
+
+            String sql = "SELECT * FROM sys_layout_prop";
+            List<LayoutProperty> propList = template.query(sql, MetaRowMapperFactory.getLayoutProperty(null));
+            for (LayoutProperty prop : propList) {
+                propMap.put(prop.getId(), prop);
+                List<LayoutProperty> list = layoutTypeMap.get(prop.getLayoutType().name());
+                if (list == null) {
+                    list = new ArrayList<>();
+                    layoutTypeMap.put(prop.getLayoutType().name(), list);
+                }
+                list.add(prop);
             }
         } else { // 初始化Layout
-            if (root == null) {
+            /*if (root == null) {
                 root = new Layout();
                 root.load();
-            }
+            }*/
             // 清空表
-            template.clearTable("sys_view_config", "sys_view_layout", "sys_layout");
-            iterator(root);
+            template.clearTable("sys_view_config", "sys_view_layout", "sys_layout", "sys_layout_prop");
+//            iterator(root);
 
             // 保存Layout到数据库
-            for (Layout layout : getLayoutList()) {
+            /*for (Layout layout : getLayoutList()) {
                 template.save(MetaPDBFactory.getLayout(layout));
                 for (LayoutProperty property : layout.getProperties()) {
                     Map<String, Object> map = template.queryForMap(String.format("select * from sys_layout where id='%s'", layout.getId()));
@@ -82,6 +96,11 @@ public class LayoutManager {
                     propMap.put(property.getId(), property);
                     propNameMap.put(layout.getName() + "." + property.getPropType().name() + "." + property.getName(), property);
                 }
+            }*/
+            // 保存布局属性到数据库
+            for (LayoutProperty property : LayoutProperties.getAllProperties()) {
+                template.save(MetaPDBFactory.getLayoutProperty(property));
+                propMap.put(property.getId(), property);
             }
 
             sysInfo.setLayoutInit(true);

@@ -5,6 +5,7 @@ drop table if exists sys_dz_category;
 drop table if exists sys_module;
 drop table if exists sys_layout_prop;
 drop table if exists sys_layout;
+drop table if exists sys_view_prop;
 drop table if exists sys_view_config;
 drop table if exists sys_view_layout;
 drop table if exists sys_view;
@@ -173,7 +174,8 @@ comment on column sys_layout.sort_num is '排序号';
 create table sys_layout_prop
 (
    id                   varchar(32) not null,
-   layout_id            varchar(32) not null,
+   layout_type          varchar(32) not null,
+   layout_id            varchar(32),
    name                 varchar(64) not null,
    display_name         varchar(128) not null,
    prop_type            char(2) not null,
@@ -184,6 +186,7 @@ create table sys_layout_prop
 );
 
 comment on table sys_layout_prop is '布局属性';
+comment on column sys_layout_prop.layout_type is '布局类型';
 comment on column sys_layout_prop.id is '布局属性ID';
 comment on column sys_layout_prop.layout_id is '布局ID';
 comment on column sys_layout_prop.name is '属性名称';
@@ -255,6 +258,26 @@ comment on column sys_view_config.prop_id is '属性ID';
 comment on column sys_view_config.meta_field_id is '元字段ID';
 comment on column sys_view_config.value is '属性值';
 
+/*==============================================================*/
+/* Table: sys_view_prop                                         */
+/*==============================================================*/
+create table sys_view_prop
+(
+   id                   varchar(32) not null,
+   view_id              varchar(32) not null,
+   layout_prop_id       varchar(32) not null,
+   meta_field_id        varchar(32),
+   value                varchar(128),
+   primary key (id)
+);
+
+comment on table sys_view_prop is '视图属性';
+comment on column sys_view_prop.id is '视图属性ID';
+comment on column sys_view_prop.view_id is '视图ID';
+comment on column sys_view_prop.layout_prop_id is '布局属性ID';
+comment on column sys_view_prop.meta_field_id is '元字段ID';
+comment on column sys_view_prop.value is '属性值';
+
 -- 约束
 alter table sys_dz_code add constraint FK_code_categoryId foreign key (category_id)
       references sys_dz_category (id) on delete cascade on update cascade;
@@ -262,14 +285,8 @@ alter table sys_dz_code add constraint FK_code_categoryId foreign key (category_
 alter table sys_meta_field add constraint FK_meta_field_metaId foreign key (meta_id)
       references sys_meta (id) on delete cascade on update cascade;
 
-alter table sys_layout_prop add constraint FK_layout_prop_layoutId foreign key (layout_id)
-      references sys_layout (id) on delete cascade on update cascade;
-
 alter table sys_view_layout add constraint FK_view_layout_viewId foreign key (view_id)
       references sys_view (id) on delete restrict on update restrict;
-
-alter table sys_view_layout add constraint FK_view_layout_layoutId foreign key (layout_id)
-      references sys_layout (id) on delete restrict on update restrict;
 
 alter table sys_view_layout add constraint FK_view_layout_metaId foreign key (meta_id)
       references sys_meta (id) on delete restrict on update restrict;
@@ -279,9 +296,6 @@ alter table sys_view_config add constraint FK_view_config_layoutPropId foreign k
 
 alter table sys_view_config add constraint FK_view_config_metaFieldId foreign key (meta_field_id)
       references sys_meta_field (id) on delete cascade on update cascade;
-
-alter table sys_view_config add constraint FK_view_config_viewLayoutId foreign key (view_layout_id)
-    references sys_view_layout (id) on delete restrict on update restrict;
 
 
 
@@ -297,6 +311,13 @@ create unique index idx_view_config_prop on sys_view_config
    prop_id,
    meta_field_id
 );
+
+create unique index idx_view_prop on sys_view_prop
+(
+   layout_prop_id,
+   meta_field_id
+);
+
 
 -- 插入升级语句
 insert into sys_db_version (sys_name, db_version, input_date, memo) values('core', '1.0.0', CURDATE(), '系统自动升级到1.0.0');

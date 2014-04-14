@@ -2,13 +2,13 @@ package com.meteorite.core.ui.layout.property;
 
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.ui.layout.LayoutManager;
-import com.meteorite.core.ui.model.ViewConfig;
-import com.meteorite.core.ui.model.ViewLayout;
+import com.meteorite.core.ui.layout.*;
+import com.meteorite.core.ui.model.*;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UUIDUtil;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.meteorite.core.ui.ViewManager.createViewConfig;
@@ -19,7 +19,7 @@ import static com.meteorite.core.ui.ViewManager.createViewConfig;
  * @author wei_jc
  * @version 1.0.0
  */
-public class FormProperty {
+public class FormProperty implements PropertyNames {
     public static final String NAME = "FORM.MP.name";
     public static final String DISPLAY_NAME = "FORM.MP.displayName";
     public static final String FORM_TYPE = "FORM.MP.formType";
@@ -159,5 +159,37 @@ public class FormProperty {
         viewLayout.setConfigs(configList);
 
         return viewLayout;
+    }
+
+    public static View createFormView(Meta meta) {
+        View view = new View();
+        view.setId(UUIDUtil.getUUID());
+        view.setName(meta.getName() + "FormView");
+        view.setDisplayName(meta.getDisplayName() + "表单视图");
+        view.setValid(true);
+        view.setInputDate(new Date());
+        view.setSortNum(0);
+
+        List<ViewProperty> viewProperties = new ArrayList<>();
+
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.NAME), meta.getName() + "Form"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.DISPLAY_NAME), meta.getDisplayName() + "表单"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.FORM_TYPE), null));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.COL_COUNT), "3"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.COL_WIDTH), "180"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.LABEL_GAP), "5"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.FIELD_GAP), "15"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.HGAP), "3"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.VGAP), "5"));
+
+
+
+        // 创建属性配置
+        for (MetaField field : meta.getFields()) {
+            viewProperties.addAll(FormFieldProperty.getViewProperties(view, field));
+        }
+        view.setViewProperties(viewProperties);
+
+        return view;
     }
 }

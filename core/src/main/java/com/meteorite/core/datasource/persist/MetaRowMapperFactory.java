@@ -194,4 +194,21 @@ public class MetaRowMapperFactory {
             }
         };
     }
+
+    public static RowMapper<ViewProperty> getViewProperty(final View view) {
+        return new RowMapper<ViewProperty>() {
+            @Override
+            public ViewProperty mapRow(ResultSet rs) throws SQLException {
+                ViewProperty property = new ViewProperty();
+
+                property.setId(rs.getString("id"));
+                property.setView(view);
+                property.setProperty(LayoutManager.getLayoutPropById(rs.getString("prop_id")));
+                property.setField(MetaManager.getMetaField(rs.getString("meta_field_id")));
+                property.setValue(rs.getString("value"));
+
+                return property;
+            }
+        };
+    }
 }

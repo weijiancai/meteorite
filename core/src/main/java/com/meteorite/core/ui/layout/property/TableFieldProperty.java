@@ -9,14 +9,14 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.LayoutManager;
-import com.meteorite.core.ui.model.LayoutProperty;
-import com.meteorite.core.ui.model.ViewConfig;
-import com.meteorite.core.ui.model.ViewLayout;
+import com.meteorite.core.ui.layout.PropertyNames;
+import com.meteorite.core.ui.model.*;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UUIDUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ import static com.meteorite.core.ui.ViewManager.createViewConfig;
  * @author wei_jc
  * @since 1.0.0
  */
-public class TableFieldProperty {
+public class TableFieldProperty implements PropertyNames {
     public static final String NAME = "TABLE.IP.name";
     public static final String DISPLAY_NAME = "TABLE.IP.displayName";
     public static final String IS_DISPLAY = "TABLE.IP.isDisplay";
@@ -160,5 +160,34 @@ public class TableFieldProperty {
         configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(SORT_NUM), field, field.getSortNum() + ""));
 
         return configList;
+    }
+
+    public static List<ViewProperty> getViewProperties(View view, MetaField field) {
+        List<ViewProperty> viewProperties = new ArrayList<>();
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.NAME), field, field.getName()));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_DISPLAY), field, "true"));
+
+        String width = "80";
+        String displayStyle = DisplayStyle.TEXT_FIELD.name();
+        String align = EnumAlign.LEFT.name();
+        String dictId = "";
+        if (MetaDataType.BOOLEAN == field.getDataType()) {
+            width = "60";
+            displayStyle = DisplayStyle.BOOLEAN.name();
+        } else if (MetaDataType.INTEGER == field.getDataType()) {
+            width = "60";
+            align = EnumAlign.CENTER.name();
+        } else if (MetaDataType.DATE == field.getDataType()) {
+            width = "120";
+        }
+
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.WIDTH), field, width));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.DISPLAY_STYLE), field, displayStyle));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.ALIGN), field, align));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.DICT_ID), field, dictId));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.SORT_NUM), field, field.getSortNum() + ""));
+
+        return viewProperties;
     }
 }
