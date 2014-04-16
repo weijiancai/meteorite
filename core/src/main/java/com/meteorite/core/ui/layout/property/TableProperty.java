@@ -27,6 +27,14 @@ public class TableProperty implements PropertyNames {
         }
     }
 
+    public TableProperty(View view) {
+        fieldProperties = new ArrayList<>();
+        for (MetaField field : view.getMetaFieldList()) {
+            Map<String, String> map = view.getMetaFieldConfig(field);
+            fieldProperties.add(new TableFieldProperty(field, map));
+        }
+    }
+
     public List<TableFieldProperty> getFieldProperties() {
         return fieldProperties;
     }

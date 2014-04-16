@@ -9,6 +9,7 @@ import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.LayoutManager;
+import com.meteorite.core.ui.layout.LayoutType;
 import com.meteorite.core.ui.layout.PropertyType;
 import com.meteorite.core.ui.model.*;
 
@@ -98,6 +99,7 @@ public class MetaRowMapperFactory {
                 prop.setPropType(PropertyType.getType(rs.getString("prop_type")));
                 prop.setDesc(rs.getString("desc"));
                 prop.setSortNum(rs.getInt("sort_num"));
+                prop.setLayoutType(LayoutType.valueOf(rs.getString("layout_type")));
 
                 return prop;
             }
@@ -203,7 +205,7 @@ public class MetaRowMapperFactory {
 
                 property.setId(rs.getString("id"));
                 property.setView(view);
-                property.setProperty(LayoutManager.getLayoutPropById(rs.getString("prop_id")));
+                property.setProperty(LayoutManager.getLayoutPropById(rs.getString("layout_prop_id")));
                 property.setField(MetaManager.getMetaField(rs.getString("meta_field_id")));
                 property.setValue(rs.getString("value"));
 

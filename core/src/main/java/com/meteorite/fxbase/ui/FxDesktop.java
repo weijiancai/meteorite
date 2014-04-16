@@ -44,12 +44,12 @@ public class FxDesktop extends BorderPane {
         Hyperlink metaLink = new Hyperlink("元数据");
         root.getChildren().add(new TreeItem<>(metaLink));
 
-        Hyperlink dictLink = new Hyperlink("数据字典");
+        Hyperlink dictLink = new Hyperlink("表格测试");
         dictLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                View view = ViewManager.getViewByName("DzCodeView");
-                MUTable table = new MUTable(view.getTableLayout());
+                View view = ViewManager.getViewByName("DzCodeTableView");
+                MUTable table = new MUTable(view);
                 setCenter(table);
             }
         });
@@ -59,8 +59,8 @@ public class FxDesktop extends BorderPane {
         formLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                View view = ViewManager.getViewByName("DzCodeView");
-                MUForm form = new MUForm(new FormProperty(view.getFormLayout()));
+                View view = ViewManager.getViewByName("DzCodeFormView");
+                MUForm form = new MUForm(new FormProperty(view));
                 setCenter(form);
             }
         });
@@ -70,7 +70,7 @@ public class FxDesktop extends BorderPane {
         crudLink.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                View view = ViewManager.getViewByName("DzCodeView");
+                View view = ViewManager.getViewByName("DzCodeCrudView");
                 MuCrud crud = new MuCrud(view);
                 setCenter(crud);
             }

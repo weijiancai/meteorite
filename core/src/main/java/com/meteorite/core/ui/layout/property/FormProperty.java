@@ -58,6 +58,22 @@ public class FormProperty implements PropertyNames {
         }
     }
 
+    public FormProperty(View view) {
+        name = view.getStringProperty(FORM.NAME);
+        displayName = view.getStringProperty(FORM.DISPLAY_NAME);
+        formType = view.getStringProperty(FORM.FORM_TYPE);
+        colCount = view.getIntProperty(FORM.COL_COUNT);
+        colWidth = view.getIntProperty(FORM.COL_WIDTH);
+        labelGap = view.getIntProperty(FORM.LABEL_GAP);
+        fieldGap = view.getIntProperty(FORM.FIELD_GAP);
+        hgap = view.getIntProperty(FORM.HGAP);
+        vgap = view.getIntProperty(FORM.VGAP);
+
+        for (MetaField field : view.getMetaFieldList()) {
+            formFields.add(new FormFieldProperty(field, view.getMetaFieldConfig(field)));
+        }
+    }
+
     public String getName() {
         return name;
     }

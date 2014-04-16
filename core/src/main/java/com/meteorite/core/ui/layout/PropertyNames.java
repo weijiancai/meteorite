@@ -47,4 +47,9 @@ public interface PropertyNames {
         String DICT_ID = "TABLE_FIELD.dictId";
         String SORT_NUM = "TABLE_FIELD.sortNum";
     }
+
+    interface CRUD {
+        String TABLE = "CRUD.table";
+        String FORM = "CRUD.form";
+    }
 }

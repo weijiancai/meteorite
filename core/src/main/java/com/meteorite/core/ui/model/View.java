@@ -1,8 +1,12 @@
 package com.meteorite.core.ui.model;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.meteorite.core.datasource.db.sql.SqlBuilder;
+import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.util.UNumber;
+import com.meteorite.core.util.UString;
+
+import java.util.*;
 
 /**
  * 视图
@@ -26,9 +30,15 @@ public class View {
     /** 排序号 */
     private int sortNum;
 
+    /** 元字段属性Map */
+    private Map<MetaField, Map<String, String>> fieldPropMap = new HashMap<>();
+
     private List<ViewLayout> layoutList;
     private List<ViewConfig> configs;
     private List<ViewProperty> viewProperties;
+
+    private Map<String, ViewProperty> propMap = new HashMap<>();
+    private Meta meta;
 
     public String getId() {
         return id;
@@ -138,5 +148,53 @@ public class View {
 
     public void setViewProperties(List<ViewProperty> viewProperties) {
         this.viewProperties = viewProperties;
+        for (ViewProperty property : viewProperties) {
+            propMap.put(property.getProperty().getId(), property);
+            MetaField field = property.getField();
+            if (field != null) {
+                meta = field.getMeta();
+                Map<String, String> propMap = fieldPropMap.get(field);
+                if (propMap == null) {
+                    propMap = new HashMap<>();
+                    fieldPropMap.put(field, propMap);
+                }
+                propMap.put(property.getProperty().getName(), property.getValue());
+            }
+
+        }
+    }
+
+    public ViewProperty getProperty(String propertyId) {
+        return propMap.get(propertyId);
+    }
+
+    public String getStringProperty(String propertyId) {
+        return propMap.get(propertyId).getValue();
+    }
+
+    public int getIntProperty(String propertyId) {
+        return UNumber.toInt(propMap.get(propertyId).getValue());
+    }
+
+    public boolean getBooleanProperty(String propertyId) {
+        return UString.toBoolean(propMap.get(propertyId).getValue());
+    }
+
+    /**
+     * 根据元字段Id获得此元字段的布局配置信息
+     *
+     * @param field 元字段ID
+     * @return 返回元字段配置
+     */
+    public Map<String, String> getMetaFieldConfig(MetaField field) {
+        return fieldPropMap.get(field);
+    }
+
+    public List<MetaField> getMetaFieldList() {
+        return new ArrayList<>(fieldPropMap.keySet());
+    }
+
+    public Meta getMeta() {
+        return meta;
     }
 }

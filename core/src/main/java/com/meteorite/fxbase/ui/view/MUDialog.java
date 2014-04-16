@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.util.Callback;
 import org.controlsfx.dialog.AbstractDialogAction;
 import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
 
 /**
  * JavaFx 对话框
@@ -37,5 +38,14 @@ public class MUDialog extends Dialog {
             }
         });
         dialog.show();
+    }
+
+    /**
+     * 显示消息对话框
+     *
+     * @param msg 消息内容
+     */
+    public static void showInformation(String msg) {
+        Dialogs.create().title("信息").masthead(null).message(msg).showInformation();
     }
 }

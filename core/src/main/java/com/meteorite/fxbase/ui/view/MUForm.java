@@ -25,6 +25,9 @@ public class MUForm extends Pane {
     }
 
     public void setValues(DBResult result) {
+        if (result == null) {
+            return;
+        }
         for (Map.Entry<String, IValue> entry : layout.getValueMap().entrySet()) {
             entry.getValue().setValue(result.getString(entry.getKey()));
         }

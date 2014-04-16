@@ -11,6 +11,7 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.PropertyType;
+import com.meteorite.core.ui.layout.property.CrudProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.layout.property.TableProperty;
 import com.meteorite.core.ui.model.*;
@@ -134,6 +135,13 @@ public class ViewManager {
         template.save(MetaPDBFactory.getView(tableView));
 
         for (ViewProperty property : tableView.getViewProperties()) {
+            template.save(MetaPDBFactory.getViewProperty(property));
+        }
+
+        View crudView = CrudProperty.createCrudView(meta, formView, tableView);
+        template.save(MetaPDBFactory.getView(crudView));
+
+        for (ViewProperty property : crudView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));
         }
     }

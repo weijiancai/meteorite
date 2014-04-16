@@ -5,6 +5,7 @@ import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.ui.layout.property.TableProperty;
+import com.meteorite.core.ui.model.View;
 import com.meteorite.core.ui.model.ViewLayout;
 import com.meteorite.core.util.UObject;
 import com.meteorite.fxbase.ui.component.table.cell.BoolTableCell;
@@ -28,9 +29,15 @@ import javafx.util.Callback;
  */
 public class MUTable extends TableView<DBResult> {
     private ViewLayout viewLayout;
+    private View view;
 
     public MUTable(ViewLayout viewLayout) {
         this.viewLayout = viewLayout;
+        initUI();
+    }
+
+    public MUTable(View view) {
+        this.view = view;
         initUI();
     }
 
@@ -43,7 +50,7 @@ public class MUTable extends TableView<DBResult> {
     }
 
     private void createTableColumns() {
-        TableProperty table = new TableProperty(viewLayout);
+        TableProperty table = new TableProperty(view);
         for (final TableFieldProperty property : table.getFieldProperties()) {
             this.getColumns().add(new BaseTableColumn(property));
         }
@@ -51,7 +58,7 @@ public class MUTable extends TableView<DBResult> {
 
     private void createTableData() {
         try {
-            this.setItems(FXCollections.observableArrayList(viewLayout.getMeta().query()));
+            this.setItems(FXCollections.observableArrayList(view.getMeta().query()));
         } catch (Exception e) {
             e.printStackTrace();
         }
