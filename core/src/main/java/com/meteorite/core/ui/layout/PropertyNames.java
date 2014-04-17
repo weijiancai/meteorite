@@ -51,5 +51,30 @@ public interface PropertyNames {
     interface CRUD {
         String TABLE = "CRUD.table";
         String FORM = "CRUD.form";
+        String QUERY = "CRUD.query";
+    }
+
+    interface QUERY {
+        String NAME = "QUERY.name";
+        String DISPLAY_NAME = "QUERY.displayName";
+        String COL_COUNT = "QUERY.colCount";
+        String COL_WIDTH = "QUERY.colWidth";
+        String LABEL_GAP = "QUERY.labelGap";
+        String FIELD_GAP = "QUERY.fieldGap";
+        String HGAP = "QUERY.hgap";
+        String VGAP = "QUERY.vgap";
+    }
+
+    interface QUERY_FIELD {
+        String NAME = "QUERY_FIELD.name";
+        String DISPLAY_NAME = "QUERY_FIELD.displayName";
+        String COL_NAME = "QUERY_FIELD.colName";
+        String QUERY_MODEL = "QUERY_FIELD.queryModel";
+        String DISPLAY_STYLE = "QUERY_FIELD.displayStyle";
+        String IS_DISPLAY = "QUERY_FIELD.isDisplay";
+        String WIDTH = "QUERY_FIELD.width";
+        String DICT_ID = "QUERY_FIELD.dictId";
+        String VALUE = "QUERY_FIELD.value";
+        String SORT_NUM = "QUERY_FIELD.sortNum";
     }
 }

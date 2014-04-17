@@ -66,6 +66,8 @@ public class MuCrud extends BorderPane {
             }
         });
 
+
+
         return box;
     }
 

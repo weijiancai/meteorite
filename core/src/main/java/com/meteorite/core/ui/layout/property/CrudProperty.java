@@ -41,7 +41,7 @@ public class CrudProperty implements PropertyNames {
         this.tableView = tableView;
     }
 
-    public static View createCrudView(Meta meta, View formView, View tableView) {
+    public static View createCrudView(Meta meta, View formView, View tableView, View queryView) {
         View view = new View();
         view.setId(UUIDUtil.getUUID());
         view.setName(meta.getName() + "CrudView");
@@ -54,6 +54,7 @@ public class CrudProperty implements PropertyNames {
 
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(CRUD.FORM), formView.getId()));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(CRUD.TABLE), tableView.getId()));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(CRUD.QUERY), queryView.getId()));
 
         view.setViewProperties(viewProperties);
 
