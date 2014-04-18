@@ -13,7 +13,6 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import org.controlsfx.dialog.Dialogs;
 
 /**
  * MetaUI CRUD视图
@@ -66,7 +65,8 @@ public class MuCrud extends BorderPane {
             }
         });
 
-
+        MUForm query = new MUForm(new FormProperty(crudProperty.getQueryView(), true));
+        box.getChildren().add(query);
 
         return box;
     }
@@ -85,7 +85,7 @@ public class MuCrud extends BorderPane {
     }
 
     private void openFormWin(DBResult result) {
-        MUForm form = new MUForm(new FormProperty(crudProperty.getFormView()));
+        MUForm form = new MUForm(new FormProperty(crudProperty.getFormView(), false));
         form.setValues(result);
         MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
     }

@@ -155,7 +155,7 @@ public class QueryFieldProperty implements PropertyNames {
         List<ViewProperty> configList = new ArrayList<>();
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.NAME), field, field.getName()));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
-        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.COL_NAME), field, field.getColumn().getFullName()));
+//        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.COL_NAME), field, field.getColumn().getFullName()));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.IS_DISPLAY), field, "true"));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.QUERY_MODEL), field, QueryModel.EQUAL.name()));
 

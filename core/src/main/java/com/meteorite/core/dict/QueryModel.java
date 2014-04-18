@@ -1,5 +1,7 @@
 package com.meteorite.core.dict;
 
+import com.meteorite.core.util.UString;
+
 /**
  * 查询模式
  *
@@ -47,4 +49,12 @@ public enum QueryModel {
      * 右Like like %a
      */
     RIGHT_LIKE
+    ;
+
+    public static QueryModel convert(String queryModelStr) {
+        if (UString.isEmpty(queryModelStr)) {
+            return EQUAL;
+        }
+        return QueryModel.valueOf(queryModelStr);
+    }
 }

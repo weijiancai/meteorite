@@ -20,7 +20,7 @@ public class OpenBookDataTest {
 
 	@Test
 	public void testParser() throws Exception {
-		OpenBookDataParser parser = new OpenBookDataParser(3324753);
+		OpenBookDataParser parser = new OpenBookDataParser(3328918);
 		List<IWebProduct> list = parser.parse();
         assertThat(list.size(), equalTo(1));
 		IWebProduct prod = list.get(0);
@@ -54,4 +54,6 @@ public class OpenBookDataTest {
         String dirctory = "目 录序一）葛吉夫的格言 葛吉夫简介 格言二）论记得自己——邬斯宾斯基思想集 邬斯宾斯基简介 第一章 我的第一次尝试第二章 游移在两岸间第三章 最有趣的观念第四章 定义不会有帮助第五章 意识到不记得第六章 机械的人第七章 辨别意识与功能第八章 记得自己就是做第九章 人是一个化学工厂第十章 开始看到第十一章 第四道，学校，和有意识的影响第十二章 我教你记得自己三）有意识的和谐——郎尼·克林书信摘选 克林简介 1．第四道 2．心理工作和内在努力的正确态度 3．培养真诚而善解的心 4．记得自己 5．障碍（自我重要感，想象，不必要的谈话和说谎，负面情绪） 6．消除障碍的方法（接受，不执着，转化痛苦） 7．代价 8．丙种影响 9．学校传统 10．教学 11．邬斯宾斯基与葛吉夫 12．死亡与转化 四）有意识教学的笔记 吉拉德简介 1．机器 2．群‘我' 3．活在当下五）每日一思 罗伯特简介第四道知识和素质低等自我（想象，本能中心，认同，负面情绪）努力控制激情分开注意力记得自己转化痛苦序列当下有意识的爱本质单纯时间死亡学校丙种影响词汇表读者反馈";
         assertThat(prod.getCatalog(), equalTo(dirctory));
     }
+
+
 }

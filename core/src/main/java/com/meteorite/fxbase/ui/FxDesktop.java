@@ -60,11 +60,22 @@ public class FxDesktop extends BorderPane {
             @Override
             public void handle(ActionEvent event) {
                 View view = ViewManager.getViewByName("DzCodeFormView");
-                MUForm form = new MUForm(new FormProperty(view));
+                MUForm form = new MUForm(new FormProperty(view, false));
                 setCenter(form);
             }
         });
         root.getChildren().add(new TreeItem<>(formLink));
+
+        Hyperlink queryLink = new Hyperlink("查询测试");
+        queryLink.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                View view = ViewManager.getViewByName("DzCodeQueryView");
+                MUForm form = new MUForm(new FormProperty(view, true));
+                setCenter(form);
+            }
+        });
+        root.getChildren().add(new TreeItem<>(queryLink));
 
         Hyperlink crudLink = new Hyperlink("CRUD");
         crudLink.setOnAction(new EventHandler<ActionEvent>() {

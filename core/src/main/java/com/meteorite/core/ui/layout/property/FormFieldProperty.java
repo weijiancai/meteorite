@@ -2,6 +2,7 @@ package com.meteorite.core.ui.layout.property;
 
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictManager;
+import com.meteorite.core.dict.QueryModel;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaField;
@@ -39,6 +40,7 @@ public class FormFieldProperty implements PropertyNames {
     private String name;
     private String columnName;
     private String displayName;
+    private QueryModel queryModel;
     private boolean isSingleLine;
     private boolean isDisplay;
     private int width;
@@ -54,6 +56,7 @@ public class FormFieldProperty implements PropertyNames {
         columnName = field.getColumn().getName();
         name = propMap.get("name");
         displayName = propMap.get("displayName");
+        this.queryModel = QueryModel.convert(propMap.get("queryModel"));
         isSingleLine = UString.toBoolean(propMap.get("isSingleLine"));
         isDisplay = UString.toBoolean(propMap.get("isDisplay"));
         width = UNumber.toInt(propMap.get("width"));
@@ -79,7 +82,13 @@ public class FormFieldProperty implements PropertyNames {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+    public QueryModel getQueryModel() {
+        return queryModel;
+    }
 
+    public void setQueryModel(QueryModel queryModel) {
+        this.queryModel = queryModel;
+    }
     public boolean isSingleLine() {
         return isSingleLine;
     }
@@ -212,6 +221,35 @@ public class FormFieldProperty implements PropertyNames {
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.VALUE), field, field.getDefaultValue()));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.DICT_ID), field, dictId));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.SORT_NUM), field, field.getSortNum() + ""));
+
+        return configList;
+    }
+
+    public static List<ViewProperty> getQueryViewProperties(View view, MetaField field) {
+        List<ViewProperty> configList = new ArrayList<>();
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.NAME), field, field.getName()));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.IS_DISPLAY), field, "true"));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.IS_SINGLE_LINE), field, "false"));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.QUERY_MODEL), field, QueryModel.EQUAL.name()));
+
+        String width = "180";
+        String height = "";
+        String displayStyle = DisplayStyle.TEXT_FIELD.name();
+        String dictId = field.getDictId();
+        if (MetaDataType.BOOLEAN == field.getDataType()) {
+            displayStyle = DisplayStyle.BOOLEAN.name();
+            dictId = "EnumBoolean";
+        } else if (MetaDataType.DICT == field.getDataType()) {
+            displayStyle = DisplayStyle.COMBO_BOX.name();
+        }
+
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.WIDTH), field, width));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.HEIGHT), field, height));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.DISPLAY_STYLE), field, displayStyle));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.VALUE), field, field.getDefaultValue()));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.DICT_ID), field, dictId));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(QUERY_FIELD.SORT_NUM), field, field.getSortNum() + ""));
 
         return configList;
     }

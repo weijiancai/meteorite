@@ -139,7 +139,7 @@ public class ViewManager {
             template.save(MetaPDBFactory.getViewProperty(property));
         }
 
-        View queryView = QueryProperty.createQueryView(meta);
+        View queryView = FormProperty.createQueryView(meta);
         template.save(MetaPDBFactory.getView(queryView));
 
         for (ViewProperty property : queryView.getViewProperties()) {
