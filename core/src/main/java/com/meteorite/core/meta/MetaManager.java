@@ -3,6 +3,7 @@ package com.meteorite.core.meta;
 import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
@@ -19,9 +20,6 @@ import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaForm;
 import com.meteorite.core.meta.model.MetaFormField;
 import com.meteorite.core.ui.ViewManager;
-import com.meteorite.core.ui.layout.LayoutManager;
-import com.meteorite.core.ui.model.View;
-import com.meteorite.core.ui.model.ViewConfig;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.UString;
@@ -30,7 +28,6 @@ import com.meteorite.core.util.jaxb.JAXBUtil;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.util.*;
 
 import static com.meteorite.core.config.SystemConfig.DIR_SYSTEM;
@@ -63,8 +60,7 @@ public class MetaManager {
 
     public static void load() throws Exception {
         SystemInfo sysInfo = SystemManager.getSystemInfo();
-        Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
-        JdbcTemplate template = new JdbcTemplate(conn);
+        JdbcTemplate template = new JdbcTemplate();
         try {
             if (sysInfo.isMetaInit()) { // ClassDef 已经初始化
                 String sql = "SELECT * FROM sys_meta order by sort_num";
@@ -129,7 +125,8 @@ public class MetaManager {
                 metaSortNum = 10;
                 // 清空表sys_view_config, sys_view_layout, sys_view, sys_meta
                 template.clearTable("sys_view_config", "sys_view_layout", "sys_view", "sys_meta");
-                DBConnection dbConn = DBManager.getConnection(DBManager.getSysDataSource());
+                DBDataSource dataSource = DataSourceManager.getSysDataSource();
+                DBConnection dbConn = dataSource.getDbConnection();
 //                dbConn.getLoader().loadSchemas();
                 for (DBTable table : dbConn.getSchema().getTables()) {
                     initMetaFromTable(template, table);
@@ -141,12 +138,6 @@ public class MetaManager {
             }
 
             template.commit();
-            template.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            conn.rollback();
-            ConnectionUtil.closeConnection(conn);
         } finally {
             template.close();
         }
@@ -344,6 +335,7 @@ public class MetaManager {
         meta.setInputDate(new Date());
         meta.setSortNum(metaSortNum);
         meta.setDbTable(table);
+        meta.setDataSource(template.getDataSource());
 
         // 插入元数据信息
         template.save(MetaPDBFactory.getMeta(meta));
@@ -375,6 +367,8 @@ public class MetaManager {
             template.save(MetaPDBFactory.getMetaField(field));
             fieldList.add(field);
 //            classFieldIdMap.put(field.getId(), field);
+            // 加入缓存
+            fieldIdMap.put(field.getId(), field);
         }
         meta.setFields(fieldList);
 

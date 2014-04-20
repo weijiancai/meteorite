@@ -1,6 +1,9 @@
 package com.meteorite.core.datasource.db;
 
 import com.meteorite.core.config.SystemConfig;
+import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.DataSourceType;
 import com.meteorite.core.datasource.db.object.DBConnection;
 
 /**
@@ -21,7 +24,11 @@ public class DBUtil {
     }
 
     public static boolean exitsTable(String dataSourceName, String tableName) throws Exception {
-        DBConnection conn = DBManager.getConnection(dataSourceName);
+        DataSource dataSource = DataSourceManager.getDataSource(dataSourceName);
+        if (dataSource.getType() != DataSourceType.DATABASE) {
+            throw new Exception(String.format("此数据源【%s】非数据库数据源", dataSourceName));
+        }
+        DBConnection conn = ((DBDataSource)dataSource).getDbConnection();
         return existsTable(conn, tableName);
     }
 

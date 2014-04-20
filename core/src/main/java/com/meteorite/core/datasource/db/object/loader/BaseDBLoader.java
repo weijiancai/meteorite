@@ -7,6 +7,7 @@ import com.meteorite.core.datasource.db.object.impl.DBTableImpl;
 import com.meteorite.core.datasource.db.object.impl.DBViewImpl;
 import com.meteorite.core.datasource.db.util.DBResult;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UObject;
 
 import java.util.ArrayList;
@@ -91,9 +92,12 @@ public abstract class BaseDBLoader implements DBLoader {
         for (DBResult map : list) {
             DBColumnImpl column = new DBColumnImpl();
             column.setParent(table);
-            column.setName(UObject.toString(map.get("COLUMN_NAME")));
-            column.setComment(UObject.toString(map.get("COLUMN_COMMENT")));
+            column.setName(map.getString("COLUMN_NAME"));
+            column.setComment(map.getString("COLUMN_COMMENT"));
             column.setDataType(MetaDataType.getDataType(map.getString("DATA_TYPE_NAME")));
+            column.setMaxLength(map.getInt("DATA_LENGTH"));
+            column.setPk(map.getBoolean("IS_PRIMARY_KEY"));
+            column.setFk(map.getBoolean("IS_FOREIGN_KEY"));
 
             result.add(column);
         }

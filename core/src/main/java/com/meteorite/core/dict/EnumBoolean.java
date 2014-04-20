@@ -8,10 +8,10 @@ import com.meteorite.core.dict.annotation.DictElement;
  * @author wei_jc
  * @since 1.0.0
  */
-@DictElement(categoryName = "Boolean类型")
+@DictElement(categoryName = "Boolean类型（T/F）")
 public enum EnumBoolean {
-    TRUE("是"),
-    FALSE("否")
+    T("是"),
+    F("否")
     ;
 
     private String displayName;

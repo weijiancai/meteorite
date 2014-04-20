@@ -44,8 +44,7 @@ public class LayoutManager {
 
     public static void load() throws Exception {
         SystemInfo sysInfo = SystemManager.getSystemInfo();
-        Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
-        JdbcTemplate template = new JdbcTemplate(conn);
+        JdbcTemplate template = new JdbcTemplate();
 
         if (sysInfo.isLayoutInit()) {
             // 查询布局

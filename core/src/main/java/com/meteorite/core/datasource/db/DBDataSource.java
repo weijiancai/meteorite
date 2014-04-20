@@ -4,9 +4,13 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
+import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.DBSchema;
+import com.meteorite.core.datasource.db.object.DBTable;
+import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
@@ -14,10 +18,12 @@ import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +48,7 @@ public class DBDataSource implements DataSource {
     private String name;
 
     private Meta properties;
+    private DBConnection connection;
 
     public DBDataSource() {
         initProperties();
@@ -98,6 +105,27 @@ public class DBDataSource implements DataSource {
     @JSONField(serialize = false)
     public Meta getProperties() {
         return properties;
+    }
+
+    @Override
+    public List<DBResult> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException {
+        DBTable table = meta.getDbTable();
+
+        QueryBuilder builder = QueryBuilder.create(getDatabaseType());
+        builder.sqlBuilder().from(table.getName());
+        for (ICanQuery query : queryList) {
+            for (ICanQuery.Condition condition : query.getConditions()) {
+                builder.add(condition.colName, condition.queryModel, condition.value, condition.dataType);
+            }
+        }
+        JdbcTemplate template = new JdbcTemplate();
+        List<DBResult> list = new ArrayList<>();
+        try {
+            list = template.queryForList(builder);
+        } finally {
+            template.close();
+        }
+        return list;
     }
 
     public void setName(String name) {
@@ -160,7 +188,7 @@ public class DBDataSource implements DataSource {
 
     @JSONField(name = "children")
     public List<DBSchema> getSchemas() throws Exception {
-        return DBManager.getConnection(this).getSchemas();
+        return getDbConnection().getSchemas();
     }
 
     /**
@@ -170,14 +198,14 @@ public class DBDataSource implements DataSource {
      * @return 返回某个系统的最大版本号
      */
     public String getMaxVersion(String systemName) throws Exception {
-        String sql = SqlBuilder.getInstance()
+        String sql = SqlBuilder.create(getDatabaseType())
                 .from(SystemConfig.SYS_DB_VERSION_TABLE_NAME)
                 .max("db_version")
                 .where(String.format("sys_name='%s'", systemName))
                 .group("sys_name")
                 .build();
 
-        DBConnection conn = DBManager.getConnection(this);
+        DBConnection conn = getDbConnection();
         if (DBUtil.existsTable(conn, SystemConfig.SYS_DB_VERSION_TABLE_NAME)) {
             List<DBResult> result = conn.getResultSet(sql);
             if(result.size() > 0) {
@@ -186,5 +214,17 @@ public class DBDataSource implements DataSource {
         }
 
         return "0.0.0";
+    }
+
+    /**
+     * 获得数据库连接信息
+     *
+     * @return 返回数据库连接信息
+     */
+    public DBConnection getDbConnection() throws Exception {
+        if (connection == null) {
+            connection = new DBConnectionImpl(this);
+        }
+        return connection;
     }
 }

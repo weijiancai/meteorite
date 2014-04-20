@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource.db.util;
 
 import com.meteorite.core.datasource.db.object.DBColumn;
+import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 
@@ -58,5 +59,31 @@ public class DBResult extends HashMap<String,Object> {
      */
     public Object get(DBColumn column) {
         return get(column.getName());
+    }
+
+    /**
+     * 获得key对应的整数值
+     *
+     * @param key Key
+     * @return 返回key对应的整数值
+     * @since 1.0.0
+     */
+    public int getInt(String key) {
+        return UNumber.toInt(getString(key));
+    }
+
+    /**
+     * 获得key对应的Boolean值
+     *
+     * @param key Key
+     * @return 返回key对应的Boolean值
+     * @since 1.0.0
+     */
+    public boolean getBoolean(String key) {
+        return UString.toBoolean(getString(key));
+    }
+
+    public void delete(int row) {
+
     }
 }

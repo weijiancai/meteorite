@@ -34,10 +34,6 @@ public enum QueryModel {
      */
     GREATER_EQUAL,
     /**
-     * 在...之间 between
-     */
-    BETWEEN,
-    /**
      * 全Like like
      */
     LIKE,

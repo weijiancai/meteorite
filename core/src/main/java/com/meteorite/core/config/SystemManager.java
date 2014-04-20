@@ -1,5 +1,6 @@
 package com.meteorite.core.config;
 
+import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
@@ -90,13 +91,13 @@ public class SystemManager {
         // 加载系统默认Hsqldb数据源
         File sysDbFile = UFile.createFile(DIR_SYSTEM_HSQL_DB, SYS_DB_NAME);
         HSqlDBServer.getInstance().addDbFile(SYS_DB_NAME, sysDbFile.getAbsolutePath());
-        DBManager.addDataSource(DBManager.getSysDataSource());
+        DataSourceManager.addDataSource(DataSourceManager.getSysDataSource());
 
         for (ProjectConfig config : cache.values()) {
             List<DBDataSource> list = config.getDataSources();
             if (list != null) {
                 for (DBDataSource dataSource : list) {
-                    DBManager.addDataSource(dataSource);
+                    DataSourceManager.addDataSource(dataSource);
                     // 如果存在hsqldb文件路径，则加载hsqldb数据库文件
                     if (dataSource.getFilePath() != null) {
                         HSqlDBServer.getInstance().addDbFile(dataSource.getName(), dataSource.getFilePath());
@@ -107,9 +108,10 @@ public class SystemManager {
     }
 
     private void checkDbVersion() throws Exception {
+        DBDataSource dataSource = DataSourceManager.getSysDataSource();
         // 获得数据库当前系统的最大版本号
-        String maxVersion = DBManager.getSysDataSource().getMaxVersion(SystemConfig.SYS_NAME);
-        DatabaseType dbType = DBManager.getSysDataSource().getDatabaseType();
+        String maxVersion = dataSource.getMaxVersion(SystemConfig.SYS_NAME);
+        DatabaseType dbType = dataSource.getDatabaseType();
         System.out.println("当前系统版本为：" + maxVersion + ", 数据库为：" + dbType.getDisplayName());
         // 获得升级目录下升级脚本
         for (File file : SystemConfig.DIR_DB_UPGRADE.listFiles()) {
@@ -117,7 +119,7 @@ public class SystemManager {
             String version = names[1];
             if(dbType.getName().toLowerCase().endsWith(names[2]) && maxVersion.compareTo(version) < 0) {
                 System.out.println("检测到新版本需要升级：" + version);
-                DBManager.getConnection(SystemConfig.SYS_DB_NAME).execSqlFile(file);
+                dataSource.getDbConnection().execSqlFile(file);
                 System.out.println("升级完成");
             }
         }

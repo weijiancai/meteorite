@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.impl.DBColumnImpl;
@@ -25,7 +26,7 @@ public class DBManagerTest {
     @Test
     public void testGetConnection() throws Exception {
         SystemManager.getInstance().init();
-        DBConnection conn = DBManager.getConnection(SystemConfig.SYS_DB_NAME);
+        DBConnection conn = DataSourceManager.getSysDataSource().getDbConnection();
         System.out.println(conn);
         assertNotNull(conn);
         assertThat(conn.getDatabaseType(), equalTo(DatabaseType.HSQLDB));

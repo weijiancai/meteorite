@@ -16,4 +16,15 @@ public interface DBColumn extends DBObject {
      * @since 1.0.0
      */
     MetaDataType getDataType();
+
+    boolean isPk();
+
+    boolean isFk();
+
+    /**
+     * 获得最大长度
+     *
+     * @return 返回最大长度
+     */
+    int getMaxLength();
 }

@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.sql;
 
+import com.meteorite.core.datasource.db.DatabaseType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,10 +14,11 @@ import static org.junit.Assert.assertThat;
  */
 public class SqlBuilderTest {
     private SqlBuilder sql;
+    private DatabaseType dbType = DatabaseType.HSQLDB;
 
     @Before
     public void init() {
-        sql = SqlBuilder.getInstance();
+        sql = SqlBuilder.create(dbType);
     }
 
     @After
@@ -50,7 +52,7 @@ public class SqlBuilderTest {
         assertThat(actual, equalTo(expect));
 
         expect = "SELECT personId, name, age, sex FROM person p JOIN bu b ON (p.personId = b.personId)";
-        actual = SqlBuilder.getInstance().from("person p")
+        actual = SqlBuilder.create(dbType).from("person p")
                 .join("bu b ON (p.personId = b.personId)")
                 .query("personId").query("name").query("age, sex")
                 .build();
@@ -83,7 +85,7 @@ public class SqlBuilderTest {
         assertThat(actual, equalTo(expect));
 
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T' AND personId = ? AND name = ?";
-        sql = SqlBuilder.getInstance();
+        sql = SqlBuilder.create(dbType);
         actual = sql.from("person")
                 .join("bu")
                 .query("personId").query("name").query("age, sex")
@@ -141,7 +143,7 @@ public class SqlBuilderTest {
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{"%F%"}));
 
-        sql = SqlBuilder.getInstance();
+        sql = SqlBuilder.create(dbType);
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T' AND (personId=? OR personId=?)";
         actual = sql.from("person")
                 .join("bu")
@@ -155,7 +157,7 @@ public class SqlBuilderTest {
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{5, 6}));
 
-        sql = SqlBuilder.getInstance();
+        sql = SqlBuilder.create(dbType);
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T'";
         actual = sql.from("person")
                 .join("bu")
@@ -169,7 +171,7 @@ public class SqlBuilderTest {
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{}));
 
-        sql = SqlBuilder.getInstance();
+        sql = SqlBuilder.create(dbType);
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T'";
         actual = sql.from("person")
                 .join("bu")
@@ -278,7 +280,7 @@ public class SqlBuilderTest {
         assertThat(actual, equalTo(expect));
 
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T' AND personId = ? OR name = ?";
-        sql = SqlBuilder.getInstance();
+        sql = SqlBuilder.create(dbType);
         actual = sql.from("person")
                 .join("bu")
                 .query("personId").query("name").query("age, sex")
@@ -371,7 +373,7 @@ public class SqlBuilderTest {
     @Test
     public void testMax() {
         String expect = "SELECT MAX(db_version) AS max_db_version FROM sys_db_version WHERE sys_name='core' GROUP BY sys_name";
-        String actual = SqlBuilder.getInstance()
+        String actual = SqlBuilder.create(dbType)
                 .from("sys_db_version")
                 .max("db_version")
                 .where("sys_name='core'")

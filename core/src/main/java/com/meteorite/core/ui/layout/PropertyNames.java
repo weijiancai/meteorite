@@ -31,6 +31,7 @@ public interface PropertyNames {
         String DICT_ID = "FORM_FIELD.dictId";
         String VALUE = "FORM_FIELD.value";
         String SORT_NUM = "FORM_FIELD.sortNum";
+        String QUERY_MODEL = "FORM_FIELD.queryModel";
     }
     
     interface TABLE {
@@ -54,7 +55,7 @@ public interface PropertyNames {
         String QUERY = "CRUD.query";
     }
 
-    interface QUERY {
+    /*interface QUERY {
         String NAME = "QUERY.name";
         String DISPLAY_NAME = "QUERY.displayName";
         String FORM_TYPE = "QUERY.formType";
@@ -79,5 +80,5 @@ public interface PropertyNames {
         String VALUE = "QUERY_FIELD.value";
         String SORT_NUM = "QUERY_FIELD.sortNum";
         String QUERY_MODEL = "QUERY_FIELD.queryModel";
-    }
+    }*/
 }

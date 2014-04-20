@@ -1,5 +1,6 @@
 package com.meteorite.fxbase.ui.layout;
 
+import com.meteorite.core.dict.FormType;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
@@ -10,7 +11,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +25,7 @@ import java.util.Map;
 public class MUFormLayout extends BorderPane {
     private FormProperty formConfig;
     private Map<String, IValue> valueMap = new HashMap<>();
+    private List<ICanQuery> queryList = new ArrayList<>();
 
     public MUFormLayout(FormProperty property) {
         this.formConfig = property;
@@ -126,7 +130,7 @@ public class MUFormLayout extends BorderPane {
         } else {
             if (MetaDataType.DATE == field.getDataType()) {
                 /*if ("0".equals(field.getForm().getFormType())) {
-                    VDateRangeField dateField = new VDateRangeField();
+                    MuDateRange dateField = new MuDateRange();
                     dateField.setPrefWidth(field.getWidth() + 0.0);
                     node = dateField;
                 } else {
@@ -134,16 +138,31 @@ public class MUFormLayout extends BorderPane {
                     dateField.setDateTextWidth(field.getWidth() + 0.0);
                     node = dateField;
                 }*/
-                node = new MuDate(field);
+                if (formConfig.getFormType() == FormType.QUERY) {
+                    node = new MuDateRange(field);
+                } else {
+                    node = new MuDate(field);
+                }
             } else {
                 node = new MuTextField(field);
             }
         }
+
+        if (MetaDataType.INTEGER == field.getDataType() && formConfig.getFormType() == FormType.QUERY) {
+            node = new MuIntRange(field);
+        }
+
         valueMap.put(field.getColumnName(), (IValue)node);
+        queryList.add((ICanQuery) node);
+
         return node;
     }
 
     public Map<String, IValue> getValueMap() {
         return valueMap;
+    }
+
+    public List<ICanQuery> getQuerList() {
+        return queryList;
     }
 }

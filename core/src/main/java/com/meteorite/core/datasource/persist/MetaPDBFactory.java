@@ -35,6 +35,7 @@ public class MetaPDBFactory {
                 map.put("is_valid", meta.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", meta.getSortNum());
+                map.put("ds_name", meta.getDataSource().getName());
 
                 result.put("sys_meta", map);
 

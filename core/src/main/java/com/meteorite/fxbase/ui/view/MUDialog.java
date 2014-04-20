@@ -48,4 +48,13 @@ public class MUDialog extends Dialog {
     public static void showInformation(String msg) {
         Dialogs.create().title("信息").masthead(null).message(msg).showInformation();
     }
+
+    /**
+     * 显示以藏信息对话框
+     *
+     * @param e 异常信息
+     */
+    public static void showExceptionDialog(Throwable e) {
+        Dialogs.create().title("异常信息").masthead(null).message(e.getMessage()).showException(e);
+    }
 }

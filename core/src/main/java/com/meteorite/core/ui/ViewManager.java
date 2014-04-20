@@ -2,18 +2,16 @@ package com.meteorite.core.ui;
 
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
-import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.ui.layout.LayoutManager;
-import com.meteorite.core.ui.layout.PropertyType;
 import com.meteorite.core.ui.layout.property.CrudProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
-import com.meteorite.core.ui.layout.property.QueryProperty;
 import com.meteorite.core.ui.layout.property.TableProperty;
 import com.meteorite.core.ui.model.*;
 import com.meteorite.core.util.UString;
@@ -37,8 +35,8 @@ public class ViewManager {
 
     public static void load() throws Exception {
         SystemInfo sysInfo = SystemManager.getSystemInfo();
-        Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
-        JdbcTemplate template = new JdbcTemplate(conn);
+        DBDataSource dataSource = DataSourceManager.getSysDataSource();
+        JdbcTemplate template = new JdbcTemplate(dataSource);
 
         // 从数据库中加载视图
         if (sysInfo.isViewInit()) {
@@ -86,46 +84,8 @@ public class ViewManager {
      * @return 返回视图信息
      * @since 1.0.0
      */
-    public static View createView(Meta meta, JdbcTemplate template) throws Exception {
-        View view = new View();
-        view.setId(UUIDUtil.getUUID());
-        view.setName(meta.getName() + "View");
-        view.setDisplayName(meta.getDisplayName());
-        view.setDesc(meta.getDisplayName() + "视图");
-        view.setValid(true);
-        view.setInputDate(new Date());
-        view.setSortNum(0);
-
-        template.save(MetaPDBFactory.getView(view));
-
-//        ViewLayout formLayout = createViewLayout(meta, LayoutManager.getLayoutByName("FORM"));
-        ViewLayout formLayout = FormProperty.createViewLayout(meta);
-        formLayout.setView(view);
-        template.save(MetaPDBFactory.getViewLayout(formLayout));
-        for (ViewConfig config : formLayout.getConfigs()) {
-            template.save(MetaPDBFactory.getViewConfig(config));
-        }
-
-//        ViewLayout tableLayout = createViewLayout(meta, LayoutManager.getLayoutByName("TABLE"));
-        ViewLayout tableLayout = TableProperty.createViewLayout(meta);
-        tableLayout.setView(view);
-        template.save(MetaPDBFactory.getViewLayout(tableLayout));
-        for (ViewConfig config : tableLayout.getConfigs()) {
-            template.save(MetaPDBFactory.getViewConfig(config));
-        }
-
-        return view;
-    }
-
-    /**
-     * 根据元数据和布局创建视图
-     *
-     * @param meta 元数据
-     * @return 返回视图信息
-     * @since 1.0.0
-     */
     public static void createViews(Meta meta, JdbcTemplate template) throws Exception {
-        View formView = FormProperty.createFormView(meta);
+        View formView = FormProperty.createFormView(meta, false);
         template.save(MetaPDBFactory.getView(formView));
 
         for (ViewProperty property : formView.getViewProperties()) {
@@ -139,7 +99,7 @@ public class ViewManager {
             template.save(MetaPDBFactory.getViewProperty(property));
         }
 
-        View queryView = FormProperty.createQueryView(meta);
+        View queryView = FormProperty.createFormView(meta, true);
         template.save(MetaPDBFactory.getView(queryView));
 
         for (ViewProperty property : queryView.getViewProperties()) {

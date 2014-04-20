@@ -60,7 +60,7 @@ public class FxDesktop extends BorderPane {
             @Override
             public void handle(ActionEvent event) {
                 View view = ViewManager.getViewByName("DzCodeFormView");
-                MUForm form = new MUForm(new FormProperty(view, false));
+                MUForm form = new MUForm(new FormProperty(view));
                 setCenter(form);
             }
         });
@@ -71,7 +71,7 @@ public class FxDesktop extends BorderPane {
             @Override
             public void handle(ActionEvent event) {
                 View view = ViewManager.getViewByName("DzCodeQueryView");
-                MUForm form = new MUForm(new FormProperty(view, true));
+                MUForm form = new MUForm(new FormProperty(view));
                 setCenter(form);
             }
         });

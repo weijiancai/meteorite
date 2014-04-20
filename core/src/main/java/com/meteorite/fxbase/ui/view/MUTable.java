@@ -10,6 +10,7 @@ import com.meteorite.core.ui.model.ViewLayout;
 import com.meteorite.core.util.UObject;
 import com.meteorite.fxbase.ui.component.table.cell.BoolTableCell;
 import com.meteorite.fxbase.ui.component.table.cell.DictTableCell;
+import com.meteorite.fxbase.ui.component.table.cell.SortNumTableCell;
 import com.meteorite.fxbase.ui.component.table.column.BaseTableColumn;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +21,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
+
+import java.util.List;
 
 /**
  * MetaUI Table
@@ -45,20 +48,30 @@ public class MUTable extends TableView<DBResult> {
 //        tableView.setEditable(true);
         // 创建表格列头信息
         createTableColumns();
-        // 创建表格数据
-        createTableData();
     }
 
     private void createTableColumns() {
+        // 创建序号列
+        TableColumn<DBResult, String> sortNumCol = new TableColumn<>("序号");
+        sortNumCol.setPrefWidth(50);
+        sortNumCol.setCellFactory(new Callback<TableColumn<DBResult, String>, TableCell<DBResult, String>>() {
+            @Override
+            public TableCell<DBResult, String> call(TableColumn<DBResult, String> param) {
+                return new SortNumTableCell();
+            }
+        });
+        this.getColumns().add(sortNumCol);
+
+        // 创建其他列
         TableProperty table = new TableProperty(view);
         for (final TableFieldProperty property : table.getFieldProperties()) {
             this.getColumns().add(new BaseTableColumn(property));
         }
     }
 
-    private void createTableData() {
+    public void setTableData(List<DBResult> list) {
         try {
-            this.setItems(FXCollections.observableArrayList(view.getMeta().query()));
+            this.setItems(FXCollections.observableArrayList(list));
         } catch (Exception e) {
             e.printStackTrace();
         }

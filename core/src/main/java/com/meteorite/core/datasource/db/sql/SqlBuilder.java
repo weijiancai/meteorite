@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.sql;
 
+import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.util.UString;
 
 import java.util.LinkedList;
@@ -8,7 +9,7 @@ import java.util.Queue;
 /**
  * Sql 预编译语句生成器
  *     使用方法：
- *         SqlBuilder.getInstance()
+ *         SqlBuilder.create()
  *             .from("table name")
  *             .join("join table_name on (....)")
  *             .query("column name")
@@ -27,19 +28,22 @@ public class SqlBuilder {
     private static final String WITH_SELECT_WHERE_FORMAT = "%s " + SELECT_WHERE_FORMAT;
     private static final String GROUP_FORMAT = " GROUP BY %s";
     private String columns = "";
-    private String where;
+    private String where = " 1=1";
     private String with;
     private String group;
     private boolean haveWhere;
     private boolean haveWith;
     private boolean isQuery = true;
     private boolean isBracket = false;
-    private Queue<Object> paramQueue = new LinkedList<Object>();
+    private Queue<Object> paramQueue = new LinkedList<>();
+    private DatabaseType dbType;
 
-    private SqlBuilder() {}
+    private SqlBuilder(DatabaseType dbType) {
+        this.dbType = dbType;
+    }
 
-    public static SqlBuilder getInstance() {
-        return new SqlBuilder();
+    public static SqlBuilder create(DatabaseType dbType) {
+        return new SqlBuilder(dbType);
     }
 
     /**
@@ -95,7 +99,6 @@ public class SqlBuilder {
      */
     public SqlBuilder where(String where) {
         this.where = where;
-        this.haveWhere = true;
 
         return this;
     }
@@ -271,8 +274,16 @@ public class SqlBuilder {
      */
     public SqlBuilder andDate(String and, String value) {
         if (UString.isNotEmpty(value)) {
-            where += " AND " + and + " to_date(?, 'yyyy-MM-dd')";
-            paramQueue.offer(value);
+            if (DatabaseType.HSQLDB == dbType) {
+                where += " AND " + and + " to_date(?, 'YYYY-MM-DD')";
+                paramQueue.offer(value);
+            } else if (DatabaseType.ORACLE == dbType) {
+                where += " AND " + and + " to_date(?, 'yyyy-MM-dd')";
+                paramQueue.offer(value);
+            } else {
+                where += " AND " + and + "?";
+                paramQueue.offer(value);
+            }
         }
 
         return this;
@@ -400,18 +411,10 @@ public class SqlBuilder {
         String result = "";
 
         if (isQuery) {
-            if (haveWhere) {
-                if (haveWith) {
-                    result = String.format(WITH_SELECT_WHERE_FORMAT, with, columns, table, where);
-                } else {
-                    result = String.format(SELECT_WHERE_FORMAT, columns, table, where);
-                }
+            if (haveWith) {
+                result = String.format(WITH_SELECT_WHERE_FORMAT, with, columns, table, where);
             } else {
-                if (haveWith) {
-                    result = String.format(WITH_SELECT_FORMAT, with, columns, table);
-                } else {
-                    result = String.format(SELECT_FORMAT, columns, table);
-                }
+                result = String.format(SELECT_WHERE_FORMAT, columns, table, where);
             }
         }
 
@@ -469,5 +472,31 @@ public class SqlBuilder {
      */
     public Object[] getParamsValue() {
         return paramQueue.toArray();
+    }
+
+    /**
+     * 将sql预编译语句代入值输出
+     *
+     * @return 返回sql语句
+     */
+    public String toLog() {
+        String sql = this.build();
+        if (UString.isEmpty(sql)) {
+            return "";
+        }
+        if (!sql.contains("?")) {
+            return sql;
+        }
+
+        String result = sql;
+        for (Object obj : paramQueue) {
+            int idx = result.indexOf("?");
+            if (idx > -1) {
+                result = result.replaceFirst("\\?", "'" + obj + "'");
+            } else {
+                result += "<" + obj + "> ";
+            }
+        }
+        return result;
     }
 }

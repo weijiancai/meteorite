@@ -43,7 +43,7 @@ public class BoolTableCell extends BaseTableCell {
     @Override
     protected void updateItem(String s, boolean b) {
         super.updateItem(s, b);
-        if (s != null) {
+        if (UString.isNotEmpty(s)) {
             boolean isTrue = UString.toBoolean(s);
             if(isTrue) {
                 label.setText("是");
@@ -52,8 +52,11 @@ public class BoolTableCell extends BaseTableCell {
                 label.setText("否");
                 box.setStyle("-fx-padding: 3;-fx-background-color:#ffffff;");
             }
+
+            this.setGraphic(box);
+        } else {
+            this.setGraphic(null);
         }
-        this.setGraphic(box);
     }
 
     @Override
@@ -70,9 +73,9 @@ public class BoolTableCell extends BaseTableCell {
             comboBox.minWidthProperty().bind(this.widthProperty());
         }
 
-        String codeId = EnumBoolean.FALSE.name();
+        String codeId = EnumBoolean.F.name();
         if (UString.toBoolean(getItem())) {
-            codeId = EnumBoolean.TRUE.name();
+            codeId = EnumBoolean.T.name();
         }
         DictCode code = dictCategory.getDictCode(codeId);
         comboBox.getSelectionModel().select(code);

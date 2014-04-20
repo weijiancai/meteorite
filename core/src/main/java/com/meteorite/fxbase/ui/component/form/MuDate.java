@@ -4,6 +4,7 @@ import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.util.UDate;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IValue;
+import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.util.StringConverter;
 
@@ -17,12 +18,27 @@ import java.time.format.DateTimeFormatterBuilder;
  * @author wei_jc
  * @since 1.0.0
  */
-public class MuDate extends DatePicker implements IValue {
+public class MuDate extends BaseFormField implements IValue {
+    private DatePicker datePicker;
+
     public MuDate(FormFieldProperty property) {
-        this.setConverter(new StringConverter<LocalDate>() {
+        this(property, false);
+    }
+
+    public MuDate(FormFieldProperty property, boolean isAddQueryModel) {
+        super(property);
+        this.isAddQueryMode = isAddQueryModel;
+        init();
+    }
+
+    @Override
+    protected void initPrep() {
+        datePicker = new DatePicker();
+        datePicker.setPrefWidth(config.getWidth());
+        datePicker.setConverter(new StringConverter<LocalDate>() {
             @Override
             public String toString(LocalDate date) {
-                return date.toString();
+                return UDate.dateToString(date);
             }
 
             @Override
@@ -33,24 +49,22 @@ public class MuDate extends DatePicker implements IValue {
     }
 
     @Override
-    public String[] values() {
-        return new String[0];
+    protected Node[] getControls() {
+        return new Node[]{datePicker};
     }
 
     @Override
     public String value() {
-        return getValue().format(DateTimeFormatter.ISO_DATE_TIME);
-    }
-
-    @Override
-    public void setValue(String[] value) {
-
+        if (datePicker.getValue() == null) {
+            return null;
+        }
+        return UDate.dateToString(datePicker.getValue());
     }
 
     @Override
     public void setValue(String value) {
         if (UString.isNotEmpty(value)) {
-            setValue(UDate.toLocalDate(value));
+            datePicker.setValue(UDate.toLocalDate(value));
         }
     }
 }

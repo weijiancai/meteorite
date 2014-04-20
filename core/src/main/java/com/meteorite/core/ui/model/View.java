@@ -158,7 +158,7 @@ public class View {
                     propMap = new HashMap<>();
                     fieldPropMap.put(field, propMap);
                 }
-                propMap.put(property.getProperty().getName(), property.getValue());
+                propMap.put(property.getProperty().getId(), property.getValue());
             }
 
         }

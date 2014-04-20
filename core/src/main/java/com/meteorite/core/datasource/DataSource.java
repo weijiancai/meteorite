@@ -1,6 +1,11 @@
 package com.meteorite.core.datasource;
 
+import com.meteorite.core.datasource.db.util.DBResult;
 import com.meteorite.core.meta.model.Meta;
+import com.meteorite.fxbase.ui.component.form.ICanQuery;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * 数据源接口
@@ -29,4 +34,13 @@ public interface DataSource {
      * @return 返回数据源连接属性
      */
     Meta getProperties();
+
+    /**
+     * 检索数据
+     *
+     * @param meta 元数据
+     * @param queryList 查询条件列表
+     * @return 返回查询结果
+     */
+    List<DBResult> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException;
 }

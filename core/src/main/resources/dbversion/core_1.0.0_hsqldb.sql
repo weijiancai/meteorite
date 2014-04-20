@@ -1,13 +1,13 @@
 -- 删除表
+drop table if exists sys_view_prop;
+drop table if exists sys_view_config;
 drop table if exists sys_db_version;
 drop table if exists sys_dz_code;
 drop table if exists sys_dz_category;
 drop table if exists sys_module;
 drop table if exists sys_layout_prop;
-drop table if exists sys_layout;
-drop table if exists sys_view_prop;
-drop table if exists sys_view_config;
 drop table if exists sys_view_layout;
+drop table if exists sys_layout;
 drop table if exists sys_view;
 drop table if exists sys_meta_field;
 drop table if exists sys_meta;
@@ -93,16 +93,18 @@ create table sys_meta
   is_valid             char(1) not null,
   sort_num             int not null,
   input_date           datetime not null,
+  ds_name              varchar(128) not null,
   primary key (id)
 );
 comment on TABLE sys_meta is '元数据';
 comment on COLUMN sys_meta.id is '元数据ID';
 comment on COLUMN sys_meta.name is '元数据名称';
-comment on COLUMN  sys_meta.display_name is '元数据显示名';
-comment on COLUMN  sys_meta.desc is '描述';
-comment on COLUMN  sys_meta.is_valid is '是否有效';
-comment on COLUMN  sys_meta.sort_num is '排序号';
-comment on COLUMN  sys_meta.input_date is '录入时间';
+comment on COLUMN sys_meta.display_name is '元数据显示名';
+comment on COLUMN sys_meta.desc is '描述';
+comment on COLUMN sys_meta.is_valid is '是否有效';
+comment on COLUMN sys_meta.sort_num is '排序号';
+comment on COLUMN sys_meta.input_date is '录入时间';
+comment on COLUMN sys_meta.ds_name is '数据源名称';
 
 /*==============================================================*/
 /* Table: sys_meta_field                                        */
@@ -311,13 +313,6 @@ create unique index idx_view_config_prop on sys_view_config
    prop_id,
    meta_field_id
 );
-
-create unique index idx_view_prop on sys_view_prop
-(
-   layout_prop_id,
-   meta_field_id
-);
-
 
 -- 插入升级语句
 insert into sys_db_version (sys_name, db_version, input_date, memo) values('core', '1.0.0', CURDATE(), '系统自动升级到1.0.0');

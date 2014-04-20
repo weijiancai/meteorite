@@ -1,6 +1,8 @@
 package com.meteorite.core.datasource.db.util;
 
-import com.meteorite.core.datasource.db.DBManager;
+import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.QueryBuilder;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.RowMapper;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.persist.IPDB;
@@ -19,17 +21,11 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class JdbcTemplate {
-    private DBConnection dbConn;
+    private DBDataSource dataSource;
     private Connection conn;
 
     public JdbcTemplate() {
-        try {
-            dbConn = DBManager.getConnection(DBManager.getSysDataSource());
-            conn = dbConn.getConnection();
-            conn.setAutoCommit(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this(DataSourceManager.getSysDataSource());
     }
 
     public JdbcTemplate(Connection conn) {
@@ -39,6 +35,25 @@ public class JdbcTemplate {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public JdbcTemplate(DBDataSource dataSource) {
+        this.dataSource = dataSource;
+        try {
+            DBConnection dbConn = dataSource.getDbConnection();
+            conn = dbConn.getConnection();
+            conn.setAutoCommit(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public DBDataSource getDataSource() {
+        return dataSource;
+    }
+
+    public List<DBResult> queryForList(String sql) throws Exception {
+        return queryForList(sql, new HashMap<String, Object>());
     }
 
     public List<DBResult> queryForList(String sql, Map<String, Object> conditionMap) throws Exception {
@@ -74,6 +89,36 @@ public class JdbcTemplate {
 //                System.out.println(obj + "  >> " + md.getColumnLabel(i) + " = " + md.getColumnName(i) + " = " + (obj == null ? "" : obj.getClass().toString()));
             }
 //            System.out.println("-------------------------------------------");
+            list.add(map);
+        }
+        rs.close();
+
+        return list;
+    }
+
+    public List<DBResult> queryForList(QueryBuilder builder) throws SQLException {
+        System.out.println(builder.toLog());
+        return queryForList(builder.build(), builder.getParamsValue());
+    }
+
+    public List<DBResult> queryForList(String sql, Object[] paramValues) throws SQLException {
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        for (int i = 0; i < paramValues.length; i++) {
+            pstmt.setObject(i + 1, paramValues[i]);
+        }
+
+        ResultSet rs = pstmt.executeQuery();
+        ResultSetMetaData md = rs.getMetaData();
+        int columnCount = md.getColumnCount();
+
+        List<DBResult> list = new ArrayList<>();
+        DBResult map;
+        while (rs.next()) {
+            map = new DBResult();
+            for (int i = 1; i <= columnCount; i++) {
+                Object obj = rs.getObject(i);
+                map.put(md.getColumnLabel(i), obj);
+            }
             list.add(map);
         }
         rs.close();

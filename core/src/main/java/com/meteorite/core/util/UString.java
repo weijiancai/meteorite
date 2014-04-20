@@ -120,10 +120,10 @@ public class UString {
      * 将字符串转化为boolean值
      *
      * @param str 字符串
-     * @return 如果str等于"T"或者"true"，则返回true，否则返回false
+     * @return 如果str等于"T"或者"Y"或者"true"，则返回true，否则返回false
      */
     public static boolean toBoolean(String str) {
-        return !isEmpty(str) && ("T".equalsIgnoreCase(str) || "true".equalsIgnoreCase(str));
+        return !isEmpty(str) && ("T".equalsIgnoreCase(str) || "Y".equalsIgnoreCase(str) || "true".equalsIgnoreCase(str));
     }
 
     public static String substringByByte(String str, int i, int length) {

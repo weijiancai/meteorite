@@ -1,5 +1,7 @@
 package com.meteorite.core.meta.model;
 
+import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
@@ -9,6 +11,7 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ public class Meta {
 
     private List<MetaField> fields = new ArrayList<>();
     private DBTable dbTable;
+    private DataSource dataSource;
 
     public Meta() {}
 
@@ -122,8 +126,29 @@ public class Meta {
         this.fields = fields;
     }
 
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     public DBTable getDbTable() {
-        return dbTable;
+        if (dbTable != null) {
+            return dbTable;
+        }
+        DBColumn column = null;
+        for (MetaField field : getFields()) {
+            column = field.getColumn();
+            if (column != null) {
+                break;
+            }
+        }
+        assert column != null;
+        DBObject table = column.getParent();
+
+        return (DBTable) table;
     }
 
     public void setDbTable(DBTable dbTable) {
@@ -149,19 +174,11 @@ public class Meta {
         return null;
     }
 
-    public List<DBResult> query() throws Exception {
-        JdbcTemplate template = new JdbcTemplate(DBManager.getSysConnection().getConnection());
-        DBColumn column = null;
-        for (MetaField field : getFields()) {
-            column = field.getColumn();
-            if (column != null) {
-                break;
-            }
-        }
-        assert column != null;
-        DBObject table = column.getParent();
-        List<DBResult> list = template.queryForList("SELECT * FROM " + table.getName(), null);
-        template.close();
-        return list;
+    public List<DBResult> query(List<ICanQuery> queryList) throws Exception {
+        return dataSource.retrieve(this, queryList);
+    }
+
+    public void delete() {
+
     }
 }

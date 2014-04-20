@@ -140,7 +140,7 @@ public class FxFormPane extends FxPane {
         } else {
             if (MetaDataType.DATE == field.getDataType()) {
                 /*if ("0".equals(field.getForm().getFormType())) {
-                    VDateRangeField dateField = new VDateRangeField();
+                    MuDateRange dateField = new MuDateRange();
                     dateField.setPrefWidth(field.getWidth() + 0.0);
                     node = dateField;
                 } else {

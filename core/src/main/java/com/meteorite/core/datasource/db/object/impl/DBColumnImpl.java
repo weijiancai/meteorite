@@ -16,6 +16,9 @@ import java.util.List;
  */
 @XmlRootElement(name = "Column")
 public class DBColumnImpl extends DBObjectImpl implements DBColumn {
+    private int maxLength;
+    private boolean isPk;
+    private boolean isFk;
     private MetaDataType dataType;
 
     public DBColumnImpl() {
@@ -34,5 +37,29 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
 
     public void setDataType(MetaDataType dataType) {
         this.dataType = dataType;
+    }
+
+    public boolean isPk() {
+        return isPk;
+    }
+
+    public void setPk(boolean isPk) {
+        this.isPk = isPk;
+    }
+
+    public boolean isFk() {
+        return isFk;
+    }
+
+    public void setFk(boolean isFk) {
+        this.isFk = isFk;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
     }
 }

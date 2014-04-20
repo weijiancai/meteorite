@@ -1,5 +1,6 @@
 package com.meteorite.core.config;
 
+import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBManager;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class SystemNavigation {
         Map<String, Object> dataSourceManager = new HashMap<>();
         dataSourceManager.put("id", "DataSourceManager");
         dataSourceManager.put("displayName", "数据源管理");
-        dataSourceManager.put("children", DBManager.getDataSources());
+        dataSourceManager.put("children", DataSourceManager.getDataSources());
         children.add(dataSourceManager);
     }
 

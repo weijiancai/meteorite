@@ -29,15 +29,6 @@ import static com.meteorite.core.ui.ViewManager.createViewConfig;
  * @since 1.0.0
  */
 public class TableFieldProperty implements PropertyNames {
-    public static final String NAME = "TABLE.IP.name";
-    public static final String DISPLAY_NAME = "TABLE.IP.displayName";
-    public static final String IS_DISPLAY = "TABLE.IP.isDisplay";
-    public static final String WIDTH = "TABLE.IP.width";
-    public static final String DISPLAY_STYLE = "TABLE.IP.displayStyle";
-    public static final String ALIGN = "TABLE.IP.align";
-    public static final String DICT_ID = "TABLE.IP.dictId";
-    public static final String SORT_NUM = "TABLE.IP.sortNum";
-
     private String name;
     private String displayName;
     private MetaDataType dataType;
@@ -46,6 +37,7 @@ public class TableFieldProperty implements PropertyNames {
     private DisplayStyle displayStyle;
     private DictCategory dict;
     private EnumAlign align;
+    private int sortNum;
 
     private DBColumn dbColumn;
 
@@ -53,12 +45,13 @@ public class TableFieldProperty implements PropertyNames {
         this.name = field.getName();
         this.displayName = field.getDisplayName();
         this.dataType = field.getDataType();
-        this.width = UNumber.toInt(propMap.get("width"));
-        this.isDisplay = UString.toBoolean(propMap.get("isDisplay"));
-        this.displayStyle = DisplayStyle.getStyle(propMap.get("displayStyle"));
-        this.dict = DictManager.getDict(propMap.get("dictId"));
-        this.align = EnumAlign.getAlign(propMap.get("align"));
+        this.width = UNumber.toInt(propMap.get(TABLE_FIELD.WIDTH));
+        this.isDisplay = UString.toBoolean(propMap.get(TABLE_FIELD.IS_DISPLAY));
+        this.displayStyle = DisplayStyle.getStyle(propMap.get(TABLE_FIELD.DISPLAY_STYLE));
+        this.dict = DictManager.getDict(propMap.get(TABLE_FIELD.DICT_ID));
+        this.align = EnumAlign.getAlign(propMap.get(TABLE_FIELD.ALIGN));
         this.dbColumn = field.getColumn();
+        this.sortNum = UNumber.toInt(propMap.get(TABLE_FIELD.SORT_NUM));
     }
 
     public String getName() {
@@ -133,33 +126,12 @@ public class TableFieldProperty implements PropertyNames {
         this.dbColumn = dbColumn;
     }
 
-    public static List<ViewConfig> getViewConfigs(ViewLayout viewLayout, MetaField field) {
-        List<ViewConfig> configList = new ArrayList<>();
-        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(NAME), field, field.getName()));
-        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(DISPLAY_NAME), field, field.getDisplayName()));
-        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(IS_DISPLAY), field, "true"));
+    public int getSortNum() {
+        return sortNum;
+    }
 
-        String width = "80";
-        String displayStyle = DisplayStyle.TEXT_FIELD.name();
-        String align = EnumAlign.LEFT.name();
-        String dictId = "";
-        if (MetaDataType.BOOLEAN == field.getDataType()) {
-            width = "60";
-            displayStyle = DisplayStyle.BOOLEAN.name();
-        } else if (MetaDataType.INTEGER == field.getDataType()) {
-            width = "60";
-            align = EnumAlign.CENTER.name();
-        } else if (MetaDataType.DATE == field.getDataType()) {
-            width = "120";
-        }
-
-        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(WIDTH), field, width));
-        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(DISPLAY_STYLE), field, displayStyle));
-        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(ALIGN), field, align));
-        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(DICT_ID), field, dictId));
-        configList.add(createViewConfig(viewLayout, LayoutManager.getLayoutPropByName(SORT_NUM), field, field.getSortNum() + ""));
-
-        return configList;
+    public void setSortNum(int sortNum) {
+        this.sortNum = sortNum;
     }
 
     public static List<ViewProperty> getViewProperties(View view, MetaField field) {
@@ -168,18 +140,26 @@ public class TableFieldProperty implements PropertyNames {
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_DISPLAY), field, "true"));
 
-        String width = "80";
+        DBColumn column = field.getColumn();
+        int w = column.getMaxLength();
+        if(w > 500) {
+            w = 200;
+        }
+        if ((column.isPk() || column.isFk()) && w == 32) {
+            w = 250;
+        }
+        String width = w + "";
         String displayStyle = DisplayStyle.TEXT_FIELD.name();
         String align = EnumAlign.LEFT.name();
         String dictId = "";
         if (MetaDataType.BOOLEAN == field.getDataType()) {
-            width = "60";
+            width = "50";
             displayStyle = DisplayStyle.BOOLEAN.name();
         } else if (MetaDataType.INTEGER == field.getDataType()) {
             width = "60";
             align = EnumAlign.CENTER.name();
         } else if (MetaDataType.DATE == field.getDataType()) {
-            width = "120";
+            width = "140";
         }
 
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.WIDTH), field, width));

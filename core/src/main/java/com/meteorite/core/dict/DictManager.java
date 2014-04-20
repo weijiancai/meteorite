@@ -61,8 +61,7 @@ public class DictManager {
 
     public static void load() throws Exception {
         SystemInfo sysInfo = SystemManager.getSystemInfo();
-        Connection conn = DBManager.getConnection(DBManager.getSysDataSource()).getConnection();
-        JdbcTemplate template = new JdbcTemplate(conn);
+        JdbcTemplate template = new JdbcTemplate();
 
         if (sysInfo.isDictInit()) {
             // 查询布局
@@ -84,6 +83,7 @@ public class DictManager {
                 if ("ROOT".equals(category.getId())) {
                     continue;
                 }
+                categoryMap.put(category.getId(), category);
                 template.save(MetaPDBFactory.getDictCategory(category));
                 for (DictCode code : category.getCodeList()) {
                     // 保存字典代码到数据库

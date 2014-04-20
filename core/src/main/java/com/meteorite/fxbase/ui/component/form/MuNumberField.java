@@ -6,22 +6,16 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 
 /**
- * MetaUI 文本输入框
+ * MetaUI 数字输入框
  *
  * @author wei_jc
  * @since 1.0.0
  */
-public class MuTextField extends BaseFormField implements IValue {
+public class MuNumberField extends BaseFormField implements IValue {
     private TextField textField;
 
-    public MuTextField(FormFieldProperty property) {
-        super(property);
-        init();
-    }
-
-    public MuTextField(FormFieldProperty property, boolean isAddQueryModel) {
-        super(property);
-        this.isAddQueryMode = isAddQueryModel;
+    public MuNumberField(FormFieldProperty fieldConfig) {
+        super(fieldConfig);
         init();
     }
 

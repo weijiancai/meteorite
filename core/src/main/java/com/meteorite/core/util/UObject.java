@@ -48,4 +48,14 @@ public class UObject {
             }
         }
     }
+
+    /**
+     * 判断对象是否为空，先判断是否为null，再转换成字符串，判读是否为空
+     *
+     * @param obj 要判断的对象
+     * @return 如果为空，返回true，否则返回false
+     */
+    public static boolean isEmpty(Object obj) {
+        return obj == null || UString.isEmpty(toString(obj));
+    }
 }

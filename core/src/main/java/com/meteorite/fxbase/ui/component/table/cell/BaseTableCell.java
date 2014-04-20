@@ -26,4 +26,8 @@ public class BaseTableCell extends TableCell<DBResult, String> {
         }
         this.setAlignment(align);
     }
+
+    public BaseTableCell() {
+        super();
+    }
 }
