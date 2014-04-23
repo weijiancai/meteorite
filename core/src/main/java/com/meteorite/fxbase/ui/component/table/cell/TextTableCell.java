@@ -1,6 +1,6 @@
 package com.meteorite.fxbase.ui.component.table.cell;
 
-import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
@@ -21,7 +21,7 @@ public class TextTableCell extends BaseTableCell {
 
     private String oldValue;
 
-    public TextTableCell(TableColumn<DBResult, String> column, TableFieldProperty prop) {
+    public TextTableCell(TableColumn<DataMap, String> column, TableFieldProperty prop) {
         super(column, prop);
         label = new Label();
     }

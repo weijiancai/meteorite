@@ -1,17 +1,19 @@
 package com.meteorite.core.meta.model;
 
 import com.meteorite.core.datasource.DataSource;
-import com.meteorite.core.datasource.QueryBuilder;
-import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.DBTable;
-import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.exception.MessageException;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
-import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -39,6 +41,8 @@ public class Meta {
     private List<MetaField> fields = new ArrayList<>();
     private DBTable dbTable;
     private DataSource dataSource;
+
+    private ObjectProperty<ObservableList<DataMap>> dataList = new SimpleObjectProperty<>();
 
     public Meta() {}
 
@@ -174,11 +178,67 @@ public class Meta {
         return null;
     }
 
-    public List<DBResult> query(List<ICanQuery> queryList) throws Exception {
-        return dataSource.retrieve(this, queryList);
+    /**
+     * 获得主键元数据字段列表
+     *
+     * @return 返回主键元字段列表
+     */
+    public List<MetaField> getPkFields() {
+        List<MetaField> result = new ArrayList<>();
+        for (MetaField field : fields) {
+            if (field.getColumn().isPk()) {
+                result.add(field);
+            }
+        }
+        return result;
     }
 
-    public void delete() {
+    public ObjectProperty<ObservableList<DataMap>> dataListProperty() {
+        return dataList;
+    }
 
+    public List<DataMap> getDataList() {
+        return dataList.get();
+    }
+
+    public void setDataList(List<DataMap> list) {
+        dataList.set(FXCollections.observableList(list));
+    }
+
+    /**
+     * 获得行数据Map
+     *
+     * @param row 行号
+     * @return 返回行数据Map
+     */
+    public DataMap getRowData(int row) {
+        return dataList.get().get(row);
+    }
+
+    public List<DataMap> query(List<ICanQuery> queryList) throws Exception {
+        List<DataMap> result = dataSource.retrieve(this, queryList);
+        setDataList(result);
+        return result;
+    }
+
+    /**
+     * 删除行数据
+     *
+     * @param row 行号
+     * @throws Exception
+     */
+    public void delete(int row) throws Exception {
+        if(row <= 0) {
+            throw new MessageException("请选择要删除的行数据！");
+        }
+        DataMap rowData = getRowData(row);
+        List<MetaField> pkFields = getPkFields();
+        String[] values = new String[pkFields.size()];
+        for (int i = 0; i < pkFields.size(); i++) {
+            MetaField field = pkFields.get(i);
+            values[i] = rowData.getString(field.getName());
+        }
+        dataSource.delete(this, values);
+        dataList.get().remove(row);
     }
 }

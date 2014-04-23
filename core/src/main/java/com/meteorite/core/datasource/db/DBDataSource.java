@@ -2,9 +2,11 @@ package com.meteorite.core.datasource.db;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.config.SystemConfig;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
 import com.meteorite.core.datasource.QueryBuilder;
+import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.DBTable;
@@ -17,7 +19,6 @@ import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.datasource.db.util.DBResult;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -25,7 +26,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库数据源
@@ -108,7 +111,7 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
-    public List<DBResult> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException {
+    public List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException {
         DBTable table = meta.getDbTable();
 
         QueryBuilder builder = QueryBuilder.create(getDatabaseType());
@@ -118,14 +121,36 @@ public class DBDataSource implements DataSource {
                 builder.add(condition.colName, condition.queryModel, condition.value, condition.dataType);
             }
         }
-        JdbcTemplate template = new JdbcTemplate();
-        List<DBResult> list = new ArrayList<>();
+        JdbcTemplate template = new JdbcTemplate(this);
+        List<DataMap> list = new ArrayList<>();
         try {
             list = template.queryForList(builder);
         } finally {
             template.close();
         }
         return list;
+    }
+
+    @Override
+    public void delete(Meta meta, String... keys) throws Exception {
+        DBTable table = meta.getDbTable();
+        List<DBColumn> pkColumns = table.getPkColumns();
+        if (pkColumns.size() == 0 || keys == null || keys.length == 0) {
+            return;
+        }
+
+        JdbcTemplate template = new JdbcTemplate(this);
+        Map<String, Object> params = new HashMap<>();
+
+        for (int i = 0; i < pkColumns.size(); i++) {
+            params.put(pkColumns.get(i).getName(), keys[i]);
+        }
+        try {
+            template.delete(params, table.getName());
+            template.commit();
+        } finally {
+            template.close();
+        }
     }
 
     public void setName(String name) {
@@ -207,7 +232,7 @@ public class DBDataSource implements DataSource {
 
         DBConnection conn = getDbConnection();
         if (DBUtil.existsTable(conn, SystemConfig.SYS_DB_VERSION_TABLE_NAME)) {
-            List<DBResult> result = conn.getResultSet(sql);
+            List<DataMap> result = conn.getResultSet(sql);
             if(result.size() > 0) {
                 return result.get(0).getString("max_db_version");
             }

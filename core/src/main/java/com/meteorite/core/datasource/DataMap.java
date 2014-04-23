@@ -1,4 +1,4 @@
-package com.meteorite.core.datasource.db.util;
+package com.meteorite.core.datasource;
 
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.util.UNumber;
@@ -13,7 +13,7 @@ import java.util.HashMap;
  * @author wei_jc
  * @since 1.0.0
  */
-public class DBResult extends HashMap<String,Object> {
+public class DataMap extends HashMap<String,Object> {
     /**
      * 获得key对应的字符串值
      *
@@ -81,9 +81,5 @@ public class DBResult extends HashMap<String,Object> {
      */
     public boolean getBoolean(String key) {
         return UString.toBoolean(getString(key));
-    }
-
-    public void delete(int row) {
-
     }
 }

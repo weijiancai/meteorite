@@ -1,6 +1,6 @@
 package com.meteorite.fxbase.ui.component.table.cell;
 
-import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.dict.DictManager;
@@ -10,7 +10,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 
 /**
@@ -25,7 +24,7 @@ public class DictTableCell extends BaseTableCell {
 
     private DictCategory dictCategory;
 
-    public DictTableCell(TableColumn<DBResult, String> column, TableFieldProperty prop) {
+    public DictTableCell(TableColumn<DataMap, String> column, TableFieldProperty prop) {
         super(column, prop);
         dictCategory = DictManager.getDict(prop.getDict().getId());
         items = FXCollections.observableArrayList(dictCategory.getCodeList());

@@ -9,7 +9,9 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库表实现类
@@ -20,6 +22,7 @@ import java.util.List;
 @XmlRootElement(name = "Table")
 public class DBTableImpl extends DBObjectImpl implements DBTable {
     private List<DBColumn> columns;
+    private Map<String, DBColumn> columnMap = new HashMap<>();
 
     public DBTableImpl() {
         setObjectType(DBObjectType.TABLE);
@@ -36,13 +39,33 @@ public class DBTableImpl extends DBObjectImpl implements DBTable {
     }
 
     @Override
+    public DBColumn getColumn(String columnName) {
+        return columnMap.get(columnName.toLowerCase());
+    }
+
+    @Override
     @XmlElementWrapper(name = "Columns")
     @XmlAnyElement
     public List<DBColumn> getColumns() {
         return columns;
     }
 
+    @Override
+    public List<DBColumn> getPkColumns() {
+        List<DBColumn> list = new ArrayList<>();
+        for (DBColumn column : getColumns()) {
+            if (column.isPk()) {
+                list.add(column);
+            }
+        }
+        return list;
+    }
+
     public void setColumns(List<DBColumn> columns) {
         this.columns = columns;
+        columnMap.clear();
+        for (DBColumn column : columns) {
+            columnMap.put(column.getName().toLowerCase(), column);
+        }
     }
 }

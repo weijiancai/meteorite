@@ -1,9 +1,8 @@
 package com.meteorite.core.datasource.file;
 
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
-import com.meteorite.core.datasource.QueryBuilder;
-import com.meteorite.core.datasource.db.util.DBResult;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
@@ -33,7 +32,12 @@ public class FileDataSource implements DataSource {
     }
 
     @Override
-    public List<DBResult> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException {
+    public List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException {
         return null;
+    }
+
+    @Override
+    public void delete(Meta meta, String... keys) throws Exception {
+
     }
 }

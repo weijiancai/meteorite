@@ -64,14 +64,15 @@ public class HsqldbLoader extends BaseDBLoader {
                 "                col.NUMERIC_SCALE as DATA_SCALE,\n" +
                 "                left(col.IS_NULLABLE, 1) as IS_NULLABLE,\n" +
                 "                'N' as IS_HIDDEN,\n" +
-                "                (case when kcu.COLUMN_NAME is not null then 'Y' else 'N' end) as IS_PRIMARY_KEY,\n" +
-                "                (case when kcu.COLUMN_NAME is null then 'Y' else 'N' end) as IS_FOREIGN_KEY\n" +
+                "                (case when (kcu.position_in_unique_constraint is null and kcu.COLUMN_NAME is not null) then 'Y' else 'N' end) as IS_PRIMARY_KEY,\n" +
+                "                (case when (kcu.position_in_unique_constraint is not null and kcu.COLUMN_NAME is not null) then 'Y' else 'N' end) as IS_FOREIGN_KEY\n" +
                 "            from INFORMATION_SCHEMA.COLUMNS col\n" +
                 "                    left join (\n" +
                 "                        select\n" +
                 "                            TABLE_SCHEMA,\n" +
                 "                            TABLE_NAME,\n" +
-                "                            COLUMN_NAME\n" +
+                "                            COLUMN_NAME,\n" +
+                "                            position_in_unique_constraint" +
                 "                    from INFORMATION_SCHEMA.KEY_COLUMN_USAGE\n" +
                 "                     ) kcu on\n" +
                 "                        kcu.TABLE_SCHEMA = col.TABLE_SCHEMA and\n" +

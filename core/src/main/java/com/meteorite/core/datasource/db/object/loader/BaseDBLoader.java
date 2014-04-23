@@ -1,13 +1,12 @@
 package com.meteorite.core.datasource.db.object.loader;
 
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.impl.DBColumnImpl;
 import com.meteorite.core.datasource.db.object.impl.DBSchemaImpl;
 import com.meteorite.core.datasource.db.object.impl.DBTableImpl;
 import com.meteorite.core.datasource.db.object.impl.DBViewImpl;
-import com.meteorite.core.datasource.db.util.DBResult;
 import com.meteorite.core.meta.MetaDataType;
-import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UObject;
 
 import java.util.ArrayList;
@@ -36,8 +35,8 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBSchema> loadSchemas() throws Exception {
         List<DBSchema> result = new ArrayList<DBSchema>();
-        List<DBResult> list = conn.getResultSet(getSchemaSql());
-        for (DBResult map : list) {
+        List<DataMap> list = conn.getResultSet(getSchemaSql());
+        for (DataMap map : list) {
             DBSchemaImpl schema = new DBSchemaImpl();
             schema.setName(UObject.toString(map.get("SCHEMA_NAME")));
             schema.setComment(schema.getName());
@@ -54,8 +53,8 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBTable> loadTables(DBSchema schema) throws Exception {
         List<DBTable> result = new ArrayList<>();
-        List<DBResult> list = conn.getResultSet(String.format(getTableSql(), schema.getName()));
-        for (DBResult map : list) {
+        List<DataMap> list = conn.getResultSet(String.format(getTableSql(), schema.getName()));
+        for (DataMap map : list) {
             DBTableImpl table = new DBTableImpl();
             table.setParent(schema);
             table.setName(UObject.toString(map.get("TABLE_NAME")));
@@ -71,8 +70,8 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBView> loadViews(DBSchema schema) throws Exception {
         List<DBView> result = new ArrayList<>();
-        List<DBResult> list = conn.getResultSet(String.format(getViewSql(), schema.getName()));
-        for (DBResult map : list) {
+        List<DataMap> list = conn.getResultSet(String.format(getViewSql(), schema.getName()));
+        for (DataMap map : list) {
             DBViewImpl view = new DBViewImpl();
             view.setParent(schema);
             view.setName(UObject.toString(map.get("VIEW_NAME")));
@@ -88,8 +87,8 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBColumn> loadColumns(DBTable table) throws Exception {
         List<DBColumn> result = new ArrayList<>();
-        List<DBResult> list = conn.getResultSet(String.format(getColumnSql(), table.getSchema().getName(), table.getName()));
-        for (DBResult map : list) {
+        List<DataMap> list = conn.getResultSet(String.format(getColumnSql(), table.getSchema().getName(), table.getName()));
+        for (DataMap map : list) {
             DBColumnImpl column = new DBColumnImpl();
             column.setParent(table);
             column.setName(map.getString("COLUMN_NAME"));

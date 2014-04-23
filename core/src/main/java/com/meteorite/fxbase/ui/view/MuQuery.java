@@ -1,6 +1,6 @@
 package com.meteorite.fxbase.ui.view;
 
-import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.layout.MUFormLayout;
@@ -24,7 +24,7 @@ public class MuQuery extends Pane {
         this.getChildren().add(layout);
     }
 
-    public void setValues(DBResult result) {
+    public void setValues(DataMap result) {
         if (result == null) {
             return;
         }

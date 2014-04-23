@@ -1,6 +1,6 @@
 package com.meteorite.fxbase.ui.component.table.column;
 
-import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
@@ -23,7 +23,7 @@ import java.util.Date;
  * @author wei_jc
  * @since 1.0.0
  */
-public class BaseTableColumn extends TableColumn<DBResult, String> {
+public class BaseTableColumn extends TableColumn<DataMap, String> {
     protected TableFieldProperty property;
 
     public BaseTableColumn(final TableFieldProperty property) {
@@ -31,9 +31,9 @@ public class BaseTableColumn extends TableColumn<DBResult, String> {
         this.setText(property.getDisplayName());
         this.setPrefWidth(property.getWidth());
 
-        this.setCellValueFactory(new Callback<CellDataFeatures<DBResult, String>, ObservableValue<String>>() {
+        this.setCellValueFactory(new Callback<CellDataFeatures<DataMap, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<DBResult, String> param) {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<DataMap, String> param) {
                 Object obj = param.getValue().get(property.getDbColumn());
                 if (obj instanceof Date) {
                     return new SimpleStringProperty(UDate.dateToString((Date)obj, "yyyy-MM-dd HH:mm:ss"));
@@ -42,25 +42,25 @@ public class BaseTableColumn extends TableColumn<DBResult, String> {
             }
         });
         if (MetaDataType.BOOLEAN == property.getDataType()) {
-            this.setCellFactory(new Callback<TableColumn<DBResult, String>, TableCell<DBResult, String>>() {
+            this.setCellFactory(new Callback<TableColumn<DataMap, String>, TableCell<DataMap, String>>() {
                 @Override
-                public TableCell<DBResult, String> call(TableColumn<DBResult, String> param) {
+                public TableCell<DataMap, String> call(TableColumn<DataMap, String> param) {
                     return new BoolTableCell(param, property);
                 }
             });
         } else {
             if(DisplayStyle.COMBO_BOX == property.getDisplayStyle()) {
-                this.setCellFactory(new Callback<TableColumn<DBResult, String>, TableCell<DBResult, String>>() {
+                this.setCellFactory(new Callback<TableColumn<DataMap, String>, TableCell<DataMap, String>>() {
                     @Override
-                    public TableCell<DBResult, String> call(TableColumn<DBResult, String> param) {
+                    public TableCell<DataMap, String> call(TableColumn<DataMap, String> param) {
                         return new DictTableCell(param, property);
                     }
                 });
             }
             else {
-                this.setCellFactory(new Callback<TableColumn<DBResult, String>, TableCell<DBResult, String>>() {
+                this.setCellFactory(new Callback<TableColumn<DataMap, String>, TableCell<DataMap, String>>() {
                     @Override
-                    public TableCell<DBResult, String> call(TableColumn<DBResult, String> param) {
+                    public TableCell<DataMap, String> call(TableColumn<DataMap, String> param) {
                         return new TextTableCell(param, property);
                     }
                 });

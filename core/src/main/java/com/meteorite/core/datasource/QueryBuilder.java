@@ -77,7 +77,7 @@ public class QueryBuilder {
         if (MetaDataType.DATE == dataType) {
             sql.andDate(colName + model, UObject.toString(value));
         } else {
-            sql.and(colName + " > ", value);
+            sql.and(colName + model, value);
         }
 
         return this;

@@ -25,8 +25,13 @@ public class SortNumTableCell extends BaseTableCell {
     @Override
     protected void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
-        if (this.getIndex() < this.getTableView().getItems().size()) {
-            label.setText((this.getIndex() + 1) + "");
+
+        if (empty) {
+            label.setText("");
+        } else {
+            int index = this.getTableRow().getIndex();
+            label.setText((index + 1) + "");
         }
+
     }
 }

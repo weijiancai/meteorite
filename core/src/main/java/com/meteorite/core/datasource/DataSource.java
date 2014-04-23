@@ -1,6 +1,5 @@
 package com.meteorite.core.datasource;
 
-import com.meteorite.core.datasource.db.util.DBResult;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
@@ -42,5 +41,14 @@ public interface DataSource {
      * @param queryList 查询条件列表
      * @return 返回查询结果
      */
-    List<DBResult> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException;
+    List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException;
+
+    /**
+     * 删除数据
+     *
+     * @param meta 元数据
+     * @param keys 主键值
+     * @throws Exception
+     */
+    void delete(Meta meta, String... keys) throws Exception;
 }

@@ -162,7 +162,7 @@ public class MUFormLayout extends BorderPane {
         return valueMap;
     }
 
-    public List<ICanQuery> getQuerList() {
+    public List<ICanQuery> getQueryList() {
         return queryList;
     }
 }

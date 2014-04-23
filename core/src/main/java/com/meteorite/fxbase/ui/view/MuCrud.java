@@ -1,6 +1,6 @@
 package com.meteorite.fxbase.ui.view;
 
-import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.layout.property.CrudProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
@@ -15,8 +15,6 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-
-import java.util.List;
 
 /**
  * MetaUI CRUD视图
@@ -64,7 +62,7 @@ public class MuCrud extends BorderPane {
         lookBtn.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
-                DBResult result = table.getSelectionModel().getSelectedItem();
+                DataMap result = table.getSelectionModel().getSelectedItem();
                 if (result == null) {
                     MUDialog.showInformation("请选择数据行！");
                     return;
@@ -78,8 +76,7 @@ public class MuCrud extends BorderPane {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 Meta meta = crudProperty.getQueryView().getMeta();
-                List<DBResult> list = meta.query(queryForm.getQueryList());
-                table.setTableData(list);
+                meta.query(queryForm.getQueryList());
             }
         });
 
@@ -87,7 +84,8 @@ public class MuCrud extends BorderPane {
         delBtn.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
-
+                Meta meta = crudProperty.getTableView().getMeta();
+                meta.delete(table.getSelectionModel().getSelectedIndex());
             }
         });
 
@@ -110,7 +108,7 @@ public class MuCrud extends BorderPane {
         return table;
     }
 
-    private void openFormWin(DBResult result) {
+    private void openFormWin(DataMap result) {
         MUForm form = new MUForm(new FormProperty(crudProperty.getFormView()));
         form.setValues(result);
         MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);

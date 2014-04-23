@@ -1,5 +1,6 @@
 package com.meteorite.fxbase;
 
+import com.meteorite.core.exception.MessageException;
 import com.meteorite.fxbase.ui.view.MUDialog;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -15,6 +16,8 @@ public abstract class MuEventHandler<T extends Event> implements EventHandler<T>
     public void handle(T event) {
         try {
             doHandler(event);
+        } catch (MessageException e) {
+            MUDialog.showInformation(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             MUDialog.showExceptionDialog(e);

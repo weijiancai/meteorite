@@ -1,6 +1,6 @@
 package com.meteorite.fxbase.ui.component.table.cell;
 
-import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.dict.DictManager;
@@ -29,7 +29,7 @@ public class BoolTableCell extends BaseTableCell {
 
     private DictCategory dictCategory = DictManager.getDict(EnumBoolean.class);
 
-    public BoolTableCell(TableColumn<DBResult, String> column, TableFieldProperty prop) {
+    public BoolTableCell(TableColumn<DataMap, String> column, TableFieldProperty prop) {
         super(column, prop);
 
         box = new StackPane();

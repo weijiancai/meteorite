@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.util;
 
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.DBDataSource;
@@ -52,11 +53,11 @@ public class JdbcTemplate {
         return dataSource;
     }
 
-    public List<DBResult> queryForList(String sql) throws Exception {
+    public List<DataMap> queryForList(String sql) throws Exception {
         return queryForList(sql, new HashMap<String, Object>());
     }
 
-    public List<DBResult> queryForList(String sql, Map<String, Object> conditionMap) throws Exception {
+    public List<DataMap> queryForList(String sql, Map<String, Object> conditionMap) throws Exception {
         if (conditionMap == null) {
             conditionMap = new HashMap<>();
         }
@@ -79,10 +80,10 @@ public class JdbcTemplate {
         ResultSetMetaData md = rs.getMetaData();
         int columnCount = md.getColumnCount();
 //        System.out.println("------------------------------------------------");
-        List<DBResult> list = new ArrayList<>();
-        DBResult map;
+        List<DataMap> list = new ArrayList<>();
+        DataMap map;
         while (rs.next()) {
-            map = new DBResult();
+            map = new DataMap();
             for (i = 1; i <= columnCount; i++) {
                 Object obj = rs.getObject(i);
                 map.put(md.getColumnLabel(i), obj);
@@ -96,12 +97,12 @@ public class JdbcTemplate {
         return list;
     }
 
-    public List<DBResult> queryForList(QueryBuilder builder) throws SQLException {
+    public List<DataMap> queryForList(QueryBuilder builder) throws SQLException {
         System.out.println(builder.toLog());
         return queryForList(builder.build(), builder.getParamsValue());
     }
 
-    public List<DBResult> queryForList(String sql, Object[] paramValues) throws SQLException {
+    public List<DataMap> queryForList(String sql, Object[] paramValues) throws SQLException {
         PreparedStatement pstmt = conn.prepareStatement(sql);
         for (int i = 0; i < paramValues.length; i++) {
             pstmt.setObject(i + 1, paramValues[i]);
@@ -111,10 +112,10 @@ public class JdbcTemplate {
         ResultSetMetaData md = rs.getMetaData();
         int columnCount = md.getColumnCount();
 
-        List<DBResult> list = new ArrayList<>();
-        DBResult map;
+        List<DataMap> list = new ArrayList<>();
+        DataMap map;
         while (rs.next()) {
-            map = new DBResult();
+            map = new DataMap();
             for (int i = 1; i <= columnCount; i++) {
                 Object obj = rs.getObject(i);
                 map.put(md.getColumnLabel(i), obj);
@@ -309,7 +310,7 @@ public class JdbcTemplate {
             for(String key : params.keySet()) {
                 sql.append(key).append("=?");
                 if(++i < params.size()) {
-                    sql.append(",");
+                    sql.append(" AND ");
                 }
                 keyList.add(key);
             }

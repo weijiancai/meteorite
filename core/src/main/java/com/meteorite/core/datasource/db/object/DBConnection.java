@@ -1,7 +1,7 @@
 package com.meteorite.core.datasource.db.object;
 
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.db.DatabaseType;
-import com.meteorite.core.datasource.db.util.DBResult;
 
 import java.io.File;
 import java.sql.Connection;
@@ -23,7 +23,7 @@ public interface DBConnection {
      * @return 返回查询结果集
      * @throws Exception
      */
-    List<DBResult> getResultSet(String sql) throws Exception;
+    List<DataMap> getResultSet(String sql) throws Exception;
 
     /**
      * 获得数据库加载器

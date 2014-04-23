@@ -1,13 +1,12 @@
 package com.meteorite.fxbase.ui.view;
 
-import com.meteorite.core.datasource.db.util.DBResult;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import com.meteorite.fxbase.ui.layout.MUFormLayout;
 import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ public class MUForm extends Pane {
         this.getChildren().add(layout);
     }
 
-    public void setValues(DBResult result) {
+    public void setValues(DataMap result) {
         if (result == null) {
             return;
         }
@@ -37,7 +36,7 @@ public class MUForm extends Pane {
     }
 
     public List<ICanQuery> getQueryList() {
-        return layout.getQuerList();
+        return layout.getQueryList();
     }
 
     public Map<String, IValue> getValueMap() {
