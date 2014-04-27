@@ -87,6 +87,8 @@ public class ViewManager {
     public static void createViews(Meta meta, JdbcTemplate template) throws Exception {
         View formView = FormProperty.createFormView(meta, false);
         template.save(MetaPDBFactory.getView(formView));
+        viewIdMap.put(formView.getId(), formView);
+        viewNameMap.put(formView.getName(), formView);
 
         for (ViewProperty property : formView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));
@@ -94,6 +96,8 @@ public class ViewManager {
 
         View tableView = TableProperty.createTableView(meta);
         template.save(MetaPDBFactory.getView(tableView));
+        viewIdMap.put(tableView.getId(), tableView);
+        viewNameMap.put(tableView.getName(), tableView);
 
         for (ViewProperty property : tableView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));
@@ -101,6 +105,8 @@ public class ViewManager {
 
         View queryView = FormProperty.createFormView(meta, true);
         template.save(MetaPDBFactory.getView(queryView));
+        viewIdMap.put(queryView.getId(), queryView);
+        viewNameMap.put(queryView.getName(), queryView);
 
         for (ViewProperty property : queryView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));
@@ -108,6 +114,8 @@ public class ViewManager {
 
         View crudView = CrudProperty.createCrudView(meta, formView, tableView, queryView);
         template.save(MetaPDBFactory.getView(crudView));
+        viewIdMap.put(crudView.getId(), crudView);
+        viewNameMap.put(crudView.getName(), crudView);
 
         for (ViewProperty property : crudView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));

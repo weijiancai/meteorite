@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.DBTable;
+import com.meteorite.core.datasource.db.object.loader.DBDataset;
 import com.meteorite.core.exception.MessageException;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
@@ -39,7 +40,7 @@ public class Meta {
     private Date inputDate;
 
     private List<MetaField> fields = new ArrayList<>();
-    private DBTable dbTable;
+    private DBDataset dbTable;
     private DataSource dataSource;
 
     private ObjectProperty<ObservableList<DataMap>> dataList = new SimpleObjectProperty<>();
@@ -138,7 +139,7 @@ public class Meta {
         this.dataSource = dataSource;
     }
 
-    public DBTable getDbTable() {
+    public DBDataset getDbTable() {
         if (dbTable != null) {
             return dbTable;
         }
@@ -152,10 +153,10 @@ public class Meta {
         assert column != null;
         DBObject table = column.getParent();
 
-        return (DBTable) table;
+        return (DBDataset) table;
     }
 
-    public void setDbTable(DBTable dbTable) {
+    public void setDbTable(DBDataset dbTable) {
         this.dbTable = dbTable;
     }
 

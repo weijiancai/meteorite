@@ -1,6 +1,8 @@
 package com.meteorite.core.datasource;
 
 import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import java.sql.SQLException;
@@ -51,4 +53,11 @@ public interface DataSource {
      * @throws Exception
      */
     void delete(Meta meta, String... keys) throws Exception;
+
+    /**
+     * 获得导航树
+     *
+     * @return 返回导航树
+     */
+    INavTreeNode getNavTree() throws Exception;
 }

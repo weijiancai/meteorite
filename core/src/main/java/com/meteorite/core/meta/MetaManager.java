@@ -10,6 +10,8 @@ import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.DBTable;
+import com.meteorite.core.datasource.db.object.DBView;
+import com.meteorite.core.datasource.db.object.loader.DBDataset;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
@@ -23,6 +25,7 @@ import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.UString;
+import com.meteorite.core.util.UUIDUtil;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 
 import java.io.File;
@@ -45,7 +48,7 @@ public class MetaManager {
     private static Map<String, MetaField> fieldIdMap = new HashMap<>();
     private static List<MetaField> metaFieldList = new ArrayList<>();
 
-    static {
+    /*static {
         try {
             addMeta(ProjectConfig.class);
             addMeta(DBDataSource.class);
@@ -56,7 +59,7 @@ public class MetaManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public static void load() throws Exception {
         SystemInfo sysInfo = SystemManager.getSystemInfo();
@@ -132,9 +135,17 @@ public class MetaManager {
                     initMetaFromTable(template, table);
                     metaSortNum += 10;
                 }
+                for (DBView view : dbConn.getSchema().getViews()) {
+                    initMetaFromTable(template, view);
+                    metaSortNum += 10;
+                }
 
                 sysInfo.setMetaInit(true);
                 sysInfo.store();
+            }
+
+            if (getMeta("DBDataSource") == null) {
+                addMeta(DBDataSource.class);
             }
 
             template.commit();
@@ -234,6 +245,13 @@ public class MetaManager {
         meta.setDesc(metaElement.desc());
         meta.setInputDate(new Date());
         meta.setSortNum(metaElement.sortNum());
+        meta.setDataSource(DataSourceManager.getSysDataSource());
+
+        JdbcTemplate template = new JdbcTemplate();
+        // 插入元数据信息
+        template.save(MetaPDBFactory.getMeta(meta));
+        metaMap.put(meta.getName(), meta);
+        metaIdMap.put(meta.getId(), meta);
 
         List<MetaField> fieldList = new ArrayList<MetaField>();
         for (Method method : clazz.getDeclaredMethods()) {
@@ -250,6 +268,7 @@ public class MetaManager {
                 metaField.setSortNum(metaFieldElement.sortNum());
                 metaField.setDataType(metaFieldElement.dataType());
                 metaField.setDictId(metaFieldElement.dictId());
+                metaField.setMeta(meta);
                 if (UString.isEmpty(metaFieldElement.defaultValue())) {
                     /*Object obj = method.invoke(metaObj);
                     if (obj != null && UClass.isPrimitive(obj.getClass())) {
@@ -260,6 +279,12 @@ public class MetaManager {
                 }
 
                 fieldList.add(metaField);
+                // 插入表sys_class_field
+                template.save(MetaPDBFactory.getMetaField(metaField));
+                fieldList.add(metaField);
+//            classFieldIdMap.put(field.getId(), field);
+                // 加入缓存
+                fieldIdMap.put(metaField.getId(), metaField);
             }
         }
         // 排序fields
@@ -271,6 +296,11 @@ public class MetaManager {
         });
 
         meta.setFields(fieldList);
+
+        // 创建视图
+        ViewManager.createViews(meta, template);
+        template.commit();
+        template.close();
 
         return meta;
     }
@@ -325,12 +355,16 @@ public class MetaManager {
 
     private static int metaSortNum = 10;
 
-    public static void initMetaFromTable(JdbcTemplate template, DBTable table) throws Exception {
+    public static void initMetaFromTable(JdbcTemplate template, DBDataset table) throws Exception {
         // 将表定义信息插入到元数据信息中
         Meta meta = new Meta();
         meta.setName(UString.tableNameToClassName(table.getName()));
-        meta.setDisplayName(table.getComment());
-        meta.setDesc(table.getComment());
+        String comment = table.getComment();
+        if (UString.isNotEmpty(comment) && comment.length() > 128) {
+            meta.setDisplayName(table.getComment().substring(0, 128));
+        }
+
+        meta.setDesc(comment);
         meta.setValid(true);
         meta.setInputDate(new Date());
         meta.setSortNum(metaSortNum);
@@ -351,8 +385,12 @@ public class MetaManager {
             field = new MetaField();
             field.setMeta(meta);
             field.setColumn(column);
+            String columnComment = column.getComment();
+            if (UString.isEmpty(columnComment)) {
+                columnComment = column.getName().toLowerCase();
+            }
+            field.setDisplayName(columnComment);
             field.setName(UString.columnNameToFieldName(column.getName()));
-            field.setDisplayName(column.getComment());
             field.setDesc(column.getComment());
             if (column.getName().toLowerCase().startsWith("is_")) {
                 field.setDataType(MetaDataType.BOOLEAN);

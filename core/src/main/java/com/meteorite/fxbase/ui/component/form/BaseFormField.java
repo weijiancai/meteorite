@@ -18,6 +18,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 
@@ -32,7 +33,7 @@ import java.util.List;
 public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
     protected FormFieldProperty config;
     protected boolean isAddQueryMode;
-    private Button btnQueryModel;
+    private Hyperlink btnQueryModel;
 
     public BaseFormField(FormFieldProperty property) {
         this.config = property;
@@ -55,8 +56,9 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
         this.getChildren().addAll(getControls());
 
         if(isAddQueryMode) {
-            btnQueryModel = new Button("=");
-            btnQueryModel.setMinWidth(38);
+            btnQueryModel = new Hyperlink("=");
+            btnQueryModel.setBorder(null);
+            btnQueryModel.setMinWidth(30);
             btnQueryModel.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {

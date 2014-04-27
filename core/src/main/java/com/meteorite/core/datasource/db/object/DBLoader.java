@@ -1,5 +1,7 @@
 package com.meteorite.core.datasource.db.object;
 
+import com.meteorite.core.datasource.db.object.loader.DBDataset;
+
 import java.util.List;
 
 /**
@@ -15,5 +17,5 @@ public interface DBLoader {
 
     List<DBView> loadViews(DBSchema schema) throws Exception;
 
-    List<DBColumn> loadColumns(DBTable table) throws Exception;
+    List<DBColumn> loadColumns(DBDataset table) throws Exception;
 }

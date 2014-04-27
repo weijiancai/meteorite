@@ -84,8 +84,13 @@ public abstract class BaseApp extends Application {
                 }
             });
         } else {
-            desktop = new FxDesktop(stage);
-            scene = new Scene(desktop);
+            if (facade.getDesktop() != null) {
+                scene = new Scene(facade.getDesktop());
+            } else {
+                desktop = new FxDesktop(stage);
+                scene = new Scene(desktop);
+            }
+
             setSkin(R.skin.DEFAULT);
             // show stage
             stage.setScene(scene);

@@ -141,13 +141,17 @@ public class TableFieldProperty implements PropertyNames {
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_DISPLAY), field, "true"));
 
         DBColumn column = field.getColumn();
-        int w = column.getMaxLength();
+        int w = 80;
+        if (column != null) {
+            w = column.getMaxLength();
+            if ((column.isPk() || column.isFk()) && w == 32) {
+                w = 250;
+            }
+        }
         if(w > 500) {
             w = 200;
         }
-        if ((column.isPk() || column.isFk()) && w == 32) {
-            w = 250;
-        }
+
         String width = w + "";
         String displayStyle = DisplayStyle.TEXT_FIELD.name();
         String align = EnumAlign.LEFT.name();

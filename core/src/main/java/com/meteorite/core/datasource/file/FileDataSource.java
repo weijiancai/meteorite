@@ -4,6 +4,8 @@ import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
 import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import java.sql.SQLException;
@@ -39,5 +41,10 @@ public class FileDataSource implements DataSource {
     @Override
     public void delete(Meta meta, String... keys) throws Exception {
 
+    }
+
+    @Override
+    public INavTreeNode getNavTree() {
+        return null;
     }
 }

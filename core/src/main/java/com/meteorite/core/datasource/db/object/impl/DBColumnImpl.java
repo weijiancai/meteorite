@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.DBObjectType;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.model.ITreeNode;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
@@ -26,7 +27,7 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
     }
 
     @Override
-    public List<DBObject> getChildren() {
+    public List<ITreeNode> getChildren() {
         return null;
     }
 

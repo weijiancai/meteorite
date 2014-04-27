@@ -7,6 +7,7 @@ package com.meteorite.core.datasource.db;
  * @since 1.0.0
  */
 public class DBIcons {
+    public static final String DBO_DATABASE = "/img/icon/db/object/database.png";
     public static final String DBO_SCHEMA = "/img/icon/db/object/Schema.png";
     public static final String DBO_SCHEMAS = "/img/icon/db/object/Schemas.png";
     public static final String DBO_TABLE = "/img/icon/db/object/Table.png";

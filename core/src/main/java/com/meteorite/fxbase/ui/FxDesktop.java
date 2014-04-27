@@ -1,13 +1,12 @@
 package com.meteorite.fxbase.ui;
 
+import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.ui.component.MetaPane;
-import com.meteorite.fxbase.ui.view.FxTreeView;
-import com.meteorite.fxbase.ui.view.MUForm;
-import com.meteorite.fxbase.ui.view.MUTable;
-import com.meteorite.fxbase.ui.view.MuCrud;
+import com.meteorite.fxbase.ui.view.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Hyperlink;
@@ -93,6 +92,15 @@ public class FxDesktop extends BorderPane {
         tree.setShowRoot(false);
         this.setLeft(tree);
         this.setCenter(new MetaPane());
+
+        DataSource dataSource = DataSourceManager.getSysDataSource();
+        MUTree nav = null;
+        try {
+            nav = new MUTree(dataSource.getNavTree());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.setRight(nav);
     }
 
     /*public void showDialog(Dialog dialog) {

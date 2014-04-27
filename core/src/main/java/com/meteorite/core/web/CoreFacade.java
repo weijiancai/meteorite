@@ -6,6 +6,8 @@ import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.facade.impl.BaseFacade;
 import com.meteorite.core.util.HSqlDBServer;
 import com.meteorite.core.util.UFile;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 
 /**
  * @author wei_jc
@@ -65,5 +67,10 @@ public class CoreFacade extends BaseFacade {
         root.setCid(0L);
         TbItemFacade facade = new TbItemFacade(AppKeyFactory.getZt().getClient(), AppKeyFactory.getZt().sessionKey);
         facade.getItemCats(root);*/
+    }
+
+    @Override
+    public Parent getDesktop() {
+        return null;
     }
 }

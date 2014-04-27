@@ -1,16 +1,16 @@
 package com.meteorite.core.datasource.db;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.meteorite.core.ITree;
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
 import com.meteorite.core.datasource.QueryBuilder;
-import com.meteorite.core.datasource.db.object.DBColumn;
-import com.meteorite.core.datasource.db.object.DBConnection;
-import com.meteorite.core.datasource.db.object.DBSchema;
-import com.meteorite.core.datasource.db.object.DBTable;
+import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
+import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
+import com.meteorite.core.datasource.db.object.loader.DBDataset;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.dict.DictManager;
@@ -19,6 +19,8 @@ import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -52,6 +54,7 @@ public class DBDataSource implements DataSource {
 
     private Meta properties;
     private DBConnection connection;
+    private DBObjectImpl navTree;
 
     public DBDataSource() {
         initProperties();
@@ -112,10 +115,10 @@ public class DBDataSource implements DataSource {
 
     @Override
     public List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException {
-        DBTable table = meta.getDbTable();
+        DBDataset table = meta.getDbTable();
 
         QueryBuilder builder = QueryBuilder.create(getDatabaseType());
-        builder.sqlBuilder().from(table.getName());
+        builder.sqlBuilder().from(table.getSchema().getName() + "." + table.getName());
         for (ICanQuery query : queryList) {
             for (ICanQuery.Condition condition : query.getConditions()) {
                 builder.add(condition.colName, condition.queryModel, condition.value, condition.dataType);
@@ -133,7 +136,7 @@ public class DBDataSource implements DataSource {
 
     @Override
     public void delete(Meta meta, String... keys) throws Exception {
-        DBTable table = meta.getDbTable();
+        DBDataset table = meta.getDbTable();
         List<DBColumn> pkColumns = table.getPkColumns();
         if (pkColumns.size() == 0 || keys == null || keys.length == 0) {
             return;
@@ -151,6 +154,26 @@ public class DBDataSource implements DataSource {
         } finally {
             template.close();
         }
+    }
+
+    @Override
+    public INavTreeNode getNavTree() throws Exception {
+        if (navTree == null) {
+            List<DBSchema> schemas = getSchemas();
+            List<ITreeNode> children = new ArrayList<>();
+            for (DBSchema schema : schemas) {
+                children.add(schema);
+            }
+            DBObjectImpl dbSchemas = new DBObjectImpl("Schemas", "Schemas", children);
+            dbSchemas.setIcon(DBIcons.DBO_SCHEMAS);
+            dbSchemas.setPresentableText(String.format(" (%s)", children.size()));
+            List<ITreeNode> list = new ArrayList<>();
+            list.add(dbSchemas);
+            navTree = new DBObjectImpl(name, name, list);
+            navTree.setObjectType(DBObjectType.DATABASE);
+        }
+
+        return navTree;
     }
 
     public void setName(String name) {

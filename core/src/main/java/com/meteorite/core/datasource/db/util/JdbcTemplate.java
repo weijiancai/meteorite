@@ -9,6 +9,7 @@ import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.util.Callback;
 
+import java.io.FileOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;

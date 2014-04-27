@@ -46,7 +46,9 @@ public class FormFieldProperty implements PropertyNames {
         this.formProperty = formProperty;
 
         dataType = field.getDataType();
-        columnName = field.getColumn().getName();
+        if (field.getColumn() != null) {
+            columnName = field.getColumn().getName();
+        }
         name = propMap.get(FORM_FIELD.NAME);
         displayName = propMap.get(FORM_FIELD.DISPLAY_NAME);
         this.queryModel = QueryModel.convert(propMap.get(FORM_FIELD.QUERY_MODEL));

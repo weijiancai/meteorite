@@ -1,12 +1,11 @@
 package com.meteorite.core.datasource.db.object.loader;
 
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.datasource.db.DBIcons;
 import com.meteorite.core.datasource.db.object.*;
-import com.meteorite.core.datasource.db.object.impl.DBColumnImpl;
-import com.meteorite.core.datasource.db.object.impl.DBSchemaImpl;
-import com.meteorite.core.datasource.db.object.impl.DBTableImpl;
-import com.meteorite.core.datasource.db.object.impl.DBViewImpl;
+import com.meteorite.core.datasource.db.object.impl.*;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UObject;
 
 import java.util.ArrayList;
@@ -46,6 +45,24 @@ public abstract class BaseDBLoader implements DBLoader {
             schema.setViews(loadViews(schema));
 
             result.add(schema);
+
+            // 设置Schema子节点
+            List<ITreeNode> children = new ArrayList<>();
+
+            DBObjectImpl tables = new DBObjectImpl("Tables", "表", new ArrayList<ITreeNode>(schema.getTables()));
+            tables.setIcon(DBIcons.DBO_TABLES);
+            tables.setPresentableText(String.format(" (%s)", schema.getTables().size()));
+            tables.setObjectType(DBObjectType.TABLE);
+
+            DBObjectImpl views = new DBObjectImpl("Views", "视图", new ArrayList<ITreeNode>(schema.getViews()));
+            views.setIcon(DBIcons.DBO_VIEWS);
+            views.setObjectType(DBObjectType.VIEW);
+            views.setPresentableText(String.format(" (%s)", schema.getViews().size()));
+
+            children.add(tables);
+            children.add(views);
+
+            schema.setChildren(children);
         }
         return result;
     }
@@ -78,14 +95,14 @@ public abstract class BaseDBLoader implements DBLoader {
             view.setComment(UObject.toString(map.get("VIEW_COMMENT")));
             view.setSchema(schema);
             // 加载列
-//            view.setColumns(loadColumns(view));
+            view.setColumns(loadColumns(view));
             result.add(view);
         }
         return result;
     }
 
     @Override
-    public List<DBColumn> loadColumns(DBTable table) throws Exception {
+    public List<DBColumn> loadColumns(DBDataset table) throws Exception {
         List<DBColumn> result = new ArrayList<>();
         List<DataMap> list = conn.getResultSet(String.format(getColumnSql(), table.getSchema().getName(), table.getName()));
         for (DataMap map : list) {

@@ -4,6 +4,9 @@ import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.facade.IFacade;
 import com.meteorite.core.facade.impl.BaseFacade;
+import com.meteorite.fxbase.ui.FxDesktop;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 
 /**
  * @author wei_jc
@@ -26,6 +29,11 @@ public class MetaUIApp extends BaseApp {
             @Override
             public void initAfter() throws Exception {
 
+            }
+
+            @Override
+            public Parent getDesktop() throws Exception {
+                return new FxDesktop(null);
             }
         };
     }

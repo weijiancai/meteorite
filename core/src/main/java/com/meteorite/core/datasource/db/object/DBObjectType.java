@@ -15,7 +15,7 @@ public enum DBObjectType {
     CLUSTER(null, null),
     COLUMN(DBIcons.DBO_COLUMN, DBIcons.DBO_COLUMNS),
     CONSTRAINT(null, null),
-    DATABASE(null, null),
+    DATABASE(DBIcons.DBO_DATABASE, null),
     DATASET(null, null),
     DBLINK(null, null),
     DIMENSION(null, null),

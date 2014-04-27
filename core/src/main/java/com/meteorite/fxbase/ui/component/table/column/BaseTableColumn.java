@@ -30,6 +30,7 @@ public class BaseTableColumn extends TableColumn<DataMap, String> {
         this.property = property;
         this.setText(property.getDisplayName());
         this.setPrefWidth(property.getWidth());
+        this.setMinWidth(80);
 
         this.setCellValueFactory(new Callback<CellDataFeatures<DataMap, String>, ObservableValue<String>>() {
             @Override
