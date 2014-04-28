@@ -10,6 +10,7 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -92,7 +93,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(name = "valid", displayName = "是否有效", dictId = "com_meteorite_core_dict_EnumBoolean", sortNum = 50)
+    @MetaFieldElement(name = "valid", displayName = "是否有效", dataType=MetaDataType.BOOLEAN, dictId = "EnumBoolean", sortNum = 50)
     public boolean isValid() {
         return isValid;
     }
@@ -229,7 +230,7 @@ public class Meta {
      * @throws Exception
      */
     public void delete(int row) throws Exception {
-        if(row <= 0) {
+        if(row < 0) {
             throw new MessageException("请选择要删除的行数据！");
         }
         DataMap rowData = getRowData(row);
@@ -241,5 +242,9 @@ public class Meta {
         }
         dataSource.delete(this, values);
         dataList.get().remove(row);
+    }
+
+    public View getFormView() {
+        return null;
     }
 }

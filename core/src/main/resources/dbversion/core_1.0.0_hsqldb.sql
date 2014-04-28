@@ -299,7 +299,17 @@ alter table sys_view_config add constraint FK_view_config_layoutPropId foreign k
 alter table sys_view_config add constraint FK_view_config_metaFieldId foreign key (meta_field_id)
       references sys_meta_field (id) on delete cascade on update cascade;
 
+alter table sys_view add constraint FK_view_metaId foreign key (meta_id)
+      references sys_meta (id) on delete cascade on update cascade;
 
+alter table sys_view_prop add constraint FK_view_prop_viewId foreign key (view_id)
+      references sys_view (id) on delete cascade on update cascade;
+
+alter table sys_view_prop add constraint FK_view_prop_layoutPropId foreign key (layout_prop_id)
+      references sys_layout_prop (id) on delete cascade on update cascade;
+
+alter table sys_view_prop add constraint FK_view_prop_metaFieldId foreign key (meta_field_id)
+      references sys_meta_field (id) on delete cascade on update cascade;
 
 -- 索引
 create unique index IUX_NAME on sys_layout

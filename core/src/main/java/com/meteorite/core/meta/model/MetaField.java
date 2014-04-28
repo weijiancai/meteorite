@@ -50,7 +50,7 @@ public class MetaField {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "ID", dataType = MetaDataType.NUMBER)
+    @MetaFieldElement(displayName = "ID")
     public String getId() {
         return id;
     }
@@ -80,7 +80,7 @@ public class MetaField {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "数据字典")
+    @MetaFieldElement(displayName = "数据字典", dataType=MetaDataType.DICT, dictId = "ROOT")
     public String getDictId() {
         return dictId;
     }
@@ -90,7 +90,7 @@ public class MetaField {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "数据类型")
+    @MetaFieldElement(displayName = "数据类型", dataType=MetaDataType.DICT, dictId = "MetaDataType")
     public MetaDataType getDataType() {
         return dataType;
     }

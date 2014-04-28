@@ -49,6 +49,8 @@ public class DBDataSource implements DataSource {
     public static final String FILE_PATH = "filePath";
     public static final String DB_VERSION = "dbVersion";
     public static final String DATABASE_TYPE = "databaseType";
+    public static final String HOST = "host";
+    public static final String PORT = "port";
 
     private String name;
 
@@ -86,7 +88,7 @@ public class DBDataSource implements DataSource {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "数据库类型", dataType = MetaDataType.DICT, dictId = "com.meteorite.core.datasource.db.DatabaseType")
+    @MetaFieldElement(displayName = "数据库类型", dataType = MetaDataType.DICT, dictId = "DatabaseType")
     public DatabaseType getDatabaseType() {
         return DatabaseType.get(properties.getFieldValue(DATABASE_TYPE));
     }

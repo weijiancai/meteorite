@@ -22,6 +22,8 @@ public abstract class BaseDBLoader implements DBLoader {
         this.conn = conn;
     }
 
+    // 获得User Sql语句
+    protected abstract String getUserSql();
     // 获得Schema Sql语句
     protected abstract String getSchemaSql();
     // 获得Table sql语句
@@ -30,6 +32,11 @@ public abstract class BaseDBLoader implements DBLoader {
     protected abstract String getViewSql();
     // 获得Column Sql语句
     protected abstract String getColumnSql();
+
+    @Override
+    public void load() {
+
+    }
 
     @Override
     public List<DBSchema> loadSchemas() throws Exception {
@@ -80,7 +87,19 @@ public abstract class BaseDBLoader implements DBLoader {
             // 加载列
             table.setColumns(loadColumns(table));
             result.add(table);
+
+            // 设置Table子节点
+            List<ITreeNode> children = new ArrayList<>();
+
+            DBObjectImpl columns = new DBObjectImpl("Columns", "", new ArrayList<ITreeNode>(table.getColumns()));
+            columns.setIcon(DBIcons.DBO_COLUMNS);
+            columns.setObjectType(DBObjectType.COLUMN);
+            columns.setPresentableText(String.format(" (%s)", table.getColumns().size()));
+
+            children.add(columns);
+            table.setChildren(children);
         }
+
         return result;
     }
 

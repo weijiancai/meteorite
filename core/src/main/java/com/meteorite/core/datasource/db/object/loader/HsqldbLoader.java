@@ -15,6 +15,16 @@ public class HsqldbLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getUserSql() {
+        return "select distinct\n" +
+                "  user_name as USER_NAME,\n" +
+                "  'N' as IS_EXPIRED,\n" +
+                "  'N' as IS_LOCKED\n" +
+                "from INFORMATION_SCHEMA.SYSTEM_USERS\n" +
+                "order by user_name asc";
+    }
+
+    @Override
     protected String getSchemaSql() {
         return "select\n" +
                 "                SCHEMA_NAME,\n" +

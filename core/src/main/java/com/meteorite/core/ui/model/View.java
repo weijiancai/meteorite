@@ -1,6 +1,5 @@
 package com.meteorite.core.ui.model;
 
-import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.util.UNumber;

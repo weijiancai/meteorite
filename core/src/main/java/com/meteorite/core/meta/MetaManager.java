@@ -145,7 +145,7 @@ public class MetaManager {
             }
 
             if (getMeta("DBDataSource") == null) {
-                addMeta(DBDataSource.class);
+                addMeta(DBDataSource.class, template);
             }
 
             template.commit();
@@ -172,8 +172,8 @@ public class MetaManager {
         JAXBUtil.marshalListToFile(metaFieldList, UFile.createFile(DIR_SYSTEM, FILE_NAME_META_FIELD_CONFIG), MetaField.class);
     }
 
-    public static void addMeta(Class<?> clazz) throws Exception {
-        Meta meta = toMeta(clazz);
+    public static void addMeta(Class<?> clazz, JdbcTemplate template) throws Exception {
+        Meta meta = toMeta(clazz, template);
         metaMap.put(meta.getName(), meta);
     }
 
@@ -228,11 +228,12 @@ public class MetaManager {
      * 将注解了MetaElement的类转换为元数据对象
      *
      * @param clazz 注解了MetaElement的类对象
+     * @param template
      * @return 返回类对象的元数据信息
      * @throws Exception 如果此类对象没有注解MetaElement，则抛出此异常
      * @since 1.0.0
      */
-    public static Meta toMeta(Class<?> clazz) throws Exception {
+    public static Meta toMeta(Class<?> clazz, JdbcTemplate template) throws Exception {
         if (!clazz.isAnnotationPresent(MetaElement.class)) {
             throw new Exception(String.format("不能将非MetaElement的对象【%s】转化为Meta对象！", clazz.getName()));
         }
@@ -247,7 +248,6 @@ public class MetaManager {
         meta.setSortNum(metaElement.sortNum());
         meta.setDataSource(DataSourceManager.getSysDataSource());
 
-        JdbcTemplate template = new JdbcTemplate();
         // 插入元数据信息
         template.save(MetaPDBFactory.getMeta(meta));
         metaMap.put(meta.getName(), meta);
@@ -299,8 +299,6 @@ public class MetaManager {
 
         // 创建视图
         ViewManager.createViews(meta, template);
-        template.commit();
-        template.close();
 
         return meta;
     }

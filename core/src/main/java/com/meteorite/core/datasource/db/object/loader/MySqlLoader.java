@@ -15,6 +15,16 @@ public class MySqlLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getUserSql() {
+        return "select distinct\n" +
+                "                GRANTEE as USER_NAME,\n" +
+                "                'N' as IS_EXPIRED,\n" +
+                "                'N' as IS_LOCKED\n" +
+                "            from INFORMATION_SCHEMA.USER_PRIVILEGES\n" +
+                "            order by GRANTEE asc";
+    }
+
+    @Override
     protected String getSchemaSql() {
         return "select\n" +
                 "                SCHEMA_NAME,\n" +

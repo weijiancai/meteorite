@@ -20,11 +20,6 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset{
     private Map<String, DBColumn> columnMap = new HashMap<>();
 
     @Override
-    public List<ITreeNode> getChildren() {
-        return new ArrayList<ITreeNode>(columns);
-    }
-
-    @Override
     public DBColumn getColumn(String columnName) {
         return columnMap.get(columnName.toLowerCase());
     }

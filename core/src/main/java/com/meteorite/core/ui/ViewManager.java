@@ -81,7 +81,6 @@ public class ViewManager {
      * 根据元数据和布局创建视图
      *
      * @param meta 元数据
-     * @return 返回视图信息
      * @since 1.0.0
      */
     public static void createViews(Meta meta, JdbcTemplate template) throws Exception {

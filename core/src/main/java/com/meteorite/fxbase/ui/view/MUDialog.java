@@ -27,14 +27,15 @@ public class MUDialog extends Dialog {
      * @param content 对话框内容节点
      */
     public static void showCustomDialog(Object owner, String title, Node content, final Callback<Void, Void> callback) {
-        MUDialog dialog = new MUDialog(owner, title);
+        final MUDialog dialog = new MUDialog(owner, title);
         dialog.setContent(content);
-        dialog.getActions().add(new AbstractDialogAction("CustomDialog", ActionTrait.CLOSING, ActionTrait.CANCEL) {
+        dialog.getActions().add(new AbstractDialogAction("确定", ActionTrait.CLOSING, ActionTrait.CANCEL) {
             @Override
             public void execute(ActionEvent event) {
                 if (callback != null) {
                     callback.call(null);
                 }
+                dialog.hide();
             }
         });
         dialog.show();

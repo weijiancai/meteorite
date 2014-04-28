@@ -1,14 +1,13 @@
 package com.meteorite.fxbase.ui.component.table.column;
 
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.util.UDate;
 import com.meteorite.core.util.UObject;
-import com.meteorite.fxbase.ui.component.table.cell.BoolTableCell;
-import com.meteorite.fxbase.ui.component.table.cell.DictTableCell;
-import com.meteorite.fxbase.ui.component.table.cell.TextTableCell;
+import com.meteorite.fxbase.ui.component.table.cell.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableCell;
@@ -42,7 +41,16 @@ public class BaseTableColumn extends TableColumn<DataMap, String> {
                 return new SimpleStringProperty(UObject.toString(obj));
             }
         });
-        if (MetaDataType.BOOLEAN == property.getDataType()) {
+
+        this.setCellFactory(new Callback<TableColumn<DataMap, String>, TableCell<DataMap, String>>() {
+            @Override
+            public TableCell<DataMap, String> call(TableColumn<DataMap, String> param) {
+                return getTableCell(param);
+            }
+        });
+
+
+        /*if (MetaDataType.BOOLEAN == property.getDataType()) {
             this.setCellFactory(new Callback<TableColumn<DataMap, String>, TableCell<DataMap, String>>() {
                 @Override
                 public TableCell<DataMap, String> call(TableColumn<DataMap, String> param) {
@@ -66,6 +74,23 @@ public class BaseTableColumn extends TableColumn<DataMap, String> {
                     }
                 });
             }
+        }*/
+    }
+
+    private TableCell<DataMap, String> getTableCell(TableColumn<DataMap, String> param) {
+        if (MetaDataType.BOOLEAN == property.getDataType()) {
+            return new BoolTableCell(param, property);
         }
+
+        if(DisplayStyle.COMBO_BOX == property.getDisplayStyle()) {
+            return new DictTableCell(param, property);
+        }
+
+        DBColumn dbColumn = property.getDbColumn();
+        if (dbColumn != null && dbColumn.isFk()) {
+            return new HyperlinkTableCell(param, property);
+        }
+
+        return new TextTableCell(param, property);
     }
 }
