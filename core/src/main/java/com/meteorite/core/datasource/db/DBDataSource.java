@@ -166,11 +166,18 @@ public class DBDataSource implements DataSource {
             for (DBSchema schema : schemas) {
                 children.add(schema);
             }
-            DBObjectImpl dbSchemas = new DBObjectImpl("Schemas", "Schemas", children);
+            DBObjectImpl dbSchemas = new DBObjectImpl("Schemas", "Schemas", new ArrayList<ITreeNode>(schemas));
             dbSchemas.setIcon(DBIcons.DBO_SCHEMAS);
             dbSchemas.setPresentableText(String.format(" (%s)", children.size()));
+
+            List<DBUser> users = connection.getLoader().loadUsers();
+            DBObjectImpl dbUsers = new DBObjectImpl("Users", "Users", new ArrayList<ITreeNode>(users));
+            dbUsers.setIcon(DBIcons.DBO_USERS);
+            dbUsers.setPresentableText(String.format(" (%s)", users.size()));
+
             List<ITreeNode> list = new ArrayList<>();
             list.add(dbSchemas);
+            list.add(dbUsers);
             navTree = new DBObjectImpl(name, name, list);
             navTree.setObjectType(DBObjectType.DATABASE);
         }

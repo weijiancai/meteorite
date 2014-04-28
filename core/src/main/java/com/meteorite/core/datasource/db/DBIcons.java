@@ -8,6 +8,8 @@ package com.meteorite.core.datasource.db;
  */
 public class DBIcons {
     public static final String DBO_DATABASE = "/img/icon/db/object/database.png";
+    public static final String DBO_USERS = "/img/icon/db/object/Users.png";
+    public static final String DBO_USER = "/img/icon/db/object/User.png";
     public static final String DBO_SCHEMA = "/img/icon/db/object/Schema.png";
     public static final String DBO_SCHEMAS = "/img/icon/db/object/Schemas.png";
     public static final String DBO_TABLE = "/img/icon/db/object/Table.png";

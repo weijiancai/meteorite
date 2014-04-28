@@ -60,7 +60,7 @@ public enum DBObjectType {
     TYPE_ATTRIBUTE(null, null),
     TYPE_FUNCTION(null, null),
     TYPE_PROCEDURE(null, null),
-    USER(null, null),
+    USER(DBIcons.DBO_USER, DBIcons.DBO_USERS),
     VARRAY(null, null),
     VARRAY_TYPE(null, null),
     VIEW(DBIcons.DBO_VIEW, DBIcons.DBO_VIEWS),

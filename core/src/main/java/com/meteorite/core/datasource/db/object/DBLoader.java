@@ -13,6 +13,8 @@ import java.util.List;
 public interface DBLoader {
     void load();
 
+    List<DBUser> loadUsers() throws Exception;
+
     List<DBSchema> loadSchemas() throws Exception;
 
     List<DBTable> loadTables(DBSchema schema) throws Exception;

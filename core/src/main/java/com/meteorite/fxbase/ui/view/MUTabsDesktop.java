@@ -63,7 +63,7 @@ public class MUTabsDesktop extends BorderPane {
                     if (node != null) {
                         View view = node.getView();
                         if (view != null) {
-                            String text = node.getName() + " (" + node.getDisplayName() + ")";
+                            String text = node.getName();
                             Tab tab = tabCache.get(text);
                             if (tab == null) {
                                 tab = new Tab(text);
