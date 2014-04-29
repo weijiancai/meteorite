@@ -25,6 +25,11 @@ public class HsqldbLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getPrivilegesSql() {
+        return null;
+    }
+
+    @Override
     protected String getSchemaSql() {
         return "select\n" +
                 "                SCHEMA_NAME,\n" +

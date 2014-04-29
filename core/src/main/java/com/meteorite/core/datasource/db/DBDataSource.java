@@ -116,7 +116,7 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
-    public List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException {
+    public List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
         DBDataset table = meta.getDbTable();
 
         QueryBuilder builder = QueryBuilder.create(getDatabaseType());
@@ -129,7 +129,7 @@ public class DBDataSource implements DataSource {
         JdbcTemplate template = new JdbcTemplate(this);
         List<DataMap> list = new ArrayList<>();
         try {
-            list = template.queryForList(builder);
+            list = template.queryForList(builder, page, rows);
         } finally {
             template.close();
         }

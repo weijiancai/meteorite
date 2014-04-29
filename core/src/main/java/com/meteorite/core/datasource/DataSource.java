@@ -43,7 +43,7 @@ public interface DataSource {
      * @param queryList 查询条件列表
      * @return 返回查询结果
      */
-    List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException;
+    List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException;
 
     /**
      * 删除数据

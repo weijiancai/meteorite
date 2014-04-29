@@ -34,7 +34,7 @@ public class FileDataSource implements DataSource {
     }
 
     @Override
-    public List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList) throws SQLException {
+    public List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
         return null;
     }
 

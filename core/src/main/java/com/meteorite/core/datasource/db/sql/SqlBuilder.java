@@ -457,12 +457,20 @@ public class SqlBuilder {
     /**
      * 获取Oracle分页Sql
      *
-     * @param start 记录开始数
-     * @param end   记录结束数
+     * @param page 记录开始数
+     * @param rows   记录结束数
      * @return 返回Oracle分页数
      */
-    public String getPageSql(int start, int end) {
-        return String.format("SELECT * FROM (SELECT nowpage.*,rownum rn FROM (%s) nowpage WHERE rownum<=%d) WHERE rn>%d", build(), end, start);
+    public String getPageSql(int page, int rows) {
+        int start = page * rows;
+        int end = (page + 1) * rows;
+        if(dbType == DatabaseType.ORACLE) {
+            return String.format("SELECT * FROM (SELECT nowpage.*,rownum rn FROM (%s) nowpage WHERE rownum<=%d) WHERE rn>%d", build(), end, start);
+        } else if (dbType == DatabaseType.HSQLDB) {
+            return String.format("SELECT LIMIT %d %d * FROM (%s)", start, end, build());
+        }
+
+        return "";
     }
 
     /**
