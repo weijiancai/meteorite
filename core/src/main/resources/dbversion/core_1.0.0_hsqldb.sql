@@ -206,7 +206,8 @@ create table sys_view
    id                   varchar(32) not null,
    name                 varchar(64) not null,
    display_name         varchar(128),
-   desc               varchar(1024),
+   desc                 varchar(1024),
+   meta_id              varchar(32) not null,
    is_valid             char(1) not null,
    input_date           datetime not null,
    sort_num             int not null,
@@ -218,6 +219,7 @@ comment on column sys_view.id is '视图ID';
 comment on column sys_view.name is '视图名称';
 comment on column sys_view.display_name is '视图ID';
 comment on column sys_view.desc is '描述';
+comment on column sys_view.meta_id is '元数据ID';
 comment on column sys_view.is_valid is '是否有效';
 comment on column sys_view.input_date is '录入时间';
 comment on column sys_view.sort_num is '排序号';

@@ -151,7 +151,6 @@ public class View {
             propMap.put(property.getProperty().getId(), property);
             MetaField field = property.getField();
             if (field != null) {
-                meta = field.getMeta();
                 Map<String, String> propMap = fieldPropMap.get(field);
                 if (propMap == null) {
                     propMap = new HashMap<>();
@@ -195,5 +194,9 @@ public class View {
 
     public Meta getMeta() {
         return meta;
+    }
+
+    public void setMeta(Meta meta) {
+        this.meta = meta;
     }
 }

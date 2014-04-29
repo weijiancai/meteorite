@@ -7,6 +7,7 @@ import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.component.tree.FileTreeItem;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -14,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,6 +74,20 @@ public class MUTabsDesktop extends BorderPane {
                                 tabCache.put(text, tab);
                             }
                             tabPane.getSelectionModel().select(tab);
+                        }
+                    }
+                }
+            }
+        });
+
+        tabPane.getTabs().addListener(new ListChangeListener<Tab>() {
+            @Override
+            public void onChanged(Change<? extends Tab> change) {
+                if(change.next() && change.wasRemoved()) {
+                    List<? extends Tab> removed = change.getRemoved();
+                    if(removed.size() > 0) {
+                        for (Tab tab : removed) {
+                            tabCache.remove(tab.getText());
                         }
                     }
                 }

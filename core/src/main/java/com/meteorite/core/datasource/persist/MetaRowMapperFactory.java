@@ -157,6 +157,7 @@ public class MetaRowMapperFactory {
                 view.setName(rs.getString("name"));
                 view.setDisplayName(rs.getString("display_name"));
                 view.setDesc(rs.getString("desc"));
+                view.setMeta(MetaManager.getMetaById(rs.getString("meta_id")));
                 view.setValid("T".equals(rs.getString("is_valid")));
                 view.setInputDate(rs.getDate("input_date"));
                 view.setSortNum(rs.getInt("sort_num"));

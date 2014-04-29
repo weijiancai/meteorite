@@ -170,14 +170,22 @@ public class DBDataSource implements DataSource {
             dbSchemas.setIcon(DBIcons.DBO_SCHEMAS);
             dbSchemas.setPresentableText(String.format(" (%s)", children.size()));
 
-            List<DBUser> users = connection.getLoader().loadUsers();
+            DBLoader loader = connection.getLoader();
+
+            List<DBUser> users = loader.loadUsers();
             DBObjectImpl dbUsers = new DBObjectImpl("Users", "Users", new ArrayList<ITreeNode>(users));
             dbUsers.setIcon(DBIcons.DBO_USERS);
             dbUsers.setPresentableText(String.format(" (%s)", users.size()));
 
+            List<DBObject> privileges = loader.loadPrivileges();
+            DBObjectImpl dbPrivileges = new DBObjectImpl("Privileges", "Privileges", new ArrayList<ITreeNode>(privileges));
+            dbUsers.setIcon(DBIcons.DBO_PRIVILEGES);
+            dbUsers.setPresentableText(String.format(" (%s)", privileges.size()));
+
             List<ITreeNode> list = new ArrayList<>();
             list.add(dbSchemas);
             list.add(dbUsers);
+            list.add(dbPrivileges);
             navTree = new DBObjectImpl(name, name, list);
             navTree.setObjectType(DBObjectType.DATABASE);
         }

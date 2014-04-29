@@ -84,7 +84,10 @@ public class ViewManager {
      * @since 1.0.0
      */
     public static void createViews(Meta meta, JdbcTemplate template) throws Exception {
+        System.out.println(String.format("创建Meta = 【%s, %s】视图", meta.getName(), meta.getDisplayName()));
+        System.out.println(String.format("创建%sFormView", meta.getName()));
         View formView = FormProperty.createFormView(meta, false);
+        formView.setMeta(meta);
         template.save(MetaPDBFactory.getView(formView));
         viewIdMap.put(formView.getId(), formView);
         viewNameMap.put(formView.getName(), formView);
@@ -93,7 +96,9 @@ public class ViewManager {
             template.save(MetaPDBFactory.getViewProperty(property));
         }
 
+        System.out.println(String.format("创建%sTableView", meta.getName()));
         View tableView = TableProperty.createTableView(meta);
+        tableView.setMeta(meta);
         template.save(MetaPDBFactory.getView(tableView));
         viewIdMap.put(tableView.getId(), tableView);
         viewNameMap.put(tableView.getName(), tableView);
@@ -102,7 +107,9 @@ public class ViewManager {
             template.save(MetaPDBFactory.getViewProperty(property));
         }
 
+        System.out.println(String.format("创建%sQueryView", meta.getName()));
         View queryView = FormProperty.createFormView(meta, true);
+        queryView.setMeta(meta);
         template.save(MetaPDBFactory.getView(queryView));
         viewIdMap.put(queryView.getId(), queryView);
         viewNameMap.put(queryView.getName(), queryView);
@@ -111,7 +118,9 @@ public class ViewManager {
             template.save(MetaPDBFactory.getViewProperty(property));
         }
 
+        System.out.println(String.format("创建%sCrudView", meta.getName()));
         View crudView = CrudProperty.createCrudView(meta, formView, tableView, queryView);
+        crudView.setMeta(meta);
         template.save(MetaPDBFactory.getView(crudView));
         viewIdMap.put(crudView.getId(), crudView);
         viewNameMap.put(crudView.getName(), crudView);
@@ -119,6 +128,9 @@ public class ViewManager {
         for (ViewProperty property : crudView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));
         }
+
+        System.out.println(String.format("创建视图完成"));
+        System.out.println("--------------------------------------------------------------------------------");
     }
 
     public static ViewLayout createViewLayout(Meta meta, Layout layout) {

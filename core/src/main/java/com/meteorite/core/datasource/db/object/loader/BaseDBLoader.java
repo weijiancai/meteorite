@@ -50,20 +50,22 @@ public abstract class BaseDBLoader implements DBLoader {
             user.setComment(UObject.toString(map.get("USER_NAME")));
 
             result.add(user);
-            // 加载列
-            /*user.setColumns(loadColumns(user));
-            result.add(user);
+        }
 
-            // 设置Table子节点
-            List<ITreeNode> children = new ArrayList<>();
+        return result;
+    }
 
-            DBObjectImpl columns = new DBObjectImpl("Columns", "", new ArrayList<ITreeNode>(user.getColumns()));
-            columns.setIcon(DBIcons.DBO_COLUMNS);
-            columns.setObjectType(DBObjectType.COLUMN);
-            columns.setPresentableText(String.format(" (%s)", user.getColumns().size()));
+    @Override
+    public List<DBObject> loadPrivileges() throws Exception {
+        List<DBObject> result = new ArrayList<>();
+        List<DataMap> list = conn.getResultSet(getPrivilegesSql());
+        for (DataMap map : list) {
+            DBObjectImpl privilege = new DBObjectImpl();
+            privilege.setName(UObject.toString(map.get("PRIVILEGE_NAME")));
+            privilege.setComment(UObject.toString(map.get("PRIVILEGE_NAME")));
+            privilege.setObjectType(DBObjectType.PRIVILEGE);
 
-            children.add(columns);
-            user.setChildren(children);*/
+            result.add(privilege);
         }
 
         return result;

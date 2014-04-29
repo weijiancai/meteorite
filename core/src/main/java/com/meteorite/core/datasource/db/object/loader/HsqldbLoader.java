@@ -25,6 +25,13 @@ public class HsqldbLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getPrivilegesSql() {
+        return "select distinct PRIVILEGE_TYPE as PRIVILEGE_NAME\n" +
+                "from INFORMATION_SCHEMA.TABLE_PRIVILEGES\n" +
+                "order by PRIVILEGE_TYPE asc";
+    }
+
+    @Override
     protected String getSchemaSql() {
         return "select\n" +
                 "                SCHEMA_NAME,\n" +

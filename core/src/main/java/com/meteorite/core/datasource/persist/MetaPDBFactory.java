@@ -187,6 +187,7 @@ public class MetaPDBFactory {
                 map.put("name", view.getName());
                 map.put("display_name", view.getDisplayName());
                 map.put("desc", view.getDesc());
+                map.put("meta_id", view.getMeta().getId());
                 map.put("is_valid", view.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", view.getSortNum());
