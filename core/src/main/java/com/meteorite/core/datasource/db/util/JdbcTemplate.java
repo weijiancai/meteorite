@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.RowMapper;
 import com.meteorite.core.datasource.db.object.DBConnection;
+import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.util.Callback;
 
@@ -98,9 +99,10 @@ public class JdbcTemplate {
         return list;
     }
 
-    public List<DataMap> queryForList(QueryBuilder builder) throws SQLException {
+    public List<DataMap> queryForList(QueryBuilder builder, int page, int rows) throws SQLException {
         System.out.println(builder.toLog());
-        return queryForList(builder.build(), builder.getParamsValue());
+        SqlBuilder sqlBuilder = builder.sqlBuilder();
+        return queryForList(sqlBuilder.getPageSql(page, rows), builder.getParamsValue());
     }
 
     public List<DataMap> queryForList(String sql, Object[] paramValues) throws SQLException {

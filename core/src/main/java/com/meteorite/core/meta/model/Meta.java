@@ -217,8 +217,8 @@ public class Meta {
         return dataList.get().get(row);
     }
 
-    public List<DataMap> query(List<ICanQuery> queryList) throws Exception {
-        List<DataMap> result = dataSource.retrieve(this, queryList);
+    public List<DataMap> query(List<ICanQuery> queryList, int page, int rows) throws Exception {
+        List<DataMap> result = dataSource.retrieve(this, queryList, page, rows);
         setDataList(result);
         return result;
     }

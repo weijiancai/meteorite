@@ -11,10 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 /**
  * MetaUI CRUD视图
@@ -27,6 +29,7 @@ public class MuCrud extends BorderPane {
     private CrudProperty crudProperty;
     private MUTable table;
     private MUForm queryForm;
+    private Pagination pagination;
 
     public MuCrud(View view) {
         this.view = view;
@@ -76,7 +79,8 @@ public class MuCrud extends BorderPane {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 Meta meta = crudProperty.getQueryView().getMeta();
-                meta.query(queryForm.getQueryList());
+                meta.query(queryForm.getQueryList(), 0, 15);
+                pagination.setPageCount(meta.getDataList().size());
             }
         });
 
@@ -96,6 +100,8 @@ public class MuCrud extends BorderPane {
     }
 
     private Node createCenter() {
+        VBox box = new VBox();
+
         table = new MUTable(crudProperty.getTableView());
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -105,7 +111,24 @@ public class MuCrud extends BorderPane {
                 }
             }
         });
-        return table;
+
+        pagination = new Pagination();
+        pagination.setPageFactory(new Callback<Integer, Node>() {
+            @Override
+            public Node call(Integer page) {
+                Meta meta = crudProperty.getQueryView().getMeta();
+                try {
+                    meta.query(queryForm.getQueryList(), page, 15);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        });
+
+        box.getChildren().addAll(table, pagination);
+
+        return box;
     }
 
     private void openFormWin(DataMap result) {
