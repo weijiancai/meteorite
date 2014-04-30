@@ -92,7 +92,7 @@ public class DBObjectImpl implements DBObject {
 
     @Override
     public String getIcon() {
-        return UString.isEmpty(icon) ? objectType.getIcon() : icon;
+        return UString.isEmpty(icon) ? objectType == null ? "" : objectType.getIcon() : icon;
     }
 
     @Override

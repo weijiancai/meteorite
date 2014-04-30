@@ -24,10 +24,6 @@ public class QueryBuilder {
         return new QueryBuilder(dbType);
     }
 
-    public String build() {
-        return sql.build();
-    }
-
     public QueryBuilder add(String colName, QueryModel queryModel, Object value, MetaDataType dataType) {
         if (UObject.isEmpty(value)) {
             return this;
@@ -83,25 +79,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public SqlBuilder sqlBuilder() {
+    public SqlBuilder sql() {
         return sql;
-    }
-
-    /**
-     * 获取参数值数组
-     *
-     * @return 返回参数值数组
-     */
-    public Object[] getParamsValue() {
-        return sql.getParamsValue();
-    }
-
-    /**
-     * 将sql预编译语句代入值输出
-     *
-     * @return 返回sql语句
-     */
-    public String toLog() {
-        return sql.toLog();
     }
 }

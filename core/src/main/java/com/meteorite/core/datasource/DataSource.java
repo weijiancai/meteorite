@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource;
 
+import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
@@ -43,7 +44,7 @@ public interface DataSource {
      * @param queryList 查询条件列表
      * @return 返回查询结果
      */
-    List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException;
+    QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException;
 
     /**
      * 删除数据

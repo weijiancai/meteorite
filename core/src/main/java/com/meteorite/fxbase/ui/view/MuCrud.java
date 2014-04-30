@@ -7,6 +7,8 @@ import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -80,7 +82,7 @@ public class MuCrud extends BorderPane {
             public void doHandler(ActionEvent event) throws Exception {
                 Meta meta = crudProperty.getQueryView().getMeta();
                 meta.query(queryForm.getQueryList(), 0, 15);
-                pagination.setPageCount(meta.getDataList().size());
+                pagination.setPageCount(meta.getPageCount());
             }
         });
 
@@ -112,23 +114,25 @@ public class MuCrud extends BorderPane {
             }
         });
 
-        pagination = new Pagination();
-        pagination.setPageFactory(new Callback<Integer, Node>() {
+        pagination = new Pagination(1);
+        pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
-            public Node call(Integer page) {
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 Meta meta = crudProperty.getQueryView().getMeta();
                 try {
-                    meta.query(queryForm.getQueryList(), page, 15);
+                    meta.query(queryForm.getQueryList(), newValue.intValue(), 15);
+                    pagination.setPageCount(meta.getPageCount());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return null;
             }
         });
 
-        box.getChildren().addAll(table, pagination);
+//        box.getChildren().addAll(table);
 
-        return box;
+        this.setBottom(pagination);
+
+        return table;
     }
 
     private void openFormWin(DataMap result) {

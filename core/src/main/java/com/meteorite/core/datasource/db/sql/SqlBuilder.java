@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Sql Ô¤±àÒëÓï¾äÉú³ÉÆ÷
- *     Ê¹ÓÃ·½·¨£º
+ * Sql é¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
+ *     ä½¿ç”¨æ–¹æ³•ï¼š
  *         SqlBuilder.create()
  *             .from("table name")
  *             .join("join table_name on (....)")
@@ -22,16 +22,13 @@ import java.util.Queue;
  */
 public class SqlBuilder {
     private String table;
-    private static final String SELECT_FORMAT = "SELECT %s FROM %s";
     private static final String SELECT_WHERE_FORMAT = "SELECT %s FROM %s WHERE %s";
-    private static final String WITH_SELECT_FORMAT = "%s " + SELECT_FORMAT;
     private static final String WITH_SELECT_WHERE_FORMAT = "%s " + SELECT_WHERE_FORMAT;
     private static final String GROUP_FORMAT = " GROUP BY %s";
     private String columns = "";
     private String where = " 1=1";
     private String with;
     private String group;
-    private boolean haveWhere;
     private boolean haveWith;
     private boolean isQuery = true;
     private boolean isBracket = false;
@@ -47,10 +44,10 @@ public class SqlBuilder {
     }
 
     /**
-     * ²éÑ¯µÄÁĞ£¬¿ÉÒÔÊÇµ¥¸öÁĞÃû£¬Ò²¿ÉÒÔÊÇ¶à¸öÒÔ¶ººÅ·Ö¸ôµÄÁĞÃû
+     * æŸ¥è¯¢çš„åˆ—ï¼Œå¯ä»¥æ˜¯å•ä¸ªåˆ—åï¼Œä¹Ÿå¯ä»¥æ˜¯å¤šä¸ªä»¥é€—å·åˆ†éš”çš„åˆ—å
      *
-     * @param columns ÁĞÃû
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param columns åˆ—å
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder query(String columns) {
         if (UString.isEmpty(columns)) {
@@ -68,10 +65,10 @@ public class SqlBuilder {
     }
 
     /**
-     * ±íÃû£¬¿ÉÒÔÊÇµ¥¸ö±íÃû£¬Ò²¿ÉÒÔÊÇ¶à¸öÒÔ¶ººÅ·Ö¸ôµÄ±íÃû
+     * è¡¨åï¼Œå¯ä»¥æ˜¯å•ä¸ªè¡¨åï¼Œä¹Ÿå¯ä»¥æ˜¯å¤šä¸ªä»¥é€—å·åˆ†éš”çš„è¡¨å
      *
-     * @param table ±íÃû
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param table è¡¨å
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder from(String table) {
         this.table = table;
@@ -80,10 +77,10 @@ public class SqlBuilder {
     }
 
     /**
-     * ½øĞĞÁ¬½Ó²Ù×÷µÄ±íÃû£¬Èç¹ûÒª¼ÓÏŞÖÆÌõ¼ş£¬¿ÉÒÔÔÚ±íÃûºóÃæ¼ÓÏŞÖÆÌõ¼ş£¬ÀıÈç builder.join("table_name ON (...)")
+     * è¿›è¡Œè¿æ¥æ“ä½œçš„è¡¨åï¼Œå¦‚æœè¦åŠ é™åˆ¶æ¡ä»¶ï¼Œå¯ä»¥åœ¨è¡¨ååé¢åŠ é™åˆ¶æ¡ä»¶ï¼Œä¾‹å¦‚ builder.join("table_name ON (...)")
      *
-     * @param joinTable Á¬½Ó²Ù×÷µÄ±íÃû
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param joinTable è¿æ¥æ“ä½œçš„è¡¨å
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder join(String joinTable) {
         table += " JOIN " + joinTable;
@@ -92,10 +89,10 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó whereÌõ¼ş
+     * æ·»åŠ  whereæ¡ä»¶
      *
-     * @param where whereÌõ¼ş
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param where whereæ¡ä»¶
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder where(String where) {
         this.where = where;
@@ -104,10 +101,10 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó and Ìõ¼ş
+     * æ·»åŠ  and æ¡ä»¶
      *
-     * @param and andÌõ¼ş
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param and andæ¡ä»¶
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder and(String and) {
         where += " AND " + and;
@@ -116,9 +113,9 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼ÓÓï¾ä AND (
+     * æ·»åŠ è¯­å¥ AND (
      *
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder andBracket() {
         where += " AND (";
@@ -128,11 +125,11 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó and Ìõ¼ş£¬²¢ÇÒ»áÔÚAND ºóÃæ¼ÓÉÏ×óÀ¨ºÅ
+     * æ·»åŠ  and æ¡ä»¶ï¼Œå¹¶ä¸”ä¼šåœ¨AND åé¢åŠ ä¸Šå·¦æ‹¬å·
      *
-     * @param and andÌõ¼ş
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param and andæ¡ä»¶
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder andBracket(String and, Object value) {
         if (value != null) {
@@ -147,12 +144,12 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó and like Ìõ¼ş£¬ ²¢ÇÒ»áÔÚAND ºóÃæ¼ÓÉÏ×óÀ¨ºÅ
+     * æ·»åŠ  and like æ¡ä»¶ï¼Œ å¹¶ä¸”ä¼šåœ¨AND åé¢åŠ ä¸Šå·¦æ‹¬å·
      *
-     * @param and andÌõ¼ş
-     * @param format likeÆ¥ÅäÑùÊ½£¬%%±íÊ¾Ò»¸ö%£¬%s±íÊ¾Æ¥Åä×Ö·û´®
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param and andæ¡ä»¶
+     * @param format likeåŒ¹é…æ ·å¼ï¼Œ%%è¡¨ç¤ºä¸€ä¸ª%ï¼Œ%sè¡¨ç¤ºåŒ¹é…å­—ç¬¦ä¸²
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder andBracketLike(String and, String format, String value) {
         if (UString.isNotEmpty(value)) {
@@ -165,9 +162,9 @@ public class SqlBuilder {
     }
 
     /**
-     * ¼ÓÉÏ×óÀ¨ºÅ
+     * åŠ ä¸Šå·¦æ‹¬å·
      *
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder leftBracket() {
         where += "(";
@@ -177,9 +174,9 @@ public class SqlBuilder {
     }
 
     /**
-     * ¼ÓÉÏÓÒÀ¨ºÅ£¬ÒÔÆ¥Åä×óÀ¨ºÅ
+     * åŠ ä¸Šå³æ‹¬å·ï¼Œä»¥åŒ¹é…å·¦æ‹¬å·
      *
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder rightBracket() {
         if (isBracket) {
@@ -195,11 +192,11 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó and in Ìõ¼ş
+     * æ·»åŠ  and in æ¡ä»¶
      *
-     * @param and   and in Ìõ¼ş
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param and   and in æ¡ä»¶
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder andIn(String and, String value) {
         if (UString.isEmpty(value)) {
@@ -212,11 +209,11 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó or value Ìõ¼ş
+     * æ·»åŠ  or value æ¡ä»¶
      *
-     * @param and   or value Ìõ¼ş
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param and   or value æ¡ä»¶
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder orIn(String and, String value) {
         if (UString.isEmpty(value)) {
@@ -229,12 +226,12 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó and like Ìõ¼ş
+     * æ·»åŠ  and like æ¡ä»¶
      *
-     * @param and   and like Ìõ¼ş
-     * @param format likeÆ¥ÅäÑùÊ½£¬%%±íÊ¾Ò»¸ö%£¬%s±íÊ¾Æ¥Åä×Ö·û´®
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param and   and like æ¡ä»¶
+     * @param format likeåŒ¹é…æ ·å¼ï¼Œ%%è¡¨ç¤ºä¸€ä¸ª%ï¼Œ%sè¡¨ç¤ºåŒ¹é…å­—ç¬¦ä¸²
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder andLike(String and, String format, String value) {
         if (UString.isNotEmpty(value)) {
@@ -246,11 +243,11 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó and Ìõ¼ş
+     * æ·»åŠ  and æ¡ä»¶
      *
-     * @param and   andÌõ¼ş
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param and   andæ¡ä»¶
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder and(String and, Object value) {
         if (null == value) {
@@ -266,11 +263,11 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó and Ìõ¼ş£¬µ÷ÓÃto_date(?, 'yyyy-MM-dd')
+     * æ·»åŠ  and æ¡ä»¶ï¼Œè°ƒç”¨to_date(?, 'yyyy-MM-dd')
      *
-     * @param and   and Ìõ¼ş
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param and   and æ¡ä»¶
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder andDate(String and, String value) {
         if (UString.isNotEmpty(value)) {
@@ -290,9 +287,9 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó or Ìõ¼ş
-     * @param or orÌõ¼ş
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * æ·»åŠ  or æ¡ä»¶
+     * @param or oræ¡ä»¶
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder or(String or) {
         where += " OR " + or;
@@ -301,10 +298,10 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó or Ìõ¼ş
-     * @param or    or Ìõ¼ş
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * æ·»åŠ  or æ¡ä»¶
+     * @param or    or æ¡ä»¶
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder or(String or, Object value) {
         if (null == value) {
@@ -319,12 +316,12 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó or like Ìõ¼ş
+     * æ·»åŠ  or like æ¡ä»¶
      *
-     * @param or   or like Ìõ¼ş
-     * @param format likeÆ¥ÅäÑùÊ½£¬%%±íÊ¾Ò»¸ö%£¬%s±íÊ¾Æ¥Åä×Ö·û´®
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param or   or like æ¡ä»¶
+     * @param format likeåŒ¹é…æ ·å¼ï¼Œ%%è¡¨ç¤ºä¸€ä¸ª%ï¼Œ%sè¡¨ç¤ºåŒ¹é…å­—ç¬¦ä¸²
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder orLike(String or, String format, String value) {
         if (UString.isNotEmpty(value)) {
@@ -335,12 +332,12 @@ public class SqlBuilder {
     }
 
     /**
-     * Ìí¼Ó like Ìõ¼ş
+     * æ·»åŠ  like æ¡ä»¶
      *
-     * @param name   like Ìõ¼şÃû³Æ
-     * @param format likeÆ¥ÅäÑùÊ½£¬%%±íÊ¾Ò»¸ö%£¬%s±íÊ¾Æ¥Åä×Ö·û´®
-     * @param value ²ÎÊıÖµ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param name   like æ¡ä»¶åç§°
+     * @param format likeåŒ¹é…æ ·å¼ï¼Œ%%è¡¨ç¤ºä¸€ä¸ª%ï¼Œ%sè¡¨ç¤ºåŒ¹é…å­—ç¬¦ä¸²
+     * @param value å‚æ•°å€¼
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder like(String name, String format, String value) {
         if (UString.isNotEmpty(name) && UString.isNotEmpty(value)) {
@@ -351,10 +348,10 @@ public class SqlBuilder {
     }
 
     /**
-     * Ê¹ÓÃ½µĞòÅÅĞò
+     * ä½¿ç”¨é™åºæ’åº
      *
-     * @param desc ÅÅĞò×Ö¶Î
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param desc æ’åºå­—æ®µ
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder desc(String desc) {
         if (UString.isNotEmpty(desc)) {
@@ -365,9 +362,9 @@ public class SqlBuilder {
     }
 
     /**
-     * ÔÚsql¿ªÍ·Ôö¼ÓÒ»ÌõwithÓï¾ä
-     * @param with withÓï¾ä
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * åœ¨sqlå¼€å¤´å¢åŠ ä¸€æ¡withè¯­å¥
+     * @param with withè¯­å¥
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder with(String with) {
         this.with = with;
@@ -379,8 +376,8 @@ public class SqlBuilder {
     /**
      * sql group by
      *
-     * @param group Òª½øĞĞ·Ö×éµÄÁĞ£¬Èç£ºname, age
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param group è¦è¿›è¡Œåˆ†ç»„çš„åˆ—ï¼Œå¦‚ï¼šname, age
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder group(String group) {
         this.group = group;
@@ -391,17 +388,17 @@ public class SqlBuilder {
     /**
      * sql max column
      *
-     * @param column Òª¼ÆËãmaxµÄÁĞ
-     * @return ·µ»ØSqlÔ¤±àÒëÓï¾äÉú³ÉÆ÷
+     * @param column è¦è®¡ç®—maxçš„åˆ—
+     * @return è¿”å›Sqlé¢„ç¼–è¯‘è¯­å¥ç”Ÿæˆå™¨
      */
     public SqlBuilder max(String column) {
         return query(String.format("MAX(%s) AS max_%1$s", column));
     }
 
     /**
-     * ´òÓ¡Êä³öÕûÌõSqlÓï¾ä
+     * æ‰“å°è¾“å‡ºæ•´æ¡Sqlè¯­å¥
      *
-     * @return ·µ»Ø¹¹ÔìºÃµÄSqlÓï¾ä
+     * @return è¿”å›æ„é€ å¥½çš„Sqlè¯­å¥
      */
     public String build() {
         if (UString.isEmpty(columns)) {
@@ -426,24 +423,16 @@ public class SqlBuilder {
     }
 
     /**
-     * »ñÈ¡×Ü¼ÇÂ¼ÌõÊısqlÓï¾ä
+     * è·å–æ€»è®°å½•æ¡æ•°sqlè¯­å¥
      *
-     * @return ·µ»Ø×Ü¼ÇÂ¼ÌõÊısqlÓï¾ä
+     * @return è¿”å›æ€»è®°å½•æ¡æ•°sqlè¯­å¥
      */
     public String getCountSql() {
         if (isQuery) {
-            if (haveWhere) {
-                if (haveWith) {
-                    return String.format(WITH_SELECT_WHERE_FORMAT, with, "count(1)", table, where);
-                } else {
-                    return String.format(SELECT_WHERE_FORMAT, "count(1)", table, where);
-                }
+            if (haveWith) {
+                return String.format(WITH_SELECT_WHERE_FORMAT, with, "count(1)", table, where);
             } else {
-                if (haveWith) {
-                    return String.format(WITH_SELECT_FORMAT, with, "count(1)", table);
-                } else {
-                    return String.format(SELECT_FORMAT, "count(1)", table);
-                }
+                return String.format(SELECT_WHERE_FORMAT, "count(1)", table, where);
             }
         }
         return "";
@@ -455,11 +444,11 @@ public class SqlBuilder {
     }
 
     /**
-     * »ñÈ¡Oracle·ÖÒ³Sql
+     * è·å–Oracleåˆ†é¡µSql
      *
-     * @param page ¼ÇÂ¼¿ªÊ¼Êı
-     * @param rows   ¼ÇÂ¼½áÊøÊı
-     * @return ·µ»ØOracle·ÖÒ³Êı
+     * @param page è®°å½•å¼€å§‹æ•°
+     * @param rows   è®°å½•ç»“æŸæ•°
+     * @return è¿”å›Oracleåˆ†é¡µæ•°
      */
     public String getPageSql(int page, int rows) {
         int start = page * rows;
@@ -467,25 +456,25 @@ public class SqlBuilder {
         if(dbType == DatabaseType.ORACLE) {
             return String.format("SELECT * FROM (SELECT nowpage.*,rownum rn FROM (%s) nowpage WHERE rownum<=%d) WHERE rn>%d", build(), end, start);
         } else if (dbType == DatabaseType.HSQLDB) {
-            return String.format("SELECT LIMIT %d %d * FROM (%s)", start, end, build());
+            return String.format("SELECT LIMIT %d %d * FROM (%s)", start, rows, build());
         }
 
         return "";
     }
 
     /**
-     * »ñÈ¡²ÎÊıÖµÊı×é
+     * è·å–å‚æ•°å€¼æ•°ç»„
      *
-     * @return ·µ»Ø²ÎÊıÖµÊı×é
+     * @return è¿”å›å‚æ•°å€¼æ•°ç»„
      */
     public Object[] getParamsValue() {
         return paramQueue.toArray();
     }
 
     /**
-     * ½«sqlÔ¤±àÒëÓï¾ä´úÈëÖµÊä³ö
+     * å°†sqlé¢„ç¼–è¯‘è¯­å¥ä»£å…¥å€¼è¾“å‡º
      *
-     * @return ·µ»ØsqlÓï¾ä
+     * @return è¿”å›sqlè¯­å¥
      */
     public String toLog() {
         String sql = this.build();

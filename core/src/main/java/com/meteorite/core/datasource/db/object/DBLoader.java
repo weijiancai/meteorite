@@ -17,6 +17,8 @@ public interface DBLoader {
 
     List<DBObject> loadPrivileges() throws Exception;
 
+    List<DBObject> loadCharsets() throws Exception;
+
     List<DBSchema> loadSchemas() throws Exception;
 
     List<DBTable> loadTables(DBSchema schema) throws Exception;

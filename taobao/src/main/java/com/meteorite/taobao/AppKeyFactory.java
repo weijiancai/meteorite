@@ -66,6 +66,16 @@ public class AppKeyFactory {
     	return key;
     }
 
+    public static AppKey getXueFu() {
+        AppKey key = new AppKey();
+        key.url = "http://gw.api.taobao.com/router/rest";
+        key.appkey = "21630385";
+        key.secret = "48584df5f6b745b2ca5036fd21a01ea3";
+        key.sessionKey = "610042691e1381345d211690a19835446519ccd0813ec0d272937027";
+
+        return key;
+    }
+
     public static class AppKey {
         public String url;
         public String appkey;

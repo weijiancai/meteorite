@@ -1,7 +1,6 @@
 package com.meteorite.core.datasource.db;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.meteorite.core.ITree;
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
@@ -116,11 +115,13 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
-    public List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
+    public QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
+        QueryResult<DataMap> queryResult = new QueryResult<>();
+        queryResult.setPageRows(rows);
         DBDataset table = meta.getDbTable();
 
         QueryBuilder builder = QueryBuilder.create(getDatabaseType());
-        builder.sqlBuilder().from(table.getSchema().getName() + "." + table.getName());
+        builder.sql().from(table.getSchema().getName() + "." + table.getName());
         for (ICanQuery query : queryList) {
             for (ICanQuery.Condition condition : query.getConditions()) {
                 builder.add(condition.colName, condition.queryModel, condition.value, condition.dataType);
@@ -129,11 +130,16 @@ public class DBDataSource implements DataSource {
         JdbcTemplate template = new JdbcTemplate(this);
         List<DataMap> list = new ArrayList<>();
         try {
+            // 查询rows
             list = template.queryForList(builder, page, rows);
+            // 查询total rows
+            queryResult.setTotal(template.queryForInt(builder.sql().getCountSql(), builder.sql().getParamsValue()));
         } finally {
             template.close();
         }
-        return list;
+
+        queryResult.setRows(list);
+        return queryResult;
     }
 
     @Override
@@ -179,13 +185,18 @@ public class DBDataSource implements DataSource {
 
             List<DBObject> privileges = loader.loadPrivileges();
             DBObjectImpl dbPrivileges = new DBObjectImpl("Privileges", "Privileges", new ArrayList<ITreeNode>(privileges));
-            dbUsers.setIcon(DBIcons.DBO_PRIVILEGES);
-            dbUsers.setPresentableText(String.format(" (%s)", privileges.size()));
+            dbPrivileges.setIcon(DBIcons.DBO_PRIVILEGES);
+            dbPrivileges.setPresentableText(String.format(" (%s)", privileges.size()));
+
+            List<DBObject> charsetList = loader.loadCharsets();
+            DBObjectImpl dbCharsets = new DBObjectImpl("Charset", "Charset", new ArrayList<ITreeNode>(charsetList));
+            dbCharsets.setPresentableText(String.format(" (%s)", charsetList.size()));
 
             List<ITreeNode> list = new ArrayList<>();
             list.add(dbSchemas);
             list.add(dbUsers);
             list.add(dbPrivileges);
+            list.add(dbCharsets);
             navTree = new DBObjectImpl(name, name, list);
             navTree.setObjectType(DBObjectType.DATABASE);
         }

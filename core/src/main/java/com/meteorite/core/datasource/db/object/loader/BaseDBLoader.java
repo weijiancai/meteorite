@@ -26,6 +26,8 @@ public abstract class BaseDBLoader implements DBLoader {
     protected abstract String getUserSql();
     // 获得Privileges语句
     protected abstract String getPrivilegesSql();
+    // 获得Charsets语句
+    protected abstract String getCharsetsSql();
     // 获得Schema Sql语句
     protected abstract String getSchemaSql();
     // 获得Table sql语句
@@ -64,6 +66,22 @@ public abstract class BaseDBLoader implements DBLoader {
             privilege.setName(UObject.toString(map.get("PRIVILEGE_NAME")));
             privilege.setComment(UObject.toString(map.get("PRIVILEGE_NAME")));
             privilege.setObjectType(DBObjectType.PRIVILEGE);
+
+            result.add(privilege);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<DBObject> loadCharsets() throws Exception {
+        List<DBObject> result = new ArrayList<>();
+        List<DataMap> list = conn.getResultSet(getCharsetsSql());
+        for (DataMap map : list) {
+            DBObjectImpl privilege = new DBObjectImpl();
+            privilege.setName(UObject.toString(map.get("CHARSET_NAME")));
+            privilege.setComment(UObject.toString(map.get("CHARSET_NAME")));
+            privilege.setObjectType(DBObjectType.CHARSET);
 
             result.add(privilege);
         }

@@ -1,4 +1,4 @@
-package com.meteorite.core.datasource.db.util;
+package com.meteorite.core.datasource.db;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +10,8 @@ import java.util.List;
  */
 public class QueryResult<T> implements Serializable {
     private int total;
-    private List<T> rows = new ArrayList<T>();
+    private int pageRows = 15;
+    private List<T> rows = new ArrayList<>();
 
     public int getTotal() {
         return total;
@@ -26,5 +27,18 @@ public class QueryResult<T> implements Serializable {
 
     public void setRows(List<T> rows) {
         this.rows = rows;
+    }
+
+    public int getPageRows() {
+        return pageRows;
+    }
+
+    public void setPageRows(int pageRows) {
+        this.pageRows = pageRows;
+    }
+
+    public int getPageCount() {
+        int mode = total % pageRows;
+        return total / pageRows + (mode > 0 ? 1 : 0);
     }
 }

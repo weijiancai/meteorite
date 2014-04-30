@@ -17,7 +17,7 @@ import com.taobao.api.response.*;
 import java.util.*;
 
 /**
- * ÌÔ±¦ÉÌÆ·API
+ * æ·˜å®å•†å“API
  * 
  * @author wei_jc
  * @since webshop 1.00
@@ -34,76 +34,76 @@ public class TbItemFacade {
 	}
 	
 	/**
-	 * Ìí¼ÓÒ»¸öÉÌÆ·
+	 * æ·»åŠ ä¸€ä¸ªå•†å“
 	 * 
-	 * @param item ÉÌÆ·ĞÅÏ¢
+	 * @param item å•†å“ä¿¡æ¯
 	 * @throws com.taobao.api.ApiException
 	 * @throws com.taobao.api.ApiException
 	 * @since webshop 1.00
 	 */
 	public ItemAddResponse addItem(Item item) throws ApiException {
-//		log.debug("¿ªÊ¼Ìí¼ÓÌÔ±¦ÉÌÆ·£º" + item.getTitle());
+//		log.debug("å¼€å§‹æ·»åŠ æ·˜å®å•†å“ï¼š" + item.getTitle());
 		ItemAddRequest req = new ItemAddRequest();
-		// ±ØÌîÏî
-		req.setNum(item.getNum()); // ÉÌÆ·ÊıÁ¿
-		req.setPrice(item.getPrice());  // ÉÌÆ·¼Û¸ñ
-		req.setType(item.getType());  // ·¢²¼ÀàĞÍ
-		req.setStuffStatus(item.getStuffStatus());  // ĞÂ¾É³Ì¶È
-		req.setTitle(item.getTitle());  // ±¦±´±êÌâ
-		req.setDesc(item.getDesc());  // ±¦±´ÃèÊö
-//		req.setLocationState(item.getLocationState());  // ËùÔÚµØÊ¡·İ
-//		req.setLocationCity(item.getLocationCity());  // ËùÔÚµØ³ÇÊĞ
-		req.setCid(item.getCid());  // Ò¶×ÓÀàÄ¿id
+		// å¿…å¡«é¡¹
+		req.setNum(item.getNum()); // å•†å“æ•°é‡
+		req.setPrice(item.getPrice());  // å•†å“ä»·æ ¼
+		req.setType(item.getType());  // å‘å¸ƒç±»å‹
+		req.setStuffStatus(item.getStuffStatus());  // æ–°æ—§ç¨‹åº¦
+		req.setTitle(item.getTitle());  // å®è´æ ‡é¢˜
+		req.setDesc(item.getDesc());  // å®è´æè¿°
+//		req.setLocationState(item.getLocationState());  // æ‰€åœ¨åœ°çœä»½
+//		req.setLocationCity(item.getLocationCity());  // æ‰€åœ¨åœ°åŸå¸‚
+		req.setCid(item.getCid());  // å¶å­ç±»ç›®id
 
-		// ¿ÉÑ¡Ïî
-		req.setSellerCids(item.getSellerCids());  // ÉÌÆ·ËùÊôµÄµêÆÌÀàÄ¿ÁĞ±í
-		req.setApproveStatus(item.getApproveStatus());  // ÉÌÆ·ÉÏ´«ºóµÄ×´Ì¬
-		req.setDesc(item.getDesc());  // ±¦±´ÃèÊö
-		req.setFreightPayer(item.getFreightPayer());  // ÔË·Ñ³Ğµ£·½Ê½
-		req.setValidThru(item.getValidThru());  // ÓĞĞ§ÆÚ
-		req.setHasInvoice(item.getHasInvoice());  // ÊÇ·ñÓĞ·¢Æ±
-		req.setHasWarranty(item.getHasWarranty());  // ÊÇ·ñÓĞ±£ĞŞ
-		req.setHasShowcase(item.getHasShowcase());  // ³÷´°ÍÆ¼ö
-		req.setHasDiscount(item.getHasDiscount());  // Ö§³Ö»áÔ±´òÕÛ
-		req.setListTime(item.getListTime());  // ¶¨Ê±ÉÏ¼ÜÊ±¼ä
-		req.setIncrement(item.getIncrement());  // ¼Ó¼Û·ù¶È
-//		req.setImage(item.getImage());  // ÉÌÆ·Ö÷Í¼Æ¬
-		req.setAuctionPoint(item.getAuctionPoint());  // ÉÌÆ·µÄ»ı·Ö·µµã±ÈÀı
-		req.setInputPids(item.getInputPids());  // ÊôĞÔÖµ±ğÃû
-//		req.setSkuProperties(item.getSkuProperties());  // ¸üĞÂµÄSkuµÄÊôĞÔ´®
-//		req.setSkuQuantities(item.getSkuQuantities());  // SkuµÄÊıÁ¿´®
-//		req.setSkuPrices(item.getSkuPrices());  // SkuµÄ¼Û¸ñ´®
-//		req.setSkuOuterIds(item.getSkuOuterIds());  // SkuµÄÍâ²¿id´®
-//		req.setLang(item.getLang());  // ÉÌÆ·ÎÄ×ÖµÄ×Ö·û¼¯
-		req.setOuterId(item.getOuterId());  // ÉÌ¼Ò±àÂë£¬¸Ã×Ö¶ÎµÄ×î´ó³¤¶ÈÊÇ512¸ö×Ö½Ú
-		req.setProductId(item.getProductId());  // ÉÌÆ·ËùÊôµÄ²úÆ·ID(BÉÌ¼Ò·¢²¼ÉÌÆ·ĞèÒªÓÃ)
-//		req.setPicPath(item.getPicPath());  // ÉÌÆ·Ö÷Í¼ĞèÒª¹ØÁªµÄÍ¼Æ¬¿Õ¼äµÄÏà¶Ôurl
-		req.setAutoFill(item.getAutoFill());  // ´ú³äÉÌÆ·ÀàĞÍ
-		req.setInputStr(item.getInputStr());  // ÓÃ»§×ÔĞĞÊäÈëµÄ×ÓÊôĞÔÃûºÍÊôĞÔÖµ
-		req.setIsTaobao(item.getIsTaobao());  // ÊÇ·ñÔÚÌÔ±¦ÉÏÏÔÊ¾
-		req.setIsEx(item.getIsEx());  // ÊÇ·ñÔÚÍâµêÏÔÊ¾
-		req.setIs3D(item.getIs3D());  // ÊÇ·ñÊÇ3D
-		req.setSellPromise(item.getSellPromise());  // ÊÇ·ñ³ĞÅµÍË»»»õ·şÎñ!ĞéÄâÉÌÆ·ÎŞĞëÉèÖÃ´ËÏî!
-		req.setAfterSaleId(item.getAfterSaleId());  // ÊÛºóËµÃ÷Ä£°åid
-		req.setCodPostageId(item.getCodPostageId());  // ´ËÎª»õµ½¸¶¿îÔË·ÑÄ£°åµÄID
-		req.setProps(item.getProps());  // ÉÌÆ·ÊôĞÔÁĞ±í
-		req.setPostageId(item.getPostageId());  // ±¦±´ËùÊôµÄÔË·ÑÄ£°æID
-		req.setSubStock(item.getSubStock());  // ÉÌ¼ÒÊÇ·ñÖ§³ÖÅÄÏÂ¼õ¿â´æ
-		req.setItemWeight(item.getItemWeight());  // ÉÌÆ·µÄÖØÁ¿
-		req.setIsLightningConsignment(item.getIsLightningConsignment());  // ÊµÎïÉÁµç·¢»õ
+		// å¯é€‰é¡¹
+		req.setSellerCids(item.getSellerCids());  // å•†å“æ‰€å±çš„åº—é“ºç±»ç›®åˆ—è¡¨
+		req.setApproveStatus(item.getApproveStatus());  // å•†å“ä¸Šä¼ åçš„çŠ¶æ€
+		req.setDesc(item.getDesc());  // å®è´æè¿°
+		req.setFreightPayer(item.getFreightPayer());  // è¿è´¹æ‰¿æ‹…æ–¹å¼
+		req.setValidThru(item.getValidThru());  // æœ‰æ•ˆæœŸ
+		req.setHasInvoice(item.getHasInvoice());  // æ˜¯å¦æœ‰å‘ç¥¨
+		req.setHasWarranty(item.getHasWarranty());  // æ˜¯å¦æœ‰ä¿ä¿®
+		req.setHasShowcase(item.getHasShowcase());  // æ©±çª—æ¨è
+		req.setHasDiscount(item.getHasDiscount());  // æ”¯æŒä¼šå‘˜æ‰“æŠ˜
+		req.setListTime(item.getListTime());  // å®šæ—¶ä¸Šæ¶æ—¶é—´
+		req.setIncrement(item.getIncrement());  // åŠ ä»·å¹…åº¦
+//		req.setImage(item.getImage());  // å•†å“ä¸»å›¾ç‰‡
+		req.setAuctionPoint(item.getAuctionPoint());  // å•†å“çš„ç§¯åˆ†è¿”ç‚¹æ¯”ä¾‹
+		req.setInputPids(item.getInputPids());  // å±æ€§å€¼åˆ«å
+//		req.setSkuProperties(item.getSkuProperties());  // æ›´æ–°çš„Skuçš„å±æ€§ä¸²
+//		req.setSkuQuantities(item.getSkuQuantities());  // Skuçš„æ•°é‡ä¸²
+//		req.setSkuPrices(item.getSkuPrices());  // Skuçš„ä»·æ ¼ä¸²
+//		req.setSkuOuterIds(item.getSkuOuterIds());  // Skuçš„å¤–éƒ¨idä¸²
+//		req.setLang(item.getLang());  // å•†å“æ–‡å­—çš„å­—ç¬¦é›†
+		req.setOuterId(item.getOuterId());  // å•†å®¶ç¼–ç ï¼Œè¯¥å­—æ®µçš„æœ€å¤§é•¿åº¦æ˜¯512ä¸ªå­—èŠ‚
+		req.setProductId(item.getProductId());  // å•†å“æ‰€å±çš„äº§å“ID(Bå•†å®¶å‘å¸ƒå•†å“éœ€è¦ç”¨)
+//		req.setPicPath(item.getPicPath());  // å•†å“ä¸»å›¾éœ€è¦å…³è”çš„å›¾ç‰‡ç©ºé—´çš„ç›¸å¯¹url
+		req.setAutoFill(item.getAutoFill());  // ä»£å……å•†å“ç±»å‹
+		req.setInputStr(item.getInputStr());  // ç”¨æˆ·è‡ªè¡Œè¾“å…¥çš„å­å±æ€§åå’Œå±æ€§å€¼
+		req.setIsTaobao(item.getIsTaobao());  // æ˜¯å¦åœ¨æ·˜å®ä¸Šæ˜¾ç¤º
+		req.setIsEx(item.getIsEx());  // æ˜¯å¦åœ¨å¤–åº—æ˜¾ç¤º
+		req.setIs3D(item.getIs3D());  // æ˜¯å¦æ˜¯3D
+		req.setSellPromise(item.getSellPromise());  // æ˜¯å¦æ‰¿è¯ºé€€æ¢è´§æœåŠ¡!è™šæ‹Ÿå•†å“æ— é¡»è®¾ç½®æ­¤é¡¹!
+		req.setAfterSaleId(item.getAfterSaleId());  // å”®åè¯´æ˜æ¨¡æ¿id
+		req.setCodPostageId(item.getCodPostageId());  // æ­¤ä¸ºè´§åˆ°ä»˜æ¬¾è¿è´¹æ¨¡æ¿çš„ID
+		req.setProps(item.getProps());  // å•†å“å±æ€§åˆ—è¡¨
+		req.setPostageId(item.getPostageId());  // å®è´æ‰€å±çš„è¿è´¹æ¨¡ç‰ˆID
+		req.setSubStock(item.getSubStock());  // å•†å®¶æ˜¯å¦æ”¯æŒæ‹ä¸‹å‡åº“å­˜
+		req.setItemWeight(item.getItemWeight());  // å•†å“çš„é‡é‡
+		req.setIsLightningConsignment(item.getIsLightningConsignment());  // å®ç‰©é—ªç”µå‘è´§
 
 		return client.execute(req, sessionKey);
 	}
 
 	/**
-	 * ÉÏ´«Ò»¸ö²úÆ·
+	 * ä¸Šä¼ ä¸€ä¸ªäº§å“
 	 *
 	 * @param prod
 	 * @return
 	 * @throws com.taobao.api.ApiException
 	 */
 	public ProductAddResponse addProduct(Product prod) throws ApiException {
-//		log.debug("¿ªÊ¼Ìí¼ÓÌÔ±¦²úÆ·£º" + prod.getName());
+//		log.debug("å¼€å§‹æ·»åŠ æ·˜å®äº§å“ï¼š" + prod.getName());
 		ProductAddRequest req = new ProductAddRequest();
 
 		req.setCid(prod.getCid());
@@ -116,12 +116,12 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * »ñÈ¡µ±Ç°»á»°ÓÃ»§ËùÓĞ³öÊÛÖĞµÄÉÌÆ·ÁĞ±í
+	 * è·å–å½“å‰ä¼šè¯ç”¨æˆ·æ‰€æœ‰å‡ºå”®ä¸­çš„å•†å“åˆ—è¡¨
 	 *
 	 * @throws com.taobao.api.ApiException
 	 */
 	public List<Item> getOnsaleItems() throws ApiException {
-//		log.debug("¿ªÊ¼²éÑ¯ÌÔ±¦ËùÓĞÔÚÏúµÄÉÌÆ·");
+//		log.debug("å¼€å§‹æŸ¥è¯¢æ·˜å®æ‰€æœ‰åœ¨é”€çš„å•†å“");
 		List<Item> result = new ArrayList<Item>();
 
 		ItemsOnsaleGetRequest req = new ItemsOnsaleGetRequest();
@@ -143,17 +143,17 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * µÃµ½µ±Ç°»á»°ÓÃ»§¿â´æÖĞµÄÉÌÆ·ÁĞ±í
+	 * å¾—åˆ°å½“å‰ä¼šè¯ç”¨æˆ·åº“å­˜ä¸­çš„å•†å“åˆ—è¡¨
 	 *
-	 * @param banner ·ÖÀà×Ö¶Î¡£¿ÉÑ¡Öµ:
-	 *                      regular_shelved(¶¨Ê±ÉÏ¼Ü) never_on_shelf(´ÓÎ´ÉÏ¼Ü) off_shelf(ÎÒÏÂ¼ÜµÄ)
-	 *                      for_shelved(µÈ´ıËùÓĞÉÏ¼Ü) sold_out(È«²¿ÂôÍê) violation_off_shelf(Î¥¹æÏÂ¼ÜµÄ)
-	 *                      Ä¬ÈÏ²éÑ¯µÄÊÇfor_shelved(µÈ´ıËùÓĞÉÏ¼Ü)Õâ¸ö×´Ì¬µÄÉÌÆ·
+	 * @param banner åˆ†ç±»å­—æ®µã€‚å¯é€‰å€¼:
+	 *                      regular_shelved(å®šæ—¶ä¸Šæ¶) never_on_shelf(ä»æœªä¸Šæ¶) off_shelf(æˆ‘ä¸‹æ¶çš„)
+	 *                      for_shelved(ç­‰å¾…æ‰€æœ‰ä¸Šæ¶) sold_out(å…¨éƒ¨å–å®Œ) violation_off_shelf(è¿è§„ä¸‹æ¶çš„)
+	 *                      é»˜è®¤æŸ¥è¯¢çš„æ˜¯for_shelved(ç­‰å¾…æ‰€æœ‰ä¸Šæ¶)è¿™ä¸ªçŠ¶æ€çš„å•†å“
 	 * @return
 	 * @throws com.taobao.api.ApiException
 	 */
 	public List<Item> getInventoryItems(String banner) throws ApiException {
-//		log.debug("¿ªÊ¼²éÑ¯ÌÔ±¦µ±Ç°»á»°ÓÃ»§¿â´æÖĞµÄÉÌÆ·ÁĞ±í, banner = " + banner);
+//		log.debug("å¼€å§‹æŸ¥è¯¢æ·˜å®å½“å‰ä¼šè¯ç”¨æˆ·åº“å­˜ä¸­çš„å•†å“åˆ—è¡¨, banner = " + banner);
 		List<Item> result = new ArrayList<Item>();
 
 		ItemsInventoryGetRequest req = new ItemsInventoryGetRequest();
@@ -176,29 +176,29 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * »ñÈ¡ËùÓĞµÄÉÌÆ·ÁĞ±íIds£¬°üÀ¨³öÊÛÖĞµÄÉÌÆ·£¬È«²¿ÂôÍêµÄÉÌÆ·£¬ÎÒÏÂ¼ÜµÄÉÌÆ·£¬Î¥¹æÏÂ¼ÜµÄÉÌÆ·
+	 * è·å–æ‰€æœ‰çš„å•†å“åˆ—è¡¨Idsï¼ŒåŒ…æ‹¬å‡ºå”®ä¸­çš„å•†å“ï¼Œå…¨éƒ¨å–å®Œçš„å•†å“ï¼Œæˆ‘ä¸‹æ¶çš„å•†å“ï¼Œè¿è§„ä¸‹æ¶çš„å•†å“
 	 *
 	 * @return
 	 * @throws com.taobao.api.ApiException
 	 */
 	public Set<Long> getAllListItemIds() throws ApiException {
 		Set<Long> set = new HashSet<Long>();
-		// È¡³öÊÛÖĞµÄÉÌÆ·
+		// å–å‡ºå”®ä¸­çš„å•†å“
 		List<Item> onSaleList = getOnsaleItems();
 		for(Item item : onSaleList) {
 			set.add(item.getNumIid());
 		}
-		// È¡È«²¿ÂôÍêµÄÉÌÆ·
+		// å–å…¨éƒ¨å–å®Œçš„å•†å“
 		List<Item> soldOutList = getInventoryItems("sold_out");
 		for(Item item : soldOutList) {
 			set.add(item.getNumIid());
 		}
-		// µÈ´ıËùÓĞÉÏ¼Ü
+		// ç­‰å¾…æ‰€æœ‰ä¸Šæ¶
 		List<Item> offShelfList = getInventoryItems("for_shelved");
 		for(Item item : offShelfList) {
 			set.add(item.getNumIid());
 		}
-		// È¡Î¥¹æÏÂ¼ÜµÄµÄÉÌÆ·
+		// å–è¿è§„ä¸‹æ¶çš„çš„å•†å“
 		List<Item> violationOffShelfList = getInventoryItems("violation_off_shelf");
 		for(Item item : violationOffShelfList) {
 			set.add(item.getNumIid());
@@ -208,9 +208,9 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * »ñÈ¡µÄÉÌÆ·ÁĞ±í
+	 * è·å–çš„å•†å“åˆ—è¡¨
 	 *
-	 * @param set numIid¼¯ºÏ
+	 * @param set numIidé›†åˆ
 	 * @return
 	 * @throws com.taobao.api.ApiException
 	 */
@@ -231,7 +231,7 @@ public class TbItemFacade {
 				sb = new StringBuilder();
 			}
 		}
-		// È¡Ê£ÓàµÄ
+		// å–å‰©ä½™çš„
 		if(sb.toString().endsWith(",")) {
 			sb.deleteCharAt(sb.length() - 1);
 		}
@@ -241,9 +241,9 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * ÅúÁ¿»ñÈ¡ÉÌÆ·ĞÅÏ¢
+	 * æ‰¹é‡è·å–å•†å“ä¿¡æ¯
 	 *
-	 * @param numIids ÉÌÆ·Êı×ÖidÁĞ±í£¬¶à¸önum_iidÓÃ¶ººÅ¸ô¿ª£¬Ò»´Î²»³¬¹ı20¸ö¡£
+	 * @param numIids å•†å“æ•°å­—idåˆ—è¡¨ï¼Œå¤šä¸ªnum_iidç”¨é€—å·éš”å¼€ï¼Œä¸€æ¬¡ä¸è¶…è¿‡20ä¸ªã€‚
 	 * @return
 	 * @throws com.taobao.api.ApiException
 	 */
@@ -265,7 +265,7 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * »ñÈ¡Ò»¸ö²úÆ·µÄĞÅÏ¢ ,Á½ÖÖ·½Ê½: ´«Èëproduct_idÀ´²éÑ¯»ò ´«ÈëcidºÍpropsÀ´²éÑ¯
+	 * è·å–ä¸€ä¸ªäº§å“çš„ä¿¡æ¯ ,ä¸¤ç§æ–¹å¼: ä¼ å…¥product_idæ¥æŸ¥è¯¢æˆ– ä¼ å…¥cidå’Œpropsæ¥æŸ¥è¯¢
 	 *
 	 * @param productId
 	 * @param cid
@@ -291,7 +291,7 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * ¸üĞÂÉÌÆ·ĞÅÏ¢£¨¿â´æ¼°Ò»¿Ú¼Û£©
+	 * æ›´æ–°å•†å“ä¿¡æ¯ï¼ˆåº“å­˜åŠä¸€å£ä»·ï¼‰
 	 *
 	 * @param info
 	 * @return
@@ -308,7 +308,7 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * Ò»¿Ú¼ÛÉÌÆ·ÉÏ¼Ü
+	 * ä¸€å£ä»·å•†å“ä¸Šæ¶
 	 *
 	 * @param info
 	 * @return
@@ -324,7 +324,7 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * µ¥¸öÉÌÆ·ÏÂ¼Ü
+	 * å•ä¸ªå•†å“ä¸‹æ¶
 	 *
 	 * @param numIid
 	 * @return
@@ -337,7 +337,7 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * É¾³ıÌÔ±¦ÉÏµÄÉÌÆ·
+	 * åˆ é™¤æ·˜å®ä¸Šçš„å•†å“
 	 *
 	 * @param numIid
 	 * @return
@@ -350,7 +350,7 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * µİ¹éµ÷ÓÃ·µ»Ø´ËÀàÄ¿µÄËùÓĞ·ÖÀà
+	 * é€’å½’è°ƒç”¨è¿”å›æ­¤ç±»ç›®çš„æ‰€æœ‰åˆ†ç±»
 	 *
 	 * @return
 	 * @throws com.taobao.api.ApiException
@@ -382,7 +382,7 @@ public class TbItemFacade {
 	}
 
 	/**
-	 * »ñµÃÂô¼ÒµÄ×Ô¶¨ÒåÉÌÆ··ÖÀà
+	 * è·å¾—å–å®¶çš„è‡ªå®šä¹‰å•†å“åˆ†ç±»
 	 *
 	 * @param venderName
 	 * @return
@@ -421,17 +421,17 @@ public class TbItemFacade {
 		ItemImgUploadRequest req = new ItemImgUploadRequest();
 		req.setNumIid(numIid);
 		req.setIsMajor(isMajor);
-//		String fileName = "·âÃæ" + "." + UtilImage.getImageType(images);
+//		String fileName = "å°é¢" + "." + UtilImage.getImageType(images);
 //		req.setImage(new FileItem(fileName, images));
 
 		ItemImgUploadResponse res = client.execute(req, sessionKey);
 		if(!res.isSuccess()) {
-//			log.error(String.format("ÉÏ´«ÌÔ±¦Í¼Æ¬Ê§°Ü¡¾%s¡¿\n, %s", numIid + "", ErrorMsgFactory.getTbErrorMsg(res)));
+//			log.error(String.format("ä¸Šä¼ æ·˜å®å›¾ç‰‡å¤±è´¥ã€%sã€‘\n, %s", numIid + "", ErrorMsgFactory.getTbErrorMsg(res)));
 		}
 	}
 
     /**
-     * »ñÈ¡µ¥¸öÉÌÆ·µÄÏêÏ¸ĞÅÏ¢ Âô¼ÒÎ´µÇÂ¼Ê±Ö»ÄÜ»ñµÃÕâ¸öÉÌÆ·µÄ¹«¿ªÊı¾İ£¬Âô¼ÒµÇÂ¼ºó¿ÉÒÔ»ñÈ¡ÉÌÆ·µÄËùÓĞÊı¾İ
+     * è·å–å•ä¸ªå•†å“çš„è¯¦ç»†ä¿¡æ¯ å–å®¶æœªç™»å½•æ—¶åªèƒ½è·å¾—è¿™ä¸ªå•†å“çš„å…¬å¼€æ•°æ®ï¼Œå–å®¶ç™»å½•åå¯ä»¥è·å–å•†å“çš„æ‰€æœ‰æ•°æ®
      *
      * @param numIid
      * @return
@@ -441,6 +441,23 @@ public class TbItemFacade {
         ItemGetRequest req = new ItemGetRequest();
         req.setNumIid(numIid);
         req.setFields("detail_url,num_iid,title,nick,type,cid,seller_cids,props,input_pids,input_str,desc,pic_url,num,valid_thru,list_time,delist_time,stuff_status,location,price,post_fee,express_fee,ems_fee,has_discount,freight_payer,has_invoice,has_warranty,has_showcase,modified,increment,approve_status,postage_id,product_id,auction_point,property_alias,item_img,prop_img,sku,video,outer_id,is_virtual");
+
+        return client.execute(req, sessionKey);
+    }
+
+    public ProductGetResponse getProduct(Long productId) throws ApiException {
+        ProductGetRequest req=new ProductGetRequest();
+        req.setFields("product_id,cid,cat_name,props,props_str,name,binds,binds_str,sale_props,sale_props_str,price,desc,pic_url,created,modified,product_img.id,product_img.url,product_img.position,product_prop_img.id,product_prop_img.props,product_prop_img.url,product_prop_img.position");
+        req.setProductId(productId);
+
+        return client.execute(req);
+    }
+
+    public ProductsSearchResponse searchProduct(String isbn) throws ApiException {
+        ProductsSearchRequest req = new ProductsSearchRequest();
+        req.setFields("product_id,cid,price,props,name,pic_url,status,cspu_feature");
+        req.setMarketId("2");
+        req.setCustomerProps("1636953:" + isbn);
 
         return client.execute(req, sessionKey);
     }

@@ -3,6 +3,7 @@ package com.meteorite.core.datasource.file;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
+import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
@@ -34,7 +35,7 @@ public class FileDataSource implements DataSource {
     }
 
     @Override
-    public List<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
+    public QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
         return null;
     }
 

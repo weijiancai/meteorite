@@ -32,6 +32,15 @@ public class HsqldbLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getCharsetsSql() {
+        return "select\n" +
+                "                CHARACTER_SET_NAME as CHARSET_NAME,\n" +
+                "                '' as MAX_LENGTH\n" +
+                "            from INFORMATION_SCHEMA.CHARACTER_SETS\n" +
+                "            order by CHARACTER_SET_NAME asc";
+    }
+
+    @Override
     protected String getSchemaSql() {
         return "select\n" +
                 "                SCHEMA_NAME,\n" +

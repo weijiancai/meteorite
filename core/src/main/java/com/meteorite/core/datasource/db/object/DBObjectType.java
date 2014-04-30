@@ -44,7 +44,7 @@ public enum DBObjectType {
     PACKAGE_TYPE(null, null),
     PACKAGE_BODY(null, null),
     PARTITION(null, null),
-    PRIVILEGE(null, null),
+    PRIVILEGE(DBIcons.DBO_PRIVILEGE, DBIcons.DBO_PRIVILEGES),
     PROCEDURE(null, null),
     PROFILE(null, null),
     ROLLBACK_SEGMENT(null, null),

@@ -1,6 +1,7 @@
 package com.meteorite.core.meta.model;
 
 import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.DBTable;
@@ -12,7 +13,9 @@ import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -45,6 +48,9 @@ public class Meta {
     private DataSource dataSource;
 
     private ObjectProperty<ObservableList<DataMap>> dataList = new SimpleObjectProperty<>();
+    private IntegerProperty totalRows = new SimpleIntegerProperty(0); // 总行数
+    private IntegerProperty pageCount = new SimpleIntegerProperty(0); // 总页数
+    private IntegerProperty pageRows = new SimpleIntegerProperty(15); // 每页行数
 
     public Meta() {}
 
@@ -207,6 +213,42 @@ public class Meta {
         dataList.set(FXCollections.observableList(list));
     }
 
+    public IntegerProperty totalRowsProperty() {
+        return totalRows;
+    }
+
+    public int getTotalRows() {
+        return totalRows.get();
+    }
+
+    public void setTotalRows(int totalRows) {
+        this.totalRows.set(totalRows);
+    }
+
+    public int getPageCount() {
+        return pageCount.get();
+    }
+
+    public IntegerProperty pageCountProperty() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount.set(pageCount);
+    }
+
+    public int getPageRows() {
+        return pageRows.get();
+    }
+
+    public IntegerProperty pageRowsProperty() {
+        return pageRows;
+    }
+
+    public void setPageRows(int pageRows) {
+        this.pageRows.set(pageRows);
+    }
+
     /**
      * 获得行数据Map
      *
@@ -217,9 +259,11 @@ public class Meta {
         return dataList.get().get(row);
     }
 
-    public List<DataMap> query(List<ICanQuery> queryList, int page, int rows) throws Exception {
-        List<DataMap> result = dataSource.retrieve(this, queryList, page, rows);
-        setDataList(result);
+    public QueryResult<DataMap> query(List<ICanQuery> queryList, int page, int rows) throws Exception {
+        QueryResult<DataMap> result = dataSource.retrieve(this, queryList, page, rows);
+        setDataList(result.getRows());
+        setTotalRows(result.getTotal());
+        setPageCount(result.getPageCount());
         return result;
     }
 

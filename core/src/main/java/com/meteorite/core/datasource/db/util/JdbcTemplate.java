@@ -4,13 +4,13 @@ import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.DBDataSource;
+import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.db.RowMapper;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.util.Callback;
 
-import java.io.FileOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,9 +100,9 @@ public class JdbcTemplate {
     }
 
     public List<DataMap> queryForList(QueryBuilder builder, int page, int rows) throws SQLException {
-        System.out.println(builder.toLog());
-        SqlBuilder sqlBuilder = builder.sqlBuilder();
-        return queryForList(sqlBuilder.getPageSql(page, rows), builder.getParamsValue());
+        System.out.println(builder.sql().toLog());
+        SqlBuilder sqlBuilder = builder.sql();
+        return queryForList(sqlBuilder.getPageSql(page, rows), builder.sql().getParamsValue());
     }
 
     public List<DataMap> queryForList(String sql, Object[] paramValues) throws SQLException {
@@ -128,6 +128,23 @@ public class JdbcTemplate {
         rs.close();
 
         return list;
+    }
+
+    public int queryForInt(String sql, Object[] paramValues) throws SQLException {
+        int result = 0;
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        for (int i = 0; i < paramValues.length; i++) {
+            pstmt.setObject(i + 1, paramValues[i]);
+        }
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            result = rs.getInt(1);
+        }
+        rs.close();
+        pstmt.close();
+
+        return result;
     }
 
     public QueryResult<Map<String, Object>> queryForList(String sql, String conditions, List values, int page, int rows) throws Exception {
