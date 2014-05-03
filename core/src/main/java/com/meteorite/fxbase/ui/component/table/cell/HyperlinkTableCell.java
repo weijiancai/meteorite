@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TableColumn;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.util.Callback;
 
 /**
@@ -25,6 +26,7 @@ import javafx.util.Callback;
 public class HyperlinkTableCell extends BaseTableCell {
     private Hyperlink hyperlink;
     private boolean isInit;
+    private Paint originalTextFile;
 
     public HyperlinkTableCell(TableColumn<DataMap, String> column, TableFieldProperty prop) {
         super(column, prop);
@@ -51,9 +53,12 @@ public class HyperlinkTableCell extends BaseTableCell {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if (newValue) {
+                    if (originalTextFile == null) {
+                        originalTextFile = hyperlink.getTextFill();
+                    }
                     hyperlink.setTextFill(Color.WHITE);
                 } else {
-                    hyperlink.setTextFill(Color.BLUE);
+                    hyperlink.setTextFill(originalTextFile);
                 }
             }
         });

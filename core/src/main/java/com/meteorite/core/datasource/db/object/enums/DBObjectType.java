@@ -1,4 +1,4 @@
-package com.meteorite.core.datasource.db.object;
+package com.meteorite.core.datasource.db.object.enums;
 
 import com.meteorite.core.datasource.db.DBIcons;
 
@@ -9,12 +9,12 @@ import com.meteorite.core.datasource.db.DBIcons;
  * @since 1.0.0
  */
 public enum DBObjectType {
-    ARGUMENT(null, null),
+    ARGUMENT(DBIcons.DBO_ARGUMENT, DBIcons.DBO_ARGUMENTS),
     CATEGORY(null, null),
     CHARSET(null, null),
     CLUSTER(null, null),
     COLUMN(DBIcons.DBO_COLUMN, DBIcons.DBO_COLUMNS),
-    CONSTRAINT(null, null),
+    CONSTRAINT(DBIcons.DBO_CONSTRAINT, DBIcons.DBO_CONSTRAINT),
     DATABASE(DBIcons.DBO_DATABASE, null),
     DATASET(null, null),
     DBLINK(null, null),
@@ -24,10 +24,10 @@ public enum DBObjectType {
     DIMENSION_LEVEL(null, null),
     DISKGROUP(null, null),
     DOMAIN(null, null),
-    FUNCTION(null, null),
+    FUNCTION(DBIcons.DBO_FUNCTION, DBIcons.DBO_FUNCTIONS),
     GRANTED_PRIVILEGE(null, null),
     GRANTED_ROLE(null, null),
-    INDEX(null, null),
+    INDEX(DBIcons.DBO_INDEX, DBIcons.DBO_INDEXES),
     INDEXTYPE(null, null),
     JAVA_OBJECT(null, null),
     LOB(null, null),
@@ -45,7 +45,7 @@ public enum DBObjectType {
     PACKAGE_BODY(null, null),
     PARTITION(null, null),
     PRIVILEGE(DBIcons.DBO_PRIVILEGE, DBIcons.DBO_PRIVILEGES),
-    PROCEDURE(null, null),
+    PROCEDURE(DBIcons.DBO_PROCEDURE, DBIcons.DBO_PROCEDURES),
     PROFILE(null, null),
     ROLLBACK_SEGMENT(null, null),
     ROLE(null, null),
@@ -55,7 +55,7 @@ public enum DBObjectType {
     SYNONYM(null, null),
     TABLE(DBIcons.DBO_TABLE, DBIcons.DBO_TABLES),
     TABLESPACE(null, null),
-    TRIGGER(null, null),
+    TRIGGER(DBIcons.DBO_TRIGGER, DBIcons.DBO_TRIGGERS),
     TYPE(null, null),
     TYPE_ATTRIBUTE(null, null),
     TYPE_FUNCTION(null, null),

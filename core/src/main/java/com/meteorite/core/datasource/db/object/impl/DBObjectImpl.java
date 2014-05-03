@@ -1,10 +1,9 @@
 package com.meteorite.core.datasource.db.object.impl;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.meteorite.core.ITree;
 import com.meteorite.core.datasource.db.DBObjCache;
 import com.meteorite.core.datasource.db.object.DBObject;
-import com.meteorite.core.datasource.db.object.DBObjectType;
+import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.loader.DBDataset;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
@@ -17,9 +16,8 @@ import com.meteorite.core.util.UString;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author wei_jc
@@ -87,6 +85,9 @@ public class DBObjectImpl implements DBObject {
     @Override
     @XmlTransient
     public List<ITreeNode> getChildren() {
+        if (children == null) {
+            children = new ArrayList<>();
+        }
         return children;
     }
 
@@ -159,9 +160,10 @@ public class DBObjectImpl implements DBObject {
                 }
                 case TABLE:
                 case VIEW:
+                case CONSTRAINT:
                 case COLUMN: {
                     sb.append(name.toLowerCase());
-                    if (UString.isNotEmpty(comment)) {
+                    if (UString.isNotEmpty(comment) && !getSchema().getName().equalsIgnoreCase("information_schema")) {
                         sb.append(" - ").append(comment);
                     }
                     break;

@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource.db.object.impl;
 
 import com.meteorite.core.datasource.db.object.DBColumn;
+import com.meteorite.core.datasource.db.object.DBConstraint;
 import com.meteorite.core.datasource.db.object.loader.DBDataset;
 import com.meteorite.core.model.ITreeNode;
 
@@ -15,9 +16,11 @@ import java.util.Map;
  * @author wei_jc
  * @since 1.0.0
  */
-public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset{
+public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
     private List<DBColumn> columns;
+    private List<DBConstraint> constraints;
     private Map<String, DBColumn> columnMap = new HashMap<>();
+    private Map<String, DBConstraint> constraintMap = new HashMap<>();
 
     @Override
     public DBColumn getColumn(String columnName) {
@@ -29,6 +32,16 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset{
     @XmlAnyElement
     public List<DBColumn> getColumns() {
         return columns;
+    }
+
+    @Override
+    public List<DBConstraint> getConstraints() {
+        return constraints;
+    }
+
+    @Override
+    public DBConstraint getConstraint(String name) {
+        return constraintMap.get(name);
     }
 
     @Override
@@ -47,6 +60,14 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset{
         columnMap.clear();
         for (DBColumn column : columns) {
             columnMap.put(column.getName().toLowerCase(), column);
+        }
+    }
+
+    public void setConstraints(List<DBConstraint> constraints) {
+        this.constraints = constraints;
+        constraintMap.clear();
+        for (DBConstraint constraint : constraints) {
+            constraintMap.put(constraint.getName(), constraint);
         }
     }
 }

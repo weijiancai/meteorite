@@ -72,6 +72,10 @@ public class DataMap extends HashMap<String,Object> {
         return UNumber.toInt(getString(key));
     }
 
+    public long getLong(String key) {
+        return UNumber.toLong(getString(key));
+    }
+
     /**
      * 获得key对应的Boolean值
      *

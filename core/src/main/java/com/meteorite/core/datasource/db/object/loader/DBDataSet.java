@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource.db.object.loader;
 
 import com.meteorite.core.datasource.db.object.DBColumn;
+import com.meteorite.core.datasource.db.object.DBConstraint;
 import com.meteorite.core.datasource.db.object.DBObject;
 
 import java.util.List;
@@ -33,4 +34,21 @@ public interface DBDataset extends DBObject {
      * @return 返回主键列
      */
     List<DBColumn> getPkColumns();
+
+    /**
+     * 获得数据库表的约束信息
+     *
+     * @return 返回数据库表中的约束信息
+     * @since 1.0.0
+     */
+    List<DBConstraint> getConstraints();
+
+    /**
+     * 根据约束名，获得约束信息
+     *
+     * @param name 约束名
+     * @return 返回约束信息
+     * @since 1.0.0
+     */
+    DBConstraint getConstraint(String name);
 }

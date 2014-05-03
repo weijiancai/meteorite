@@ -358,8 +358,8 @@ public class MetaManager {
         Meta meta = new Meta();
         meta.setName(UString.tableNameToClassName(table.getName()));
         String comment = table.getComment();
-        if (UString.isNotEmpty(comment) && comment.length() > 128) {
-            meta.setDisplayName(table.getComment().substring(0, 128));
+        if (UString.isNotEmpty(comment) && comment.length() > 100) {
+            meta.setDisplayName(table.getComment().substring(0, 100));
         }
 
         meta.setDesc(comment);

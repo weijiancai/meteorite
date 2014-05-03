@@ -21,6 +21,14 @@ public interface DBLoader {
 
     List<DBSchema> loadSchemas() throws Exception;
 
+    List<DBIndex> loadIndexes(DBSchema schema) throws Exception;
+
+    List<DBTrigger> loadTriggers(DBSchema schema) throws Exception;
+
+    List<DBProcedure> loadProcedures(DBSchema schema) throws Exception;
+
+    List<DBFunction> loadFunctions(DBSchema schema) throws Exception;
+
     List<DBTable> loadTables(DBSchema schema) throws Exception;
 
     List<DBView> loadViews(DBSchema schema) throws Exception;

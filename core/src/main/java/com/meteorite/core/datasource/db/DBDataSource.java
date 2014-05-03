@@ -7,8 +7,10 @@ import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.object.*;
+import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
+import com.meteorite.core.datasource.db.object.impl.DBObjectList;
 import com.meteorite.core.datasource.db.object.loader.DBDataset;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
@@ -168,29 +170,18 @@ public class DBDataSource implements DataSource {
     public INavTreeNode getNavTree() throws Exception {
         if (navTree == null) {
             List<DBSchema> schemas = getSchemas();
-            List<ITreeNode> children = new ArrayList<>();
-            for (DBSchema schema : schemas) {
-                children.add(schema);
-            }
-            DBObjectImpl dbSchemas = new DBObjectImpl("Schemas", "Schemas", new ArrayList<ITreeNode>(schemas));
-            dbSchemas.setIcon(DBIcons.DBO_SCHEMAS);
-            dbSchemas.setPresentableText(String.format(" (%s)", children.size()));
+            DBObjectList dbSchemas = new DBObjectList("Schemas", DBIcons.DBO_SCHEMAS, new ArrayList<ITreeNode>(schemas));
 
             DBLoader loader = connection.getLoader();
 
             List<DBUser> users = loader.loadUsers();
-            DBObjectImpl dbUsers = new DBObjectImpl("Users", "Users", new ArrayList<ITreeNode>(users));
-            dbUsers.setIcon(DBIcons.DBO_USERS);
-            dbUsers.setPresentableText(String.format(" (%s)", users.size()));
+            DBObjectList dbUsers = new DBObjectList("Users", DBIcons.DBO_USERS, new ArrayList<ITreeNode>(users));
 
             List<DBObject> privileges = loader.loadPrivileges();
-            DBObjectImpl dbPrivileges = new DBObjectImpl("Privileges", "Privileges", new ArrayList<ITreeNode>(privileges));
-            dbPrivileges.setIcon(DBIcons.DBO_PRIVILEGES);
-            dbPrivileges.setPresentableText(String.format(" (%s)", privileges.size()));
+            DBObjectList dbPrivileges = new DBObjectList("Privileges", DBIcons.DBO_PRIVILEGES, new ArrayList<ITreeNode>(privileges));
 
             List<DBObject> charsetList = loader.loadCharsets();
-            DBObjectImpl dbCharsets = new DBObjectImpl("Charset", "Charset", new ArrayList<ITreeNode>(charsetList));
-            dbCharsets.setPresentableText(String.format(" (%s)", charsetList.size()));
+            DBObjectList dbCharsets = new DBObjectList("Charset", null, new ArrayList<ITreeNode>(charsetList));
 
             List<ITreeNode> list = new ArrayList<>();
             list.add(dbSchemas);

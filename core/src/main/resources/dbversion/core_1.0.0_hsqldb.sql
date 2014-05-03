@@ -1,4 +1,5 @@
 -- 删除表
+drop table if exists sys_meta_reference;
 drop table if exists sys_view_prop;
 drop table if exists sys_view_config;
 drop table if exists sys_db_version;
@@ -282,6 +283,26 @@ comment on column sys_view_prop.layout_prop_id is '布局属性ID';
 comment on column sys_view_prop.meta_field_id is '元字段ID';
 comment on column sys_view_prop.value is '属性值';
 
+/*==============================================================*/
+/* Table: sys_meta_reference                                    */
+/*==============================================================*/
+create table sys_meta_reference
+(
+   id                   varchar(32) not null,
+   pk_meta_id           varchar(32) not null,
+   pk_meta_field_id     varchar(32) not null,
+   fk_meta_id           varchar(32) not null,
+   fk_meta_field_id     varchar(32) not null,
+   primary key (id)
+);
+
+comment on table sys_meta_reference is '元数据引用';
+comment on column sys_meta_reference.id is '引用ID';
+comment on column sys_meta_reference.pk_meta_id is '主元数据ID';
+comment on column sys_meta_reference.pk_meta_field_id is '主元数据列ID';
+comment on column sys_meta_reference.fk_meta_id is '引用元数据ID';
+comment on column sys_meta_reference.fk_meta_field_id is '引用元数据列ID';
+
 -- 约束
 alter table sys_dz_code add constraint FK_code_categoryId foreign key (category_id)
       references sys_dz_category (id) on delete cascade on update cascade;
@@ -312,6 +333,19 @@ alter table sys_view_prop add constraint FK_view_prop_layoutPropId foreign key (
 
 alter table sys_view_prop add constraint FK_view_prop_metaFieldId foreign key (meta_field_id)
       references sys_meta_field (id) on delete cascade on update cascade;
+
+alter table sys_meta_reference add constraint FK_meta_reference_fkMetaFieldId foreign key (fk_meta_field_id)
+      references sys_meta_field (id) on delete cascade on update cascade;
+
+alter table sys_meta_reference add constraint FK_meta_reference_fkMetaId foreign key (fk_meta_id)
+      references sys_meta (id) on delete cascade on update cascade;
+
+alter table sys_meta_reference add constraint FK_meta_reference_pkMetaFieldId foreign key (pk_meta_field_id)
+      references sys_meta_field (id) on delete cascade on update cascade;
+
+alter table sys_meta_reference add constraint FK_meta_reference_pkMetaId foreign key (pk_meta_id)
+      references sys_meta (id) on delete restrict on update restrict;
+
 
 -- 索引
 create unique index IUX_NAME on sys_layout

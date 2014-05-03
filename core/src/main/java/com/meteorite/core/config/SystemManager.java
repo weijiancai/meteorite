@@ -121,6 +121,8 @@ public class SystemManager {
                 System.out.println("检测到新版本需要升级：" + version);
                 dataSource.getDbConnection().execSqlFile(file);
                 System.out.println("升级完成");
+                // 删除SystemInfo.xml文件
+                sysInfo.getXmlFile().deleteOnExit();
             }
         }
     }

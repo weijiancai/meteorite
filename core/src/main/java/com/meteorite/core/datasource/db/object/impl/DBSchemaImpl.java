@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource.db.object.impl;
 
 import com.meteorite.core.datasource.db.object.*;
+import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -17,7 +18,13 @@ import java.util.Map;
 public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     private List<DBTable> tables;
     private List<DBView> views;
+    private List<DBIndex> indexes;
+    private List<DBTrigger> triggers;
+    private List<DBProcedure> procedures;
+    private List<DBFunction> functions;
     private Map<String, DBTable> tableMap = new HashMap<String, DBTable>();
+    private Map<String, DBFunction> functionMap = new HashMap<>();
+    private Map<String, DBProcedure> procedureMap = new HashMap<>();
 
     public DBSchemaImpl() {
         setObjectType(DBObjectType.SCHEMA);
@@ -56,12 +63,12 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
 
     @Override
     public List<DBProcedure> getProcedures() {
-        return null;
+        return procedures;
     }
 
     @Override
     public List<DBFunction> getFunctions() {
-        return null;
+        return functions;
     }
 
     @Override
@@ -76,17 +83,17 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
 
     @Override
     public DBProcedure getProcedure(String name) {
-        return null;
+        return procedureMap.get(name);
     }
 
     @Override
     public DBFunction getFunction(String name) {
-        return null;
+        return functionMap.get(name);
     }
 
     @Override
     public List<DBIndex> getIndexes() {
-        return null;
+        return indexes;
     }
 
     @Override
@@ -106,6 +113,30 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
 
     @Override
     public List<DBTrigger> getTriggers() {
-        return null;
+        return triggers;
+    }
+
+    public void setIndexes(List<DBIndex> indexes) {
+        this.indexes = indexes;
+    }
+
+    public void setTriggers(List<DBTrigger> triggers) {
+        this.triggers = triggers;
+    }
+
+    public void setProcedures(List<DBProcedure> procedures) {
+        this.procedures = procedures;
+        procedureMap.clear();
+        for (DBProcedure procedure : procedures) {
+            procedureMap.put(procedure.getName(), procedure);
+        }
+    }
+
+    public void setFunctions(List<DBFunction> functions) {
+        this.functions = functions;
+        functionMap.clear();
+        for (DBFunction function : functions) {
+            functionMap.put(function.getName(), function);
+        }
     }
 }

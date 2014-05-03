@@ -110,4 +110,121 @@ public class MySqlLoader extends BaseDBLoader {
                 "                col.TABLE_NAME = '{1}'\n" +
                 "            order by col.ORDINAL_POSITION asc";
     }
+
+    @Override
+    protected String getConstraintsSql() {
+        return "select\n" +
+                "                tc.TABLE_NAME as DATASET_NAME,\n" +
+                "                case\n" +
+                "                    when tc.CONSTRAINT_TYPE = 'PRIMARY KEY' then concat('pk_', tc.TABLE_NAME)\n" +
+                "                    when tc.CONSTRAINT_TYPE = 'UNIQUE' then concat('unq_', tc.TABLE_NAME)\n" +
+                "                    else tc.CONSTRAINT_NAME\n" +
+                "                end as CONSTRAINT_NAME,\n" +
+                "                tc.CONSTRAINT_TYPE,\n" +
+                "                rc.UNIQUE_CONSTRAINT_SCHEMA as FK_CONSTRAINT_OWNER,\n" +
+                "                case\n" +
+                "                    when rc.UNIQUE_CONSTRAINT_NAME = 'PRIMARY' then concat('pk_', rc.REFERENCED_TABLE_NAME)\n" +
+                "                    when rc.UNIQUE_CONSTRAINT_NAME = 'name' then concat('unq_', rc.REFERENCED_TABLE_NAME)\n" +
+                "                    else rc.UNIQUE_CONSTRAINT_NAME\n" +
+                "                end as FK_CONSTRAINT_NAME,\n" +
+                "                'Y' as IS_ENABLED,\n" +
+                "                null as CHECK_CONDITION\n" +
+                "            from\n" +
+                "                INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc left join\n" +
+                "                INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc on\n" +
+                "                    rc.CONSTRAINT_SCHEMA = tc.CONSTRAINT_SCHEMA and\n" +
+                "                    rc.CONSTRAINT_NAME = tc.CONSTRAINT_NAME and\n" +
+                "                    rc.TABLE_NAME = tc.TABLE_NAME\n" +
+                "            where\n" +
+                "                tc.TABLE_SCHEMA = '{0}' and\n" +
+                "                tc.TABLE_NAME = '{1}'\n" +
+                "            order by\n" +
+                "                tc.TABLE_NAME,\n" +
+                "                tc.CONSTRAINT_NAME asc";
+    }
+
+    @Override
+    protected String getIndexesSql() {
+        return "select distinct\n" +
+                "                INDEX_NAME,\n" +
+                "                TABLE_NAME,\n" +
+                "                if (NON_UNIQUE = 'YES', 'N', 'Y') as IS_UNIQUE,\n" +
+                "                'Y' as IS_VALID\n" +
+                "            from INFORMATION_SCHEMA.STATISTICS\n" +
+                "            where TABLE_SCHEMA = '{0}'\n" +
+                "            order by\n" +
+                "                TABLE_NAME,\n" +
+                "                INDEX_NAME asc";
+    }
+
+    @Override
+    protected String getTriggersSql() {
+        return "select\n" +
+                "                EVENT_OBJECT_TABLE as DATASET_NAME,\n" +
+                "                TRIGGER_NAME,\n" +
+                "                ACTION_TIMING as TRIGGER_TYPE,\n" +
+                "                EVENT_MANIPULATION as TRIGGERING_EVENT,\n" +
+                "                'Y' as IS_ENABLED,\n" +
+                "                'Y' as IS_VALID,\n" +
+                "                'N' as IS_DEBUG,\n" +
+                "                'Y' as IS_FOR_EACH_ROW\n" +
+                "            from INFORMATION_SCHEMA.TRIGGERS\n" +
+                "            where EVENT_OBJECT_SCHEMA = '{0}'\n" +
+                "            order by\n" +
+                "                EVENT_OBJECT_TABLE,\n" +
+                "                TRIGGER_NAME asc";
+    }
+
+    @Override
+    protected String getProceduresSql() {
+        return "select\n" +
+                "  ROUTINE_NAME as PROCEDURE_NAME,\n" +
+                "  'Y' as IS_VALID,\n" +
+                "  'N' as IS_DEBUG,\n" +
+                "  left(IS_DETERMINISTIC, 1) as IS_DETERMINISTIC\n" +
+                "from INFORMATION_SCHEMA.ROUTINES\n" +
+                "where\n" +
+                "  ROUTINE_SCHEMA = '%1$s' and\n" +
+                "  ROUTINE_TYPE = 'PROCEDURE'\n" +
+                "order by ROUTINE_NAME asc";
+    }
+
+    @Override
+    protected String getFunctionsSql() {
+        return "select\n" +
+                "                ROUTINE_NAME as FUNCTION_NAME,\n" +
+                "                'Y' as IS_VALID,\n" +
+                "                'N' as IS_DEBUG,\n" +
+                "                left(IS_DETERMINISTIC, 1) as IS_DETERMINISTIC\n" +
+                "            from INFORMATION_SCHEMA.ROUTINES\n" +
+                "            where\n" +
+                "                ROUTINE_SCHEMA = '%1$s' and\n" +
+                "                ROUTINE_TYPE = 'FUNCTION'\n" +
+                "            order by ROUTINE_NAME asc";
+    }
+
+    @Override
+    protected String getParametersSql() {
+        return "select\n" +
+                "                PARAMETER_NAME as ARGUMENT_NAME,\n" +
+                "                null as PROGRAM_NAME,\n" +
+                "                SPECIFIC_NAME as METHOD_NAME,\n" +
+                "                ROUTINE_TYPE as METHOD_TYPE\n" +
+                "                0 as OVERLOAD,\n" +
+                "                ORDINAL_POSITION as POSITION,\n" +
+                "                ORDINAL_POSITION as SEQUENCE,\n" +
+                "                if (PARAMETER_MODE is null, 'OUT', PARAMETER_MODE) as IN_OUT,\n" +
+                "                null as DATA_TYPE_OWNER,\n" +
+                "                null as DATA_TYPE_PACKAGE,\n" +
+                "                DATA_TYPE as DATA_TYPE_NAME,\n" +
+                "                CHARACTER_MAXIMUM_LENGTH  as DATA_LENGTH,\n" +
+                "                NUMERIC_PRECISION as DATA_PRECISION,\n" +
+                "                NUMERIC_SCALE as DATA_SCALE\n" +
+                "            from INFORMATION_SCHEMA.PARAMETERS\n" +
+                "            where\n" +
+                "                SPECIFIC_SCHEMA = '%1$s'\n" +
+                "            order by\n" +
+                "                SPECIFIC_NAME,\n" +
+                "                ORDINAL_POSITION asc";
+    }
 }

@@ -5,18 +5,19 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.layout.property.CrudProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.model.View;
+import com.meteorite.core.util.UNumber;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Pagination;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -27,14 +28,15 @@ import javafx.util.Callback;
  * @since 1.0.0
  */
 public class MuCrud extends BorderPane {
-    private View view;
+    public static final String TOTAL_FORMAT = "总共%s条";
     private CrudProperty crudProperty;
     private MUTable table;
     private MUForm queryForm;
     private Pagination pagination;
+    private Hyperlink totalLink;
+    private TextField pageRowsTF;
 
     public MuCrud(View view) {
-        this.view = view;
         this.crudProperty = new CrudProperty(view);
         initUI();
     }
@@ -42,6 +44,7 @@ public class MuCrud extends BorderPane {
     private void initUI() {
         this.setTop(createTop());
         this.setCenter(createCenter());
+        this.setBottom(createBottom());
     }
 
     private Node createTop() {
@@ -81,8 +84,9 @@ public class MuCrud extends BorderPane {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 Meta meta = crudProperty.getQueryView().getMeta();
-                meta.query(queryForm.getQueryList(), 0, 15);
+                meta.query(queryForm.getQueryList(), 0, UNumber.toInt(pageRowsTF.getText()));
                 pagination.setPageCount(meta.getPageCount());
+                totalLink.setText(String.format(TOTAL_FORMAT, meta.getTotalRows()));
             }
         });
 
@@ -102,8 +106,6 @@ public class MuCrud extends BorderPane {
     }
 
     private Node createCenter() {
-        VBox box = new VBox();
-
         table = new MUTable(crudProperty.getTableView());
         table.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -114,6 +116,13 @@ public class MuCrud extends BorderPane {
             }
         });
 
+        return table;
+    }
+
+    private Node createBottom() {
+        HBox box = new HBox();
+        box.setAlignment(Pos.CENTER_LEFT);
+
         pagination = new Pagination(1);
         pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -122,17 +131,19 @@ public class MuCrud extends BorderPane {
                 try {
                     meta.query(queryForm.getQueryList(), newValue.intValue(), 15);
                     pagination.setPageCount(meta.getPageCount());
+                    totalLink.setText(String.format(TOTAL_FORMAT, meta.getTotalRows()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+        totalLink = new Hyperlink(String.format(TOTAL_FORMAT, 0));
+        Label pageRowsLabel = new Label("，每页显示");
+        pageRowsTF = new TextField("15");
 
-//        box.getChildren().addAll(table);
+        box.getChildren().addAll(totalLink, pageRowsLabel, pageRowsTF, new Label("条"), pagination);
 
-        this.setBottom(pagination);
-
-        return table;
+        return box;
     }
 
     private void openFormWin(DataMap result) {

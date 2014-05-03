@@ -22,4 +22,12 @@ public class UNumber {
             return 0;
         }
     }
+
+    public static long toLong(String str) {
+        try {
+            return UString.isEmpty(str) ? 0 : Long.parseLong(str);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }

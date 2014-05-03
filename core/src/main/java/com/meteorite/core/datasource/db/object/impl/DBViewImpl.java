@@ -1,6 +1,6 @@
 package com.meteorite.core.datasource.db.object.impl;
 
-import com.meteorite.core.datasource.db.object.DBObjectType;
+import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.DBView;
 
 /**

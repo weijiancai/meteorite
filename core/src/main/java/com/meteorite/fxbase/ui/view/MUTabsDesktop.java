@@ -7,11 +7,15 @@ import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.component.tree.FileTreeItem;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import org.controlsfx.control.MasterDetailPane;
 
 import java.io.File;
 import java.util.HashMap;
@@ -36,12 +40,20 @@ public class MUTabsDesktop extends BorderPane {
         tabPane = new MUTabPane();
 
         this.setTop(toolBar);
-        this.setLeft(tree);
-        this.setCenter(tabPane);
+//        this.setLeft(tree);
+//        this.setCenter(tabPane);
+        final MasterDetailPane sp = new MasterDetailPane(Side.LEFT);
+        sp.setDividerPosition(0.8);
+        sp.setMasterNode(tabPane);
+        sp.setDetailNode(tree);
+        this.setCenter(sp);
 
-        TreeView<File> fileTree = new TreeView<>();
+        Tab tab = new Tab("桌面");
+        tab.setClosable(false);
+        tabPane.getTabs().add(tab);
+        /*TreeView<File> fileTree = new TreeView<>();
         fileTree.setRoot(new FileTreeItem(new File("/")));
-        this.setRight(fileTree);
+        this.setRight(fileTree);*/
 
         initUI();
     }

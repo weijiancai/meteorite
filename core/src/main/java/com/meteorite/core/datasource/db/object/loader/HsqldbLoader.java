@@ -109,4 +109,118 @@ public class HsqldbLoader extends BaseDBLoader {
                 "                col.TABLE_NAME = '%2$s'\n" +
                 "            order by col.ORDINAL_POSITION asc";
     }
+
+    @Override
+    protected String getConstraintsSql() {
+        return "select\n" +
+                "  tc.TABLE_NAME as DATASET_NAME,\n" +
+                "  case\n" +
+                "  when tc.CONSTRAINT_TYPE = 'PRIMARY KEY' then concat('PK_', tc.TABLE_NAME)\n" +
+                "  when tc.CONSTRAINT_TYPE = 'UNIQUE' then concat('UNQ_', tc.TABLE_NAME)\n" +
+                "  else tc.CONSTRAINT_NAME\n" +
+                "  end as CONSTRAINT_NAME,\n" +
+                "  tc.CONSTRAINT_TYPE,\n" +
+                "  rc.UNIQUE_CONSTRAINT_SCHEMA as FK_CONSTRAINT_OWNER,\n" +
+                "  rc.UNIQUE_CONSTRAINT_NAME as FK_CONSTRAINT_NAME,\n" +
+                "  'Y' as IS_ENABLED,\n" +
+                "  null as CHECK_CONDITION\n" +
+                "from\n" +
+                "  INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc left join\n" +
+                "INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc on\n" +
+                "rc.CONSTRAINT_SCHEMA = tc.CONSTRAINT_SCHEMA and\n" +
+                "rc.CONSTRAINT_NAME = tc.CONSTRAINT_NAME\n" +
+                "where\n" +
+                "tc.TABLE_SCHEMA = '%1$s'\n" +
+                "and tc.TABLE_NAME = '%2$s'\n" +
+                "order by\n" +
+                "tc.TABLE_NAME,\n" +
+                "tc.CONSTRAINT_NAME asc";
+    }
+
+    @Override
+    protected String getIndexesSql() {
+        return "select distinct\n" +
+                "  INDEX_NAME,\n" +
+                "  TABLE_NAME,\n" +
+                "  (CASE WHEN NON_UNIQUE THEN 'N' ELSE 'Y' END) as IS_UNIQUE,\n" +
+                "  COLUMN_NAME,\n" +
+                "  (CASE WHEN ASC_OR_DESC = 'A' THEN 'Y' ELSE 'N' END) as IS_ASC,\n" +
+                "  'Y' as IS_VALID\n" +
+                "from INFORMATION_SCHEMA.SYSTEM_INDEXINFO\n" +
+                "where TABLE_SCHEM = '%1$s'\n" +
+                "order by\n" +
+                "  TABLE_NAME,\n" +
+                "  INDEX_NAME asc";
+    }
+
+    @Override
+    protected String getTriggersSql() {
+        return "select\n" +
+                "  EVENT_OBJECT_TABLE as DATASET_NAME,\n" +
+                "  TRIGGER_NAME,\n" +
+                "  ACTION_TIMING as TRIGGER_TYPE,\n" +
+                "  EVENT_MANIPULATION as TRIGGERING_EVENT,\n" +
+                "  'Y' as IS_ENABLED,\n" +
+                "  'Y' as IS_VALID,\n" +
+                "  'N' as IS_DEBUG,\n" +
+                "  'Y' as IS_FOR_EACH_ROW\n" +
+                "from INFORMATION_SCHEMA.TRIGGERS\n" +
+                "where EVENT_OBJECT_SCHEMA = '%1$s'\n" +
+                "order by\n" +
+                "  EVENT_OBJECT_TABLE,\n" +
+                "  TRIGGER_NAME asc";
+    }
+
+    @Override
+    protected String getProceduresSql() {
+        return "select\n" +
+                "  ROUTINE_NAME as PROCEDURE_NAME,\n" +
+                "  'Y' as IS_VALID,\n" +
+                "  'N' as IS_DEBUG,\n" +
+                "  left(IS_DETERMINISTIC, 1) as IS_DETERMINISTIC\n" +
+                "from INFORMATION_SCHEMA.ROUTINES\n" +
+                "where\n" +
+                "  ROUTINE_SCHEMA = '%1$s' and\n" +
+                "  ROUTINE_TYPE = 'PROCEDURE'\n" +
+                "order by ROUTINE_NAME asc";
+    }
+
+    @Override
+    protected String getFunctionsSql() {
+        return "select\n" +
+                "                ROUTINE_NAME as FUNCTION_NAME,\n" +
+                "                'Y' as IS_VALID,\n" +
+                "                'N' as IS_DEBUG,\n" +
+                "                left(IS_DETERMINISTIC, 1) as IS_DETERMINISTIC\n" +
+                "            from INFORMATION_SCHEMA.ROUTINES\n" +
+                "            where\n" +
+                "                ROUTINE_SCHEMA = '%1$s' and\n" +
+                "                ROUTINE_TYPE = 'FUNCTION'\n" +
+                "            order by ROUTINE_NAME asc";
+    }
+
+    @Override
+    protected String getParametersSql() {
+        return "select\n" +
+                "  PARAMETER_NAME as ARGUMENT_NAME,\n" +
+                "  null as PROGRAM_NAME,\n" +
+                "  (select r.ROUTINE_NAME from INFORMATION_SCHEMA.ROUTINES r WHERE r.specific_schema = p.specific_schema and r.specific_name = p.specific_name) as METHOD_NAME,\n" +
+                "  (select r.routine_type from INFORMATION_SCHEMA.ROUTINES r WHERE r.specific_schema = p.specific_schema and r.specific_name = p.specific_name) as METHOD_TYPE,\n" +
+                "0 as OVERLOAD,\n" +
+                "ORDINAL_POSITION as POSITION,\n" +
+                "ORDINAL_POSITION as SEQUENCE,\n" +
+                "(case when PARAMETER_MODE is null then 'OUT' else PARAMETER_MODE end) as IN_OUT,\n" +
+                "null as DATA_TYPE_OWNER,\n" +
+                "null as DATA_TYPE_PACKAGE,\n" +
+                "DATA_TYPE as DATA_TYPE_NAME,\n" +
+                "CHARACTER_MAXIMUM_LENGTH  as DATA_LENGTH,\n" +
+                "NUMERIC_PRECISION as DATA_PRECISION,\n" +
+                "NUMERIC_SCALE as DATA_SCALE\n" +
+                "from INFORMATION_SCHEMA.PARAMETERS p\n" +
+                "where\n" +
+                "SPECIFIC_SCHEMA = '%1$s'\n" +
+                "order by\n" +
+                "SPECIFIC_NAME,\n" +
+                "ORDINAL_POSITION asc";
+    }
 }
