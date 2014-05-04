@@ -25,6 +25,7 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
     private int precision;
     private int scale;
     private MetaDataType dataType;
+    private DBColumn fkColumn;
 
     public DBColumnImpl() {
         setObjectType(DBObjectType.COLUMN);
@@ -64,6 +65,11 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
         return maxLength;
     }
 
+    @Override
+    public DBColumn getFkColumn() {
+        return fkColumn;
+    }
+
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
     }
@@ -93,6 +99,10 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
 
     public void setScale(int scale) {
         this.scale = scale;
+    }
+
+    public void setFkColumn(DBColumn fkColumn) {
+        this.fkColumn = fkColumn;
     }
 
     @Override

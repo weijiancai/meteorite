@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,11 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     private List<DBTrigger> triggers;
     private List<DBProcedure> procedures;
     private List<DBFunction> functions;
+    private List<DBConstraint> constraints;
     private Map<String, DBTable> tableMap = new HashMap<String, DBTable>();
     private Map<String, DBFunction> functionMap = new HashMap<>();
     private Map<String, DBProcedure> procedureMap = new HashMap<>();
+    private Map<String, DBConstraint> constraintMap = new HashMap<>();
 
     public DBSchemaImpl() {
         setObjectType(DBObjectType.SCHEMA);
@@ -42,23 +45,11 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
         return tables;
     }
 
-    public void setTables(List<DBTable> tables) {
-        this.tables = tables;
-        tableMap.clear();
-        for (DBTable table : tables) {
-            tableMap.put(table.getName().toLowerCase(), table);
-        }
-    }
-
     @Override
     @XmlElementWrapper(name = "Views")
     @XmlAnyElement
     public List<DBView> getViews() {
         return views;
-    }
-
-    public void setViews(List<DBView> views) {
-        this.views = views;
     }
 
     @Override
@@ -92,6 +83,11 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     }
 
     @Override
+    public DBConstraint getConstraint(String name) {
+        return constraintMap.get(name);
+    }
+
+    @Override
     public List<DBIndex> getIndexes() {
         return indexes;
     }
@@ -116,6 +112,26 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
         return triggers;
     }
 
+    @Override
+    public List<DBConstraint> getConstraints() {
+        if (constraints == null) {
+            constraints = new ArrayList<>();
+        }
+        return constraints;
+    }
+
+    public void setTables(List<DBTable> tables) {
+        this.tables = tables;
+        tableMap.clear();
+        for (DBTable table : tables) {
+            tableMap.put(table.getName().toLowerCase(), table);
+        }
+    }
+
+    public void setViews(List<DBView> views) {
+        this.views = views;
+    }
+
     public void setIndexes(List<DBIndex> indexes) {
         this.indexes = indexes;
     }
@@ -138,5 +154,18 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
         for (DBFunction function : functions) {
             functionMap.put(function.getName(), function);
         }
+    }
+
+    public void setConstraints(List<DBConstraint> constraints) {
+        this.constraints = constraints;
+        constraintMap.clear();
+        for (DBConstraint constraint : constraints) {
+            constraintMap.put(constraint.getName(), constraint);
+        }
+    }
+
+    public void addConstraints(DBConstraint constraint) {
+        getConstraints().add(constraint);
+        constraintMap.put(constraint.getName(), constraint);
     }
 }

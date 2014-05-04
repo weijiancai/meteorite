@@ -227,4 +227,16 @@ public class MySqlLoader extends BaseDBLoader {
                 "                SPECIFIC_NAME,\n" +
                 "                ORDINAL_POSITION asc";
     }
+
+    @Override
+    protected String getFKConstraintsColumnsSql() {
+        return "SELECT\n" +
+                "  constraint_name,\n" +
+                "  table_name,\n" +
+                "  column_name,\n" +
+                "  referenced_table_name,\n" +
+                "  referenced_column_name\n" +
+                "FROM information_schema.KEY_COLUMN_USAGE\n" +
+                "WHERE table_schema = '%1$s' AND referenced_table_name IS NOT NULL AND referenced_column_name IS NOT NULL";
+    }
 }

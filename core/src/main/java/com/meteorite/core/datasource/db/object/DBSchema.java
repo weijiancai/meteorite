@@ -24,8 +24,6 @@ public interface DBSchema extends DBObject {
 
     List<DBTable> getTables();
 
-    void setTables(List<DBTable> tables);
-
     List<DBView> getViews();
 
     List<DBProcedure> getProcedures();
@@ -42,6 +40,8 @@ public interface DBSchema extends DBObject {
 
     List<DBTrigger> getTriggers();
 
+    List<DBConstraint> getConstraints();
+
     DBTable getTable(String name);
 
     DBView getView(String name);
@@ -49,4 +49,6 @@ public interface DBSchema extends DBObject {
     DBProcedure getProcedure(String name);
 
     DBFunction getFunction(String name);
+
+    DBConstraint getConstraint(String name);
 }

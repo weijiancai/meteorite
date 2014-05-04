@@ -51,6 +51,8 @@ public abstract class BaseDBLoader implements DBLoader {
     protected abstract String getFunctionsSql();
     // 获得Parameters Sql语句
     protected abstract String getParametersSql();
+    // 获得FK Constraints Columns Sql语句
+    protected abstract String getFKConstraintsColumnsSql();
 
     @Override
     public void load() {
@@ -126,6 +128,8 @@ public abstract class BaseDBLoader implements DBLoader {
             schema.setFunctions(loadFunctions(schema));
             // 加载参数
             loadParameters(schema);
+            // 加载外键约束
+            loadFkConstraints(schema);
 
             result.add(schema);
 
@@ -386,6 +390,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     public List<DBConstraint> loadConstraint(DBDataset dataset) throws Exception {
+        DBSchemaImpl schema = (DBSchemaImpl) dataset.getSchema();
         List<DBConstraint> result = new ArrayList<>();
         List<DataMap> list = conn.getResultSet(String.format(getConstraintsSql(), dataset.getSchema().getName(), dataset.getName()));
         for (DataMap map : list) {
@@ -395,8 +400,29 @@ public abstract class BaseDBLoader implements DBLoader {
             constraint.setName(map.getString("CONSTRAINT_NAME"));
             constraint.setConstraintType(DBConstraintType.convert(map.getString("CONSTRAINT_TYPE")));
 
+            schema.addConstraints(constraint);
+
             result.add(constraint);
         }
         return result;
+    }
+
+    public void loadFkConstraints(DBSchema schema) throws Exception {
+        List<DataMap> list = conn.getResultSet(String.format(getFKConstraintsColumnsSql(), schema.getName()));
+        for (DataMap map : list) {
+            String constraintName = map.getString("constraint_name");
+            String tableName = map.getString("table_name");
+            String colName = map.getString("column_name");
+            String refTableName = map.getString("referenced_table_name");
+            String refColName = map.getString("referenced_column_name");
+            DBTable table = schema.getTable(tableName);
+            DBColumnImpl column = (DBColumnImpl) table.getColumn(colName);
+            DBTable refTable = schema.getTable(refTableName);
+            DBColumn refColumn = refTable.getColumn(refColName);
+            column.setFkColumn(refColumn);
+            DBConstraintImpl constraint = (DBConstraintImpl) schema.getConstraint(constraintName);
+            constraint.setForeignKeyTable(refTable);
+            constraint.getColumns().add(column);
+        }
     }
 }

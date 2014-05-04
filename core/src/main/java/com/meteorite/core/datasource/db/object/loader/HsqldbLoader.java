@@ -223,4 +223,16 @@ public class HsqldbLoader extends BaseDBLoader {
                 "SPECIFIC_NAME,\n" +
                 "ORDINAL_POSITION asc";
     }
+
+    @Override
+    protected String getFKConstraintsColumnsSql() {
+        return "SELECT\n" +
+                "  FK_NAME AS constraint_name,\n" +
+                "  PKTABLE_NAME AS table_name,\n" +
+                "  pkcolumn_name AS column_name,\n" +
+                "  fktable_name AS referenced_table_name,\n" +
+                "  fkcolumn_name AS referenced_column_name\n" +
+                "FROM information_schema.system_crossreference\n" +
+                "WHERE pktable_schem = '%1$S'";
+    }
 }

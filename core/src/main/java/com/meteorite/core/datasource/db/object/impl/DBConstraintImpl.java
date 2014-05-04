@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.DBConstraintType;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,9 +13,6 @@ import java.util.List;
  */
 public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
     private DBConstraintType constraintType;
-    private boolean isPrimaryKey;
-    private boolean isForeignKey;
-    private boolean isUniqueKey;
     private DBConstraint foreignKeyConstraint;
     private DBTable foreignKeyTable;
     List<DBColumn> columns;
@@ -30,17 +28,17 @@ public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
 
     @Override
     public boolean isPrimaryKey() {
-        return isPrimaryKey;
+        return constraintType == DBConstraintType.PRIMARY_KEY;
     }
 
     @Override
     public boolean isForeignKey() {
-        return isForeignKey;
+        return constraintType == DBConstraintType.FOREIGN_KEY;
     }
 
     @Override
     public boolean isUniqueKey() {
-        return isUniqueKey;
+        return constraintType == DBConstraintType.UNIQUE_KEY;
     }
 
     @Override
@@ -55,23 +53,14 @@ public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
 
     @Override
     public List<DBColumn> getColumns() {
+        if (columns == null) {
+            columns = new ArrayList<>();
+        }
         return columns;
     }
 
     public void setConstraintType(DBConstraintType constraintType) {
         this.constraintType = constraintType;
-    }
-
-    public void setPrimaryKey(boolean isPrimaryKey) {
-        this.isPrimaryKey = isPrimaryKey;
-    }
-
-    public void setForeignKey(boolean isForeignKey) {
-        this.isForeignKey = isForeignKey;
-    }
-
-    public void setUniqueKey(boolean isUniqueKey) {
-        this.isUniqueKey = isUniqueKey;
     }
 
     public void setForeignKeyConstraint(DBConstraint foreignKeyConstraint) {

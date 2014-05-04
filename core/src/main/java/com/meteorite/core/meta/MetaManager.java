@@ -136,6 +136,8 @@ public class MetaManager {
                     metaSortNum += 10;
                 }
 
+                // TODO 初始化元数据引用
+
                 sysInfo.setMetaInit(true);
                 sysInfo.store();
             }

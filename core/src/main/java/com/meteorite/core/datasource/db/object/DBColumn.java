@@ -51,4 +51,11 @@ public interface DBColumn extends DBObject {
      * @return 返回最大长度
      */
     int getMaxLength();
+
+    /**
+     * 获得外键列
+     *
+     * @return 返回外键列
+     */
+    DBColumn getFkColumn();
 }
