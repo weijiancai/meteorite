@@ -1,8 +1,4 @@
-package com.meteorite.core.datasource.db.object.loader;
-
-import com.meteorite.core.datasource.db.object.DBColumn;
-import com.meteorite.core.datasource.db.object.DBConstraint;
-import com.meteorite.core.datasource.db.object.DBObject;
+package com.meteorite.core.datasource.db.object;
 
 import java.util.List;
 

@@ -2,7 +2,6 @@ package com.meteorite.core.datasource.db.object.impl;
 
 import com.meteorite.core.datasource.db.DBIcons;
 import com.meteorite.core.datasource.db.object.DBArgument;
-import com.meteorite.core.datasource.db.object.DBDataType;
 import com.meteorite.core.datasource.db.object.DBMethod;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 

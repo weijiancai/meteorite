@@ -1,7 +1,5 @@
 package com.meteorite.core.datasource.db.object;
 
-import com.meteorite.core.datasource.db.object.loader.DBDataset;
-
 /**
  * 数据库视图
  *

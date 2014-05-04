@@ -1,4 +1,4 @@
-package com.meteorite.core.datasource.db.object;
+package com.meteorite.core.datasource.db.object.impl;
 
 /**
  * 数据库数据类型

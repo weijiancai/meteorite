@@ -123,6 +123,7 @@ public class SystemManager {
                 System.out.println("升级完成");
                 // 删除SystemInfo.xml文件
                 sysInfo.getXmlFile().deleteOnExit();
+                sysInfo.load();
             }
         }
     }

@@ -4,8 +4,7 @@ import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
-import com.meteorite.core.datasource.db.object.DBTable;
-import com.meteorite.core.datasource.db.object.loader.DBDataset;
+import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.exception.MessageException;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
@@ -282,7 +281,7 @@ public class Meta {
         String[] values = new String[pkFields.size()];
         for (int i = 0; i < pkFields.size(); i++) {
             MetaField field = pkFields.get(i);
-            values[i] = rowData.getString(field.getName());
+            values[i] = rowData.getString(field.getColumn().getName());
         }
         dataSource.delete(this, values);
         dataList.get().remove(row);

@@ -1,17 +1,14 @@
 package com.meteorite.core.meta;
 
-import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
-import com.meteorite.core.datasource.db.DBManager;
-import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.DBTable;
 import com.meteorite.core.datasource.db.object.DBView;
-import com.meteorite.core.datasource.db.object.loader.DBDataset;
+import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
@@ -25,7 +22,6 @@ import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.UString;
-import com.meteorite.core.util.UUIDUtil;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 
 import java.io.File;

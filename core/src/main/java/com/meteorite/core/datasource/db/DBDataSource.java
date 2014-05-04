@@ -11,7 +11,7 @@ import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
 import com.meteorite.core.datasource.db.object.impl.DBObjectList;
-import com.meteorite.core.datasource.db.object.loader.DBDataset;
+import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.dict.DictManager;

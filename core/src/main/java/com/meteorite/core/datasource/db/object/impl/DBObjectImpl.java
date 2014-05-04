@@ -5,7 +5,7 @@ import com.meteorite.core.datasource.db.DBObjCache;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.DBSchema;
-import com.meteorite.core.datasource.db.object.loader.DBDataset;
+import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.model.ITreeNode;

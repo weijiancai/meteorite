@@ -2,8 +2,7 @@ package com.meteorite.core.datasource.db.object.impl;
 
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBConstraint;
-import com.meteorite.core.datasource.db.object.loader.DBDataset;
-import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.datasource.db.object.DBDataset;
 
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElementWrapper;

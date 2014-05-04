@@ -1,5 +1,7 @@
 package com.meteorite.core.datasource.db.object;
 
+import com.meteorite.core.datasource.db.object.impl.DBDataType;
+
 /**
  * 数据库方法参数
  *
