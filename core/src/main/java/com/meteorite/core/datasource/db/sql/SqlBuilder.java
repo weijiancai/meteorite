@@ -1,9 +1,15 @@
 package com.meteorite.core.datasource.db.sql;
 
+import com.meteorite.core.datasource.QueryCondition;
 import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.dict.QueryModel;
+import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -33,14 +39,16 @@ public class SqlBuilder {
     private boolean isQuery = true;
     private boolean isBracket = false;
     private Queue<Object> paramQueue = new LinkedList<>();
+    private List<QueryCondition> conditionList;
     private DatabaseType dbType;
+    private String sql;
 
-    private SqlBuilder(DatabaseType dbType) {
-        this.dbType = dbType;
+    private SqlBuilder() {
+        conditionList = new ArrayList<>();
     }
 
-    public static SqlBuilder create(DatabaseType dbType) {
-        return new SqlBuilder(dbType);
+    public static SqlBuilder create() {
+        return new SqlBuilder();
     }
 
     /**
@@ -400,9 +408,63 @@ public class SqlBuilder {
      *
      * @return 返回构造好的Sql语句
      */
-    public String build() {
+    public String build(DatabaseType dbType) {
+        this.dbType = dbType;
         if (UString.isEmpty(columns)) {
             columns = "*";
+        }
+
+        for (QueryCondition condition : conditionList) {
+            QueryModel queryModel = condition.getQueryModel();
+            String colName = condition.getColName();
+            Object value = condition.getValue();
+            MetaDataType dataType = condition.getDataType();
+            String model = " = ";
+
+            switch (queryModel) {
+                case EQUAL: {
+                    model = " = ";
+                    break;
+                }
+                case NOT_EQUAL: {
+                    model = " != ";
+                    break;
+                }
+                case LESS_THAN: {
+                    model = " < ";
+                    break;
+                }
+                case LESS_EQUAL: {
+                    model = " <= ";
+                    break;
+                }
+                case GREATER_THAN: {
+                    model = " > ";
+                    break;
+                }
+                case GREATER_EQUAL: {
+                    model = " >= ";
+                    break;
+                }
+                case LIKE: {
+                    this.andLike(colName, "%%%s%%", UObject.toString(value));
+                    break;
+                }
+                case LEFT_LIKE: {
+                    this.andLike(colName, "%s%%", UObject.toString(value));
+                    break;
+                }
+                case RIGHT_LIKE: {
+                    this.andLike(colName, "%%%s", UObject.toString(value));
+                    break;
+                }
+            }
+
+            if (MetaDataType.DATE == dataType) {
+                this.andDate(colName + model, UObject.toString(value));
+            } else {
+                this.and(colName + model, value);
+            }
         }
 
         String result = "";
@@ -418,6 +480,8 @@ public class SqlBuilder {
         if (UString.isNotEmpty(group)) {
             result += String.format(GROUP_FORMAT, group);
         }
+
+        sql = result;
 
         return result;
     }
@@ -440,7 +504,7 @@ public class SqlBuilder {
 
     @Override
     public String toString() {
-        return build();
+        return build(DatabaseType.HSQLDB);
     }
 
     /**
@@ -454,9 +518,9 @@ public class SqlBuilder {
         int start = page * rows;
         int end = (page + 1) * rows;
         if(dbType == DatabaseType.ORACLE) {
-            return String.format("SELECT * FROM (SELECT nowpage.*,rownum rn FROM (%s) nowpage WHERE rownum<=%d) WHERE rn>%d", build(), end, start);
+            return String.format("SELECT * FROM (SELECT nowpage.*,rownum rn FROM (%s) nowpage WHERE rownum<=%d) WHERE rn>%d", sql, end, start);
         } else if (dbType == DatabaseType.HSQLDB) {
-            return String.format("SELECT LIMIT %d %d * FROM (%s)", start, rows, build());
+            return String.format("SELECT LIMIT %d %d * FROM (%s)", start, rows, sql);
         }
 
         return "";
@@ -477,7 +541,6 @@ public class SqlBuilder {
      * @return 返回sql语句
      */
     public String toLog() {
-        String sql = this.build();
         if (UString.isEmpty(sql)) {
             return "";
         }
@@ -495,5 +558,17 @@ public class SqlBuilder {
             }
         }
         return result;
+    }
+
+    public SqlBuilder add(String colName, QueryModel queryModel, Object value, MetaDataType dataType) {
+        if (UObject.isEmpty(value)) {
+            return this;
+        }
+        conditionList.add(QueryCondition.create(colName, queryModel, value, dataType));
+        return this;
+    }
+
+    public String getSql() {
+        return sql;
     }
 }

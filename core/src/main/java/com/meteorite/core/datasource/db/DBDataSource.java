@@ -118,30 +118,14 @@ public class DBDataSource implements DataSource {
 
     @Override
     public QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
-        QueryResult<DataMap> queryResult = new QueryResult<>();
-        queryResult.setPageRows(rows);
-        DBDataset table = meta.getDbTable();
-
-        QueryBuilder builder = QueryBuilder.create(getDatabaseType());
-        builder.sql().from(table.getSchema().getName() + "." + table.getName());
+        QueryBuilder builder = QueryBuilder.create(meta);
         for (ICanQuery query : queryList) {
             for (ICanQuery.Condition condition : query.getConditions()) {
                 builder.add(condition.colName, condition.queryModel, condition.value, condition.dataType);
             }
         }
-        JdbcTemplate template = new JdbcTemplate(this);
-        List<DataMap> list = new ArrayList<>();
-        try {
-            // 查询rows
-            list = template.queryForList(builder, page, rows);
-            // 查询total rows
-            queryResult.setTotal(template.queryForInt(builder.sql().getCountSql(), builder.sql().getParamsValue()));
-        } finally {
-            template.close();
-        }
 
-        queryResult.setRows(list);
-        return queryResult;
+        return retrieve(builder, page, rows);
     }
 
     @Override
@@ -193,6 +177,36 @@ public class DBDataSource implements DataSource {
         }
 
         return navTree;
+    }
+
+    @Override
+    public QueryResult<DataMap> retrieve(QueryBuilder builder, int page, int rows) throws SQLException {
+        DBDataset table = builder.getMeta().getDbTable();
+        builder.sql().from(table.getSchema().getName() + "." + table.getName());
+
+        QueryResult<DataMap> queryResult = new QueryResult<>();
+        queryResult.setPageRows(rows);
+
+        builder.sql().build(getDatabaseType());
+        JdbcTemplate template = new JdbcTemplate(this);
+        List<DataMap> list = new ArrayList<>();
+        try {
+            // 查询rows
+            list = template.queryForList(builder, page, rows);
+            // 查询total rows
+            if (page > 0) {
+                queryResult.setTotal(template.queryForInt(builder.sql().getCountSql(), builder.sql().getParamsValue()));
+            } else {
+                queryResult.setTotal(list.size());
+                queryResult.setPageRows(list.size());
+            }
+        } finally {
+            template.close();
+        }
+
+        queryResult.setRows(list);
+
+        return queryResult;
     }
 
     public void setName(String name) {
@@ -265,12 +279,12 @@ public class DBDataSource implements DataSource {
      * @return 返回某个系统的最大版本号
      */
     public String getMaxVersion(String systemName) throws Exception {
-        String sql = SqlBuilder.create(getDatabaseType())
+        String sql = SqlBuilder.create()
                 .from(SystemConfig.SYS_DB_VERSION_TABLE_NAME)
                 .max("db_version")
                 .where(String.format("sys_name='%s'", systemName))
                 .group("sys_name")
-                .build();
+                .build(getDatabaseType());
 
         DBConnection conn = getDbConnection();
         if (DBUtil.existsTable(conn, SystemConfig.SYS_DB_VERSION_TABLE_NAME)) {

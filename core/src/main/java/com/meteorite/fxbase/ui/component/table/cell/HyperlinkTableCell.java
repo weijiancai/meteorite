@@ -2,7 +2,9 @@ package com.meteorite.fxbase.ui.component.table.cell;
 
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.QueryBuilder;
+import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
@@ -41,10 +43,13 @@ public class HyperlinkTableCell extends BaseTableCell {
             public void doHandler(ActionEvent event) throws Exception {
                 Meta meta = prop.getMetaField().getMeta();
                 int row = getTableRow().getIndex();
+                MetaField refField = prop.getMetaField().getRefField();
                 Meta refMeta = meta.getRefMeta(prop.getMetaField().getId());
+                QueryBuilder queryBuilder = QueryBuilder.create(refMeta).add(refField.getColumn().getName(), hyperlink.getText());
+                QueryResult<DataMap> queryResult = refMeta.query(queryBuilder);
 
-//                refMeta.query();
                 MUForm form = new MUForm(new FormProperty(ViewManager.getViewByName(refMeta.getName() + "FormView")));
+                form.setValues(queryResult.getRows().get(0));
                 MUDialog.showCustomDialog(null, refMeta.getDisplayName(), form, new Callback<Void, Void>() {
                     @Override
                     public Void call(Void param) {

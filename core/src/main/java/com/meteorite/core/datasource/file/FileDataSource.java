@@ -3,6 +3,7 @@ package com.meteorite.core.datasource.file;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceType;
+import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
@@ -46,6 +47,11 @@ public class FileDataSource implements DataSource {
 
     @Override
     public INavTreeNode getNavTree() {
+        return null;
+    }
+
+    @Override
+    public QueryResult<DataMap> retrieve(QueryBuilder queryBuilder, int page, int rows) throws SQLException {
         return null;
     }
 }

@@ -102,7 +102,11 @@ public class JdbcTemplate {
     public List<DataMap> queryForList(QueryBuilder builder, int page, int rows) throws SQLException {
         System.out.println(builder.sql().toLog());
         SqlBuilder sqlBuilder = builder.sql();
-        return queryForList(sqlBuilder.getPageSql(page, rows), builder.sql().getParamsValue());
+        if (page > 0) {
+            return queryForList(sqlBuilder.getPageSql(page, rows), builder.sql().getParamsValue());
+        } else {
+            return queryForList(sqlBuilder.getSql(), builder.sql().getParamsValue());
+        }
     }
 
     public List<DataMap> queryForList(String sql, Object[] paramValues) throws SQLException {

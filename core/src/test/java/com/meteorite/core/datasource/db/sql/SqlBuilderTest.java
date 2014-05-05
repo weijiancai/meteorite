@@ -18,7 +18,7 @@ public class SqlBuilderTest {
 
     @Before
     public void init() {
-        sql = SqlBuilder.create(dbType);
+        sql = SqlBuilder.create();
     }
 
     @After
@@ -29,7 +29,7 @@ public class SqlBuilderTest {
     @Test
     public void testQuery() throws Exception {
         String expect = "SELECT personId, name, age, sex FROM person";
-        String actual = sql.from("person").query("personId").query("name").query("age, sex").build();
+        String actual = sql.from("person").query("personId").query("name").query("age, sex").build(dbType);
 
         assertThat(actual, equalTo(expect));
     }
@@ -38,7 +38,7 @@ public class SqlBuilderTest {
     public void testFrom() throws Exception {
         String expect = "SELECT * FROM person";
 
-        assertThat(sql.from("person").build(), equalTo(expect));
+        assertThat(sql.from("person").build(dbType), equalTo(expect));
     }
 
     @Test
@@ -47,15 +47,15 @@ public class SqlBuilderTest {
         String actual = sql.from("person")
                 .join("bu")
                 .query("personId").query("name").query("age, sex")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
 
         expect = "SELECT personId, name, age, sex FROM person p JOIN bu b ON (p.personId = b.personId)";
-        actual = SqlBuilder.create(dbType).from("person p")
+        actual = SqlBuilder.create().from("person p")
                 .join("bu b ON (p.personId = b.personId)")
                 .query("personId").query("name").query("age, sex")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
     }
@@ -67,7 +67,7 @@ public class SqlBuilderTest {
                 .join("bu")
                 .query("personId").query("name").query("age, sex")
                 .where("enable='T'")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
     }
@@ -80,19 +80,19 @@ public class SqlBuilderTest {
                 .query("personId").query("name").query("age, sex")
                 .where("enable='T'")
                 .and("personId = 5")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
 
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T' AND personId = ? AND name = ?";
-        sql = SqlBuilder.create(dbType);
+        sql = SqlBuilder.create();
         actual = sql.from("person")
                 .join("bu")
                 .query("personId").query("name").query("age, sex")
                 .where("enable='T'")
                 .and("personId = ", 5)
                 .and("name = " , "zhangSan")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{5, "zhangSan"}));
@@ -107,7 +107,7 @@ public class SqlBuilderTest {
                 .where("enable='T'")
                 .and("personId = 5")
                 .andBracket("sex = ", "F")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{"F"}));
@@ -122,7 +122,7 @@ public class SqlBuilderTest {
                 .where("enable='T'")
                 .and("personId = 5")
                 .andBracketLike("sex", "%%%s%%", "F")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{"%F%"}));
@@ -138,12 +138,12 @@ public class SqlBuilderTest {
                 .and("personId = 5")
                 .andBracketLike("sex", "%%%s%%", "F")
                 .rightBracket()
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{"%F%"}));
 
-        sql = SqlBuilder.create(dbType);
+        sql = SqlBuilder.create();
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T' AND (personId=? OR personId=?)";
         actual = sql.from("person")
                 .join("bu")
@@ -152,12 +152,12 @@ public class SqlBuilderTest {
                 .andBracket("personId=", 5)
                 .or("personId=", 6)
                 .rightBracket()
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{5, 6}));
 
-        sql = SqlBuilder.create(dbType);
+        sql = SqlBuilder.create();
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T'";
         actual = sql.from("person")
                 .join("bu")
@@ -166,12 +166,12 @@ public class SqlBuilderTest {
                 .andBracket("personId=", "")
                 .or("personId=", "")
                 .rightBracket()
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{}));
 
-        sql = SqlBuilder.create(dbType);
+        sql = SqlBuilder.create();
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T'";
         actual = sql.from("person")
                 .join("bu")
@@ -181,7 +181,7 @@ public class SqlBuilderTest {
                 .and("personId=", "")
                 .or("personId=", "")
                 .rightBracket()
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{}));
@@ -198,7 +198,7 @@ public class SqlBuilderTest {
                 .andBracketLike("sex", "%%%s%%", "F")
                 .rightBracket()
                 .andIn("age", "23,25,24")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{"%F%"}));
@@ -215,7 +215,7 @@ public class SqlBuilderTest {
                 .andBracketLike("sex", "%%%s%%", "F")
                 .rightBracket()
                 .orIn("age", "23,24,25")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{"%F%"}));
@@ -230,7 +230,7 @@ public class SqlBuilderTest {
                 .where("enable='T'")
                 .and("personId = 5")
                 .andLike("sex", "%%%s%%", "F")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{"%F%"}));
@@ -245,7 +245,7 @@ public class SqlBuilderTest {
                 .where("enable='T'")
                 .and("personId = 5")
                 .orLike("sex", "%%%s%%", "F")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{"%F%"}));
@@ -261,7 +261,7 @@ public class SqlBuilderTest {
                 .and("personId = 5")
                 .andLike("sex", "%%%s%%", "F")
                 .andDate("createTime =", "2011-02-02")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{"%F%", "2011-02-02"}));
@@ -275,19 +275,19 @@ public class SqlBuilderTest {
                 .query("personId").query("name").query("age, sex")
                 .where("enable='T'")
                 .or("personId = 5")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
 
         expect = "SELECT personId, name, age, sex FROM person JOIN bu WHERE enable='T' AND personId = ? OR name = ?";
-        sql = SqlBuilder.create(dbType);
+        sql = SqlBuilder.create();
         actual = sql.from("person")
                 .join("bu")
                 .query("personId").query("name").query("age, sex")
                 .where("enable='T'")
                 .and("personId = ", 5)
                 .or("name = ", "zhangSan")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
         assertThat(sql.getParamsValue(), equalTo(new Object[]{5, "zhangSan"}));
@@ -302,7 +302,7 @@ public class SqlBuilderTest {
                 .where("enable='T'")
                 .or("personId = 5")
                 .desc("name")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
     }
@@ -318,7 +318,7 @@ public class SqlBuilderTest {
                 .or("personId = 5")
                 .desc("name")
                 .with(with)
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
     }
@@ -373,12 +373,12 @@ public class SqlBuilderTest {
     @Test
     public void testMax() {
         String expect = "SELECT MAX(db_version) AS max_db_version FROM sys_db_version WHERE sys_name='core' GROUP BY sys_name";
-        String actual = SqlBuilder.create(dbType)
+        String actual = SqlBuilder.create()
                 .from("sys_db_version")
                 .max("db_version")
                 .where("sys_name='core'")
                 .group("sys_name")
-                .build();
+                .build(dbType);
 
         assertThat(actual, equalTo(expect));
     }

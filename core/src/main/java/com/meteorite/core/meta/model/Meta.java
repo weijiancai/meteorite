@@ -1,6 +1,7 @@
 package com.meteorite.core.meta.model;
 
 import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
@@ -20,6 +21,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.xml.bind.annotation.*;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -346,5 +348,13 @@ public class Meta {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    public QueryResult<DataMap> query(QueryBuilder queryBuilder) throws SQLException {
+        QueryResult<DataMap> result = dataSource.retrieve(queryBuilder, 0, 0);
+        setDataList(result.getRows());
+        setTotalRows(result.getTotal());
+        setPageCount(result.getPageCount());
+        return result;
     }
 }
