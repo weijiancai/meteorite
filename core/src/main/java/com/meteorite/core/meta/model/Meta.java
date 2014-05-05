@@ -20,9 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 元数据信息
@@ -43,6 +41,8 @@ public class Meta {
     private Date inputDate;
 
     private List<MetaField> fields = new ArrayList<>();
+    private List<MetaReference> references = new ArrayList<>();
+    private Set<Meta> children = new HashSet<>();
     private DBDataset dbTable;
     private DataSource dataSource;
 
@@ -200,6 +200,16 @@ public class Meta {
         return result;
     }
 
+    public MetaField getFieldByDbColumn(DBColumn column) {
+        for (MetaField field : fields) {
+            if (field.getColumn() == column) {
+                return field;
+            }
+        }
+
+        return null;
+    }
+
     public ObjectProperty<ObservableList<DataMap>> dataListProperty() {
         return dataList;
     }
@@ -287,7 +297,54 @@ public class Meta {
         dataList.get().remove(row);
     }
 
+    /**
+     * 获得引用的元数据信息
+     *
+     * @param fieldId 元字段ID
+     * @return 返回引用的元数据信息
+     */
+    public Meta getRefMeta(String fieldId) {
+        for (MetaField field : fields) {
+            if (field.getRefField() != null && field.getId().equals(fieldId)) {
+                return field.getRefField().getMeta();
+            }
+        }
+
+        return null;
+    }
+
     public View getFormView() {
         return null;
+    }
+
+    public List<MetaReference> getReferences() {
+        return references;
+    }
+
+    public void setReferences(List<MetaReference> references) {
+        this.references = references;
+    }
+
+    public Set<Meta> getChildren() {
+        return children;
+    }
+
+    public void setChildren(Set<Meta> children) {
+        this.children = children;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Meta meta = (Meta) o;
+
+        return id.equals(meta.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

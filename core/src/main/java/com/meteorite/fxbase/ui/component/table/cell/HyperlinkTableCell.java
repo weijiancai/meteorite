@@ -1,6 +1,8 @@
 package com.meteorite.fxbase.ui.component.table.cell;
 
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.datasource.QueryBuilder;
+import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
@@ -28,7 +30,7 @@ public class HyperlinkTableCell extends BaseTableCell {
     private boolean isInit;
     private Paint originalTextFile;
 
-    public HyperlinkTableCell(TableColumn<DataMap, String> column, TableFieldProperty prop) {
+    public HyperlinkTableCell(final TableColumn<DataMap, String> column, final TableFieldProperty prop) {
         super(column, prop);
 
         hyperlink = new Hyperlink("");
@@ -37,8 +39,13 @@ public class HyperlinkTableCell extends BaseTableCell {
         hyperlink.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
-                MUForm form = new MUForm(new FormProperty(ViewManager.getViewByName("")));
-                MUDialog.showCustomDialog(null, "超链接", form, new Callback<Void, Void>() {
+                Meta meta = prop.getMetaField().getMeta();
+                int row = getTableRow().getIndex();
+                Meta refMeta = meta.getRefMeta(prop.getMetaField().getId());
+
+//                refMeta.query();
+                MUForm form = new MUForm(new FormProperty(ViewManager.getViewByName(refMeta.getName() + "FormView")));
+                MUDialog.showCustomDialog(null, refMeta.getDisplayName(), form, new Callback<Void, Void>() {
                     @Override
                     public Void call(Void param) {
                         return null;

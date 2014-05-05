@@ -9,6 +9,7 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.LayoutType;
 import com.meteorite.core.ui.layout.PropertyType;
@@ -62,6 +63,23 @@ public class MetaRowMapperFactory {
                 field.setColumn(DBManager.getCache().getColumn(rs.getString("db_column")));
 
                 return field;
+            }
+        };
+    }
+
+    public static RowMapper<MetaReference> getMetaReference() {
+        return new RowMapper<MetaReference>() {
+            @Override
+            public MetaReference mapRow(ResultSet rs) throws SQLException {
+                MetaReference metaRef = new MetaReference();
+
+                metaRef.setId(rs.getString("id"));
+                metaRef.setPkMeta(MetaManager.getMetaById(rs.getString("pk_meta_id")));
+                metaRef.setPkMetaField(MetaManager.getMetaField(rs.getString("pk_meta_field_id")));
+                metaRef.setFkMeta(MetaManager.getMetaById(rs.getString("fk_meta_id")));
+                metaRef.setFkMetaField(MetaManager.getMetaField(rs.getString("fk_meta_field_id")));
+
+                return metaRef;
             }
         };
     }

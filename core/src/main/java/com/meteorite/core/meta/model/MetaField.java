@@ -34,6 +34,7 @@ public class MetaField {
     private Date inputDate;
 
     private Meta meta;
+    private MetaField refField; // 引用字段
     private DBColumn column;
 
     public MetaField() {}
@@ -174,5 +175,13 @@ public class MetaField {
 
     public void setColumn(DBColumn column) {
         this.column = column;
+    }
+
+    public MetaField getRefField() {
+        return refField;
+    }
+
+    public void setRefField(MetaField refField) {
+        this.refField = refField;
     }
 }

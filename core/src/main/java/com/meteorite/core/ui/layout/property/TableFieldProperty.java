@@ -39,9 +39,11 @@ public class TableFieldProperty implements PropertyNames {
     private EnumAlign align;
     private int sortNum;
 
+    private MetaField metaField;
     private DBColumn dbColumn;
 
     public TableFieldProperty(MetaField field, Map<String, String> propMap) {
+        this.metaField = field;
         this.name = field.getName();
         this.displayName = field.getDisplayName();
         this.dataType = field.getDataType();
@@ -132,6 +134,10 @@ public class TableFieldProperty implements PropertyNames {
 
     public void setSortNum(int sortNum) {
         this.sortNum = sortNum;
+    }
+
+    public MetaField getMetaField() {
+        return metaField;
     }
 
     public static List<ViewProperty> getViewProperties(View view, MetaField field) {

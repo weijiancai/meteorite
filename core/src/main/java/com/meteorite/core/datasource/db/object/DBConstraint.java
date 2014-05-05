@@ -18,6 +18,8 @@ public interface DBConstraint extends DBObject {
 
     DBConstraint getForeignKeyConstraint();
 
+    DBTable getPrimaryKeyTable();
+
     DBTable getForeignKeyTable();
 
     List<DBColumn> getColumns();

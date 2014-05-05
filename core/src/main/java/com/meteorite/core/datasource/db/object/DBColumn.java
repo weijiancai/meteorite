@@ -53,9 +53,9 @@ public interface DBColumn extends DBObject {
     int getMaxLength();
 
     /**
-     * 获得外键列
+     * 获得引用的主键列
      *
-     * @return 返回外键列
+     * @return 返回引用的主键列
      */
-    DBColumn getFkColumn();
+    DBColumn getRefColumn();
 }

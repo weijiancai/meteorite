@@ -5,6 +5,7 @@ import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.ui.model.*;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UUIDUtil;
@@ -40,6 +41,28 @@ public class MetaPDBFactory {
                 }
 
                 result.put("sys_meta", map);
+
+                return result;
+            }
+        };
+    }
+
+    public static IPDB getMetaReference(final MetaReference metaRef) {
+        return new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                metaRef.setId(UUIDUtil.getUUID());
+
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("id", metaRef.getId());
+                map.put("pk_meta_id", metaRef.getPkMeta().getId());
+                map.put("pk_meta_field_id", metaRef.getPkMetaField().getId());
+                map.put("fk_meta_id", metaRef.getFkMeta().getId());
+                map.put("fk_meta_field_id", metaRef.getFkMetaField().getId());
+
+                result.put("sys_meta_reference", map);
 
                 return result;
             }

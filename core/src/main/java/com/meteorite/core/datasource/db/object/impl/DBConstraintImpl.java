@@ -14,8 +14,9 @@ import java.util.List;
 public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
     private DBConstraintType constraintType;
     private DBConstraint foreignKeyConstraint;
+    private DBTable primaryKeyTable;
     private DBTable foreignKeyTable;
-    List<DBColumn> columns;
+    private List<DBColumn> columns;
 
     public DBConstraintImpl() {
         setObjectType(DBObjectType.CONSTRAINT);
@@ -47,6 +48,11 @@ public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
     }
 
     @Override
+    public DBTable getPrimaryKeyTable() {
+        return primaryKeyTable;
+    }
+
+    @Override
     public DBTable getForeignKeyTable() {
         return foreignKeyTable;
     }
@@ -61,6 +67,10 @@ public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
 
     public void setConstraintType(DBConstraintType constraintType) {
         this.constraintType = constraintType;
+    }
+
+    public void setPrimaryKeyTable(DBTable primaryKeyTable) {
+        this.primaryKeyTable = primaryKeyTable;
     }
 
     public void setForeignKeyConstraint(DBConstraint foreignKeyConstraint) {

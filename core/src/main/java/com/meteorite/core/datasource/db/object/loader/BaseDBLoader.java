@@ -413,16 +413,17 @@ public abstract class BaseDBLoader implements DBLoader {
             String constraintName = map.getString("constraint_name");
             String tableName = map.getString("table_name");
             String colName = map.getString("column_name");
-            String refTableName = map.getString("referenced_table_name");
-            String refColName = map.getString("referenced_column_name");
+            String fkTableName = map.getString("referenced_table_name");
+            String fkColName = map.getString("referenced_column_name");
             DBTable table = schema.getTable(tableName);
             DBColumnImpl column = (DBColumnImpl) table.getColumn(colName);
-            DBTable refTable = schema.getTable(refTableName);
-            DBColumn refColumn = refTable.getColumn(refColName);
-            column.setFkColumn(refColumn);
+            DBTable fkTable = schema.getTable(fkTableName);
+            DBColumnImpl fkColumn = (DBColumnImpl) fkTable.getColumn(fkColName);
+            fkColumn.setRefColumn(column);
             DBConstraintImpl constraint = (DBConstraintImpl) schema.getConstraint(constraintName);
-            constraint.setForeignKeyTable(refTable);
-            constraint.getColumns().add(column);
+            constraint.setPrimaryKeyTable(table);
+            constraint.setForeignKeyTable(fkTable);
+            constraint.getColumns().add(fkColumn);
         }
     }
 }

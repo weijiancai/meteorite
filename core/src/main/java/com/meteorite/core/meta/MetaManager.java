@@ -4,20 +4,13 @@ import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
-import com.meteorite.core.datasource.db.object.DBColumn;
-import com.meteorite.core.datasource.db.object.DBConnection;
-import com.meteorite.core.datasource.db.object.DBTable;
-import com.meteorite.core.datasource.db.object.DBView;
-import com.meteorite.core.datasource.db.object.DBDataset;
+import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
-import com.meteorite.core.meta.model.Meta;
-import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.meta.model.MetaForm;
-import com.meteorite.core.meta.model.MetaFormField;
+import com.meteorite.core.meta.model.*;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UIO;
@@ -42,6 +35,7 @@ public class MetaManager {
     private static Map<String, Meta> metaMap = new HashMap<>();
     private static Map<String, Meta> metaIdMap = new HashMap<>();
     private static Map<String, MetaField> fieldIdMap = new HashMap<>();
+    private static Map<String, Meta> tableMeta = new HashMap<>();
     private static List<MetaField> metaFieldList = new ArrayList<>();
 
     /*static {
@@ -120,23 +114,50 @@ public class MetaManager {
                     List<RClassDbmsTable> dbmsTableList = template.query(sql, ClassRowMapperFactory.getRClassDbmsTable(), meta.getId());
                     meta.setDbmsTableList(dbmsTableList);*/
                 }
+
+                // 查询元数据引用
+                sql = "SELECT * FROM sys_meta_reference";
+                List<MetaReference> referenceList = template.query(sql, MetaRowMapperFactory.getMetaReference());
+                for (MetaReference reference : referenceList) {
+                    reference.getPkMeta().getChildren().add(reference.getFkMeta());
+                    reference.getFkMetaField().setRefField(reference.getPkMetaField());
+                }
             } else {
                 metaSortNum = 10;
                 // 清空表sys_view_config, sys_view_layout, sys_view, sys_meta
-                template.clearTable("sys_view_config", "sys_view_layout", "sys_view", "sys_meta");
+                template.clearTable("sys_meta_reference", "sys_view_config", "sys_view_layout", "sys_view", "sys_meta");
                 DBDataSource dataSource = DataSourceManager.getSysDataSource();
                 DBConnection dbConn = dataSource.getDbConnection();
+                DBSchema schema = dbConn.getSchema();
 //                dbConn.getLoader().loadSchemas();
-                for (DBTable table : dbConn.getSchema().getTables()) {
+                for (DBTable table : schema.getTables()) {
                     initMetaFromTable(template, table);
                     metaSortNum += 10;
                 }
-                for (DBView view : dbConn.getSchema().getViews()) {
+
+                for (DBView view : schema.getViews()) {
                     initMetaFromTable(template, view);
                     metaSortNum += 10;
                 }
 
-                // TODO 初始化元数据引用
+                // 初始化元数据引用
+                for (DBConstraint constraint : schema.getConstraints()) {
+                    if (constraint.isForeignKey()) {
+                        for (DBColumn column : constraint.getColumns()) {
+                            MetaReference metaRef = new MetaReference();
+                            Meta pkMeta = tableMeta.get(constraint.getPrimaryKeyTable().getFullName());
+                            metaRef.setPkMeta(pkMeta);
+                            metaRef.setPkMetaField(pkMeta.getFieldByDbColumn(column.getRefColumn()));
+                            Meta fkMeta = tableMeta.get(constraint.getForeignKeyTable().getFullName());
+                            metaRef.setFkMeta(fkMeta);
+                            metaRef.setFkMetaField(fkMeta.getFieldByDbColumn(column));
+
+                            template.save(MetaPDBFactory.getMetaReference(metaRef));
+                            metaRef.getPkMeta().getChildren().add(metaRef.getFkMeta());
+                            metaRef.getFkMetaField().setRefField(metaRef.getPkMetaField());
+                        }
+                    }
+                }
 
                 sysInfo.setMetaInit(true);
                 sysInfo.store();
@@ -358,6 +379,8 @@ public class MetaManager {
         String comment = table.getComment();
         if (UString.isNotEmpty(comment) && comment.length() > 100) {
             meta.setDisplayName(table.getComment().substring(0, 100));
+        } else {
+            meta.setDisplayName(comment);
         }
 
         meta.setDesc(comment);
@@ -371,6 +394,7 @@ public class MetaManager {
         template.save(MetaPDBFactory.getMeta(meta));
         metaMap.put(meta.getName(), meta);
         metaIdMap.put(meta.getId(), meta);
+        tableMeta.put(table.getFullName(), meta);
 
         List<MetaField> fieldList = new ArrayList<>();
 
