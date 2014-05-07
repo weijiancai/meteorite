@@ -8,6 +8,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.util.Callback;
 
+import java.util.*;
+
 /**
  * MetaUI Tree
  *
@@ -15,8 +17,10 @@ import javafx.util.Callback;
  * @since 1.0.0
  */
 public class MUTree extends TreeView<ITreeNode> {
+    private Map<ITreeNode, MUTreeItem> nodeItemMap = new HashMap<>();
+
     public MUTree(ITreeNode root) {
-        MUTreeItem rootItem = new MUTreeItem(root);
+        MUTreeItem rootItem = new MUTreeItem(this, root);
         this.setRoot(rootItem);
         rootItem.setExpanded(true);
         /*this.setCellFactory(new Callback<TreeView<ITreeNode>, TreeCell<ITreeNode>>() {
@@ -33,5 +37,30 @@ public class MUTree extends TreeView<ITreeNode> {
             return item.getValue();
         }
         return null;
+    }
+
+    public void expandTo(ITreeNode node) {
+        Stack<ITreeNode> stack = new Stack<>();
+        ITreeNode child = node;
+        ITreeNode parent;
+        while ((parent = node.getParent()) != null) {
+            stack.add(parent);
+            node = parent;
+        }
+
+        while (!stack.isEmpty()) {
+            parent = stack.pop();
+            MUTreeItem item = nodeItemMap.get(parent);
+            if (item != null && !item.isExpanded()) {
+                item.setExpanded(true);
+            }
+        }
+
+        /*int row = this.getRow(nodeItemMap.get(node));
+        this.scrollTo(row);*/
+    }
+
+    public void putNodeItem(ITreeNode node, MUTreeItem item) {
+        nodeItemMap.put(node, item);
     }
 }

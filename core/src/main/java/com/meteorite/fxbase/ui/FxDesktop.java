@@ -9,6 +9,7 @@ import com.meteorite.fxbase.ui.component.MetaPane;
 import com.meteorite.fxbase.ui.view.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Parent;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -20,7 +21,7 @@ import javafx.stage.Stage;
  * @author wei_jc
  * @version 1.0.0
  */
-public class FxDesktop extends BorderPane {
+public class FxDesktop extends BorderPane implements IDesktop {
     private Banner banner;
     private Workbench workbench;
 //    private ModuleMenu moduleMenu;
@@ -101,6 +102,11 @@ public class FxDesktop extends BorderPane {
             e.printStackTrace();
         }
         this.setRight(nav);
+    }
+
+    @Override
+    public Parent getDesktop() {
+        return this;
     }
 
     /*public void showDialog(Dialog dialog) {

@@ -3,6 +3,7 @@ package com.meteorite.fxbase.ui.component.tree;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UString;
+import com.meteorite.fxbase.ui.view.MUTree;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -29,12 +30,14 @@ public class MUTreeItem extends TreeItem<ITreeNode> {
     // exercise for the reader.
     private boolean isFirstTimeChildren = true;
     private boolean isFirstTimeLeaf = true;
+    private MUTree tree;
 
     public MUTreeItem() {
     }
 
-    public MUTreeItem(ITreeNode value) {
+    public MUTreeItem(MUTree tree, ITreeNode value) {
         super(value);
+        this.tree = tree;
         if(value instanceof INavTreeNode) {
             INavTreeNode treeNode = (INavTreeNode) value;
             String iconPath = treeNode.getIcon();
@@ -43,6 +46,8 @@ public class MUTreeItem extends TreeItem<ITreeNode> {
                 this.setGraphic(node);
             }
         }
+
+        tree.putNodeItem(value, this);
     }
 
     @Override public ObservableList<TreeItem<ITreeNode>> getChildren() {
@@ -72,7 +77,7 @@ public class MUTreeItem extends TreeItem<ITreeNode> {
             ObservableList<TreeItem<ITreeNode>> children = FXCollections.observableArrayList();
 
             for (ITreeNode child : item.getChildren()) {
-                children.add(new MUTreeItem(child));
+                children.add(new MUTreeItem(tree, child));
             }
 
             return children;

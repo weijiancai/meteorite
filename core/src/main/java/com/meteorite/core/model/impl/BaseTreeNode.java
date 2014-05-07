@@ -15,7 +15,7 @@ public class BaseTreeNode implements ITreeNode {
     private String displayName;
     private int sortNum;
 
-    private BaseTreeNode parent;
+    private ITreeNode parent;
     private List<ITreeNode> children;
 
     public void setId(String id) {
@@ -34,7 +34,7 @@ public class BaseTreeNode implements ITreeNode {
         this.displayName = displayName;
     }
 
-    public void setParent(BaseTreeNode parent) {
+    public void setParent(ITreeNode parent) {
         this.parent = parent;
     }
 

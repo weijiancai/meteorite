@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.facade.IFacade;
 import com.meteorite.core.facade.impl.BaseFacade;
+import com.meteorite.fxbase.ui.IDesktop;
 import com.meteorite.fxbase.ui.view.MUTabsDesktop;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -36,7 +37,7 @@ public class DBToolApp extends BaseApp {
             }
 
             @Override
-            public Parent getDesktop() throws Exception {
+            public IDesktop getDesktop() throws Exception {
                 DataSource dataSource = DataSourceManager.getSysDataSource();
                 return new MUTabsDesktop(dataSource.getNavTree());
             }

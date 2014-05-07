@@ -59,7 +59,7 @@ public interface DBObject extends INavTreeNode {
      * @return 返回数据库对象的父对象
      * @since 1.0.0
      */
-    DBObject getParent();
+    ITreeNode getParent();
 
     /**
      * 获得数据库子对象列表

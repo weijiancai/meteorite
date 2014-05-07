@@ -3,7 +3,9 @@ package com.meteorite.core.datasource.db;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,5 +67,9 @@ public class DBObjCache {
      */
     public DBColumn getColumn(String key) {
         return (DBColumn) dbObjectMap.get(key);
+    }
+
+    public Collection<DBObject> getAllDBObject() {
+        return dbObjectMap.values();
     }
 }

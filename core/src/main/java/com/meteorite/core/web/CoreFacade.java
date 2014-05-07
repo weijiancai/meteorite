@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.facade.impl.BaseFacade;
 import com.meteorite.core.util.HSqlDBServer;
 import com.meteorite.core.util.UFile;
+import com.meteorite.fxbase.ui.IDesktop;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 
@@ -70,7 +71,7 @@ public class CoreFacade extends BaseFacade {
     }
 
     @Override
-    public Parent getDesktop() {
+    public IDesktop getDesktop() {
         return null;
     }
 }

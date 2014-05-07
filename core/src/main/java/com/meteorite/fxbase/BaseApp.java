@@ -7,6 +7,7 @@ import com.meteorite.core.ui.IView;
 import com.meteorite.core.ui.config.ConfigInit;
 import com.meteorite.core.util.HSqlDBServer;
 import com.meteorite.fxbase.ui.FxDesktop;
+import com.meteorite.fxbase.ui.IDesktop;
 import com.meteorite.fxbase.ui.view.MUDialog;
 import com.meteorite.fxbase.ui.view.FxPane;
 import com.meteorite.fxbase.ui.view.FxView;
@@ -31,7 +32,7 @@ public abstract class BaseApp extends Application {
 
     private IFacade facade;
 
-    protected static FxDesktop desktop;
+    protected static IDesktop desktop;
     protected Scene scene;
     private Stage stage;
 
@@ -85,25 +86,23 @@ public abstract class BaseApp extends Application {
             });
         } else {
             if (facade.getDesktop() != null) {
-                scene = new Scene(facade.getDesktop());
+                desktop = facade.getDesktop();
             } else {
                 desktop = new FxDesktop(stage);
-                scene = new Scene(desktop);
             }
-
-            setSkin(R.skin.DEFAULT);
-            // show stage
-            stage.setScene(scene);
         }
+        scene = new Scene(desktop.getDesktop());
 
         setSkin(R.skin.DEFAULT);
         // show stage
         stage.setScene(scene);
+        // 初始化UI
+        desktop.initUI();
 
         stage.show();
     }
 
-    public static FxDesktop getDesktop() {
+    public static IDesktop getDesktop() {
         return desktop;
     }
 

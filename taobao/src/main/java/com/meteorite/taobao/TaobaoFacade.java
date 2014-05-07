@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.facade.impl.BaseFacade;
 import com.meteorite.core.util.HSqlDBServer;
 import com.meteorite.core.util.UFile;
+import com.meteorite.fxbase.ui.IDesktop;
 import javafx.scene.Parent;
 
 /**
@@ -67,7 +68,7 @@ public class TaobaoFacade extends BaseFacade {
     }
 
     @Override
-    public Parent getDesktop() throws Exception {
+    public IDesktop getDesktop() throws Exception {
         return null;
     }
 }

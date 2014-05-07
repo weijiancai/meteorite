@@ -28,7 +28,7 @@ public class DBObjectImpl implements DBObject {
     private String comment;
     private DBSchema schema;
     private DBObjectType objectType;
-    private DBObject parent;
+    private ITreeNode parent;
     private List<ITreeNode> children;
 
     private String icon;
@@ -39,7 +39,7 @@ public class DBObjectImpl implements DBObject {
     public DBObjectImpl(String name, String comment, List<ITreeNode> children) {
         setName(name);
         this.comment = comment;
-        this.children = children;
+        setChildren(children);
     }
 
     @Override @XmlAttribute
@@ -61,7 +61,7 @@ public class DBObjectImpl implements DBObject {
     @Override
     public String getFullName() {
         if (getParent() != null) {
-            return getParent().getFullName() + "." + name;
+            return ((DBObjectImpl)getParent()).getFullName() + "." + name;
         }
         return name;
     }
@@ -73,6 +73,9 @@ public class DBObjectImpl implements DBObject {
 
     @Override
     public DBObjectType getObjectType() {
+        if (objectType == null) {
+            objectType = DBObjectType.NONE;
+        }
         return objectType;
     }
 
@@ -101,6 +104,26 @@ public class DBObjectImpl implements DBObject {
         return presentableText;
     }
 
+    @Override
+    public String getId() {
+        return name;
+    }
+
+    @Override
+    public String getPid() {
+        return parent.getId();
+    }
+
+    @Override
+    public ITreeNode getParent() {
+        return parent;
+    }
+
+    @Override
+    public void setParent(ITreeNode parent) {
+        this.parent = parent;
+    }
+
     public void setName(String name) {
         this.name = name;
         // 放入缓存
@@ -123,26 +146,13 @@ public class DBObjectImpl implements DBObject {
         this.objectType = objectType;
     }
 
-    @Override
-    public String getId() {
-        return name;
-    }
-
-    @Override
-    public String getPid() {
-        return parent.getId();
-    }
-
-    public DBObject getParent() {
-        return parent;
-    }
-
-    public void setParent(DBObject parent) {
-        this.parent = parent;
-    }
-
     public void setChildren(List<ITreeNode> children) {
         this.children = children;
+        if (children != null) {
+            for (ITreeNode node : children) {
+                node.setParent(this);
+            }
+        }
     }
 
     public void setIcon(String icon) {

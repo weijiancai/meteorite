@@ -1,6 +1,7 @@
 package com.meteorite.core.facade;
 
 import com.meteorite.core.config.ProjectConfig;
+import com.meteorite.fxbase.ui.IDesktop;
 import javafx.scene.Parent;
 
 /**
@@ -22,5 +23,5 @@ public interface IFacade {
      */
     void initAfter() throws Exception;
 
-    Parent getDesktop() throws Exception;
+    IDesktop getDesktop() throws Exception;
 }

@@ -159,7 +159,7 @@ public class Meta {
             }
         }
         assert column != null;
-        DBObject table = column.getParent();
+        DBObject table = (DBObject)column.getParent();
 
         return (DBDataset) table;
     }

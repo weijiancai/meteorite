@@ -29,6 +29,13 @@ public interface ITreeNode {
     ITreeNode getParent();
 
     /**
+     * 设置父节点
+     *
+     * @param parent 父节点
+     */
+    void setParent(ITreeNode parent);
+
+    /**
      * 获得孩子节点
      *
      * @return 返回孩子节点
