@@ -28,6 +28,7 @@ public class FormProperty implements PropertyNames {
     private int fieldGap;
     private int hgap;
     private int vgap;
+    private Meta meta;
 
     private List<FormFieldProperty> formFields = new ArrayList<FormFieldProperty>();
 
@@ -48,6 +49,7 @@ public class FormProperty implements PropertyNames {
     }
 
     public FormProperty(View view) {
+        this.meta = view.getMeta();
         name = view.getStringProperty(FORM.NAME);
         displayName = view.getStringProperty(FORM.DISPLAY_NAME);
         formType = FormType.convert(view.getStringProperty(FORM.FORM_TYPE));
@@ -140,6 +142,10 @@ public class FormProperty implements PropertyNames {
 
     public void setVgap(int vgap) {
         this.vgap = vgap;
+    }
+
+    public Meta getMeta() {
+        return meta;
     }
 
     public List<FormFieldProperty> getFormFields() {

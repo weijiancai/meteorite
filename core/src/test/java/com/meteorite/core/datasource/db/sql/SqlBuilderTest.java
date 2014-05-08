@@ -260,7 +260,7 @@ public class SqlBuilderTest {
                 .where("enable='T'")
                 .and("personId = 5")
                 .andLike("sex", "%%%s%%", "F")
-                .andDate("createTime =", "2011-02-02")
+                .andDate("createTime =", "2011-02-02", true)
                 .build(dbType);
 
         assertThat(actual, equalTo(expect));

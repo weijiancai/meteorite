@@ -351,7 +351,7 @@ public class Meta {
     }
 
     public QueryResult<DataMap> query(QueryBuilder queryBuilder) throws SQLException {
-        QueryResult<DataMap> result = dataSource.retrieve(queryBuilder, 0, 0);
+        QueryResult<DataMap> result = dataSource.retrieve(queryBuilder, -1, 0);
         setDataList(result.getRows());
         setTotalRows(result.getTotal());
         setPageCount(result.getPageCount());

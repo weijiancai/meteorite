@@ -20,11 +20,11 @@ import javafx.util.Callback;
  */
 public class MUTable extends TableView<DataMap> {
     private View view;
-    private Meta meta;
+//    private Meta meta;
 
     public MUTable(View view) {
         this.view = view;
-        this.meta = view.getMeta();
+//        this.meta = view.getMeta();
         initUI();
     }
 
@@ -33,7 +33,7 @@ public class MUTable extends TableView<DataMap> {
         // 创建表格列头信息
         createTableColumns();
         // 绑定数据
-        this.itemsProperty().bind(meta.dataListProperty());
+//        this.itemsProperty().bind(meta.dataListProperty());
     }
 
     private void createTableColumns() {

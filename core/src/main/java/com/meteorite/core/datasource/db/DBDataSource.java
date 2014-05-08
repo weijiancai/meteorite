@@ -121,7 +121,7 @@ public class DBDataSource implements DataSource {
         QueryBuilder builder = QueryBuilder.create(meta);
         for (ICanQuery query : queryList) {
             for (ICanQuery.Condition condition : query.getConditions()) {
-                builder.add(condition.colName, condition.queryModel, condition.value, condition.dataType);
+                builder.add(condition.colName, condition.queryModel, condition.value, condition.dataType, true);
             }
         }
 
@@ -194,7 +194,7 @@ public class DBDataSource implements DataSource {
             // 查询rows
             list = template.queryForList(builder, page, rows);
             // 查询total rows
-            if (page > 0) {
+            if (page >= 0) {
                 queryResult.setTotal(template.queryForInt(builder.sql().getCountSql(), builder.sql().getParamsValue()));
             } else {
                 queryResult.setTotal(list.size());

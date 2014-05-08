@@ -34,7 +34,7 @@ public class QueryResult<T> implements Serializable {
     }
 
     public void setPageRows(int pageRows) {
-        this.pageRows = pageRows;
+        this.pageRows = pageRows <= 0 ? 15 : pageRows;
     }
 
     public int getPageCount() {

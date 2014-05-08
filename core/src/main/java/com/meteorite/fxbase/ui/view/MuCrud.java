@@ -1,6 +1,7 @@
 package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.layout.property.CrudProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
@@ -18,6 +19,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -27,11 +29,13 @@ import javafx.util.Callback;
  * @author wei_jc
  * @since 1.0.0
  */
-public class MuCrud extends BorderPane {
+public class MuCrud extends StackPane {
     public static final String TOTAL_FORMAT = "总共%s条";
     private CrudProperty crudProperty;
+    private BorderPane root;
     private MUTable table;
     private MUForm queryForm;
+    private MUForm editForm;
     private Pagination pagination;
     private Hyperlink totalLink;
     private TextField pageRowsTF;
@@ -42,9 +46,16 @@ public class MuCrud extends BorderPane {
     }
 
     private void initUI() {
-        this.setTop(createTop());
-        this.setCenter(createCenter());
-        this.setBottom(createBottom());
+        root = new BorderPane();
+        root.setTop(createTop());
+        root.setCenter(createCenter());
+        root.setBottom(createBottom());
+
+        editForm = new MUForm(new FormProperty(crudProperty.getFormView()), table);
+        editForm.setVisible(false);
+        root.visibleProperty().bind(editForm.visibleProperty().not());
+
+        this.getChildren().addAll(root, editForm);
     }
 
     private Node createTop() {
@@ -84,7 +95,8 @@ public class MuCrud extends BorderPane {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 Meta meta = crudProperty.getQueryView().getMeta();
-                meta.query(queryForm.getQueryList(), 0, UNumber.toInt(pageRowsTF.getText()));
+                QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), 0, UNumber.toInt(pageRowsTF.getText()));
+                table.getItems().addAll(queryResult.getRows());
                 pagination.setPageCount(meta.getPageCount());
                 totalLink.setText(String.format(TOTAL_FORMAT, meta.getTotalRows()));
             }
@@ -129,7 +141,9 @@ public class MuCrud extends BorderPane {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 Meta meta = crudProperty.getQueryView().getMeta();
                 try {
-                    meta.query(queryForm.getQueryList(), newValue.intValue(), 15);
+                    QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), newValue.intValue(), 15);
+                    table.getItems().clear();
+                    table.getItems().addAll(queryResult.getRows());
                     pagination.setPageCount(meta.getPageCount());
                     totalLink.setText(String.format(TOTAL_FORMAT, meta.getTotalRows()));
                 } catch (Exception e) {
@@ -147,8 +161,9 @@ public class MuCrud extends BorderPane {
     }
 
     private void openFormWin(DataMap result) {
-        MUForm form = new MUForm(new FormProperty(crudProperty.getFormView()));
-        form.setValues(result);
-        MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
+        editForm.reset();
+        editForm.setValues(result);
+        editForm.setVisible(true);
+//        MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
     }
 }

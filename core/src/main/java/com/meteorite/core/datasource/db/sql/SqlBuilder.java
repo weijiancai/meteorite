@@ -277,16 +277,17 @@ public class SqlBuilder {
      * @param value 参数值
      * @return 返回Sql预编译语句生成器
      */
-    public SqlBuilder andDate(String and, String value) {
+    public SqlBuilder andDate(String and, String value, boolean isAnd) {
         if (UString.isNotEmpty(value)) {
+            String andOr = isAnd ? " AND " : " OR ";
             if (DatabaseType.HSQLDB == dbType) {
-                where += " AND " + and + " to_date(?, 'YYYY-MM-DD')";
+                where += andOr + and + " to_date(?, 'YYYY-MM-DD')";
                 paramQueue.offer(value);
             } else if (DatabaseType.ORACLE == dbType) {
-                where += " AND " + and + " to_date(?, 'yyyy-MM-dd')";
+                where += andOr + and + " to_date(?, 'yyyy-MM-dd')";
                 paramQueue.offer(value);
             } else {
-                where += " AND " + and + "?";
+                where += andOr + and + "?";
                 paramQueue.offer(value);
             }
         }
@@ -419,6 +420,7 @@ public class SqlBuilder {
             String colName = condition.getColName();
             Object value = condition.getValue();
             MetaDataType dataType = condition.getDataType();
+            boolean isAnd = condition.isAnd();
             String model = " = ";
 
             switch (queryModel) {
@@ -461,9 +463,13 @@ public class SqlBuilder {
             }
 
             if (MetaDataType.DATE == dataType) {
-                this.andDate(colName + model, UObject.toString(value));
+                this.andDate(colName + model, UObject.toString(value), isAnd);
             } else {
-                this.and(colName + model, value);
+                if(isAnd) {
+                    this.and(colName + model, value);
+                } else {
+                    this.or(colName + model, value);
+                }
             }
         }
 
@@ -560,11 +566,11 @@ public class SqlBuilder {
         return result;
     }
 
-    public SqlBuilder add(String colName, QueryModel queryModel, Object value, MetaDataType dataType) {
+    public SqlBuilder add(String colName, QueryModel queryModel, Object value, MetaDataType dataType, boolean isAnd) {
         if (UObject.isEmpty(value)) {
             return this;
         }
-        conditionList.add(QueryCondition.create(colName, queryModel, value, dataType));
+        conditionList.add(QueryCondition.create(colName, queryModel, value, dataType, isAnd));
         return this;
     }
 

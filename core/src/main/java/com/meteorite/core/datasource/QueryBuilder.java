@@ -28,14 +28,19 @@ public class QueryBuilder {
         return new QueryBuilder(meta);
     }
 
-    public QueryBuilder add(String colName, QueryModel queryModel, Object value, MetaDataType dataType) {
-        sql.add(colName, queryModel, value, dataType);
+    public QueryBuilder add(String colName, QueryModel queryModel, Object value, MetaDataType dataType, boolean isAnd) {
+        sql.add(colName, queryModel, value, dataType, isAnd);
 
         return this;
     }
 
+    public QueryBuilder add(String colName, Object value, boolean isAnd) {
+        sql.add(colName, QueryModel.EQUAL, value, MetaDataType.STRING, isAnd);
+        return this;
+    }
+
     public QueryBuilder add(String colName, Object value) {
-        sql.add(colName, QueryModel.EQUAL, value, MetaDataType.STRING);
+        sql.add(colName, QueryModel.EQUAL, value, MetaDataType.STRING, true);
         return this;
     }
 
