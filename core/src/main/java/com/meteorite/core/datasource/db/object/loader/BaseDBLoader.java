@@ -2,6 +2,7 @@ package com.meteorite.core.datasource.db.object.loader;
 
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.db.DBIcons;
+import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.*;
 import com.meteorite.core.datasource.db.object.impl.*;
@@ -9,6 +10,7 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UObject;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +21,10 @@ import java.util.Map;
  * @version 1.0.0
  */
 public abstract class BaseDBLoader implements DBLoader {
-    protected DBConnection conn;
+    protected DBConnectionImpl dbConn;
 
-    public BaseDBLoader(DBConnection conn) throws Exception {
-        this.conn = conn;
+    public BaseDBLoader(DBConnectionImpl conn) throws Exception {
+        this.dbConn = conn;
     }
 
     // 获得User Sql语句
@@ -54,19 +56,63 @@ public abstract class BaseDBLoader implements DBLoader {
     // 获得FK Constraints Columns Sql语句
     protected abstract String getFKConstraintsColumnsSql();
 
-    @Override
-    public void load() {
+    private ITreeNode navTree;
 
+    @Override
+    public void load() throws Exception {
+        navTree = dbConn.getDataSource().getNavTree();
+        List<DBSchema> schemas = loadSchemas();
+        DBObjectList dbSchemas = new DBObjectList("Schemas", DBIcons.DBO_SCHEMAS, new ArrayList<ITreeNode>(schemas));
+        dbSchemas.setParent(navTree);
+
+        List<DBUser> users = loadUsers();
+        DBObjectList dbUsers = new DBObjectList("Users", DBIcons.DBO_USERS, new ArrayList<ITreeNode>(users));
+        dbUsers.setParent(navTree);
+
+        List<DBObject> privileges = loadPrivileges();
+        DBObjectList dbPrivileges = new DBObjectList("Privileges", DBIcons.DBO_PRIVILEGES, new ArrayList<ITreeNode>(privileges));
+        dbPrivileges.setParent(navTree);
+
+        List<DBObject> charsetList = loadCharsets();
+        DBObjectList dbCharsets = new DBObjectList("Charset", null, new ArrayList<ITreeNode>(charsetList));
+        dbCharsets.setParent(navTree);
+
+        List<ITreeNode> list = new ArrayList<>();
+        list.add(dbSchemas);
+        list.add(dbUsers);
+        list.add(dbPrivileges);
+        list.add(dbCharsets);
+
+        navTree.getChildren().addAll(list);
+        dbConn.setSchemas(schemas);
+        initCurrentSchema(schemas);
+    }
+
+    private void initCurrentSchema(List<DBSchema> schemas) throws Exception {
+        Connection conn = null;
+        try {
+            conn = dbConn.getConnection();
+            for (DBSchema schema : schemas) {
+                if (schema.getName().equalsIgnoreCase(conn.getCatalog())) {
+                    dbConn.setCurrentSchema(schema);
+                    break;
+                }
+            }
+        } finally {
+            ConnectionUtil.closeConnection(conn);
+        }
     }
 
     @Override
     public List<DBUser> loadUsers() throws Exception {
         List<DBUser> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(getUserSql());
+        List<DataMap> list = dbConn.getResultSet(getUserSql());
         for (DataMap map : list) {
             DBUserImpl user = new DBUserImpl();
+            user.setParent(navTree);
             user.setName(UObject.toString(map.get("USER_NAME")));
             user.setComment(UObject.toString(map.get("USER_NAME")));
+            user.setObjectType(DBObjectType.USER);
 
             result.add(user);
         }
@@ -77,9 +123,10 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBObject> loadPrivileges() throws Exception {
         List<DBObject> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(getPrivilegesSql());
+        List<DataMap> list = dbConn.getResultSet(getPrivilegesSql());
         for (DataMap map : list) {
             DBObjectImpl privilege = new DBObjectImpl();
+            privilege.setParent(navTree);
             privilege.setName(UObject.toString(map.get("PRIVILEGE_NAME")));
             privilege.setComment(UObject.toString(map.get("PRIVILEGE_NAME")));
             privilege.setObjectType(DBObjectType.PRIVILEGE);
@@ -93,9 +140,10 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBObject> loadCharsets() throws Exception {
         List<DBObject> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(getCharsetsSql());
+        List<DataMap> list = dbConn.getResultSet(getCharsetsSql());
         for (DataMap map : list) {
             DBObjectImpl privilege = new DBObjectImpl();
+            privilege.setParent(navTree);
             privilege.setName(UObject.toString(map.get("CHARSET_NAME")));
             privilege.setComment(UObject.toString(map.get("CHARSET_NAME")));
             privilege.setObjectType(DBObjectType.CHARSET);
@@ -109,11 +157,13 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBSchema> loadSchemas() throws Exception {
         List<DBSchema> result = new ArrayList<DBSchema>();
-        List<DataMap> list = conn.getResultSet(getSchemaSql());
+        List<DataMap> list = dbConn.getResultSet(getSchemaSql());
         for (DataMap map : list) {
             DBSchemaImpl schema = new DBSchemaImpl();
+            schema.setParent(navTree);
             schema.setName(UObject.toString(map.get("SCHEMA_NAME")));
             schema.setComment(schema.getName());
+            schema.setDataSource(dbConn.getDataSource());
             // 加载Table
             schema.setTables(loadTables(schema));
             // 加载View
@@ -177,7 +227,7 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBIndex> loadIndexes(DBSchema schema) throws Exception {
         List<DBIndex> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(String.format(getIndexesSql(), schema.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getIndexesSql(), schema.getName()));
         Map<String, DBIndexImpl> indexMap = new HashMap<>();
 
         for (DataMap map : list) {
@@ -208,7 +258,7 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBTrigger> loadTriggers(DBSchema schema) throws Exception {
         List<DBTrigger> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(String.format(getTriggersSql(), schema.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getTriggersSql(), schema.getName()));
 
         for (DataMap map : list) {
             DBTriggerImpl trigger = new DBTriggerImpl();
@@ -231,7 +281,7 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBProcedure> loadProcedures(DBSchema schema) throws Exception {
         List<DBProcedure> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(String.format(getProceduresSql(), schema.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getProceduresSql(), schema.getName()));
 
         for (DataMap map : list) {
             DBProcedureImpl procedure = new DBProcedureImpl();
@@ -247,7 +297,7 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBFunction> loadFunctions(DBSchema schema) throws Exception {
         List<DBFunction> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(String.format(getFunctionsSql(), schema.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getFunctionsSql(), schema.getName()));
 
         for (DataMap map : list) {
             DBFunctionImpl function = new DBFunctionImpl();
@@ -261,7 +311,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     public void loadParameters(DBSchema schema) throws Exception {
-        List<DataMap> list = conn.getResultSet(String.format(getParametersSql(), schema.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getParametersSql(), schema.getName()));
         for (DataMap map : list) {
             String methodName = map.getString("METHOD_NAME");
             DBMethodType type = DBMethodType.valueOf(map.getString("METHOD_TYPE"));
@@ -312,7 +362,7 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBTable> loadTables(DBSchema schema) throws Exception {
         List<DBTable> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(String.format(getTableSql(), schema.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getTableSql(), schema.getName()));
         for (DataMap map : list) {
             DBTableImpl table = new DBTableImpl();
             table.setParent(schema);
@@ -344,7 +394,7 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBView> loadViews(DBSchema schema) throws Exception {
         List<DBView> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(String.format(getViewSql(), schema.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getViewSql(), schema.getName()));
         for (DataMap map : list) {
             DBViewImpl view = new DBViewImpl();
             view.setParent(schema);
@@ -369,7 +419,7 @@ public abstract class BaseDBLoader implements DBLoader {
     @Override
     public List<DBColumn> loadColumns(DBDataset table) throws Exception {
         List<DBColumn> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(String.format(getColumnSql(), table.getSchema().getName(), table.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getColumnSql(), table.getSchema().getName(), table.getName()));
         for (DataMap map : list) {
             DBColumnImpl column = new DBColumnImpl();
             column.setSchema(table.getSchema());
@@ -383,6 +433,7 @@ public abstract class BaseDBLoader implements DBLoader {
             column.setFk(map.getBoolean("IS_FOREIGN_KEY"));
             column.setPrecision(map.getInt("DATA_PRECISION"));
             column.setScale(map.getInt("DATA_SCALE"));
+            column.setDataset(table);
 
             result.add(column);
         }
@@ -392,7 +443,7 @@ public abstract class BaseDBLoader implements DBLoader {
     public List<DBConstraint> loadConstraint(DBDataset dataset) throws Exception {
         DBSchemaImpl schema = (DBSchemaImpl) dataset.getSchema();
         List<DBConstraint> result = new ArrayList<>();
-        List<DataMap> list = conn.getResultSet(String.format(getConstraintsSql(), dataset.getSchema().getName(), dataset.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getConstraintsSql(), dataset.getSchema().getName(), dataset.getName()));
         for (DataMap map : list) {
             DBConstraintImpl constraint = new DBConstraintImpl();
             constraint.setSchema(dataset.getSchema());
@@ -408,7 +459,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     public void loadFkConstraints(DBSchema schema) throws Exception {
-        List<DataMap> list = conn.getResultSet(String.format(getFKConstraintsColumnsSql(), schema.getName()));
+        List<DataMap> list = dbConn.getResultSet(String.format(getFKConstraintsColumnsSql(), schema.getName()));
         for (DataMap map : list) {
             String constraintName = map.getString("constraint_name");
             String tableName = map.getString("table_name");

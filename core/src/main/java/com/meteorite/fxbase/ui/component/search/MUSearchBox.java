@@ -172,6 +172,11 @@ public class MUSearchBox extends VBox {
         }
     }
 
+    public void reset() {
+        textField.setText("");
+        listView.setVisible(false);
+        textField.requestFocus();
+    }
 
     class DBSearchResultListCell extends ListCell<DBObject> {
         private HBox box;

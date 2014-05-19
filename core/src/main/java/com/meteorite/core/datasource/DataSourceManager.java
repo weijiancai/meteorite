@@ -2,11 +2,22 @@ package com.meteorite.core.datasource;
 
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.datasource.db.DBDataSource;
+import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.db.object.enums.DBObjectType;
+import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
+import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.util.UFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.meteorite.core.config.SystemConfig.DIR_SYSTEM_HSQL_DB;
+import static com.meteorite.core.config.SystemConfig.SYS_DB_NAME;
 
 /**
  * 数据源管理
@@ -55,9 +66,28 @@ public class DataSourceManager {
     public static DBDataSource getSysDataSource() {
         DBDataSource dataSource = (DBDataSource) dataSourceMap.get(SystemConfig.SYS_DB_NAME);
         if (dataSource == null) {
+            File sysDbFile = null;
+            try {
+                sysDbFile = UFile.createFile(DIR_SYSTEM_HSQL_DB, SYS_DB_NAME);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             dataSource = new DBDataSource(SystemConfig.SYS_DB_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/sys", "sa", "", SystemConfig.SYS_DB_VERSION);
-            dataSourceMap.put(SystemConfig.SYS_DB_NAME, dataSource);
+            dataSource.setDatabaseType(DatabaseType.HSQLDB);
+            assert sysDbFile != null;
+            dataSource.setFilePath(sysDbFile.getAbsolutePath());
+//            dataSourceMap.put(SystemConfig.SYS_DB_NAME, dataSource);
         }
         return dataSource;
+    }
+
+    public static INavTreeNode getNavTree() throws Exception {
+        List<ITreeNode> children = new ArrayList<>();
+        for (DataSource ds : getDataSources()) {
+            children.add(ds.getNavTree());
+        }
+        DBObjectImpl root = new DBObjectImpl("ROOT", "根节点", children);
+        root.setObjectType(DBObjectType.NONE);
+        return root;
     }
 }

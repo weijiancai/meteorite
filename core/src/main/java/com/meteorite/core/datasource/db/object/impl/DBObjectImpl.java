@@ -60,8 +60,25 @@ public class DBObjectImpl implements DBObject {
 
     @Override
     public String getFullName() {
+        if ("ROOT".equals(name)) {
+            return "";
+        }
+        if (objectType == DBObjectType.DATABASE) {
+            return "[" + name + "] ";
+        }
+
         if (getParent() != null) {
-            return ((DBObjectImpl)getParent()).getFullName() + "." + name;
+            if(objectType == DBObjectType.NONE) {
+                return ((DBObjectImpl)getParent()).getFullName();
+            }
+
+            String fullName = ((DBObjectImpl)getParent()).getFullName();
+            if (UString.isNotEmpty(fullName)) {
+                if (((DBObjectImpl) getParent()).getObjectType() == DBObjectType.DATABASE) {
+                    return fullName + name;
+                }
+                return fullName + "." + name;
+            }
         }
         return name;
     }
@@ -111,6 +128,9 @@ public class DBObjectImpl implements DBObject {
 
     @Override
     public String getPid() {
+        if (parent == null) {
+            return "";
+        }
         return parent.getId();
     }
 

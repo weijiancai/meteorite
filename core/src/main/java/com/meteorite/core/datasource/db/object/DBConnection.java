@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource.db.object;
 
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 
 import java.io.File;
@@ -62,4 +63,12 @@ public interface DBConnection {
      * @throws Exception
      */
     void execSqlFile(File sqlFile) throws Exception;
+
+    /**
+     * 获得数据源
+     *
+     * @return 返回数据源
+     * @since 1.0.0
+     */
+    DataSource getDataSource();
 }

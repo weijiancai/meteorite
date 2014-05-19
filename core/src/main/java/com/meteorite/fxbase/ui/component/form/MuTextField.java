@@ -2,6 +2,9 @@ package com.meteorite.fxbase.ui.component.form;
 
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.fxbase.ui.IValue;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 
@@ -30,6 +33,12 @@ public class MuTextField extends BaseFormField implements IValue {
         textField = new TextField();
         textField.setText(config.getValue());
         textField.prefWidthProperty().bind(this.widthProperty());
+        textField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                valueProperty().set(newValue);
+            }
+        });
     }
 
     @Override
@@ -44,6 +53,7 @@ public class MuTextField extends BaseFormField implements IValue {
 
     @Override
     public void setValue(String value) {
+        super.setValue(value);
         textField.setText(value);
     }
 }

@@ -62,4 +62,12 @@ public interface ITreeNode {
      * @return 返回排序号
      */
     int getSortNum();
+
+    /**
+     * 获得树节点的图标路径
+     *
+     * @return 返回树节点的图标路径
+     * @since 1.0.0
+     */
+    String getIcon();
 }

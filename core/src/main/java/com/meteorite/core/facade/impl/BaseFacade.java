@@ -1,6 +1,7 @@
 package com.meteorite.core.facade.impl;
 
 import com.meteorite.core.facade.IFacade;
+import com.meteorite.fxbase.ui.view.MUDialog;
 
 /**
  * @author wei_jc
@@ -11,7 +12,7 @@ public abstract class BaseFacade implements IFacade {
         try {
             initializeFacade();
         } catch (Exception e) {
-            e.printStackTrace();
+            MUDialog.showExceptionDialog(e);
         }
     }
 

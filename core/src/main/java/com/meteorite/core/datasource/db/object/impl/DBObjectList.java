@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.object.impl;
 
+import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.model.ITreeNode;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class DBObjectList extends DBObjectImpl {
         this.setName(name);
         this.setIcon(icon);
         this.setChildren(children);
+        setObjectType(DBObjectType.NONE);
     }
 
     @Override

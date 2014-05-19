@@ -1,5 +1,6 @@
-package com.meteorite.core.util;
+package com.meteorite.core.datasource.db;
 
+import com.meteorite.core.util.HSqlDBServer;
 import org.junit.Test;
 
 /**

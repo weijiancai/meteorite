@@ -1,5 +1,6 @@
 package com.meteorite.core.config;
 
+import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
@@ -27,7 +28,7 @@ import static com.meteorite.core.config.SystemConfig.*;
 public class SystemManager {
     private static SystemManager instance;
     private static SystemInfo sysInfo;
-    private Map<String, ProjectConfig> cache = new HashMap<String, ProjectConfig>();
+    private static Map<String, ProjectConfig> cache = new HashMap<>();
     private LayoutConfig layoutConfig;
 
     static {
@@ -35,6 +36,8 @@ public class SystemManager {
         sysInfo = new SystemInfo();
         try {
             sysInfo.load();
+            // 加载项目
+            loadProjectConfig();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,9 +55,10 @@ public class SystemManager {
      * 初始化系统
      */
     public void init() throws Exception {
+        // 加载数据源
         loadDataSource();
         //  启动数据库
-        HSqlDBServer.getInstance().start();
+//        HSqlDBServer.getInstance().start();
         checkDbVersion();
         // 加载数据字典
         DictManager.load();
@@ -64,11 +68,9 @@ public class SystemManager {
         MetaManager.load();
         // 加载视图
         ViewManager.load();
-        // 加载项目
-        loadProjectConfig();
     }
 
-    private void loadProjectConfig() throws Exception {
+    private static void loadProjectConfig() throws Exception {
         // 遍历所有项目
         File[] files = SystemConfig.DIR_SYSTEM.listFiles();
         if (files != null) {
@@ -89,8 +91,8 @@ public class SystemManager {
      */
     private void loadDataSource() throws Exception {
         // 加载系统默认Hsqldb数据源
-        File sysDbFile = UFile.createFile(DIR_SYSTEM_HSQL_DB, SYS_DB_NAME);
-        HSqlDBServer.getInstance().addDbFile(SYS_DB_NAME, sysDbFile.getAbsolutePath());
+//        File sysDbFile = UFile.createFile(DIR_SYSTEM_HSQL_DB, SYS_DB_NAME);
+//        HSqlDBServer.getInstance().addDbFile(SYS_DB_NAME, sysDbFile.getAbsolutePath());
         DataSourceManager.addDataSource(DataSourceManager.getSysDataSource());
 
         for (ProjectConfig config : cache.values()) {
@@ -104,6 +106,11 @@ public class SystemManager {
                     }
                 }
             }
+        }
+
+        for (DataSource ds : DataSourceManager.getDataSources()) {
+            System.out.println("==============加载数据源： " + ds.getName());
+            ds.load();
         }
     }
 

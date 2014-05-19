@@ -1,11 +1,15 @@
 package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.component.tree.BaseTreeCell;
 import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
+import javafx.scene.Node;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
 import java.util.*;
@@ -17,19 +21,50 @@ import java.util.*;
  * @since 1.0.0
  */
 public class MUTree extends TreeView<ITreeNode> {
-    private Map<ITreeNode, MUTreeItem> nodeItemMap = new HashMap<>();
+    private Map<ITreeNode, TreeItem<ITreeNode>> nodeItemMap = new HashMap<>();
 
     public MUTree(ITreeNode root) {
-        MUTreeItem rootItem = new MUTreeItem(this, root);
-        this.setRoot(rootItem);
-        rootItem.setExpanded(true);
+//        MUTreeItem rootItem = new MUTreeItem(this, root);
         /*this.setCellFactory(new Callback<TreeView<ITreeNode>, TreeCell<ITreeNode>>() {
             @Override
             public TreeCell<ITreeNode> call(TreeView<ITreeNode> param) {
                 return new BaseTreeCell();
             }
         });*/
+        TreeItem<ITreeNode> rootItem = addTreeNode(root);
+        rootItem.setExpanded(true);
+        this.setRoot(rootItem);
+        this.setShowRoot(false);
     }
+
+    public TreeItem<ITreeNode> addTreeNode(ITreeNode node) {
+        TreeItem<ITreeNode> rootItem = new TreeItem<>(node);
+        setIcon(rootItem);
+        buildTree(node, rootItem);
+        return rootItem;
+    }
+
+    private void buildTree(ITreeNode parentNode, TreeItem<ITreeNode> parentItem) {
+        List<? extends ITreeNode> children = parentNode.getChildren();
+        if (children != null && children.size() > 0) {
+            for (ITreeNode node : children) {
+                TreeItem<ITreeNode> item = new TreeItem<>(node);
+                setIcon(item);
+                parentItem.getChildren().add(item);
+                nodeItemMap.put(node, item);
+                buildTree(node, item);
+            }
+        }
+    }
+
+    private void setIcon(TreeItem<ITreeNode> item) {
+        String iconPath = item.getValue().getIcon();
+        if (UString.isNotEmpty(iconPath)) {
+            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(iconPath)));
+            item.setGraphic(imageView);
+        }
+    }
+
 
     public ITreeNode getSelected() {
         TreeItem<ITreeNode> item = this.getSelectionModel().getSelectedItem();
@@ -40,7 +75,7 @@ public class MUTree extends TreeView<ITreeNode> {
     }
 
     public void expandTo(ITreeNode node) {
-        Stack<ITreeNode> stack = new Stack<>();
+        /*Stack<ITreeNode> stack = new Stack<>();
         ITreeNode child = node;
         ITreeNode parent;
         while ((parent = node.getParent()) != null) {
@@ -50,12 +85,13 @@ public class MUTree extends TreeView<ITreeNode> {
 
         while (!stack.isEmpty()) {
             parent = stack.pop();
-            MUTreeItem item = nodeItemMap.get(parent);
+            TreeItem item = nodeItemMap.get(parent);
             if (item != null && !item.isExpanded()) {
                 item.setExpanded(true);
             }
-        }
+        }*/
 
+        this.getSelectionModel().select(nodeItemMap.get(node));
         /*int row = this.getRow(nodeItemMap.get(node));
         this.scrollTo(row);*/
     }

@@ -1,6 +1,6 @@
 package com.meteorite.core.datasource.db.object.loader;
 
-import com.meteorite.core.datasource.db.object.DBConnection;
+import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 
 /**
  * MySql加载器
@@ -10,7 +10,7 @@ import com.meteorite.core.datasource.db.object.DBConnection;
  */
 public class MySqlLoader extends BaseDBLoader {
 
-    public MySqlLoader(DBConnection conn) throws Exception {
+    public MySqlLoader(DBConnectionImpl conn) throws Exception {
         super(conn);
     }
 
@@ -106,8 +106,8 @@ public class MySqlLoader extends BaseDBLoader {
                 "                        kcu.TABLE_NAME = col.TABLE_NAME and\n" +
                 "                        kcu.COLUMN_NAME = col.COLUMN_NAME\n" +
                 "            where\n" +
-                "                col.TABLE_SCHEMA = '{0}' and\n" +
-                "                col.TABLE_NAME = '{1}'\n" +
+                "                col.TABLE_SCHEMA = '%1$s' and\n" +
+                "                col.TABLE_NAME = '%2$s'\n" +
                 "            order by col.ORDINAL_POSITION asc";
     }
 
@@ -136,8 +136,8 @@ public class MySqlLoader extends BaseDBLoader {
                 "                    rc.CONSTRAINT_NAME = tc.CONSTRAINT_NAME and\n" +
                 "                    rc.TABLE_NAME = tc.TABLE_NAME\n" +
                 "            where\n" +
-                "                tc.TABLE_SCHEMA = '{0}' and\n" +
-                "                tc.TABLE_NAME = '{1}'\n" +
+                "                tc.TABLE_SCHEMA = '%1$s' and\n" +
+                "                tc.TABLE_NAME = '%2$s'\n" +
                 "            order by\n" +
                 "                tc.TABLE_NAME,\n" +
                 "                tc.CONSTRAINT_NAME asc";
@@ -148,10 +148,12 @@ public class MySqlLoader extends BaseDBLoader {
         return "select distinct\n" +
                 "                INDEX_NAME,\n" +
                 "                TABLE_NAME,\n" +
+                "                COLUMN_NAME,\n" +
                 "                if (NON_UNIQUE = 'YES', 'N', 'Y') as IS_UNIQUE,\n" +
+                "                (CASE WHEN COLLATION = 'A' THEN 'Y' ELSE 'N' END) as IS_ASC,\n" +
                 "                'Y' as IS_VALID\n" +
                 "            from INFORMATION_SCHEMA.STATISTICS\n" +
-                "            where TABLE_SCHEMA = '{0}'\n" +
+                "            where TABLE_SCHEMA = '%s'\n" +
                 "            order by\n" +
                 "                TABLE_NAME,\n" +
                 "                INDEX_NAME asc";
@@ -169,7 +171,7 @@ public class MySqlLoader extends BaseDBLoader {
                 "                'N' as IS_DEBUG,\n" +
                 "                'Y' as IS_FOR_EACH_ROW\n" +
                 "            from INFORMATION_SCHEMA.TRIGGERS\n" +
-                "            where EVENT_OBJECT_SCHEMA = '{0}'\n" +
+                "            where EVENT_OBJECT_SCHEMA = '%s'\n" +
                 "            order by\n" +
                 "                EVENT_OBJECT_TABLE,\n" +
                 "                TRIGGER_NAME asc";
@@ -209,7 +211,7 @@ public class MySqlLoader extends BaseDBLoader {
                 "                PARAMETER_NAME as ARGUMENT_NAME,\n" +
                 "                null as PROGRAM_NAME,\n" +
                 "                SPECIFIC_NAME as METHOD_NAME,\n" +
-                "                ROUTINE_TYPE as METHOD_TYPE\n" +
+                "                ROUTINE_TYPE as METHOD_TYPE,\n" +
                 "                0 as OVERLOAD,\n" +
                 "                ORDINAL_POSITION as POSITION,\n" +
                 "                ORDINAL_POSITION as SEQUENCE,\n" +

@@ -9,7 +9,7 @@ import java.util.List;
  * @version 0.0.1
  */
 public interface DBLoader {
-    void load();
+    void load() throws Exception;
 
     List<DBUser> loadUsers() throws Exception;
 

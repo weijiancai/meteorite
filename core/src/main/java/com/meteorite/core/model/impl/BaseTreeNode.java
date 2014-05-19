@@ -80,4 +80,9 @@ public class BaseTreeNode implements ITreeNode {
     public int getSortNum() {
         return sortNum;
     }
+
+    @Override
+    public String getIcon() {
+        return null;
+    }
 }

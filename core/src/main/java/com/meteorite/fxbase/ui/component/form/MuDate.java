@@ -4,6 +4,8 @@ import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.util.UDate;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IValue;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
 import javafx.util.StringConverter;
@@ -46,6 +48,12 @@ public class MuDate extends BaseFormField implements IValue {
                 return UDate.toLocalDate(date);
             }
         });
+        datePicker.valueProperty().addListener(new ChangeListener<LocalDate>() {
+            @Override
+            public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
+                valueProperty().set(UDate.dateToString(newValue));
+            }
+        });
     }
 
     @Override
@@ -63,6 +71,7 @@ public class MuDate extends BaseFormField implements IValue {
 
     @Override
     public void setValue(String value) {
+        super.setValue(value);
         if (UString.isNotEmpty(value)) {
             datePicker.setValue(UDate.toLocalDate(value));
         }

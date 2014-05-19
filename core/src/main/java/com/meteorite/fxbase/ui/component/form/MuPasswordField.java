@@ -3,6 +3,8 @@ package com.meteorite.fxbase.ui.component.form;
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.PasswordField;
 
@@ -24,6 +26,12 @@ public class MuPasswordField extends BaseFormField implements IValue {
     protected void initPrep() {
         passwordField = new PasswordField();
         passwordField.setPrefWidth(config.getWidth());
+        passwordField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                valueProperty().set(newValue);
+            }
+        });
     }
 
     @Override
@@ -38,6 +46,7 @@ public class MuPasswordField extends BaseFormField implements IValue {
 
     @Override
     public void setValue(String value) {
+        super.setValue(value);
         passwordField.setText(value);
     }
 

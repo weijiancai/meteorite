@@ -94,6 +94,9 @@ public class MuCrud extends StackPane {
         queryBtn.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
+                // 清空数据
+                table.getItems().clear();
+                // 查询数据
                 Meta meta = crudProperty.getQueryView().getMeta();
                 QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), 0, UNumber.toInt(pageRowsTF.getText()));
                 table.getItems().addAll(queryResult.getRows());

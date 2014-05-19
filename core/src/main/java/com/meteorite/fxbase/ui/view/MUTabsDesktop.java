@@ -1,13 +1,23 @@
 package com.meteorite.fxbase.ui.view;
 
+import com.meteorite.core.config.ProjectConfig;
+import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.db.DBDataSource;
+import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.db.connection.ConnectionUtil;
+import com.meteorite.core.datasource.db.object.DBSchema;
+import com.meteorite.core.dict.FormType;
 import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IDesktop;
+import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.search.MUSearchBox;
+import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -18,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.ToolBar;
+import javafx.scene.control.TreeItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -27,8 +38,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Popup;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import org.controlsfx.control.MasterDetailPane;
 
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,8 +91,54 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         btnAddDs.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
-                MUForm form = new MUForm(new FormProperty(ViewManager.getViewByName("DBDataSourceFormView")));
-                MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "新增数据源", form, null);
+                FormProperty formProperty = new FormProperty(ViewManager.getViewByName("DBDataSourceFormView"));
+                formProperty.setFormType(FormType.READONLY);
+                final MUForm form = new MUForm(formProperty);
+                form.addEventHandler(FormFieldValueEvent.EVENT_TYPE, new MuEventHandler<FormFieldValueEvent>() {
+                    @Override
+                    public void doHandler(FormFieldValueEvent event) throws Exception {
+                        if ("DatabaseType".equalsIgnoreCase(event.getName())) {
+                            DatabaseType type = DatabaseType.valueOf(event.getNewValue());
+                            switch (type) {
+                                case MYSQL:
+                                    form.setValue("DriverClass", "com.mysql.jdbc.Driver");
+                                    form.setValue("Url", "jdbc:mysql://localhost:3306/");
+                                    break;
+                            }
+                        }
+                    }
+                });
+                MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "新增数据源", form, new Callback<Void, Void>() {
+                    @Override
+                    public Void call(Void param) {
+                        Map<String, IValue> map = form.getValueMap();
+                        System.out.println(map);
+                        DBDataSource ds = new DBDataSource();
+                        ds.setName(map.get("Name").value());
+                        ds.setDatabaseType(DatabaseType.get(map.get("DatabaseType").value()));
+                        ds.setDriverClass(map.get("DriverClass").value());
+                        ds.setUrl(map.get("Url").value());
+                        ds.setUsername(map.get("Username").value());
+                        ds.setPassword(map.get("Password").value());
+
+                        try {
+                            Connection connection = ds.getDbConnection().getConnection();
+                            if (connection == null) {
+                                MUDialog.showInformation("数据源配置错误！");
+                                return null;
+                            }
+                            ConnectionUtil.closeConnection(connection);
+                            ProjectConfig projectConfig = BaseApp.getInstance().getFacade().getProjectConfig();
+                            projectConfig.getDataSources().add(ds);
+                            SystemManager.save(projectConfig);
+                            TreeItem<ITreeNode> item = tree.addTreeNode(ds.getNavTree());
+                            tree.getRoot().getChildren().add(item);
+                        } catch (Exception e) {
+                            MUDialog.showExceptionDialog(e);
+                        }
+                        return null;
+                    }
+                });
             }
         });
         Region region = new Region();
@@ -124,7 +183,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         tabPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new MuEventHandler<MouseEvent>() {
             @Override
             public void doHandler(MouseEvent event) throws Exception {
-                popup.hide();
+                hideSearchBox();
             }
         });
     }
@@ -165,6 +224,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     }
 
     public void hideSearchBox() {
+        searchBox.reset();
         popup.hide();
     }
 

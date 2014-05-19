@@ -152,31 +152,17 @@ public class DBDataSource implements DataSource {
 
     @Override
     public INavTreeNode getNavTree() throws Exception {
-        if (navTree == null) {
-            List<DBSchema> schemas = getSchemas();
-            DBObjectList dbSchemas = new DBObjectList("Schemas", DBIcons.DBO_SCHEMAS, new ArrayList<ITreeNode>(schemas));
-
-            DBLoader loader = connection.getLoader();
-
-            List<DBUser> users = loader.loadUsers();
-            DBObjectList dbUsers = new DBObjectList("Users", DBIcons.DBO_USERS, new ArrayList<ITreeNode>(users));
-
-            List<DBObject> privileges = loader.loadPrivileges();
-            DBObjectList dbPrivileges = new DBObjectList("Privileges", DBIcons.DBO_PRIVILEGES, new ArrayList<ITreeNode>(privileges));
-
-            List<DBObject> charsetList = loader.loadCharsets();
-            DBObjectList dbCharsets = new DBObjectList("Charset", null, new ArrayList<ITreeNode>(charsetList));
-
-            List<ITreeNode> list = new ArrayList<>();
-            list.add(dbSchemas);
-            list.add(dbUsers);
-            list.add(dbPrivileges);
-            list.add(dbCharsets);
-            navTree = new DBObjectImpl(name, name, list);
-            navTree.setObjectType(DBObjectType.DATABASE);
-        }
-
         return navTree;
+    }
+
+    @Override
+    public void load() throws Exception {
+        if (navTree == null) {
+            navTree = new DBObjectImpl();
+            navTree.setObjectType(DBObjectType.DATABASE);
+            navTree.setName(name);
+        }
+        getDbConnection().getLoader().load();
     }
 
     @Override

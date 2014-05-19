@@ -2,6 +2,8 @@ package com.meteorite.fxbase.ui.component.form;
 
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.fxbase.ui.IValue;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 
@@ -24,6 +26,12 @@ public class MuTextArea extends BaseFormField implements IValue {
         textArea = new TextArea();
         textArea.setPrefHeight(config.getHeight());
         textArea.setPrefWidth(config.getWidth());
+        textArea.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                valueProperty().set(newValue);
+            }
+        });
     }
 
     @Override
@@ -38,6 +46,7 @@ public class MuTextArea extends BaseFormField implements IValue {
 
     @Override
     public void setValue(String value) {
+        super.setValue(value);
         textArea.setText(value);
     }
 }

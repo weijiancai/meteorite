@@ -527,6 +527,8 @@ public class SqlBuilder {
             return String.format("SELECT * FROM (SELECT nowpage.*,rownum rn FROM (%s) nowpage WHERE rownum<=%d) WHERE rn>%d", sql, end, start);
         } else if (dbType == DatabaseType.HSQLDB) {
             return String.format("SELECT LIMIT %d %d * FROM (%s)", start, rows, sql);
+        } else if (dbType == DatabaseType.MYSQL) {
+            return String.format("%s LIMIT %d %d ", sql, start, rows);
         }
 
         return "";

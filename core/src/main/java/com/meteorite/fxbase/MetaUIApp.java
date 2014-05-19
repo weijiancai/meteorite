@@ -15,7 +15,7 @@ import javafx.scene.Parent;
  */
 public class MetaUIApp extends BaseApp {
     @Override
-    protected IFacade getFacade() {
+    public IFacade getFacade() {
         return new BaseFacade() {
             @Override
             protected void initProjectConfig() throws Exception {

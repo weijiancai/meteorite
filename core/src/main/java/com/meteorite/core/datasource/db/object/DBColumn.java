@@ -58,4 +58,11 @@ public interface DBColumn extends DBObject {
      * @return 返回引用的主键列
      */
     DBColumn getRefColumn();
+
+    /**
+     * 获得列所在的表(视图)信息
+     *
+     * @return 返回列所在的表（视图）信息
+     */
+    DBDataset getDataset();
 }

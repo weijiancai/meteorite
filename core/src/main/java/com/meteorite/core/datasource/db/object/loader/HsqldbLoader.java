@@ -1,6 +1,6 @@
 package com.meteorite.core.datasource.db.object.loader;
 
-import com.meteorite.core.datasource.db.object.DBConnection;
+import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 
 /**
  * MySql加载器
@@ -10,7 +10,7 @@ import com.meteorite.core.datasource.db.object.DBConnection;
  */
 public class HsqldbLoader extends BaseDBLoader {
 
-    public HsqldbLoader(DBConnection conn) throws Exception {
+    public HsqldbLoader(DBConnectionImpl conn) throws Exception {
         super(conn);
     }
 
@@ -142,8 +142,8 @@ public class HsqldbLoader extends BaseDBLoader {
         return "select distinct\n" +
                 "  INDEX_NAME,\n" +
                 "  TABLE_NAME,\n" +
-                "  (CASE WHEN NON_UNIQUE THEN 'N' ELSE 'Y' END) as IS_UNIQUE,\n" +
                 "  COLUMN_NAME,\n" +
+                "  (CASE WHEN NON_UNIQUE THEN 'N' ELSE 'Y' END) as IS_UNIQUE,\n" +
                 "  (CASE WHEN ASC_OR_DESC = 'A' THEN 'Y' ELSE 'N' END) as IS_ASC,\n" +
                 "  'Y' as IS_VALID\n" +
                 "from INFORMATION_SCHEMA.SYSTEM_INDEXINFO\n" +

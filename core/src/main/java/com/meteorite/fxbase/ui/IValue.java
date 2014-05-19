@@ -1,5 +1,7 @@
 package com.meteorite.fxbase.ui;
 
+import javafx.beans.property.StringProperty;
+
 /**
  *
  * @author wei_jc
@@ -9,4 +11,6 @@ public interface IValue {
     String value();
 
     void setValue(String value);
+
+    StringProperty valueProperty();
 }

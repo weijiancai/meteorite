@@ -8,14 +8,21 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
+import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
+import com.meteorite.fxbase.ui.component.form.BaseFormField;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
+import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.layout.MUFormLayout;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import java.sql.SQLException;
@@ -41,6 +48,8 @@ public class MUForm extends BorderPane {
     private TabPane tabPane;
     private DataMap data;
     private List<MUTable> children = new ArrayList<>();
+
+    private BooleanProperty isModified = new SimpleBooleanProperty();
 
     public MUForm(FormProperty property) {
         this(property, null);
@@ -112,6 +121,19 @@ public class MUForm extends BorderPane {
                         }
                     }
                 });
+
+                table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if (event.getClickCount() == 2) {
+                            FormProperty property = new FormProperty(ViewManager.getViewByName(meta.getName() + "FormView"));
+                            property.setFormType(FormType.READONLY);
+                            MUForm form = new MUForm(property);
+                            form.setValues(table.getSelectionModel().getSelectedItem());
+                            MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
+                        }
+                    }
+                });
                 tabPane.getTabs().add(tab);
             }
 
@@ -119,6 +141,19 @@ public class MUForm extends BorderPane {
                 registerEvent();
             }
             this.setCenter(root);
+        }
+
+        // 监听FormField状态变化
+        for (final IValue value : getValueMap().values()) {
+            value.valueProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    if (oldValue == null || !oldValue.equals(newValue)) {
+                        isModified.set(true);
+                    }
+                    fireEvent(new FormFieldValueEvent((BaseFormField) value, oldValue, newValue));
+                }
+            });
         }
     }
 
@@ -129,6 +164,15 @@ public class MUForm extends BorderPane {
         this.data = result;
         for (Map.Entry<String, IValue> entry : layout.getValueMap().entrySet()) {
             entry.getValue().setValue(result.getString(entry.getKey()));
+        }
+        // 重置修改状态
+        isModified.set(false);
+    }
+
+    public void setValue(String name, String value) {
+        IValue v = getValueMap().get(name);
+        if (v != null) {
+            v.setValue(value);
         }
     }
 

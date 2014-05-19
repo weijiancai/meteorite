@@ -121,7 +121,7 @@ public abstract class BaseApp extends Application {
      *
      * @return 返回Facade
      */
-    protected abstract IFacade getFacade();
+    public abstract IFacade getFacade();
 
     /**
      * 获取BaseApp实例

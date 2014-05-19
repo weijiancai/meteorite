@@ -2,6 +2,8 @@ package com.meteorite.core.datasource.db.object.impl;
 
 import com.meteorite.core.datasource.db.DBIcons;
 import com.meteorite.core.datasource.db.object.DBColumn;
+import com.meteorite.core.datasource.db.object.DBDataset;
+import com.meteorite.core.datasource.db.object.DBTable;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.model.ITreeNode;
@@ -26,14 +28,10 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
     private int scale;
     private MetaDataType dataType;
     private DBColumn refColumn;
+    private DBDataset dataset;
 
     public DBColumnImpl() {
         setObjectType(DBObjectType.COLUMN);
-    }
-
-    @Override
-    public List<ITreeNode> getChildren() {
-        return null;
     }
 
     @Override
@@ -70,6 +68,11 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
         return refColumn;
     }
 
+    @Override
+    public DBDataset getDataset() {
+        return dataset;
+    }
+
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
     }
@@ -103,6 +106,10 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
 
     public void setRefColumn(DBColumn refColumn) {
         this.refColumn = refColumn;
+    }
+
+    public void setDataset(DBDataset dataset) {
+        this.dataset = dataset;
     }
 
     @Override

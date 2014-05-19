@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.object.impl;
 
+import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 
@@ -28,6 +29,7 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     private Map<String, DBFunction> functionMap = new HashMap<>();
     private Map<String, DBProcedure> procedureMap = new HashMap<>();
     private Map<String, DBConstraint> constraintMap = new HashMap<>();
+    private DataSource dataSource;
 
     public DBSchemaImpl() {
         setObjectType(DBObjectType.SCHEMA);
@@ -167,5 +169,13 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     public void addConstraints(DBConstraint constraint) {
         getConstraints().add(constraint);
         constraintMap.put(constraint.getName(), constraint);
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }

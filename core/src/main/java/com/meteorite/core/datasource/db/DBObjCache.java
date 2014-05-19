@@ -44,6 +44,7 @@ public class DBObjCache {
      * @since 1.0.0
      */
     public void addDbObject(String key, DBObject object) {
+        System.out.println("addCache --> " + key);
         dbObjectMap.put(key, object);
     }
 

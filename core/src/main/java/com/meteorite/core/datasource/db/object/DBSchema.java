@@ -1,5 +1,7 @@
 package com.meteorite.core.datasource.db.object;
 
+import com.meteorite.core.datasource.DataSource;
+
 import java.util.List;
 
 /**
@@ -51,4 +53,12 @@ public interface DBSchema extends DBObject {
     DBFunction getFunction(String name);
 
     DBConstraint getConstraint(String name);
+
+    /**
+     * 获得数据源
+     *
+     * @return 返回数据源
+     * @since 1.0.0
+     */
+    DataSource getDataSource();
 }

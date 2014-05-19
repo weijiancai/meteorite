@@ -89,6 +89,12 @@ public class MuComboBox extends BaseFormField implements IValue {
         comboBox.setContextMenu(contextMenu);
 
         comboBox.prefWidthProperty().bind(this.widthProperty());
+        comboBox.valueProperty().addListener(new ChangeListener<DictCode>() {
+            @Override
+            public void changed(ObservableValue<? extends DictCode> observable, DictCode oldValue, DictCode newValue) {
+                valueProperty().set(newValue.getName());
+            }
+        });
     }
 
     @Override
@@ -106,6 +112,7 @@ public class MuComboBox extends BaseFormField implements IValue {
 
     @Override
     public void setValue(String value) {
+        super.setValue(value);
         if (category != null) {
             if (category.getId().equals("EnumBoolean")) {
                 if (UString.toBoolean(value)) {

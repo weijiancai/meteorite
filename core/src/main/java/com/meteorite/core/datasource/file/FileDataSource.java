@@ -51,6 +51,11 @@ public class FileDataSource implements DataSource {
     }
 
     @Override
+    public void load() throws Exception {
+
+    }
+
+    @Override
     public QueryResult<DataMap> retrieve(QueryBuilder queryBuilder, int page, int rows) throws SQLException {
         return null;
     }

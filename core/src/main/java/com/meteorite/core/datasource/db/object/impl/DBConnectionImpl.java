@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.object.impl;
 
+import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
@@ -36,16 +37,17 @@ public class DBConnectionImpl implements DBConnection {
         initDatabaseType();
         // 初始化加载器
         initLoader();
-        // 加载Schema
-        schemas = loader.loadSchemas();
-        // 初始化当前Schema
-        initCurrentSchema();
         // 设置数据源的数据库类型
         dataSource.setDatabaseType(dbType);
     }
 
     // 初始化数据库类型
     private void initDatabaseType() throws Exception {
+        if (dataSource.getDatabaseType() != null) {
+            dbType = dataSource.getDatabaseType();
+            return;
+        }
+
         Connection conn = null;
         try {
             conn = getConnection();
@@ -66,15 +68,6 @@ public class DBConnectionImpl implements DBConnection {
 
     }
 
-    private void initCurrentSchema() throws Exception {
-        Connection conn = getConnection();
-        for (DBSchema schema : schemas) {
-            if (schema.getName().equalsIgnoreCase(conn.getCatalog())) {
-                currentSchema = schema;
-            }
-        }
-    }
-
     // 初始化加载器
     private void initLoader() throws Exception {
         switch (dbType) {
@@ -89,30 +82,38 @@ public class DBConnectionImpl implements DBConnection {
     @Override
     public Connection getConnection() throws Exception {
         Class.forName(dataSource.getDriverClass());
+        if (dbType == DatabaseType.HSQLDB && UString.isNotEmpty(dataSource.getFilePath())) {
+            return DriverManager.getConnection("jdbc:hsqldb:file:" + dataSource.getFilePath(), dataSource.getUsername(), dataSource.getPassword());
+        }
         return  DriverManager.getConnection(dataSource.getUrl(), dataSource.getUsername(), dataSource.getPassword());
     }
 
     @Override
     public List<DataMap> getResultSet(String sql) throws Exception {
-        Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery(sql);
-        ResultSetMetaData metaData = rs.getMetaData();
-
         List<DataMap> list = new ArrayList<>();
+        Connection conn = null;
 
-        while (rs.next()) {
-            DataMap map = new DataMap();
+        try {
+            conn = getConnection();
+            Statement stmt = conn.createStatement();
+//            System.out.println(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+            ResultSetMetaData metaData = rs.getMetaData();
 
-            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                map.put(metaData.getColumnLabel(i), rs.getObject(i));
+            while (rs.next()) {
+                DataMap map = new DataMap();
+
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                    map.put(metaData.getColumnLabel(i), rs.getObject(i));
+                }
+
+                list.add(map);
             }
-
-            list.add(map);
+            rs.close();
+            stmt.close();
+        } finally {
+            ConnectionUtil.closeConnection(conn);
         }
-        rs.close();
-        stmt.close();
-        conn.close();
 
         return list;
     }
@@ -163,5 +164,18 @@ public class DBConnectionImpl implements DBConnection {
             }
 
         }
+    }
+
+    @Override
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setSchemas(List<DBSchema> schemas) {
+        this.schemas = schemas;
+    }
+
+    public void setCurrentSchema(DBSchema currentSchema) {
+        this.currentSchema = currentSchema;
     }
 }

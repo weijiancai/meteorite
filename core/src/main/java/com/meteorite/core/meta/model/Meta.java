@@ -159,9 +159,8 @@ public class Meta {
             }
         }
         assert column != null;
-        DBObject table = (DBObject)column.getParent();
 
-        return (DBDataset) table;
+        return column.getDataset();
     }
 
     public void setDbTable(DBDataset dbTable) {

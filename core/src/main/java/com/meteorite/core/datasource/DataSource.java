@@ -62,5 +62,12 @@ public interface DataSource {
      */
     INavTreeNode getNavTree() throws Exception;
 
+    /**
+     * 加载数据源
+     *
+     * @throws Exception
+     */
+    void load() throws Exception;
+
     QueryResult<DataMap> retrieve(QueryBuilder queryBuilder, int page, int rows) throws SQLException;
 }

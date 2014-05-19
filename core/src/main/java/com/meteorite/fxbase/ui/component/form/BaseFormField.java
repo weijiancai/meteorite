@@ -10,6 +10,8 @@ import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.FxLookDictPane;
 import com.meteorite.fxbase.ui.view.MUDialog;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -34,6 +36,9 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
     protected FormFieldProperty config;
     protected boolean isAddQueryMode;
     private Hyperlink btnQueryModel;
+    private String oldValue;
+    private List<Condition> list = new ArrayList<>();
+    private StringProperty value = new SimpleStringProperty();
 
     public BaseFormField(FormFieldProperty property) {
         this.config = property;
@@ -166,8 +171,7 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
 
     @Override
     public List<Condition> getConditions() {
-        List<Condition> list = new ArrayList<>();
-
+        list.clear();
         if (UString.isNotEmpty(value())) {
             list.add(new Condition(config.getColumnName(), config.getQueryModel(), value(), MetaDataType.STRING));
         }
@@ -175,5 +179,19 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
         return list;
     }
 
+    @Override
+    public StringProperty valueProperty() {
+        return value;
+    }
+
+    @Override
+    public void setValue(String value) {
+        valueProperty().set(value);
+    }
+
     protected abstract Node[] getControls();
+
+    public FormFieldProperty getConfig() {
+        return config;
+    }
 }

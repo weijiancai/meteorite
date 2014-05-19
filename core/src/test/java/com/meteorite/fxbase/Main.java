@@ -1,5 +1,8 @@
 package com.meteorite.fxbase;
 
+import com.meteorite.core.datasource.db.DBDataSource;
+import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.fxbase.ui.view.MUTree;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
@@ -25,18 +28,19 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     @Override public void start(Stage primaryStage) {
-        SplitPane splitPane = new SplitPane();
-        splitPane.setId("hiddenSplitter");
-        Region region1 = new Region();
-        region1.getStyleClass().add("rounded");
-        Region region2 = new Region();
-        region2.getStyleClass().add("rounded");
-        Region region3 = new Region();
-        region3.getStyleClass().add("rounded");
-        splitPane.getItems().addAll(region1, region2, region3);
-        splitPane.setDividerPositions(0.33, 0.66);
+        DBDataSource ds = new DBDataSource();
+        ds.setName("mysql");
+        ds.setDatabaseType(DatabaseType.MYSQL);
+        ds.setDriverClass("com.mysql.jdbc.Driver");
+        ds.setUrl("jdbc:mysql://localhost:3306/");
+        ds.setUsername("root");
+        ds.setPassword("7758521");
 
-        primaryStage.setScene(new Scene(splitPane));
+        try {
+            primaryStage.setScene(new Scene(new MUTree(ds.getNavTree())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         primaryStage.show();
     }
 

@@ -38,6 +38,7 @@ public class MuNumberField extends BaseFormField implements IValue {
 
     @Override
     public void setValue(String value) {
+        super.setValue(value);
         textField.setText(value);
     }
 }
