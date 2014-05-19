@@ -9,6 +9,7 @@ import com.meteorite.core.datasource.db.object.impl.*;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UObject;
+import com.meteorite.core.util.UString;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -110,6 +111,7 @@ public abstract class BaseDBLoader implements DBLoader {
         for (DataMap map : list) {
             DBUserImpl user = new DBUserImpl();
             user.setParent(navTree);
+            user.setDataSource(dbConn.getDataSource());
             user.setName(UObject.toString(map.get("USER_NAME")));
             user.setComment(UObject.toString(map.get("USER_NAME")));
             user.setObjectType(DBObjectType.USER);
@@ -160,10 +162,10 @@ public abstract class BaseDBLoader implements DBLoader {
         List<DataMap> list = dbConn.getResultSet(getSchemaSql());
         for (DataMap map : list) {
             DBSchemaImpl schema = new DBSchemaImpl();
+            schema.setDataSource(dbConn.getDataSource());
             schema.setParent(navTree);
             schema.setName(UObject.toString(map.get("SCHEMA_NAME")));
             schema.setComment(schema.getName());
-            schema.setDataSource(dbConn.getDataSource());
             // 加载Table
             schema.setTables(loadTables(schema));
             // 加载View
@@ -242,12 +244,16 @@ public abstract class BaseDBLoader implements DBLoader {
                 index.setColumns(new ArrayList<DBColumn>());
 
                 DBTable table = schema.getTable(map.getString("TABLE_NAME"));
-                table.getIndexes().add(index);
-                index.setTable(table);
+                if (table != null) {
+                    table.getIndexes().add(index);
+                    index.setTable(table);
+                }
 
                 indexMap.put(indexName, index);
             }
-            index.getColumns().add(index.getTable().getColumn(map.getString("COLUMN_NAME")));
+            if (index.getTable() != null) {
+                index.getColumns().add(index.getTable().getColumn(map.getString("COLUMN_NAME")));
+            }
 
             result.add(index);
         }
@@ -344,6 +350,9 @@ public abstract class BaseDBLoader implements DBLoader {
                     argument.setInput(true);
                     break;
                 case "OUT":
+                    if (UString.isEmpty(argument.getName())) {
+                        argument.setName("out");
+                    }
                     argument.setOutput(true);
                     break;
             }
@@ -365,10 +374,11 @@ public abstract class BaseDBLoader implements DBLoader {
         List<DataMap> list = dbConn.getResultSet(String.format(getTableSql(), schema.getName()));
         for (DataMap map : list) {
             DBTableImpl table = new DBTableImpl();
+            table.setSchema(schema);
             table.setParent(schema);
+            table.setDataSource(dbConn.getDataSource());
             table.setName(UObject.toString(map.get("TABLE_NAME")));
             table.setComment(UObject.toString(map.get("TABLE_COMMENT")));
-            table.setSchema(schema);
             // 加载列
             table.setColumns(loadColumns(table));
             // 加载约束
@@ -397,6 +407,7 @@ public abstract class BaseDBLoader implements DBLoader {
         List<DataMap> list = dbConn.getResultSet(String.format(getViewSql(), schema.getName()));
         for (DataMap map : list) {
             DBViewImpl view = new DBViewImpl();
+            view.setSchema(schema);
             view.setParent(schema);
             view.setName(UObject.toString(map.get("VIEW_NAME")));
             view.setComment(UObject.toString(map.get("VIEW_COMMENT")));
@@ -424,6 +435,7 @@ public abstract class BaseDBLoader implements DBLoader {
             DBColumnImpl column = new DBColumnImpl();
             column.setSchema(table.getSchema());
             column.setParent(table);
+            column.setDataset(table);
             column.setName(map.getString("COLUMN_NAME"));
             column.setComment(map.getString("COLUMN_COMMENT"));
             column.setDataType(MetaDataType.getDataType(map.getString("DATA_TYPE_NAME")));
@@ -433,7 +445,6 @@ public abstract class BaseDBLoader implements DBLoader {
             column.setFk(map.getBoolean("IS_FOREIGN_KEY"));
             column.setPrecision(map.getInt("DATA_PRECISION"));
             column.setScale(map.getInt("DATA_SCALE"));
-            column.setDataset(table);
 
             result.add(column);
         }

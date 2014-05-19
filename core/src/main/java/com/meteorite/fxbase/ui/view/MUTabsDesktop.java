@@ -12,6 +12,7 @@ import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.model.View;
+import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IDesktop;
@@ -104,6 +105,10 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
                                     form.setValue("DriverClass", "com.mysql.jdbc.Driver");
                                     form.setValue("Url", "jdbc:mysql://localhost:3306/");
                                     break;
+                                case SQLSERVER:
+                                    form.setValue("DriverClass", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                                    form.setValue("Url", "jdbc:sqlserver://192.168.0.109:1433");
+                                    break;
                             }
                         }
                     }
@@ -113,13 +118,18 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
                     public Void call(Void param) {
                         Map<String, IValue> map = form.getValueMap();
                         System.out.println(map);
+                        String name = map.get("Name").value();
                         DBDataSource ds = new DBDataSource();
-                        ds.setName(map.get("Name").value());
+                        ds.setName(name);
                         ds.setDatabaseType(DatabaseType.get(map.get("DatabaseType").value()));
                         ds.setDriverClass(map.get("DriverClass").value());
                         ds.setUrl(map.get("Url").value());
                         ds.setUsername(map.get("Username").value());
                         ds.setPassword(map.get("Password").value());
+
+                        if (UString.isEmpty(name)) {
+                            return null;
+                        }
 
                         try {
                             Connection connection = ds.getDbConnection().getConnection();

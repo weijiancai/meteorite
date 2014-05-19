@@ -56,6 +56,7 @@ public class MUDialog extends Dialog {
      * @param e 异常信息
      */
     public static void showExceptionDialog(Throwable e) {
+        e.printStackTrace();
         Dialogs.create().title("异常信息").masthead(null).message(e.getMessage()).showException(e);
     }
 }

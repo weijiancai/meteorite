@@ -46,4 +46,9 @@ public abstract class DBMethodImpl extends DBObjectImpl implements DBMethod {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public String getFullName() {
+        return getSchema().getFullName() + "." + getName();
+    }
 }

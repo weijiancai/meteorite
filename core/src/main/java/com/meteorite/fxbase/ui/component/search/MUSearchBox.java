@@ -147,9 +147,14 @@ public class MUSearchBox extends VBox {
 
         listView.getItems().clear();
         List<DBObject> result = new ArrayList<>();
+        List<DBObject> list = new ArrayList<>();
         for (DBObject object : DBManager.getCache().getAllDBObject()) {
             if (object.getName().toLowerCase().contains(searchText.toLowerCase())) {
-                result.add(object);
+                if (object.getName().equalsIgnoreCase(searchText)) {
+                    list.add(object);
+                } else {
+                    result.add(object);
+                }
             }
         }
         // 排序
@@ -157,15 +162,16 @@ public class MUSearchBox extends VBox {
             @Override
             public int compare(DBObject o1, DBObject o2) {
                 int i = o1.getObjectType().name().compareTo(o2.getObjectType().name());
-                if(i != 0) {
+                if (i != 0) {
                     return i;
                 }
                 return o1.getName().compareTo(o2.getName());
             }
         });
 
-        if (result.size() > 0) {
-            listView.getItems().addAll(result);
+        list.addAll(result);
+        if (list.size() > 0) {
+            listView.getItems().addAll(list);
             listView.setVisible(true);
         } else {
             listView.setVisible(false);

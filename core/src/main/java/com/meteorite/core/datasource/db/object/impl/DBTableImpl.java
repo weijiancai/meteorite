@@ -47,4 +47,9 @@ public class DBTableImpl extends DBDatasetImpl implements DBTable {
     public void setTriggers(List<DBTrigger> triggers) {
         this.triggers = triggers;
     }
+
+    @Override
+    public String getFullName() {
+        return getSchema().getFullName() + "." + getName();
+    }
 }

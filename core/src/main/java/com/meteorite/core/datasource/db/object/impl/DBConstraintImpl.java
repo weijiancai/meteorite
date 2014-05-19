@@ -84,4 +84,9 @@ public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
     public void setColumns(List<DBColumn> columns) {
         this.columns = columns;
     }
+
+    @Override
+    public String getFullName() {
+        return getSchema().getFullName() + ".constraint." + getName();
+    }
 }

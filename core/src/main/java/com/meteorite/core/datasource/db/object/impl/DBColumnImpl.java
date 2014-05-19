@@ -143,5 +143,8 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
         return sb.toString();
     }
 
-
+    @Override
+    public String getFullName() {
+        return getDataset().getFullName() + "." + getName();
+    }
 }

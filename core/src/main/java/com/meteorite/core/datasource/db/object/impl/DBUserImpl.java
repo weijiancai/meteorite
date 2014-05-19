@@ -11,4 +11,9 @@ public class DBUserImpl extends DBObjectImpl implements DBUser {
     public DBUserImpl() {
         setObjectType(DBObjectType.USER);
     }
+
+    @Override
+    public String getFullName() {
+        return "[" + getDataSource().getName() + "] user." + getName();
+    }
 }

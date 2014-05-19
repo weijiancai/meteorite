@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource.db.object.impl;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBObjCache;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
@@ -30,6 +31,7 @@ public class DBObjectImpl implements DBObject {
     private DBObjectType objectType;
     private ITreeNode parent;
     private List<ITreeNode> children;
+    private DBDataSource dataSource;
 
     private String icon;
     private String presentableText = "";
@@ -40,6 +42,11 @@ public class DBObjectImpl implements DBObject {
         setName(name);
         this.comment = comment;
         setChildren(children);
+    }
+
+    @Override
+    public DBDataSource getDataSource() {
+        return dataSource;
     }
 
     @Override @XmlAttribute
@@ -177,6 +184,10 @@ public class DBObjectImpl implements DBObject {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public void setDataSource(DBDataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override

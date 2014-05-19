@@ -121,7 +121,7 @@ public class MUFormLayout extends BorderPane {
         DisplayStyle displayStyle = field.getDisplayStyle();
         if (DisplayStyle.TEXT_AREA == displayStyle) {
             node = new MuTextArea(field);
-        } else if (DisplayStyle.PASSWORD == displayStyle) {
+        } else if (DisplayStyle.PASSWORD == displayStyle || MetaDataType.PASSWORD == field.getDataType()) {
             node = new MuPasswordField(field);
         } else if (DisplayStyle.COMBO_BOX == displayStyle || DisplayStyle.BOOLEAN == displayStyle) {
             node = new MuComboBox(field);

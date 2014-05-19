@@ -89,20 +89,50 @@ public class DBDataSource implements DataSource {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "数据库类型", dataType = MetaDataType.DICT, dictId = "DatabaseType")
+    @MetaFieldElement(displayName = "名称", sortNum = 10)
+    @JSONField(name = "displayName")
+    public String getName() {
+        return name;
+    }
+
+    @MetaFieldElement(displayName = "用户名", sortNum = 20)
+    public String getUsername() {
+        return properties.getFieldValue(USER_NAME);
+    }
+
+    public void setUsername(String username) {
+        properties.setFieldValue(USER_NAME, username);
+    }
+
+    @MetaFieldElement(displayName = "密码", dataType = MetaDataType.PASSWORD, sortNum = 30)
+    public String getPassword() {
+        return properties.getFieldValue(PASSWORD);
+    }
+
+    @XmlAttribute
+    @MetaFieldElement(displayName = "数据库类型", dataType = MetaDataType.DICT, dictId = "DatabaseType", sortNum = 40)
     public DatabaseType getDatabaseType() {
         return DatabaseType.get(properties.getFieldValue(DATABASE_TYPE));
     }
 
-    public void setDatabaseType(DatabaseType databaseType) {
-        properties.setFieldValue(DATABASE_TYPE, databaseType.getName());
+    @MetaFieldElement(displayName = "驱动类", sortNum = 50)
+    public String getDriverClass() {
+        return properties.getFieldValue(DRIVER_CLASS);
     }
 
-    @XmlAttribute
-    @MetaFieldElement(displayName = "名称")
-    @JSONField(name = "displayName")
-    public String getName() {
-        return name;
+    @MetaFieldElement(displayName = "数据库URL", sortNum = 60)
+    public String getUrl() {
+        return properties.getFieldValue(URL);
+    }
+
+    @MetaFieldElement(displayName = "数据库文件路径", sortNum = 70)
+    public String getFilePath() {
+        return properties.getFieldValue(FILE_PATH);
+    }
+
+    @MetaFieldElement(displayName = "数据库版本", sortNum = 80)
+    public String getDbVersion() {
+        return properties.getFieldValue(DB_VERSION);
     }
 
     @Override
@@ -168,7 +198,11 @@ public class DBDataSource implements DataSource {
     @Override
     public QueryResult<DataMap> retrieve(QueryBuilder builder, int page, int rows) throws SQLException {
         DBDataset table = builder.getMeta().getDbTable();
-        builder.sql().from(table.getSchema().getName() + "." + table.getName());
+        if (table.getDataSource().getDatabaseType() == DatabaseType.SQLSERVER) {
+            builder.sql().from(table.getSchema().getName() + ".dbo." + table.getName());
+        } else {
+            builder.sql().from(table.getSchema().getName() + "." + table.getName());
+        }
 
         QueryResult<DataMap> queryResult = new QueryResult<>();
         queryResult.setPageRows(rows);
@@ -199,56 +233,6 @@ public class DBDataSource implements DataSource {
         this.name = name;
     }
 
-    @MetaFieldElement(displayName = "驱动类")
-    public String getDriverClass() {
-        return properties.getFieldValue(DRIVER_CLASS);
-    }
-
-    public void setDriverClass(String driverClass) {
-        properties.setFieldValue(DRIVER_CLASS, driverClass);
-    }
-
-    @MetaFieldElement(displayName = "数据库URL")
-    public String getUrl() {
-        return properties.getFieldValue(URL);
-    }
-
-    public void setUrl(String url) {
-        properties.setFieldValue(URL, url);
-    }
-
-    @MetaFieldElement(displayName = "用户名")
-    public String getUsername() {
-        return properties.getFieldValue(USER_NAME);
-    }
-
-    public void setUsername(String username) {
-        properties.setFieldValue(USER_NAME, username);
-    }
-
-    @MetaFieldElement(displayName = "密码", dataType = MetaDataType.PASSWORD)
-    public String getPassword() {
-        return properties.getFieldValue(PASSWORD);
-    }
-
-    public void setPassword(String password) {
-        properties.setFieldValue(PASSWORD, password);
-    }
-
-    @MetaFieldElement(displayName = "数据库文件路径")
-    public String getFilePath() {
-        return properties.getFieldValue(FILE_PATH);
-    }
-
-    public void setFilePath(String filePath) {
-        properties.setFieldValue(FILE_PATH, filePath);
-    }
-
-    @MetaFieldElement(displayName = "数据库版本")
-    public String getDbVersion() {
-        return properties.getFieldValue(DB_VERSION);
-    }
-
     public void setDbVersion(String dbVersion) {
         properties.setFieldValue(DB_VERSION, dbVersion);
     }
@@ -256,6 +240,26 @@ public class DBDataSource implements DataSource {
     @JSONField(name = "children")
     public List<DBSchema> getSchemas() throws Exception {
         return getDbConnection().getSchemas();
+    }
+
+    public void setDatabaseType(DatabaseType databaseType) {
+        properties.setFieldValue(DATABASE_TYPE, databaseType.getName());
+    }
+
+    public void setDriverClass(String driverClass) {
+        properties.setFieldValue(DRIVER_CLASS, driverClass);
+    }
+
+    public void setUrl(String url) {
+        properties.setFieldValue(URL, url);
+    }
+
+    public void setPassword(String password) {
+        properties.setFieldValue(PASSWORD, password);
+    }
+
+    public void setFilePath(String filePath) {
+        properties.setFieldValue(FILE_PATH, filePath);
     }
 
     /**

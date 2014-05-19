@@ -11,4 +11,9 @@ public class DBViewImpl extends DBDatasetImpl implements DBView {
     public DBViewImpl() {
         setObjectType(DBObjectType.VIEW);
     }
+
+    @Override
+    public String getFullName() {
+        return getSchema().getFullName() + "." + getName();
+    }
 }

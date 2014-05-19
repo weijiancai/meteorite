@@ -57,4 +57,9 @@ public class DBIndexImpl extends DBObjectImpl implements DBIndex {
     public void setColumns(List<DBColumn> columns) {
         this.columns = columns;
     }
+
+    @Override
+    public String getFullName() {
+        return getSchema().getFullName() + "." + getName();
+    }
 }

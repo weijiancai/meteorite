@@ -1,6 +1,6 @@
 package com.meteorite.core.datasource.db.object.impl;
 
-import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
@@ -9,7 +9,7 @@ import com.meteorite.core.datasource.db.object.DBLoader;
 import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.loader.HsqldbLoader;
 import com.meteorite.core.datasource.db.object.loader.MySqlLoader;
-import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.datasource.db.object.loader.SqlServerLoader;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
 
@@ -76,6 +76,10 @@ public class DBConnectionImpl implements DBConnection {
                 break;
             case HSQLDB:
                 loader = new HsqldbLoader(this);
+                break;
+            case SQLSERVER:
+                loader = new SqlServerLoader(this);
+                break;
         }
     }
 
@@ -167,7 +171,7 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
-    public DataSource getDataSource() {
+    public DBDataSource getDataSource() {
         return dataSource;
     }
 

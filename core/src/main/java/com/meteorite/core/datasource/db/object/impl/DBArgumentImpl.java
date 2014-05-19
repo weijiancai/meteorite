@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.db.DBIcons;
 import com.meteorite.core.datasource.db.object.DBArgument;
 import com.meteorite.core.datasource.db.object.DBMethod;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
+import com.meteorite.core.util.UString;
 
 /**
  * @author wei_jc
@@ -85,5 +86,29 @@ public class DBArgumentImpl extends DBObjectImpl implements DBArgument {
 
     public void setOutput(boolean isOutput) {
         this.isOutput = isOutput;
+    }
+
+    @Override
+    public String getFullName() {
+        return getMethod().getFullName() + "." + getName();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb =  new StringBuilder();
+        sb.append(getName().toLowerCase()).append(" - ").append(dataType.getTypeName());
+        if (dataType.getLength() > 0) {
+            sb.append("(").append(dataType.getLength()).append(")");
+        } else if (dataType.getPrecision() > 0) {
+            sb.append("(").append(dataType.getPrecision());
+            if (dataType.getScale() > 0) {
+                sb.append(",").append(dataType.getScale());
+            }
+            sb.append(")");
+        }
+        if (UString.isNotEmpty(getComment())) {
+            sb.append(" ").append(getComment());
+        }
+        return sb.toString();
     }
 }

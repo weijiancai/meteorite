@@ -528,7 +528,11 @@ public class SqlBuilder {
         } else if (dbType == DatabaseType.HSQLDB) {
             return String.format("SELECT LIMIT %d %d * FROM (%s)", start, rows, sql);
         } else if (dbType == DatabaseType.MYSQL) {
-            return String.format("%s LIMIT %d %d ", sql, start, rows);
+            return String.format("%s LIMIT %d,%d ", sql, start, rows);
+        } else if (dbType == DatabaseType.SQLSERVER) {
+//            return String.format("SELECT TOP %d * FROM ()");
+            // TODO SqlServer 分页
+            return sql;
         }
 
         return "";

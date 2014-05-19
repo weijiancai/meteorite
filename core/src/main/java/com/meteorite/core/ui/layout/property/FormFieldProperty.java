@@ -46,10 +46,12 @@ public class FormFieldProperty implements PropertyNames {
         this.formProperty = formProperty;
 
         dataType = field.getDataType();
+        name = propMap.get(FORM_FIELD.NAME);
         if (field.getColumn() != null) {
             columnName = field.getColumn().getName();
+        } else {
+            columnName = name;
         }
-        name = propMap.get(FORM_FIELD.NAME);
         displayName = propMap.get(FORM_FIELD.DISPLAY_NAME);
         this.queryModel = QueryModel.convert(propMap.get(FORM_FIELD.QUERY_MODEL));
         isSingleLine = UString.toBoolean(propMap.get(FORM_FIELD.IS_SINGLE_LINE));

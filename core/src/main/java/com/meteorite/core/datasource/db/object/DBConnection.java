@@ -2,6 +2,7 @@ package com.meteorite.core.datasource.db.object;
 
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 
 import java.io.File;
@@ -70,5 +71,5 @@ public interface DBConnection {
      * @return 返回数据源
      * @since 1.0.0
      */
-    DataSource getDataSource();
+    DBDataSource getDataSource();
 }

@@ -57,4 +57,9 @@ public class DBTriggerImpl extends DBObjectImpl implements DBTrigger {
     public void setTriggerEvents(List<DBTriggerEvent> triggerEvents) {
         this.triggerEvents = triggerEvents;
     }
+
+    @Override
+    public String getFullName() {
+        return getSchema().getFullName() + "." + getName();
+    }
 }

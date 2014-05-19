@@ -19,7 +19,6 @@ public abstract class MuEventHandler<T extends Event> implements EventHandler<T>
         } catch (MessageException e) {
             MUDialog.showInformation(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
             MUDialog.showExceptionDialog(e);
         }
     }
