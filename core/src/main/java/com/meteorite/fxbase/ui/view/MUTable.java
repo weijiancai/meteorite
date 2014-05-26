@@ -1,7 +1,6 @@
 package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.datasource.DataMap;
-import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.ui.layout.property.TableProperty;
 import com.meteorite.core.ui.model.View;
@@ -21,6 +20,7 @@ import javafx.util.Callback;
 public class MUTable extends TableView<DataMap> {
     private View view;
 //    private Meta meta;
+    private TableProperty config;
 
     public MUTable(View view) {
         this.view = view;
@@ -49,9 +49,13 @@ public class MUTable extends TableView<DataMap> {
         this.getColumns().add(sortNumCol);
 
         // 创建其他列
-        TableProperty table = new TableProperty(view);
-        for (final TableFieldProperty property : table.getFieldProperties()) {
+        config = new TableProperty(view);
+        for (final TableFieldProperty property : config.getFieldProperties()) {
             this.getColumns().add(new BaseTableColumn(property));
         }
+    }
+
+    public TableProperty getConfig() {
+        return config;
     }
 }

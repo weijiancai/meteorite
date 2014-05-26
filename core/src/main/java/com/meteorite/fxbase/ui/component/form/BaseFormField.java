@@ -166,7 +166,6 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
             case "*%": config.setQueryModel(QueryModel.LEFT_LIKE); break;
             case "%*": config.setQueryModel(QueryModel.RIGHT_LIKE);
         }
-
     }
 
     @Override

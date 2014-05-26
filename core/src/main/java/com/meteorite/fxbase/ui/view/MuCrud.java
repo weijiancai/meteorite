@@ -9,6 +9,7 @@ import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
+import com.meteorite.fxbase.ui.component.table.TableExportGuide;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -67,7 +68,8 @@ public class MuCrud extends StackPane {
         Button lookBtn = new Button("查看");
         Button delBtn = new Button("删除");
         Button queryBtn = new Button("查询");
-        toolBar.getItems().addAll(addBtn, lookBtn, delBtn, queryBtn);
+        Button exportBtn = new Button("导出");
+        toolBar.getItems().addAll(addBtn, lookBtn, delBtn, queryBtn, exportBtn);
 
         // 新增
         addBtn.setOnAction(new MuEventHandler<ActionEvent>() {
@@ -111,6 +113,15 @@ public class MuCrud extends StackPane {
             public void doHandler(ActionEvent event) throws Exception {
                 Meta meta = crudProperty.getTableView().getMeta();
                 meta.delete(table.getSelectionModel().getSelectedIndex());
+            }
+        });
+
+        // 导出数据
+        exportBtn.setOnAction(new MuEventHandler<ActionEvent>() {
+            @Override
+            public void doHandler(ActionEvent event) throws Exception {
+                TableExportGuide guide = new TableExportGuide(table);
+                MUDialog.showCustomDialog(null, "导出数据向导", guide, null);
             }
         });
 

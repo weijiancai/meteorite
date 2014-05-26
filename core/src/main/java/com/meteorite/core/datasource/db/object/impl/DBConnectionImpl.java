@@ -30,6 +30,7 @@ public class DBConnectionImpl implements DBConnection {
     private List<DBSchema> schemas;
     private DBSchema currentSchema; // 当前连接Schema
     private DatabaseType dbType = DatabaseType.UNKNOWN;
+    private boolean isAvailable;
 
     public DBConnectionImpl(DBDataSource dataSource) throws Exception {
         this.dataSource = dataSource;
@@ -85,11 +86,23 @@ public class DBConnectionImpl implements DBConnection {
 
     @Override
     public Connection getConnection() throws Exception {
-        Class.forName(dataSource.getDriverClass());
-        if (dbType == DatabaseType.HSQLDB && UString.isNotEmpty(dataSource.getFilePath())) {
-            return DriverManager.getConnection("jdbc:hsqldb:file:" + dataSource.getFilePath(), dataSource.getUsername(), dataSource.getPassword());
+        Connection conn;
+        try {
+            Class.forName(dataSource.getDriverClass());
+            if (dbType == DatabaseType.HSQLDB && UString.isNotEmpty(dataSource.getFilePath())) {
+                conn = DriverManager.getConnection("jdbc:hsqldb:file:" + dataSource.getFilePath(), dataSource.getUsername(), dataSource.getPassword());
+            } else {
+                conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUsername(), dataSource.getPassword());
+            }
+            if (conn != null) {
+                isAvailable = true;
+            }
+        } catch (Exception e) {
+            isAvailable = false;
+            throw e;
         }
-        return  DriverManager.getConnection(dataSource.getUrl(), dataSource.getUsername(), dataSource.getPassword());
+
+        return conn;
     }
 
     @Override
@@ -173,6 +186,24 @@ public class DBConnectionImpl implements DBConnection {
     @Override
     public DBDataSource getDataSource() {
         return dataSource;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        if (!isAvailable) {
+            Connection conn = null;
+            try {
+                conn = getConnection();
+                if (conn != null) {
+                    isAvailable = true;
+                }
+            } catch (Exception e) {
+                isAvailable = false;
+            } finally {
+                ConnectionUtil.closeConnection(conn);
+            }
+        }
+        return isAvailable;
     }
 
     public void setSchemas(List<DBSchema> schemas) {

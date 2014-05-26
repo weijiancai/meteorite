@@ -130,7 +130,7 @@ public class DBObjectImpl implements DBObject {
 
     @Override
     public String getId() {
-        return name;
+        return getFullName();
     }
 
     @Override

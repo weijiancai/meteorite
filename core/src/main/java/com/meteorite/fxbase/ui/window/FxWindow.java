@@ -12,7 +12,7 @@ import javafx.stage.Window;
 public class FxWindow extends BaseWindow {
     private Stage stage;
     private Window owner;
-    private BasePane basePane;
+//    private BasePane basePane;
     private WindowType windowType;
 
     @Override
@@ -25,7 +25,7 @@ public class FxWindow extends BaseWindow {
         if (WindowType.WINDOW == windowType || WindowType.DIALOG == windowType) {
             stage.close();
         } else if (WindowType.PANE == windowType) {
-            basePane.closeWin();
+//            basePane.closeWin();
         }
     }
 
@@ -35,7 +35,7 @@ public class FxWindow extends BaseWindow {
             stage.centerOnScreen();
             stage.showAndWait();
         } else if (WindowType.PANE == windowType) {
-            basePane.showWin();
+//            basePane.showWin();
         }
     }
 
@@ -44,7 +44,7 @@ public class FxWindow extends BaseWindow {
         if (WindowType.WINDOW == windowType || WindowType.DIALOG == windowType) {
             stage.hide();
         } else if (WindowType.PANE == windowType) {
-            basePane.hideWin();
+//            basePane.hideWin();
         }
     }
 }

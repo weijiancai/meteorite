@@ -465,10 +465,12 @@ public class SqlBuilder {
             if (MetaDataType.DATE == dataType) {
                 this.andDate(colName + model, UObject.toString(value), isAnd);
             } else {
-                if(isAnd) {
-                    this.and(colName + model, value);
-                } else {
-                    this.or(colName + model, value);
+                if (!(queryModel == QueryModel.LIKE || queryModel == QueryModel.LEFT_LIKE || queryModel == QueryModel.RIGHT_LIKE)) {
+                    if (isAnd) {
+                        this.and(colName + model, value);
+                    } else {
+                        this.or(colName + model, value);
+                    }
                 }
             }
         }

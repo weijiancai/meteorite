@@ -61,6 +61,9 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public void load() throws Exception {
+        if (!dbConn.isAvailable()) {
+            return;
+        }
         navTree = dbConn.getDataSource().getNavTree();
         List<DBSchema> schemas = loadSchemas();
         DBObjectList dbSchemas = new DBObjectList("Schemas", DBIcons.DBO_SCHEMAS, new ArrayList<ITreeNode>(schemas));

@@ -174,7 +174,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
                     List<? extends Tab> removed = change.getRemoved();
                     if(removed.size() > 0) {
                         for (Tab tab : removed) {
-                            tabCache.remove(tab.getText());
+                            tabCache.remove(tab.getId());
                         }
                     }
                 }
@@ -210,9 +210,10 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         View view = node.getView();
         if (view != null) {
             String text = node.getName();
-            Tab tab = tabCache.get(text);
+            Tab tab = tabCache.get(node.getId());
             if (tab == null) {
                 tab = new Tab(text);
+                tab.setId(node.getId());
 
                 // 底部数据库对象TabPane
                 MUTabPane dbObjTabPane = new MUTabPane();
@@ -227,7 +228,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
 
                 tab.setContent(dbObjTabPane);
                 tabPane.getTabs().add(tab);
-                tabCache.put(text, tab);
+                tabCache.put(node.getId(), tab);
             }
             tabPane.getSelectionModel().select(tab);
         }

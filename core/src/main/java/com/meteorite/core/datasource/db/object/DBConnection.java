@@ -72,4 +72,11 @@ public interface DBConnection {
      * @since 1.0.0
      */
     DBDataSource getDataSource();
+
+    /**
+     * 是否可用
+     *
+     * @return 如果可以获得数据库连接，返回true，否则返回false
+     */
+    boolean isAvailable();
 }
