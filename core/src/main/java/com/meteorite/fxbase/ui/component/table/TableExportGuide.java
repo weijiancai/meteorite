@@ -3,8 +3,10 @@ package com.meteorite.fxbase.ui.component.table;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.fxbase.ui.component.guide.BaseGuide;
 import com.meteorite.fxbase.ui.component.guide.GuideModel;
+import com.meteorite.fxbase.ui.view.MUListView;
 import com.meteorite.fxbase.ui.view.MUTable;
 import javafx.scene.control.ListView;
+import org.controlsfx.control.CheckListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +31,26 @@ public class TableExportGuide extends BaseGuide {
     public void initPrep() {
         super.initPrep();
 
-        GuideModel model = new GuideModel();
-        model.setTitle("选择列");
-        ListView<String> listView = new ListView<>();
+        GuideModel selectColModel = new GuideModel();
+        selectColModel.setTitle("选择列");
+
         List<String> cols = new ArrayList<>();
         for (TableFieldProperty field : table.getConfig().getFieldProperties()) {
             cols.add(field.getDisplayName());
         }
-        listView.getItems().addAll(cols);
-        model.setContent(listView);
+        MUListView<String> listView = new MUListView<>(cols);
+        // 默认选择所有
+        listView.selectAll();
+        selectColModel.setContent(listView);
 
         modelList = new ArrayList<>();
+        modelList.add(selectColModel);
+
+        GuideModel model = new GuideModel();
+        model.setTitle("选择文件类型");
+        ListView<String> listView1 = new ListView<>();
+        listView1.getItems().add("文本文件");
+        model.setContent(listView1);
         modelList.add(model);
     }
 

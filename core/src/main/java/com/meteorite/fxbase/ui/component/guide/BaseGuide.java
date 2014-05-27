@@ -3,6 +3,7 @@ package com.meteorite.fxbase.ui.component.guide;
 import com.meteorite.fxbase.ui.component.BasePane;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -65,7 +66,7 @@ public abstract class BaseGuide extends BasePane {
         btnNext.disableProperty().bind(Bindings.createBooleanBinding(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                return curPage < modelList.size() - 1;
+                return curPage <= modelList.size() - 1;
             }
         }));
         // 完成
@@ -82,6 +83,7 @@ public abstract class BaseGuide extends BasePane {
         // 底部按钮
         HBox bottomBox = new HBox(15);
         bottomBox.setAlignment(Pos.CENTER);
+        bottomBox.setPadding(new Insets(5));
         bottomBox.getChildren().addAll(btnPrev, btnNext, btnFinish, btnCancel);
         this.setBottom(bottomBox);
     }
