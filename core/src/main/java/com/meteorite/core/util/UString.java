@@ -1,6 +1,7 @@
 package com.meteorite.core.util;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 字符串处理工具类
@@ -216,5 +217,23 @@ public class UString {
         } else {
             return Arrays.binarySearch(array, str) >= 0;
         }
+    }
+
+    /**
+     * 将字符串List转化为逗号分隔的字符串
+     *
+     * @param list 需要转化的字符串List
+     * @return 返回逗号分隔的字符串
+     * @since 1.0.0
+     */
+    public static String convert(List list) {
+        StringBuilder sb = new StringBuilder();
+        for (Object obj : list) {
+            sb.append(UObject.toString(obj)).append(",");
+        }
+        if (sb.toString().endsWith(",")) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        return sb.toString();
     }
 }

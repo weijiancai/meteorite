@@ -1,15 +1,22 @@
 package com.meteorite.fxbase.ui.component.table;
 
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
+import com.meteorite.core.util.UObject;
+import com.meteorite.fxbase.ui.component.form.MUListView;
 import com.meteorite.fxbase.ui.component.guide.BaseGuide;
 import com.meteorite.fxbase.ui.component.guide.GuideModel;
-import com.meteorite.fxbase.ui.view.MUListView;
+import com.meteorite.fxbase.ui.component.form.MUCheckListView;
 import com.meteorite.fxbase.ui.view.MUTable;
 import javafx.scene.control.ListView;
-import org.controlsfx.control.CheckListView;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 表格导出向导
@@ -38,7 +45,8 @@ public class TableExportGuide extends BaseGuide {
         for (TableFieldProperty field : table.getConfig().getFieldProperties()) {
             cols.add(field.getDisplayName());
         }
-        MUListView<String> listView = new MUListView<>(cols);
+        MUCheckListView<String> listView = new MUCheckListView<>(cols);
+        listView.setName("colNames");
         // 默认选择所有
         listView.selectAll();
         selectColModel.setContent(listView);
@@ -48,7 +56,8 @@ public class TableExportGuide extends BaseGuide {
 
         GuideModel model = new GuideModel();
         model.setTitle("选择文件类型");
-        ListView<String> listView1 = new ListView<>();
+        MUListView<String> listView1 = new MUListView<>();
+        listView1.setName("fileType");
         listView1.getItems().add("文本文件");
         model.setContent(listView1);
         modelList.add(model);
@@ -57,5 +66,28 @@ public class TableExportGuide extends BaseGuide {
     @Override
     public List<GuideModel> getModelList() {
         return modelList;
+    }
+
+    @Override
+    public void doFinish(Map<String, String> param) throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("保存文件");
+        String fileType = param.get("fileType");
+        if ("文本文件".equals(fileType)) {
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("文本文件", "*.txt"));
+        }
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            System.out.println(file);
+            PrintWriter pw = new PrintWriter(file);
+            for (DataMap map : table.getItems()) {
+                for(Object value : map.values()) {
+                    pw.print(UObject.toString(value) + "\t");
+                }
+                pw.println();
+            }
+            pw.flush();
+            pw.close();
+        }
     }
 }

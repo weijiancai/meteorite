@@ -1,34 +1,38 @@
-package com.meteorite.fxbase.ui.view;
+package com.meteorite.fxbase.ui.component.form;
 
+import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.MuEventHandler;
+import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.BasePane;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import org.controlsfx.control.CheckListView;
 
 import java.util.List;
 
 /**
- * MetaUI ListView
+ * MetaUI CheckListView
  *
  * @author wei_jc
  * @since 1.0.0
  */
-public class MUListView<T> extends BasePane {
+public class MUCheckListView<T> extends BorderPane implements IValue {
     private CheckListView<T> listView = new CheckListView<>();
     private List<T> data;
+    private String name;
 
-    public MUListView(List<T> list) {
+    public MUCheckListView(List<T> list) {
         this.data = list;
         this.init();
     }
 
-    @Override
-    public void initUI() {
-        super.initUI();
+    public void init() {
         listView.getItems().addAll(data);
         this.setCenter(listView);
 
@@ -57,5 +61,29 @@ public class MUListView<T> extends BasePane {
 
     public void selectAll() {
         listView.getCheckModel().selectAll();
+    }
+
+    @Override
+    public String value() {
+        return UString.convert(listView.getCheckModel().getSelectedItems());
+    }
+
+    @Override
+    public void setValue(String value) {
+
+    }
+
+    @Override
+    public StringProperty valueProperty() {
+        return null;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

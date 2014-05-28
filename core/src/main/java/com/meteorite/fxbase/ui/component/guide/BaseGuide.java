@@ -1,6 +1,7 @@
 package com.meteorite.fxbase.ui.component.guide;
 
 import com.meteorite.fxbase.MuEventHandler;
+import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.BasePane;
 import com.meteorite.fxbase.ui.component.pane.MUStackPane;
 import javafx.beans.binding.Bindings;
@@ -12,8 +13,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 /**
@@ -92,6 +98,12 @@ public abstract class BaseGuide extends BasePane {
                 return curPage < modelList.size() - 1;
             }
         }));*/
+        btnFinish.setOnAction(new MuEventHandler<ActionEvent>() {
+            @Override
+            public void doHandler(ActionEvent event) throws Exception {
+                doFinish(getValueMap());
+            }
+        });
         // 取消
         btnCancel = new Button("取消");
 
@@ -141,4 +153,16 @@ public abstract class BaseGuide extends BasePane {
     }
 
     public abstract List<GuideModel> getModelList();
+
+    public abstract void doFinish(Map<String, String> param) throws FileNotFoundException;
+
+    public Map<String, String> getValueMap() {
+        Map<String, String> result = new HashMap<>();
+        for (GuideModel model : modelList) {
+            IValue value = (IValue) model.getContent();
+            result.put(value.getName(), value.value());
+        }
+
+        return result;
+    }
 }

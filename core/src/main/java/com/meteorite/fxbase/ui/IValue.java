@@ -13,4 +13,6 @@ public interface IValue {
     void setValue(String value);
 
     StringProperty valueProperty();
+
+    String getName();
 }

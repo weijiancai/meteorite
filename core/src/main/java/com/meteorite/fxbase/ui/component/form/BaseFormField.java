@@ -45,6 +45,9 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
         this.isAddQueryMode = (config.getFormProperty().getFormType() == FormType.QUERY);
     }
 
+    protected BaseFormField() {
+    }
+
     protected abstract void initPrep();
 
     protected void init() {
@@ -192,5 +195,10 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
 
     public FormFieldProperty getConfig() {
         return config;
+    }
+
+    @Override
+    public String getName() {
+        return config.getName();
     }
 }
