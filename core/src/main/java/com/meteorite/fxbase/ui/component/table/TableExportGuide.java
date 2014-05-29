@@ -1,19 +1,15 @@
 package com.meteorite.fxbase.ui.component.table;
 
-import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
-import com.meteorite.core.util.UObject;
+import com.meteorite.fxbase.ui.component.form.MUCheckListView;
 import com.meteorite.fxbase.ui.component.form.MUListView;
 import com.meteorite.fxbase.ui.component.guide.BaseGuide;
 import com.meteorite.fxbase.ui.component.guide.GuideModel;
-import com.meteorite.fxbase.ui.component.form.MUCheckListView;
 import com.meteorite.fxbase.ui.view.MUTable;
-import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,16 +74,7 @@ public class TableExportGuide extends BaseGuide {
         }
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
-            System.out.println(file);
-            PrintWriter pw = new PrintWriter(file);
-            for (DataMap map : table.getItems()) {
-                for(Object value : map.values()) {
-                    pw.print(UObject.toString(value) + "\t");
-                }
-                pw.println();
-            }
-            pw.flush();
-            pw.close();
+            table.getView().getMeta().toTxtFile(file);
         }
     }
 }

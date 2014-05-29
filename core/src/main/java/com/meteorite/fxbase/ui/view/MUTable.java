@@ -58,4 +58,8 @@ public class MUTable extends TableView<DataMap> {
     public TableProperty getConfig() {
         return config;
     }
+
+    public View getView() {
+        return view;
+    }
 }

@@ -12,6 +12,7 @@ import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.model.View;
+import com.meteorite.core.util.UObject;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -21,6 +22,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.xml.bind.annotation.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -355,5 +359,21 @@ public class Meta {
         setTotalRows(result.getTotal());
         setPageCount(result.getPageCount());
         return result;
+    }
+
+    public void toTxtFile(File file) throws FileNotFoundException {
+        List<DataMap> dataList = getDataList();
+        if (dataList == null) {
+            return;
+        }
+        PrintWriter pw = new PrintWriter(file);
+        for (DataMap map : dataList) {
+            for(Object value : map.values()) {
+                pw.print(UObject.toString(value) + "\t");
+            }
+            pw.println();
+        }
+        pw.flush();
+        pw.close();
     }
 }
