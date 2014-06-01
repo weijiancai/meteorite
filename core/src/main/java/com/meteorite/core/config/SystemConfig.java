@@ -1,8 +1,12 @@
 package com.meteorite.core.config;
 
 import com.meteorite.core.util.UFile;
+import com.meteorite.core.util.UIO;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * 系统配置信息
@@ -49,6 +53,10 @@ public class SystemConfig {
      * 数据库升级脚本目录
      */
     public static File DIR_DB_UPGRADE = UFile.makeDirs(DIR_CLASS_PATH, "dbversion");
+    /**
+     * 日志目录
+     */
+    public static File DIR_LOG = UFile.makeDirs(DIR_SYSTEM, "logs");
 
     /**
      * 系统名称
@@ -71,11 +79,13 @@ public class SystemConfig {
      * 是否是开发模式
      */
     public static final boolean isDebug = true;
+    
+    private static final Logger log = Logger.getLogger(SystemConfig.class);
 
     static {
-        System.out.println("======================== 系统信息 ==========================================");
-        System.out.println("系统默认目录：" + DIR_SYSTEM.getAbsolutePath());
-        System.out.println("类路径目录：" + DIR_CLASS_PATH.getAbsolutePath());
-        System.out.println("==========================================================================");
+        log.info("======================== 系统信息 ==========================================");
+        log.info("系统默认目录：" + DIR_SYSTEM.getAbsolutePath());
+        log.info("类路径目录：" + DIR_CLASS_PATH.getAbsolutePath());
+        log.info("==========================================================================");
     }
 }

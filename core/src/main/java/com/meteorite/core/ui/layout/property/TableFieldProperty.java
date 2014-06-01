@@ -180,4 +180,9 @@ public class TableFieldProperty implements PropertyNames {
 
         return viewProperties;
     }
+
+    @Override
+    public String toString() {
+        return displayName;
+    }
 }

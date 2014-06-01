@@ -13,6 +13,7 @@ import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UObject;
+import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -361,15 +362,23 @@ public class Meta {
         return result;
     }
 
-    public void toTxtFile(File file) throws FileNotFoundException {
+    public void toTxtFile(File file, Map<String, String> param) throws FileNotFoundException, SQLException {
+        query(QueryBuilder.create(this));
         List<DataMap> dataList = getDataList();
         if (dataList == null) {
             return;
         }
+        String[] colNames = param.get("colNames").split(",");
         PrintWriter pw = new PrintWriter(file);
         for (DataMap map : dataList) {
-            for(Object value : map.values()) {
-                pw.print(UObject.toString(value) + "\t");
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                if(Arrays.binarySearch(colNames, entry.getKey()) < 0) {
+                    continue;
+                }
+                pw.print(UObject.toString(entry.getValue()));
+                if (colNames.length > 1) {
+                    pw.print("\t");
+                }
             }
             pw.println();
         }

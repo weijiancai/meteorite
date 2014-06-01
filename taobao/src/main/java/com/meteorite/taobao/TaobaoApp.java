@@ -11,7 +11,7 @@ import com.meteorite.fxbase.BaseApp;
  */
 public class TaobaoApp extends BaseApp {
     @Override
-    protected IFacade getFacade() {
+    public IFacade getFacade() {
         return TaobaoFacade.getInstance();
     }
 

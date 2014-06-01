@@ -1,6 +1,7 @@
 package com.meteorite.fxbase.ui.component.table;
 
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
+import com.meteorite.fxbase.ui.ValueConverter;
 import com.meteorite.fxbase.ui.component.form.MUCheckListView;
 import com.meteorite.fxbase.ui.component.form.MUListView;
 import com.meteorite.fxbase.ui.component.guide.BaseGuide;
@@ -10,6 +11,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,12 +39,23 @@ public class TableExportGuide extends BaseGuide {
         GuideModel selectColModel = new GuideModel();
         selectColModel.setTitle("选择列");
 
-        List<String> cols = new ArrayList<>();
+        List<TableFieldProperty> cols = new ArrayList<>();
         for (TableFieldProperty field : table.getConfig().getFieldProperties()) {
-            cols.add(field.getDisplayName());
+            cols.add(field);
         }
-        MUCheckListView<String> listView = new MUCheckListView<>(cols);
+        MUCheckListView<TableFieldProperty> listView = new MUCheckListView<>(cols);
         listView.setName("colNames");
+        listView.setValueConvert(new ValueConverter<TableFieldProperty>() {
+            @Override
+            public String toString(TableFieldProperty field) {
+                return field.getName();
+            }
+
+            @Override
+            public TableFieldProperty fromString(String string) {
+                return null;
+            }
+        });
         // 默认选择所有
         listView.selectAll();
         selectColModel.setContent(listView);
@@ -65,7 +78,7 @@ public class TableExportGuide extends BaseGuide {
     }
 
     @Override
-    public void doFinish(Map<String, String> param) throws FileNotFoundException {
+    public void doFinish(Map<String, String> param) throws FileNotFoundException, SQLException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("保存文件");
         String fileType = param.get("fileType");
@@ -74,7 +87,7 @@ public class TableExportGuide extends BaseGuide {
         }
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
-            table.getView().getMeta().toTxtFile(file);
+            table.getView().getMeta().toTxtFile(file, param);
         }
     }
 }

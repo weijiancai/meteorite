@@ -47,6 +47,11 @@ public class TbItemCat extends ItemCat implements ITreeNode {
     }
 
     @Override
+    public void setParent(ITreeNode parent) {
+
+    }
+
+    @Override
     public List<ITreeNode> getChildren() {
         return children;
     }
@@ -59,5 +64,10 @@ public class TbItemCat extends ItemCat implements ITreeNode {
     @Override
     public int getSortNum() {
         return getSortOrder().intValue();
+    }
+
+    @Override
+    public String getIcon() {
+        return null;
     }
 }

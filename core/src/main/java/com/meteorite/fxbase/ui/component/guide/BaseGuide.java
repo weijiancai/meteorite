@@ -1,6 +1,7 @@
 package com.meteorite.fxbase.ui.component.guide;
 
 import com.meteorite.fxbase.MuEventHandler;
+import com.meteorite.fxbase.ui.ICanInput;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.BasePane;
 import com.meteorite.fxbase.ui.component.pane.MUStackPane;
@@ -17,6 +18,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,13 +156,13 @@ public abstract class BaseGuide extends BasePane {
 
     public abstract List<GuideModel> getModelList();
 
-    public abstract void doFinish(Map<String, String> param) throws FileNotFoundException;
+    public abstract void doFinish(Map<String, String> param) throws FileNotFoundException, SQLException;
 
     public Map<String, String> getValueMap() {
         Map<String, String> result = new HashMap<>();
         for (GuideModel model : modelList) {
-            IValue value = (IValue) model.getContent();
-            result.put(value.getName(), value.value());
+            ICanInput value = (ICanInput) model.getContent();
+            result.put(value.getName(), value.getValueString());
         }
 
         return result;

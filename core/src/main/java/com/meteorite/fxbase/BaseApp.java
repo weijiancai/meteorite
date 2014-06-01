@@ -1,11 +1,13 @@
 package com.meteorite.fxbase;
 
 import com.meteorite.core.config.ProjectConfig;
+import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.facade.IFacade;
 import com.meteorite.core.ui.IView;
 import com.meteorite.core.ui.config.ConfigInit;
 import com.meteorite.core.util.HSqlDBServer;
+import com.meteorite.core.util.UIO;
 import com.meteorite.fxbase.ui.FxDesktop;
 import com.meteorite.fxbase.ui.IDesktop;
 import com.meteorite.fxbase.ui.view.MUDialog;
@@ -18,6 +20,10 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import netscape.javascript.JSObject;
+import org.apache.log4j.PropertyConfigurator;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * JavaFX 主应用程序
@@ -37,6 +43,25 @@ public abstract class BaseApp extends Application {
     private Stage stage;
 
     public BaseApp() {
+        File file = new File(getClass().getResource("/dbversion").getFile());
+        System.out.println(file);
+        File[] files = file.listFiles();
+        System.out.println(file.isDirectory());
+        if (files != null) {
+            for (File f : files) {
+                System.out.println(f.getName());
+            }
+        }
+
+        throw new RuntimeException("aaa");
+        // 设置日志目录属性
+        /*System.setProperty("logs_dir", SystemConfig.DIR_LOG.getAbsolutePath());
+        try {
+            PropertyConfigurator.configure(UIO.getInputStream("/log4j.properties", UIO.FROM.CP));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         instance = this;
         try {
             JSObject browser = getHostServices().getWebContext();
@@ -45,7 +70,7 @@ public abstract class BaseApp extends Application {
             IS_APPLET = false;
         }
 
-        facade = getFacade();
+        facade = getFacade();*/
     }
 
     @Override

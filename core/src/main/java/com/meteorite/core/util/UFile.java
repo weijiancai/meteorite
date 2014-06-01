@@ -1,5 +1,7 @@
 package com.meteorite.core.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -13,6 +15,8 @@ import java.net.URLConnection;
  * @since 1.0
  */
 public class UFile {
+    private static final Logger log = Logger.getLogger(UFile.class);
+
     public static String readString(File file) throws IOException {
         return readString(file, "UTF-8");
     }
@@ -132,17 +136,14 @@ public class UFile {
     }
 
     public static File getClassPathDir() {
-        try {
-            URL url = UFile.class.getClassLoader().getResource("/");
-            if (url == null) {
-                url = UFile.class.getResource("/");
-            }
-            return new File(url.toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        URL url = UFile.class.getClassLoader().getResource("");
+        if (url == null) {
+            url = UFile.class.getResource("");
         }
-
-        return null;
+        System.out.println(UFile.class.getResource("").getFile());
+        System.out.println(ClassLoader.getSystemResource("/"));
+        System.out.println("url = " + url);
+        return new File(url.getFile());
     }
 
     /**
@@ -153,5 +154,13 @@ public class UFile {
      */
     public static String getFileExt(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
+
+    public static File[] listFiles(File file) {
+        if(file.isDirectory()) {
+            return file.listFiles();
+        }
+
+        return null;
     }
 }
