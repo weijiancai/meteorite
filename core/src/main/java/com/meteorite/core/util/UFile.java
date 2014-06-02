@@ -22,8 +22,12 @@ public class UFile {
     }
 
     public static String readString(File file, String charset) throws IOException {
+        return readString(new FileInputStream(file), charset);
+    }
+
+    public static String readString(InputStream is, String charset) throws IOException {
         StringBuilder result = new StringBuilder();
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset));
+        BufferedReader br = new BufferedReader(new InputStreamReader(is, charset));
         String line;
         while ((line = br.readLine()) != null) {
             result.append(line).append("\r\n");
@@ -154,13 +158,5 @@ public class UFile {
      */
     public static String getFileExt(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
-    }
-
-    public static File[] listFiles(File file) {
-        if(file.isDirectory()) {
-            return file.listFiles();
-        }
-
-        return null;
     }
 }

@@ -236,4 +236,20 @@ public class UString {
         }
         return sb.toString();
     }
+
+    /**
+     * 按分隔符分隔字符串，取最后一个字符串
+     *
+     * @param str 要解析的字符串
+     * @param splitChar 分隔符
+     * @return 返回最后一个字符串
+     * @since 1.0.0
+     */
+    public static String getLastName(String str, String splitChar) {
+        if (str.endsWith(splitChar)) {
+            str = str.substring(0, str.length() - splitChar.length());
+        }
+        String[] strs = str.split(splitChar);
+        return strs[strs.length - 1];
+    }
 }

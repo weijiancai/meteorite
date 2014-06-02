@@ -1,5 +1,6 @@
 package com.meteorite.fxbase.ui;
 
+import com.meteorite.core.meta.model.MetaField;
 import javafx.beans.property.StringProperty;
 
 /**
@@ -15,4 +16,6 @@ public interface IValue {
     StringProperty valueProperty();
 
     String getName();
+
+    MetaField getMetaField();
 }

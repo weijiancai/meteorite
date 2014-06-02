@@ -1,3 +1,7 @@
 Manifest-Version: 1.0
+Class-Path: httpclient-4.2.6.jar httpcore-4.2.5.jar jsoup-1.7.2.jar se
+ rvlet-api-3.0-alpha-1.jar fastjson-1.1.37.jar controlsfx-8.0.5.jar hs
+ qldb-2.3.0.jar sqljdbc4.jar commons-logging-1.1.1.jar log4j-1.2.17.ja
+ r mysql-connector-java-5.1.27.jar commons-codec-1.8.jar
 Main-Class: com.meteorite.fxbase.DBToolApp
 

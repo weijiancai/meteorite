@@ -2,16 +2,21 @@ package com.meteorite.core.config;
 
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.ResourceItem;
+import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaManager;
+import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.util.*;
 import com.meteorite.core.util.jaxb.JAXBUtil;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,6 +31,8 @@ import static com.meteorite.core.config.SystemConfig.*;
  * @version 1.0
  */
 public class SystemManager {
+    private static final Logger log = Logger.getLogger(SystemManager.class);
+
     private static SystemManager instance;
     private static SystemInfo sysInfo;
     private static Map<String, ProjectConfig> cache = new HashMap<>();
@@ -94,6 +101,7 @@ public class SystemManager {
 //        File sysDbFile = UFile.createFile(DIR_SYSTEM_HSQL_DB, SYS_DB_NAME);
 //        HSqlDBServer.getInstance().addDbFile(SYS_DB_NAME, sysDbFile.getAbsolutePath());
         DataSourceManager.addDataSource(DataSourceManager.getSysDataSource());
+        DataSourceManager.addDataSource(ClassPathDataSource.getInstance());
 
         for (ProjectConfig config : cache.values()) {
             List<DBDataSource> list = config.getDataSources();
@@ -109,7 +117,7 @@ public class SystemManager {
         }
 
         for (DataSource ds : DataSourceManager.getDataSources()) {
-            System.out.println("==============加载数据源： " + ds.getName());
+            log.info("==============加载数据源： " + ds.getName());
             ds.load();
         }
     }
@@ -119,18 +127,20 @@ public class SystemManager {
         // 获得数据库当前系统的最大版本号
         String maxVersion = dataSource.getMaxVersion(SystemConfig.SYS_NAME);
         DatabaseType dbType = dataSource.getDatabaseType();
-        System.out.println("当前系统版本为：" + maxVersion + ", 数据库为：" + dbType.getDisplayName());
+        log.info("当前系统版本为：" + maxVersion + ", 数据库为：" + dbType.getDisplayName());
         // 获得升级目录下升级脚本
-        for (File file : SystemConfig.DIR_DB_UPGRADE.listFiles()) {
-            String[] names = file.getName().replace(".sql","").toLowerCase().split("_");
+        ClassPathDataSource cpDataSource = DataSourceManager.getClassPathDataSource();
+        ResourceItem dbUpgrade = cpDataSource.getResource("dbversion/");
+        for (ITreeNode node : dbUpgrade.getChildren()) {
+            String[] names = node.getName().replace(".sql","").toLowerCase().split("_");
             String version = names[1];
             if(dbType.getName().toLowerCase().endsWith(names[2]) && maxVersion.compareTo(version) < 0) {
-                System.out.println("检测到新版本需要升级：" + version);
-                dataSource.getDbConnection().execSqlFile(file);
-                System.out.println("升级完成");
-                // 删除SystemInfo.xml文件
-                sysInfo.getXmlFile().deleteOnExit();
-                sysInfo.load();
+                log.info("检测到新版本需要升级：" + version);
+                ResourceItem item = cpDataSource.getResource("dbversion/" + node.getName());
+                dataSource.getDbConnection().execSqlScript(item.getContent());
+                log.info("升级完成");
+                // 重置SystemInfo
+                sysInfo.reset();
             }
         }
     }

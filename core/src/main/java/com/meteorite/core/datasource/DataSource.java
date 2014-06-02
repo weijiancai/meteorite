@@ -4,10 +4,12 @@ import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 数据源接口
@@ -70,4 +72,8 @@ public interface DataSource {
     void load() throws Exception;
 
     QueryResult<DataMap> retrieve(QueryBuilder queryBuilder, int page, int rows) throws SQLException;
+
+    ResourceItem getResource(String path);
+
+    void save(Map<String, IValue> valueMap) throws Exception;
 }

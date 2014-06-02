@@ -43,19 +43,8 @@ public abstract class BaseApp extends Application {
     private Stage stage;
 
     public BaseApp() {
-        File file = new File(getClass().getResource("/dbversion").getFile());
-        System.out.println(file);
-        File[] files = file.listFiles();
-        System.out.println(file.isDirectory());
-        if (files != null) {
-            for (File f : files) {
-                System.out.println(f.getName());
-            }
-        }
-
-        throw new RuntimeException("aaa");
         // 设置日志目录属性
-        /*System.setProperty("logs_dir", SystemConfig.DIR_LOG.getAbsolutePath());
+        System.setProperty("logs_dir", SystemConfig.DIR_LOG.getAbsolutePath());
         try {
             PropertyConfigurator.configure(UIO.getInputStream("/log4j.properties", UIO.FROM.CP));
         } catch (FileNotFoundException e) {
@@ -70,7 +59,7 @@ public abstract class BaseApp extends Application {
             IS_APPLET = false;
         }
 
-        facade = getFacade();*/
+        facade = getFacade();
     }
 
     @Override

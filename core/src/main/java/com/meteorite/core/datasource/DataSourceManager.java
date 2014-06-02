@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource;
 
 import com.meteorite.core.config.SystemConfig;
+import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
@@ -84,10 +85,23 @@ public class DataSourceManager {
     public static INavTreeNode getNavTree() throws Exception {
         List<ITreeNode> children = new ArrayList<>();
         for (DataSource ds : getDataSources()) {
+            if (ds instanceof ClassPathDataSource) {
+                continue;
+            }
             children.add(ds.getNavTree());
         }
         DBObjectImpl root = new DBObjectImpl("ROOT", "根节点", children);
         root.setObjectType(DBObjectType.NONE);
         return root;
+    }
+
+    /**
+     * 获得类路径数据源
+     *
+     * @return 返回类路径数据源
+     * @since 1.0.0
+     */
+    public static ClassPathDataSource getClassPathDataSource() {
+        return (ClassPathDataSource) dataSourceMap.get("classpath");
     }
 }

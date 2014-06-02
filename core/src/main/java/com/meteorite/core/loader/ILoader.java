@@ -7,4 +7,5 @@ package com.meteorite.core.loader;
  * @version 0.0.1
  */
 public interface ILoader {
+    void load() throws Exception;
 }

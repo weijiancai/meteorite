@@ -36,11 +36,16 @@ public class UDate {
     public static LocalDate toLocalDate(String date) {
         if (date.length() > 19) {
             date = date.substring(0, 19);
+        } else if(date.length() == 10) {
+            date = date + " 00:00:00";
         }
         return LocalDate.parse(date, DEFAULT_FORMAT);
     }
 
     public static String dateToString(LocalDate date) {
+        if (date == null) {
+            return "";
+        }
         return date.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }

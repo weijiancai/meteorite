@@ -112,7 +112,9 @@ public class MuCrud extends StackPane {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 Meta meta = crudProperty.getTableView().getMeta();
-                meta.delete(table.getSelectionModel().getSelectedIndex());
+                int selected = table.getSelectionModel().getSelectedIndex();
+                meta.delete(selected);
+                table.getItems().remove(selected);
             }
         });
 

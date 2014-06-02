@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * @author wei_jc
- * @version 1.0.0
+ * @since  1.0.0
  */
 public interface ITreeNode {
     /**

@@ -66,6 +66,14 @@ public interface DBConnection {
     void execSqlFile(File sqlFile) throws Exception;
 
     /**
+     * 执行SQL脚本
+     *
+     * @param script 脚本
+     * @throws Exception
+     */
+    void execSqlScript(String script) throws Exception;
+
+    /**
      * 获得数据源
      *
      * @return 返回数据源

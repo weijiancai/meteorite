@@ -3,6 +3,7 @@ package com.meteorite.fxbase.ui.component.form;
 import com.meteorite.core.dict.FormType;
 import com.meteorite.core.dict.QueryModel;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.BaseApp;
@@ -200,5 +201,10 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
     @Override
     public String getName() {
         return config.getName();
+    }
+
+    @Override
+    public MetaField getMetaField() {
+        return config.getMetaField();
     }
 }

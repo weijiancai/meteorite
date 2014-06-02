@@ -2,6 +2,7 @@ package com.meteorite.core.model.impl;
 
 import com.meteorite.core.model.ITreeNode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,6 +64,9 @@ public class BaseTreeNode implements ITreeNode {
 
     @Override
     public List<ITreeNode> getChildren() {
+        if (children == null) {
+            children = new ArrayList<>();
+        }
         return children;
     }
 
@@ -84,5 +88,15 @@ public class BaseTreeNode implements ITreeNode {
     @Override
     public String getIcon() {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return displayName;
+    }
+
+    public void addChild(ITreeNode node) {
+        node.setParent(this);
+        getChildren().add(node);
     }
 }

@@ -14,6 +14,7 @@ import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
+import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
@@ -384,5 +385,9 @@ public class Meta {
         }
         pw.flush();
         pw.close();
+    }
+
+    public void save(Map<String, IValue> valueMap) throws Exception {
+        dataSource.save(valueMap);
     }
 }

@@ -14,5 +14,9 @@ public enum DataSourceType {
     /**
      * 文件系统
      */
-    FILE_SYSTEM
+    FILE_SYSTEM,
+    /**
+     * 类路径
+     */
+    CLASS_PATH,
 }

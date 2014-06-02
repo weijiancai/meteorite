@@ -74,6 +74,8 @@ public class MuDate extends BaseFormField implements IValue {
         super.setValue(value);
         if (UString.isNotEmpty(value)) {
             datePicker.setValue(UDate.toLocalDate(value));
+        } else {
+            datePicker.setValue(null);
         }
     }
 }

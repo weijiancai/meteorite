@@ -2,10 +2,7 @@ package com.meteorite.core.datasource.db;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.config.SystemConfig;
-import com.meteorite.core.datasource.DataMap;
-import com.meteorite.core.datasource.DataSource;
-import com.meteorite.core.datasource.DataSourceType;
-import com.meteorite.core.datasource.QueryBuilder;
+import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
@@ -14,6 +11,7 @@ import com.meteorite.core.datasource.db.object.impl.DBObjectList;
 import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
@@ -22,6 +20,7 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -227,6 +226,43 @@ public class DBDataSource implements DataSource {
         queryResult.setRows(list);
 
         return queryResult;
+    }
+
+    @Override
+    public void save(final Map<String, IValue> valueMap) throws Exception {
+        JdbcTemplate template = new JdbcTemplate(this);
+        IPDB pdb = new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                Map<String, Map<String, Object>> map = new HashMap<>();
+                for (IValue value : valueMap.values()) {
+                    MetaField field = value.getMetaField();
+                    String tableName = field.getColumn().getDataset().getName();
+                    Map<String, Object> param;
+                    if (map.containsKey(tableName)) {
+                        param = map.get(tableName);
+                    } else {
+                        param = new HashMap<>();
+                        map.put(tableName, param);
+                    }
+                    param.put(field.getColumn().getName(), value.value());
+                }
+
+                return map;
+            }
+        };
+
+        try {
+            template.save(pdb);
+            template.commit();
+        } finally {
+            template.close();
+        }
+    }
+
+    @Override
+    public ResourceItem getResource(String path) {
+        return null;
     }
 
     public void setName(String name) {

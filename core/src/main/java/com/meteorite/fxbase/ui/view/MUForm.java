@@ -82,7 +82,17 @@ public class MUForm extends BorderPane {
                     setVisible(false);
                 }
             });
-            controlBar.getItems().addAll(prevButton, nextButton, region, btn_close);
+
+            Button btn_save = new Button("保存");
+            btn_save.disableProperty().bind(isModified.not());
+            btn_save.setOnAction(new MuEventHandler<ActionEvent>() {
+                @Override
+                public void doHandler(ActionEvent event) throws Exception {
+                    formConfig.getMeta().save(layout.getValueMap());
+                    isModified.set(false);
+                }
+            });
+            controlBar.getItems().addAll(prevButton, nextButton, region, btn_save, btn_close);
             root.setTop(controlBar);
 
             tabPane = new TabPane();
@@ -92,6 +102,7 @@ public class MUForm extends BorderPane {
             tabPane.getTabs().add(mainTab);
             root.setCenter(tabPane);
 
+            // Tabs
             final Meta mainMeta = formConfig.getMeta();
             for (final Meta meta : mainMeta.getChildren()) {
                 Tab tab = new Tab(meta.getDisplayName());
@@ -158,12 +169,16 @@ public class MUForm extends BorderPane {
     }
 
     public void setValues(DataMap result) {
-        if (result == null) {
+        /*if (result == null) {
             return;
-        }
+        }*/
         this.data = result;
         for (Map.Entry<String, IValue> entry : layout.getValueMap().entrySet()) {
-            entry.getValue().setValue(result.getString(entry.getKey()));
+            if (result == null) {
+                entry.getValue().setValue(null);
+            } else {
+                entry.getValue().setValue(result.getString(entry.getKey()));
+            }
         }
         // 重置修改状态
         isModified.set(false);

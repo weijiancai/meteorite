@@ -57,4 +57,16 @@ public class UStringTest {
         System.out.println("\u7528\\u6237\\u540d\\u4e0d\\u80fd\\u4e3a\\u7a7a");
 //        System.out.println(Integer.);
     }
+
+    @Test
+    public void testGetLastName() {
+        String str = "META-INF/MANIFEST.MF";
+        assertThat(UString.getLastName(str, "/"), equalTo("MANIFEST.MF"));
+        str = "com/";
+        assertThat(UString.getLastName(str, "/"), equalTo("com"));
+        str = "com/meteorite/core/config/";
+        assertThat(UString.getLastName(str, "/"), equalTo("config"));
+        str = "com/meteorite/core/config/ProjectConfig.class";
+        assertThat(UString.getLastName(str, "/"), equalTo("ProjectConfig.class"));
+    }
 }

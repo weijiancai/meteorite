@@ -92,7 +92,9 @@ public class MuComboBox extends BaseFormField implements IValue {
         comboBox.valueProperty().addListener(new ChangeListener<DictCode>() {
             @Override
             public void changed(ObservableValue<? extends DictCode> observable, DictCode oldValue, DictCode newValue) {
-                valueProperty().set(newValue.getName());
+                if (newValue != null) {
+                    valueProperty().set(newValue.getName());
+                }
             }
         });
     }
@@ -127,6 +129,9 @@ public class MuComboBox extends BaseFormField implements IValue {
                     }
                 }
             }
+        }
+        if (value == null) {
+            comboBox.getSelectionModel().clearSelection();
         }
     }
 

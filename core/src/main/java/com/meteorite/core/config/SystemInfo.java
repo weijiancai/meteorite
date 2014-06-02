@@ -60,4 +60,11 @@ public class SystemInfo extends AbstractXmlSerialization {
     protected File getXmlFile() {
         return new File(SystemConfig.DIR_SYSTEM, FILE_NAME_SYSTEM_INFO);
     }
+
+    public void reset() {
+        isDictInit = false;
+        isMetaInit = false;
+        isLayoutInit = false;
+        isViewInit = false;
+    }
 }

@@ -41,9 +41,11 @@ public class FormFieldProperty implements PropertyNames {
     private int sortNum;
 
     private FormProperty formProperty;
+    private MetaField metaField;
 
     public FormFieldProperty(FormProperty formProperty, MetaField field, Map<String, String> propMap) {
         this.formProperty = formProperty;
+        this.metaField = field;
 
         dataType = field.getDataType();
         name = propMap.get(FORM_FIELD.NAME);
@@ -203,5 +205,9 @@ public class FormFieldProperty implements PropertyNames {
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.SORT_NUM), field, field.getSortNum() + ""));
 
         return configList;
+    }
+
+    public MetaField getMetaField() {
+        return metaField;
     }
 }

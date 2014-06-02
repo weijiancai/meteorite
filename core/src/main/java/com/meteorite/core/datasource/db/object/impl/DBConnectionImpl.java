@@ -157,7 +157,12 @@ public class DBConnectionImpl implements DBConnection {
 
     @Override
     public void execSqlFile(File sqlFile) throws Exception {
-        String[] sqls = UFile.readString(sqlFile).split(";");
+        execSqlScript(UFile.readString(sqlFile));
+    }
+
+    @Override
+    public void execSqlScript(String script) throws Exception {
+        String[] sqls = script.split(";");
         Connection conn = null;
         try {
             conn = getConnection();
@@ -179,7 +184,6 @@ public class DBConnectionImpl implements DBConnection {
             if (conn != null) {
                 conn.close();
             }
-
         }
     }
 

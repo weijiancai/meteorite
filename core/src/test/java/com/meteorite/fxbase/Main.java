@@ -1,5 +1,7 @@
 package com.meteorite.fxbase;
 
+import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.fxbase.ui.view.MUTree;
@@ -28,13 +30,20 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     @Override public void start(Stage primaryStage) {
-        DBDataSource ds = new DBDataSource();
+        /*DBDataSource ds = new DBDataSource();
         ds.setName("mysql");
         ds.setDatabaseType(DatabaseType.MYSQL);
         ds.setDriverClass("com.mysql.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/");
         ds.setUsername("root");
-        ds.setPassword("7758521");
+        ds.setPassword("7758521");*/
+
+        ClassPathDataSource ds = ClassPathDataSource.getInstance();
+        try {
+            ds.load();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             primaryStage.setScene(new Scene(new MUTree(ds.getNavTree())));
