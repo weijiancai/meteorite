@@ -32,6 +32,7 @@ public interface PropertyNames {
         String VALUE = "FORM_FIELD.value";
         String SORT_NUM = "FORM_FIELD.sortNum";
         String QUERY_MODEL = "FORM_FIELD.queryModel";
+        String IS_REQUIRE = "FORM_FIELD.require";
     }
     
     interface TABLE {

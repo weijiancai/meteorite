@@ -448,6 +448,7 @@ public abstract class BaseDBLoader implements DBLoader {
             column.setFk(map.getBoolean("IS_FOREIGN_KEY"));
             column.setPrecision(map.getInt("DATA_PRECISION"));
             column.setScale(map.getInt("DATA_SCALE"));
+            column.setNullable(map.getBoolean("IS_NULLABLE"));
 
             result.add(column);
         }

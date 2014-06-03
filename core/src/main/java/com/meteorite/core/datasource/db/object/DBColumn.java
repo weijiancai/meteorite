@@ -46,6 +46,14 @@ public interface DBColumn extends DBObject {
     boolean isFk();
 
     /**
+     * 是否可空
+     *
+     * @return 如果允许为null，则返回true，否则返回false
+     * @since 1.0.0
+     */
+    boolean isNullable();
+
+    /**
      * 获得最大长度
      *
      * @return 返回最大长度

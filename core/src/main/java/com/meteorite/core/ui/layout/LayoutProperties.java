@@ -27,13 +27,14 @@ public class LayoutProperties {
         list.add(new LayoutProperty(PropertyNames.FORM_FIELD.DISPLAY_NAME, "显示名", LayoutType.FORM_FIELD, null, PropertyType.IP, 20));
         list.add(new LayoutProperty(PropertyNames.FORM_FIELD.IS_SINGLE_LINE, "独行", LayoutType.FORM_FIELD, "false", PropertyType.IP, 30));
         list.add(new LayoutProperty(PropertyNames.FORM_FIELD.IS_DISPLAY, "显示", LayoutType.FORM_FIELD, "true", PropertyType.IP, 40));
-        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.WIDTH, "宽", LayoutType.FORM_FIELD, "180", PropertyType.IP, 50));
-        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.HEIGHT, "高", LayoutType.FORM_FIELD, null, PropertyType.IP, 60));
-        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.DISPLAY_STYLE, "显示风格", LayoutType.FORM_FIELD, "STRING", PropertyType.IP, 70));
-        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.SORT_NUM, "排序号", LayoutType.FORM_FIELD, null, PropertyType.IP, 80));
-        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.VALUE, "默认值", LayoutType.FORM_FIELD, null, PropertyType.IP, 90));
-        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.DICT_ID, "数据字典", LayoutType.FORM_FIELD, null, PropertyType.IP, 100));
-        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.QUERY_MODEL, "查询模式", LayoutType.FORM_FIELD, null, PropertyType.IP, 110));
+        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.IS_REQUIRE, "必须", LayoutType.FORM_FIELD, "false", PropertyType.IP, 50));
+        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.WIDTH, "宽", LayoutType.FORM_FIELD, "180", PropertyType.IP, 60));
+        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.HEIGHT, "高", LayoutType.FORM_FIELD, null, PropertyType.IP, 70));
+        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.DISPLAY_STYLE, "显示风格", LayoutType.FORM_FIELD, "STRING", PropertyType.IP, 80));
+        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.SORT_NUM, "排序号", LayoutType.FORM_FIELD, null, PropertyType.IP, 90));
+        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.VALUE, "默认值", LayoutType.FORM_FIELD, null, PropertyType.IP, 100));
+        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.DICT_ID, "数据字典", LayoutType.FORM_FIELD, null, PropertyType.IP, 110));
+        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.QUERY_MODEL, "查询模式", LayoutType.FORM_FIELD, null, PropertyType.IP, 120));
         return list;
     }
 

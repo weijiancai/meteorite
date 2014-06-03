@@ -10,6 +10,11 @@ import com.meteorite.fxbase.ui.component.form.*;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +62,8 @@ public class MUFormLayout extends BorderPane {
         gridPane.setHgap(formConfig.getHgap());
         gridPane.setVgap(formConfig.getVgap());
 
-        Label label;
+//        Label label;
+        TextFlow textFlow;
         Region labelGap;
         Node formField;
         Region fieldGap;
@@ -69,12 +75,23 @@ public class MUFormLayout extends BorderPane {
                 continue;
             }
 
+            // 显示文本
+            textFlow = new TextFlow();
+            textFlow.getChildren().add(new Text(field.getDisplayName()));
+            if (field.isRequire() && formConfig.getFormType() == FormType.EDIT) {
+                Text requireText = new Text("*");
+                requireText.setFill(Color.RED);
+                requireText.setFont(new Font(15));
+                requireText.setTextAlignment(TextAlignment.CENTER);
+                textFlow.getChildren().add(requireText);
+            }
+
             formField = getFormField(field);
             // 单行
             if (field.isSingleLine()) {
                 idxRow++;
-                label = new javafx.scene.control.Label(field.getDisplayName());
-                gridPane.add(label, 0, idxRow);
+//                label = new Label(field.getDisplayName());
+                gridPane.add(textFlow, 0, idxRow);
 
                 labelGap = new Region();
                 labelGap.setPrefWidth(formConfig.getLabelGap());
@@ -89,8 +106,8 @@ public class MUFormLayout extends BorderPane {
                 continue;
             }
 
-            label = new Label(field.getDisplayName());
-            gridPane.add(label, idxCol++, idxRow);
+//            label = new Label(field.getDisplayName());
+            gridPane.add(textFlow, idxCol++, idxRow);
 
             labelGap = new Region();
             labelGap.setPrefWidth(formConfig.getLabelGap());

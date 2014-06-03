@@ -23,6 +23,7 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
     private int maxLength;
     private boolean isPk;
     private boolean isFk;
+    private boolean isNullable;
     private String dbDataType;
     private int precision;
     private int scale;
@@ -53,6 +54,11 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
 
     public boolean isFk() {
         return isFk;
+    }
+
+    @Override
+    public boolean isNullable() {
+        return isNullable;
     }
 
     public void setFk(boolean isFk) {
@@ -110,6 +116,10 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
 
     public void setDataset(DBDataset dataset) {
         this.dataset = dataset;
+    }
+
+    public void setNullable(boolean isNullable) {
+        this.isNullable = isNullable;
     }
 
     @Override

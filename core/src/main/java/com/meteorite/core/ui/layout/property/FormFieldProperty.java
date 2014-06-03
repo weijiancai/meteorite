@@ -32,6 +32,7 @@ public class FormFieldProperty implements PropertyNames {
     private QueryModel queryModel;
     private boolean isSingleLine;
     private boolean isDisplay;
+    private boolean isRequire;
     private int width;
     private int height;
     private DisplayStyle displayStyle;
@@ -58,6 +59,7 @@ public class FormFieldProperty implements PropertyNames {
         this.queryModel = QueryModel.convert(propMap.get(FORM_FIELD.QUERY_MODEL));
         isSingleLine = UString.toBoolean(propMap.get(FORM_FIELD.IS_SINGLE_LINE));
         isDisplay = UString.toBoolean(propMap.get(FORM_FIELD.IS_DISPLAY));
+        isRequire = UString.toBoolean(propMap.get(FORM_FIELD.IS_REQUIRE));
         width = UNumber.toInt(propMap.get(FORM_FIELD.WIDTH));
         height = UNumber.toInt(propMap.get(FORM_FIELD.HEIGHT));
         displayStyle = DisplayStyle.getStyle(propMap.get(FORM_FIELD.DISPLAY_STYLE));
@@ -102,6 +104,14 @@ public class FormFieldProperty implements PropertyNames {
 
     public void setDisplay(boolean isDisplay) {
         this.isDisplay = isDisplay;
+    }
+
+    public boolean isRequire() {
+        return isRequire;
+    }
+
+    public void setRequire(boolean isRequire) {
+        this.isRequire = isRequire;
     }
 
     public int getWidth() {
@@ -181,12 +191,12 @@ public class FormFieldProperty implements PropertyNames {
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.NAME), field, field.getName()));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_DISPLAY), field, "true"));
-        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_SINGLE_LINE), field, "false"));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.QUERY_MODEL), field, QueryModel.EQUAL.name()));
 
         String width = "180";
         String height = "";
         String displayStyle = DisplayStyle.TEXT_FIELD.name();
+        String singleLine = "false";
         String dictId = field.getDictId();
         if (MetaDataType.BOOLEAN == field.getDataType()) {
             displayStyle = DisplayStyle.BOOLEAN.name();
@@ -197,6 +207,17 @@ public class FormFieldProperty implements PropertyNames {
             width = "250";
         }
 
+        if (field.getColumn() != null) {
+            configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_REQUIRE), field, field.getColumn().isNullable() ? "false" : "true"));
+            // 显示风格
+            if (field.getColumn().getMaxLength() > 500) {
+                displayStyle = DisplayStyle.TEXT_AREA.name();
+                singleLine = "true";
+                height = "60";
+            }
+        }
+
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_SINGLE_LINE), field, singleLine));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.WIDTH), field, width));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.HEIGHT), field, height));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.DISPLAY_STYLE), field, displayStyle));

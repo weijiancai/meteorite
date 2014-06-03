@@ -144,9 +144,6 @@ public class UFile {
         if (url == null) {
             url = UFile.class.getResource("");
         }
-        System.out.println(UFile.class.getResource("").getFile());
-        System.out.println(ClassLoader.getSystemResource("/"));
-        System.out.println("url = " + url);
         return new File(url.getFile());
     }
 
