@@ -198,6 +198,7 @@ public class FormFieldProperty implements PropertyNames {
         String displayStyle = DisplayStyle.TEXT_FIELD.name();
         String singleLine = "false";
         String dictId = field.getDictId();
+        String defaultValue = field.getDefaultValue();
         if (MetaDataType.BOOLEAN == field.getDataType()) {
             displayStyle = DisplayStyle.BOOLEAN.name();
             dictId = "EnumBoolean";
@@ -215,13 +216,16 @@ public class FormFieldProperty implements PropertyNames {
                 singleLine = "true";
                 height = "60";
             }
+            if (field.getColumn().isPk() && field.getColumn().getMaxLength() == 32) {
+                defaultValue = "GUID()";
+            }
         }
 
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_SINGLE_LINE), field, singleLine));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.WIDTH), field, width));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.HEIGHT), field, height));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.DISPLAY_STYLE), field, displayStyle));
-        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.VALUE), field, field.getDefaultValue()));
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.VALUE), field, defaultValue));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.DICT_ID), field, dictId));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.SORT_NUM), field, field.getSortNum() + ""));
 

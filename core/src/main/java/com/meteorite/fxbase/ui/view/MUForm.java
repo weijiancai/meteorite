@@ -8,6 +8,7 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
+import com.meteorite.core.util.UUIDUtil;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
@@ -188,6 +189,19 @@ public class MUForm extends BorderPane {
         IValue v = getValueMap().get(name);
         if (v != null) {
             v.setValue(value);
+        }
+    }
+
+    /**
+     * 新增
+     */
+    public void add() {
+        for (Map.Entry<String, IValue> entry : layout.getValueMap().entrySet()) {
+            String defaultValue = entry.getValue().getDefaultValue();
+            if ("GUID()".equals(defaultValue)) {
+                defaultValue = UUIDUtil.getUUID();
+            }
+            entry.getValue().setValue(defaultValue);
         }
     }
 

@@ -75,6 +75,12 @@ public class MUFormLayout extends BorderPane {
                 continue;
             }
 
+            formField = getFormField(field);
+            // 查询表单，TextArea不显示
+            if (FormType.QUERY == formConfig.getFormType() && formField instanceof MuTextArea) {
+                continue;
+            }
+
             // 显示文本
             textFlow = new TextFlow();
             textFlow.getChildren().add(new Text(field.getDisplayName()));
@@ -86,7 +92,6 @@ public class MUFormLayout extends BorderPane {
                 textFlow.getChildren().add(requireText);
             }
 
-            formField = getFormField(field);
             // 单行
             if (field.isSingleLine()) {
                 idxRow++;

@@ -178,7 +178,11 @@ public class MuCrud extends StackPane {
 
     private void openFormWin(DataMap result) {
         editForm.reset();
-        editForm.setValues(result);
+        if (result == null) { // 新增
+            editForm.add();
+        } else { // 查看
+            editForm.setValues(result);
+        }
         editForm.setVisible(true);
 //        MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
     }

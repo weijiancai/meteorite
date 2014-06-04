@@ -118,7 +118,7 @@ create table sys_meta_field
    display_name         varchar(64),
    data_type            varchar(64) not null,
    desc               varchar(1024),
-   default_value        varchar(1024),
+   default_value        varchar(256),
    dict_id              varchar(32),
    db_column            varchar(128),
    is_valid             char(1) not null,

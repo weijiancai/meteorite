@@ -24,8 +24,8 @@ public class MuTextArea extends BaseFormField implements IValue {
     @Override
     protected void initPrep() {
         textArea = new TextArea();
-        textArea.setPrefHeight(config.getHeight());
-        textArea.setPrefWidth(config.getWidth());
+        this.setPrefHeight(config.getHeight());
+        textArea.prefWidthProperty().bind(this.widthProperty());
         textArea.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {

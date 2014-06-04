@@ -207,4 +207,9 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
     public MetaField getMetaField() {
         return config.getMetaField();
     }
+
+    @Override
+    public String getDefaultValue() {
+        return config.getValue();
+    }
 }

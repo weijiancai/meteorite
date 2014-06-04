@@ -18,4 +18,6 @@ public interface IValue {
     String getName();
 
     MetaField getMetaField();
+
+    String getDefaultValue();
 }
