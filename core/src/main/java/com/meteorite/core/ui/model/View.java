@@ -30,7 +30,7 @@ public class View {
     private int sortNum;
 
     /** 元字段属性Map */
-    private Map<MetaField, Map<String, String>> fieldPropMap = new HashMap<>();
+    private Map<MetaField, Map<String, ViewProperty>> fieldPropMap = new HashMap<>();
 
     private List<ViewLayout> layoutList;
     private List<ViewConfig> configs;
@@ -151,14 +151,13 @@ public class View {
             propMap.put(property.getProperty().getId(), property);
             MetaField field = property.getField();
             if (field != null) {
-                Map<String, String> propMap = fieldPropMap.get(field);
+                Map<String, ViewProperty> propMap = fieldPropMap.get(field);
                 if (propMap == null) {
                     propMap = new HashMap<>();
                     fieldPropMap.put(field, propMap);
                 }
-                propMap.put(property.getProperty().getId(), property.getValue());
+                propMap.put(property.getProperty().getId(), property);
             }
-
         }
     }
 
@@ -184,7 +183,7 @@ public class View {
      * @param field 元字段ID
      * @return 返回元字段配置
      */
-    public Map<String, String> getMetaFieldConfig(MetaField field) {
+    public Map<String, ViewProperty> getMetaFieldConfig(MetaField field) {
         return fieldPropMap.get(field);
     }
 
@@ -198,5 +197,19 @@ public class View {
 
     public void setMeta(Meta meta) {
         this.meta = meta;
+    }
+
+    public ViewProperty getViewProperty(MetaField field, String propName) {
+        for (ViewProperty property : viewProperties) {
+            if (property.getField() == null || property.getProperty() == null) {
+                continue;
+            }
+
+            if (property.getField() == field && property.getProperty().getName().equalsIgnoreCase(propName)) {
+                return property;
+            }
+        }
+
+        return null;
     }
 }

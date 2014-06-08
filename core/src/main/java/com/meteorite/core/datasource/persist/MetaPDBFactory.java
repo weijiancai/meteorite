@@ -92,6 +92,7 @@ public class MetaPDBFactory {
                 if (column != null) {
                     map.put("db_column", column.getFullName());
                 }
+                map.put("dict_id", field.getDictId());
 
                 result.put("sys_meta_field", map);
 

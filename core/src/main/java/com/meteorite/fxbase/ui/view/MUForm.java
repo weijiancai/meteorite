@@ -134,14 +134,14 @@ public class MUForm extends BorderPane {
                     }
                 });
 
-                table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                table.getSourceTable().setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
                         if (event.getClickCount() == 2) {
                             FormProperty property = new FormProperty(ViewManager.getViewByName(meta.getName() + "FormView"));
                             property.setFormType(FormType.READONLY);
                             MUForm form = new MUForm(property);
-                            form.setValues(table.getSelectionModel().getSelectedItem());
+                            form.setValues(table.getSelectedItem());
                             MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
                         }
                     }

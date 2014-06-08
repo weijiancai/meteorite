@@ -83,7 +83,7 @@ public class MuCrud extends StackPane {
         lookBtn.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
-                DataMap result = table.getSelectionModel().getSelectedItem();
+                DataMap result = table.getSelectedItem();
                 if (result == null) {
                     MUDialog.showInformation("请选择数据行！");
                     return;
@@ -135,7 +135,7 @@ public class MuCrud extends StackPane {
 
     private Node createCenter() {
         table = new MUTable(crudProperty.getTableView());
-        table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        table.getSourceTable().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if (event.getClickCount() == 2) {

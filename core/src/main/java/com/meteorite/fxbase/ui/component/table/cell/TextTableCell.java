@@ -41,8 +41,11 @@ public class TextTableCell extends BaseTableCell {
                 @Override
                 public void handle(KeyEvent event) {
                     if (event.getCode() == KeyCode.ENTER) {
+                        isModified.set(true);
                         commitEdit(textField.getText());
+                        valueProperty.set(textField.getText());
                     } else if (event.getCode() == KeyCode.ESCAPE) {
+                        isModified.set(false);
                         cancelEdit();
                     }
                 }

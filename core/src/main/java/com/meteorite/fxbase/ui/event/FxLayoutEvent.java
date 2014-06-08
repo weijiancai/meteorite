@@ -11,7 +11,7 @@ import javafx.event.EventType;
  * @since 1.0.0
  */
 public class FxLayoutEvent extends Event {
-    public static EventType<FxLayoutEvent> EVENT_TYPE = new EventType<>("LAYOUT_EVENT_TYPE");
+    public static EventType<FxLayoutEvent> EVENT_TYPE = new EventType<FxLayoutEvent>("LAYOUT_EVENT_TYPE");
     private ILayoutConfig layoutConfig;
     private Object source;
 

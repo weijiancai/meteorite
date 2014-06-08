@@ -390,4 +390,13 @@ public class Meta {
     public void save(Map<String, IValue> valueMap) throws Exception {
         dataSource.save(valueMap);
     }
+
+    public MetaField getFieldByName(String fieldName) {
+        for (MetaField field : fields) {
+            if (field.getName().equals(fieldName)) {
+                return field;
+            }
+        }
+        return null;
+    }
 }

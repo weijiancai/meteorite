@@ -31,7 +31,6 @@ public class MuTextField extends BaseFormField implements IValue {
     @Override
     protected void initPrep() {
         textField = new TextField();
-        textField.setText(config.getValue());
         textField.prefWidthProperty().bind(this.widthProperty());
         textField.textProperty().addListener(new ChangeListener<String>() {
             @Override

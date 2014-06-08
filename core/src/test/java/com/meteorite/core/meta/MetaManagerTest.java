@@ -6,6 +6,7 @@ import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaForm;
+import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class MetaManagerTest {
             assertThat(e.getMessage(), equalTo("不能将非MetaElement的对象【java.lang.String】转化为Meta对象！"));
         }
 
-        Meta meta = MetaManager.toMeta(Meta.class, template);
+        Meta meta = MetaManager.toMeta(TableFieldProperty.class, template);
         /*assertThat(meta, notNullValue());
         assertThat(meta.getName(), equalTo("ProjectConfig"));
         assertThat(meta.getDisplayName(), equalTo("项目配置"));

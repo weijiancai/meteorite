@@ -25,7 +25,7 @@ import static com.meteorite.core.ui.ViewManager.createViewConfig;
  * @author wei_jc
  * @since 1.0.0
  */
-public class FormFieldProperty implements PropertyNames {
+public class FormFieldProperty extends BaseProperty {
     private String name;
     private String columnName;
     private String displayName;
@@ -42,30 +42,29 @@ public class FormFieldProperty implements PropertyNames {
     private int sortNum;
 
     private FormProperty formProperty;
-    private MetaField metaField;
 
-    public FormFieldProperty(FormProperty formProperty, MetaField field, Map<String, String> propMap) {
+    public FormFieldProperty(FormProperty formProperty, MetaField field, Map<String, ViewProperty> propMap) {
+        super(field, propMap);
         this.formProperty = formProperty;
-        this.metaField = field;
 
         dataType = field.getDataType();
-        name = propMap.get(FORM_FIELD.NAME);
+        name = getPropertyValue(FORM_FIELD.NAME);
         if (field.getColumn() != null) {
             columnName = field.getColumn().getName();
         } else {
             columnName = name;
         }
-        displayName = propMap.get(FORM_FIELD.DISPLAY_NAME);
-        this.queryModel = QueryModel.convert(propMap.get(FORM_FIELD.QUERY_MODEL));
-        isSingleLine = UString.toBoolean(propMap.get(FORM_FIELD.IS_SINGLE_LINE));
-        isDisplay = UString.toBoolean(propMap.get(FORM_FIELD.IS_DISPLAY));
-        isRequire = UString.toBoolean(propMap.get(FORM_FIELD.IS_REQUIRE));
-        width = UNumber.toInt(propMap.get(FORM_FIELD.WIDTH));
-        height = UNumber.toInt(propMap.get(FORM_FIELD.HEIGHT));
-        displayStyle = DisplayStyle.getStyle(propMap.get(FORM_FIELD.DISPLAY_STYLE));
-        dict = DictManager.getDict(propMap.get(FORM_FIELD.DICT_ID));
-        value = propMap.get(FORM_FIELD.VALUE);
-        sortNum = UNumber.toInt(propMap.get(FORM_FIELD.SORT_NUM));
+        displayName = getPropertyValue(FORM_FIELD.DISPLAY_NAME);
+        this.queryModel = QueryModel.convert(getPropertyValue(FORM_FIELD.QUERY_MODEL));
+        isSingleLine = UString.toBoolean(getPropertyValue(FORM_FIELD.IS_SINGLE_LINE));
+        isDisplay = UString.toBoolean(getPropertyValue(FORM_FIELD.IS_DISPLAY));
+        isRequire = UString.toBoolean(getPropertyValue(FORM_FIELD.IS_REQUIRE));
+        width = UNumber.toInt(getPropertyValue(FORM_FIELD.WIDTH));
+        height = UNumber.toInt(getPropertyValue(FORM_FIELD.HEIGHT));
+        displayStyle = DisplayStyle.getStyle(getPropertyValue(FORM_FIELD.DISPLAY_STYLE));
+        dict = DictManager.getDict(getPropertyValue(FORM_FIELD.DICT_ID));
+        value = getPropertyValue(FORM_FIELD.VALUE);
+        sortNum = UNumber.toInt(getPropertyValue(FORM_FIELD.SORT_NUM));
     }
 
     public String getName() {
@@ -230,9 +229,5 @@ public class FormFieldProperty implements PropertyNames {
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.SORT_NUM), field, field.getSortNum() + ""));
 
         return configList;
-    }
-
-    public MetaField getMetaField() {
-        return metaField;
     }
 }

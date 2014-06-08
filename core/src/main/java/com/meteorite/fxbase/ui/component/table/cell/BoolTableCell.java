@@ -67,7 +67,11 @@ public class BoolTableCell extends BaseTableCell {
             comboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DictCode>() {
                 @Override
                 public void changed(ObservableValue<? extends DictCode> observable, DictCode oldValue, DictCode newValue) {
-                    commitEdit(newValue.getName());
+                    isModified.set(true);
+                    if (newValue != null) {
+                        commitEdit(newValue.getName());
+                        valueProperty.set(newValue.getName());
+                    }
                 }
             });
             comboBox.minWidthProperty().bind(this.widthProperty());

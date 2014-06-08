@@ -27,14 +27,22 @@ public class BaseTableColumn extends TableColumn<DataMap, String> {
 
     public BaseTableColumn(final TableFieldProperty property) {
         this.property = property;
-        this.setText(property.getDisplayName());
-        this.setPrefWidth(property.getWidth());
-        this.setMinWidth(80);
+//        this.setText(property.getDisplayName());
+//        this.setPrefWidth(property.getWidth());
+        this.setMinWidth(60);
+        this.textProperty().bind(property.displayNameProperty());
+        this.prefWidthProperty().bind(property.widthProperty());
+        this.visibleProperty().bind(property.displayProperty());
 
         this.setCellValueFactory(new Callback<CellDataFeatures<DataMap, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<DataMap, String> param) {
-                Object obj = param.getValue().get(property.getDbColumn());
+                Object obj;
+                if (property.getDbColumn() != null) {
+                    obj = param.getValue().get(property.getDbColumn());
+                } else {
+                    obj = param.getValue().get(property.getName());
+                }
                 if (obj instanceof Date) {
                     return new SimpleStringProperty(UDate.dateToString((Date)obj, "yyyy-MM-dd HH:mm:ss"));
                 }

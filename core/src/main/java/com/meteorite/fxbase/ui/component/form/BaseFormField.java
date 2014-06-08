@@ -57,6 +57,11 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
         this.setPrefWidth(config.getWidth());
         this.setAlignment(Pos.CENTER_LEFT);
         this.setSpacing(5);
+        // 设置默认值
+        String value = config.getValue();
+        if (!"GUID()".equals(value)) {
+            this.setValue(config.getValue());
+        }
 
         initAfter();
     }

@@ -12,6 +12,7 @@ import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.*;
 import com.meteorite.core.ui.ViewManager;
+import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.UString;
@@ -121,6 +122,9 @@ public class MetaManager {
 
             if (getMeta("DBDataSource") == null) {
                 addMeta(DBDataSource.class, template);
+            }
+            if (getMeta("TableFieldProperty") == null) {
+                addMeta(TableFieldProperty.class, template);
             }
 
             template.commit();

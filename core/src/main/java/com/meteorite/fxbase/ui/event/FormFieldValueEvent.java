@@ -5,13 +5,13 @@ import javafx.event.Event;
 import javafx.event.EventType;
 
 /**
- * 表单字段值改变世间
+ * 表单字段值改变事件
  *
  * @author wei_jc
  * @since 1.0.0
  */
 public class FormFieldValueEvent extends Event {
-    public static EventType<FormFieldValueEvent> EVENT_TYPE = new EventType<>("FORM_FIELD_VALUE_EVENT_TYPE");
+    public static EventType<FormFieldValueEvent> EVENT_TYPE = new EventType<FormFieldValueEvent>("FORM_FIELD_VALUE_EVENT_TYPE");
     private BaseFormField formField;
     private String oldValue;
     private String newValue;

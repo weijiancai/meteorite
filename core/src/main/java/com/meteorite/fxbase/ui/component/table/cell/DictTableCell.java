@@ -5,12 +5,16 @@ import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
+import com.meteorite.core.util.UString;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.layout.StackPane;
 
 /**
  * 数据字典Table Cell
@@ -19,6 +23,8 @@ import javafx.scene.control.TableColumn;
  * @since 1.0.0
  */
 public class DictTableCell extends BaseTableCell {
+    private StackPane box;
+    private Label label;
     private ComboBox<DictCode> comboBox;
     private final ObservableList<DictCode> items;
 
@@ -26,6 +32,13 @@ public class DictTableCell extends BaseTableCell {
 
     public DictTableCell(TableColumn<DataMap, String> column, TableFieldProperty prop) {
         super(column, prop);
+
+        box = new StackPane();
+        label = new Label();
+
+        box.setAlignment(Pos.CENTER);
+        box.getChildren().add(label);
+
         dictCategory = DictManager.getDict(prop.getDict().getId());
         items = FXCollections.observableArrayList(dictCategory.getCodeList());
     }
@@ -43,7 +56,11 @@ public class DictTableCell extends BaseTableCell {
             comboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DictCode>() {
                 @Override
                 public void changed(ObservableValue<? extends DictCode> observable, DictCode oldValue, DictCode newValue) {
-                    commitEdit(newValue.getName());
+                    isModified.set(true);
+                    if (newValue != null) {
+                        commitEdit(newValue.getName());
+                        valueProperty.set(newValue.getName());
+                    }
                 }
             });
         }
@@ -62,22 +79,27 @@ public class DictTableCell extends BaseTableCell {
     @Override public void cancelEdit() {
         super.cancelEdit();
 
-        DictCode code = dictCategory.getDictCode(getItem());
-        if (code != null) {
-            setText(code.getDisplayName());
-            setItem(code.getDisplayName());
-        }
-        setGraphic(null);
+        setGraphic(box);
     }
 
     /** {@inheritDoc} */
     @Override public void updateItem(String item, boolean empty) {
         super.updateItem(item, empty);
-        if (item != null) {
+
+        if (UString.isNotEmpty(item)) {
             DictCode code = dictCategory.getDictCode(item);
-            if (code != null) {
-                setItem(code.getDisplayName());
+            if (code == null) {
+                code = dictCategory.getDictCodeByName(item);
             }
+            if (code != null) {
+                label.setText(code.getDisplayName());
+            } else {
+                label.setText("");
+            }
+
+            this.setGraphic(box);
+        } else {
+            this.setGraphic(null);
         }
     }
 }

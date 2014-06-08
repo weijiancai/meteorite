@@ -43,9 +43,9 @@ public class FormProperty implements PropertyNames {
         hgap = UNumber.toInt(layout.getConfigValue(FORM.HGAP));
         vgap = UNumber.toInt(layout.getConfigValue(FORM.VGAP));
 
-        for (MetaField field : layout.getMeta().getFields()) {
+        /*for (MetaField field : layout.getMeta().getFields()) {
             formFields.add(new FormFieldProperty(this, field, layout.getMetaFieldConfig(field.getId())));
-        }
+        }*/
     }
 
     public FormProperty(View view) {
