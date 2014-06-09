@@ -14,7 +14,10 @@ import com.meteorite.core.ui.model.View;
 import com.meteorite.core.ui.model.ViewProperty;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
+import com.meteorite.fxbase.ui.view.MUDialog;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +39,7 @@ public class TableFieldProperty extends BaseProperty {
     private DisplayStyle displayStyle;
     private DictCategory dict;
     private ObjectProperty<EnumAlign> align = new SimpleObjectProperty<>();
-    private int sortNum;
+    private IntegerProperty sortNum = new SimpleIntegerProperty(0);
 
     public TableFieldProperty(MetaField field, Map<String, ViewProperty> propMap) {
         super(field, propMap);
@@ -48,7 +51,35 @@ public class TableFieldProperty extends BaseProperty {
         this.displayStyle = DisplayStyle.getStyle(getPropertyValue(TABLE_FIELD.DISPLAY_STYLE));
         this.dict = DictManager.getDict(getPropertyValue(TABLE_FIELD.DICT_ID));
         setAlign(EnumAlign.getAlign(getPropertyValue(TABLE_FIELD.ALIGN)));
-        this.sortNum = UNumber.toInt(getPropertyValue(TABLE_FIELD.SORT_NUM));
+        setSortNum(UNumber.toInt(getPropertyValue(TABLE_FIELD.SORT_NUM)));
+
+        // 属性改变，保存到数据库
+        widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (oldValue.intValue() != newValue.intValue()) {
+                    ViewProperty viewProperty = getProperty(TABLE_FIELD.WIDTH);
+                    try {
+                        viewProperty.persist();
+                    } catch (Exception e) {
+                        MUDialog.showExceptionDialog(e);
+                    }
+                }
+            }
+        });
+        sortNumProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (oldValue.intValue() != newValue.intValue()) {
+                    ViewProperty viewProperty = getProperty(TABLE_FIELD.SORT_NUM);
+                    try {
+                        viewProperty.persist();
+                    } catch (Exception e) {
+                        MUDialog.showExceptionDialog(e);
+                    }
+                }
+            }
+        });
     }
 
     @MetaFieldElement(displayName = "名称", sortNum = 10)
@@ -125,11 +156,11 @@ public class TableFieldProperty extends BaseProperty {
 
     @MetaFieldElement(displayName = "排序号", sortNum = 90, dataType = MetaDataType.INTEGER)
     public int getSortNum() {
-        return sortNum;
+        return sortNum.get();
     }
 
     public void setSortNum(int sortNum) {
-        this.sortNum = sortNum;
+        this.sortNum.set(sortNum);
     }
 
     public IntegerProperty widthProperty() {
@@ -146,6 +177,10 @@ public class TableFieldProperty extends BaseProperty {
 
     public BooleanProperty displayProperty() {
         return isDisplay;
+    }
+
+    public IntegerProperty sortNumProperty() {
+        return sortNum;
     }
 
     public static List<ViewProperty> getViewProperties(View view, MetaField field) {

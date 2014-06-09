@@ -9,6 +9,7 @@ import com.meteorite.core.util.UDate;
 import com.meteorite.core.util.UObject;
 import com.meteorite.fxbase.ui.component.table.cell.*;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -30,9 +31,15 @@ public class BaseTableColumn extends TableColumn<DataMap, String> {
 //        this.setText(property.getDisplayName());
 //        this.setPrefWidth(property.getWidth());
         this.setMinWidth(60);
-        this.textProperty().bind(property.displayNameProperty());
+        this.textProperty().bindBidirectional(property.displayNameProperty());
         this.prefWidthProperty().bind(property.widthProperty());
         this.visibleProperty().bind(property.displayProperty());
+        this.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                property.setWidth(newValue.intValue());
+            }
+        });
 
         this.setCellValueFactory(new Callback<CellDataFeatures<DataMap, String>, ObservableValue<String>>() {
             @Override
@@ -100,5 +107,9 @@ public class BaseTableColumn extends TableColumn<DataMap, String> {
         }
 
         return new TextTableCell(param, property);
+    }
+
+    public TableFieldProperty getProperty() {
+        return property;
     }
 }

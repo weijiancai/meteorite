@@ -1,6 +1,10 @@
 package com.meteorite.core.ui.model;
 
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.meta.model.MetaField;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 视图属性
@@ -72,5 +76,21 @@ public class ViewProperty {
 
     public void setView(View view) {
         this.view = view;
+    }
+
+    public void persist() throws Exception {
+        JdbcTemplate template = new JdbcTemplate();
+        try {
+            Map<String, Object> valueMap = new HashMap<>();
+            valueMap.put("value", getValue());
+
+            Map<String, Object> conditionMap = new HashMap<>();
+            conditionMap.put("id", getId());
+
+            template.update(valueMap, conditionMap, "sys_view_prop");
+            template.commit();
+        } finally {
+            template.close();
+        }
     }
 }

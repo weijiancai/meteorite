@@ -72,6 +72,20 @@ public class MUTable extends BorderPane {
         for (final TableFieldProperty property : config.getFieldProperties()) {
             table.getColumns().add(new BaseTableColumn(property));
         }
+
+        // 列顺序改变
+        table.getColumns().addListener(new ListChangeListener<TableColumn<DataMap, ?>>() {
+            @Override
+            public void onChanged(Change<? extends TableColumn<DataMap, ?>> change) {
+                while (change.next()) {
+                    for (int i = 1; i < change.getTo(); i++) {
+                        BaseTableColumn cur = (BaseTableColumn) change.getList().get(i);
+                        BaseTableColumn old = (BaseTableColumn) change.getRemoved().get(i);
+                        old.getProperty().setSortNum(cur.getProperty().getSortNum());
+                    }
+                }
+            }
+        });
     }
 
     private void createToolbar() {
@@ -102,6 +116,8 @@ public class MUTable extends BorderPane {
                         ViewProperty viewProperty = MUTable.this.view.getViewProperty(field, event.getName());
                         viewProperty.setValue(event.getNewValue());
                         config.setPropertyValue(field, event.getName(), event.getNewValue());
+                        // 保存到数据库
+                        viewProperty.persist();
                     }
                 });
                 root.getItems().addAll(list);
