@@ -218,7 +218,7 @@ create table sys_view
 comment on table sys_view is '视图';
 comment on column sys_view.id is '视图ID';
 comment on column sys_view.name is '视图名称';
-comment on column sys_view.display_name is '视图ID';
+comment on column sys_view.display_name is '显示名';
 comment on column sys_view.desc is '描述';
 comment on column sys_view.meta_id is '元数据ID';
 comment on column sys_view.is_valid is '是否有效';

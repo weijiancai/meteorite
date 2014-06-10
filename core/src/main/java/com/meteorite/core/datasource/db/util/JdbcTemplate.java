@@ -398,15 +398,18 @@ public class JdbcTemplate {
                 sql.append("AND ").append(key).append("=?");
                 conditionKeyList.add(key);
             }
-            System.out.println(sql);
             PreparedStatement pstmt = conn.prepareStatement(sql.toString());
+            List<Object> objects = new ArrayList<>();
             i = 1;
             for (String key : keyList) {
                 pstmt.setObject(i++, valueMap.get(key));
+                objects.add(valueMap.get(key));
             }
             for (String key : conditionKeyList) {
                 pstmt.setObject(i++, conditionMap.get(key));
+                objects.add(conditionMap.get(key));
             }
+            System.out.println(SqlUtil.toLog(sql.toString(), objects.toArray()));
             pstmt.executeUpdate();
             pstmt.close();
 

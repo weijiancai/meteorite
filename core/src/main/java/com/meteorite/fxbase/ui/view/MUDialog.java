@@ -1,5 +1,6 @@
 package com.meteorite.fxbase.ui.view;
 
+import com.meteorite.fxbase.BaseApp;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.util.Callback;
@@ -27,6 +28,9 @@ public class MUDialog extends Dialog {
      * @param content 对话框内容节点
      */
     public static void showCustomDialog(Object owner, String title, Node content, final Callback<Void, Void> callback) {
+        if (owner == null) {
+            owner = BaseApp.getInstance().getStage();
+        }
         final MUDialog dialog = new MUDialog(owner, title);
         dialog.setContent(content);
         dialog.getActions().add(new AbstractDialogAction("确定", ActionTrait.CLOSING, ActionTrait.CANCEL) {

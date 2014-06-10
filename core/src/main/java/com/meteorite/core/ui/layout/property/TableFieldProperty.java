@@ -60,6 +60,7 @@ public class TableFieldProperty extends BaseProperty {
                 if (oldValue.intValue() != newValue.intValue()) {
                     ViewProperty viewProperty = getProperty(TABLE_FIELD.WIDTH);
                     try {
+                        viewProperty.setValue(newValue.toString());
                         viewProperty.persist();
                     } catch (Exception e) {
                         MUDialog.showExceptionDialog(e);
@@ -73,6 +74,7 @@ public class TableFieldProperty extends BaseProperty {
                 if (oldValue.intValue() != newValue.intValue()) {
                     ViewProperty viewProperty = getProperty(TABLE_FIELD.SORT_NUM);
                     try {
+                        viewProperty.setValue(newValue.toString());
                         viewProperty.persist();
                     } catch (Exception e) {
                         MUDialog.showExceptionDialog(e);

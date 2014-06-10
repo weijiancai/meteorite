@@ -2,6 +2,7 @@ package com.meteorite.core.datasource.db.sql;
 
 import com.meteorite.core.datasource.QueryCondition;
 import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.db.util.SqlUtil;
 import com.meteorite.core.dict.QueryModel;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.util.UObject;
@@ -555,23 +556,7 @@ public class SqlBuilder {
      * @return 返回sql语句
      */
     public String toLog() {
-        if (UString.isEmpty(sql)) {
-            return "";
-        }
-        if (!sql.contains("?")) {
-            return sql;
-        }
-
-        String result = sql;
-        for (Object obj : paramQueue) {
-            int idx = result.indexOf("?");
-            if (idx > -1) {
-                result = result.replaceFirst("\\?", "'" + obj + "'");
-            } else {
-                result += "<" + obj + "> ";
-            }
-        }
-        return result;
+        return SqlUtil.toLog(sql, paramQueue);
     }
 
     public SqlBuilder add(String colName, QueryModel queryModel, Object value, MetaDataType dataType, boolean isAnd) {

@@ -20,7 +20,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * MetaUI Table
@@ -69,7 +71,7 @@ public class MUTable extends BorderPane {
 
         // 创建其他列
         config = new TableProperty(view);
-        for (final TableFieldProperty property : config.getFieldProperties()) {
+        for (TableFieldProperty property : config.getFieldProperties()) {
             table.getColumns().add(new BaseTableColumn(property));
         }
 
@@ -77,11 +79,18 @@ public class MUTable extends BorderPane {
         table.getColumns().addListener(new ListChangeListener<TableColumn<DataMap, ?>>() {
             @Override
             public void onChanged(Change<? extends TableColumn<DataMap, ?>> change) {
-                while (change.next()) {
-                    for (int i = 1; i < change.getTo(); i++) {
-                        BaseTableColumn cur = (BaseTableColumn) change.getList().get(i);
-                        BaseTableColumn old = (BaseTableColumn) change.getRemoved().get(i);
-                        old.getProperty().setSortNum(cur.getProperty().getSortNum());
+                if (change.next()) {
+                    Map<TableFieldProperty, Integer> map = new HashMap<>();
+                    for (int i = 0; i < config.getFieldProperties().size(); i++) {
+                        TableFieldProperty property = config.getFieldProperties().get(i);
+                        BaseTableColumn cur = (BaseTableColumn) change.getList().get(i + 1);
+                        if (property.getSortNum() != cur.getProperty().getSortNum()) {
+                            map.put(property, cur.getProperty().getSortNum());
+                        }
+                    }
+                    // 更新序号
+                    for (Map.Entry<TableFieldProperty, Integer> entry : map.entrySet()) {
+                        entry.getKey().setSortNum(entry.getValue());
                     }
                 }
             }
