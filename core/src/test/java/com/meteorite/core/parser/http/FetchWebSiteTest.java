@@ -65,4 +65,12 @@ public class FetchWebSiteTest {
         FetchWebSite fetchWebSite = new FetchWebSite(dir);
         fetchWebSite.fetch(baseUrl, 1);
     }
+
+    @Test
+    public void testFetchImages() throws IOException {
+        String baseUrl = "http://www.fit120.net/html/2960.html";
+        File dir = new File("D:\\fetch\\fit120");
+        FetchWebSite fetchWebSite = new FetchWebSite(dir);
+        fetchWebSite.fetchImages(baseUrl);
+    }
 }

@@ -283,4 +283,49 @@ public class FetchWebSite {
         Elements media = doc.select("[src]");
         Elements imports = doc.select("link[href]");*/
     }
+
+    private Set<String> urlSet = new HashSet<>();
+
+    public void fetchImages(String url) throws IOException {
+        System.out.println(url);
+
+        if(baseUrl == null) {
+            int end = url.indexOf("/", 7);
+            baseUrl = url.substring(0, end == -1 ? url.length() : end);
+        }
+        if (!url.startsWith(baseUrl)) {
+            return;
+        }
+
+        final File imagesDir = new File(baseDir, "images");
+        Document doc = Jsoup.connect(url).timeout(50000).get();
+
+        Elements links = doc.select("a[href]");
+        Elements media = doc.select("[src]");
+
+        for (Element src : media) {
+            final String href = src.attr("abs:src");
+            if (href.contains(".html") || href.contains(".php") || href.endsWith("/") || href.endsWith(".js")) {
+                continue;
+            }
+            System.out.println(href);
+            /*new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        UFile.write(new URL(href), imagesDir);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();*/
+            UFile.write(new URL(href), imagesDir);
+        }
+
+        for (Element link : links) {
+            String href = link.attr("abs:href");
+            urlSet.add(href);
+            fetchImages(href);
+        }
+    }
 }

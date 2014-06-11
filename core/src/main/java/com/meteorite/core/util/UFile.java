@@ -3,10 +3,7 @@ package com.meteorite.core.util;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 
 /**
  * 文件工具类
@@ -155,5 +152,22 @@ public class UFile {
      */
     public static String getFileExt(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
+
+    public static void write(URL url, File baseDir) throws IOException {
+        if (!baseDir.exists()) {
+            baseDir.mkdirs();
+        }
+        String fileName = UString.getLastName(url.getFile(), "/");
+        File file = new File(baseDir, fileName);
+        if (file.exists()) {
+            return;
+        }
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        InputStream is = httpConn.getInputStream();
+        FileOutputStream fos = new FileOutputStream(file);
+        write(is, fos);
+        fos.close();
+        is.close();
     }
 }
