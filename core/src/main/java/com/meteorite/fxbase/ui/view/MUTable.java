@@ -1,7 +1,9 @@
 package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.BaseProperty;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
@@ -103,33 +105,26 @@ public class MUTable extends BorderPane {
         btnCol.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
-                final View view = ViewManager.getViewByName("TableFieldPropertyTableView");
-                MUTable root = new MUTable(view);
-                root.showToolbar(false);
-                root.setEditable(true);
-                List<DataMap> list = new ArrayList<>();
-                for (final TableFieldProperty property : config.getFieldProperties()) {
-                    DataMap data = new DataMap();
-                    for (ViewProperty prop : view.getViewProperties()) {
-                        String id = prop.getProperty().getId();
-                        String name = prop.getProperty().getName();
-                        data.put(name, property.getPropertyValue(id));
-                    }
-                    list.add(data);
+                BorderPane root = new BorderPane();
+                root.setPrefSize(800, 400);
+                TabPane tabPane = new TabPane();
+                Tab main = new Tab(view.getMeta().getDisplayName());
+                main.setClosable(false);
+                main.setContent(getColInfoTable(ViewManager.getViewByName("TableFieldPropertyTableView"), config.getFieldProperties()));
+                tabPane.getTabs().addAll(main);
+                root.setCenter(tabPane);
+
+                Meta mainMeta = view.getMeta();
+                for (MetaReference ref : mainMeta.getReferences()) {
+                    Meta pkMeta = ref.getPkMeta();
+                    Tab tab = new Tab(pkMeta.getDisplayName());
+                    tab.setClosable(false);
+                    View pkTableView = pkMeta.getTableView();
+                    TableProperty tableProperty = new TableProperty(pkTableView);
+                    tab.setContent(getColInfoTable(ViewManager.getViewByName("TableFieldPropertyTableView"), tableProperty.getFieldProperties()));
+                    tabPane.getTabs().addAll(tab);
                 }
-                root.addEventHandler(DataChangeEvent.EVENT_TYPE, new MuEventHandler<DataChangeEvent>() {
-                    @Override
-                    public void doHandler(DataChangeEvent event) throws Exception {
-                        String fieldName = event.getRowData().getString("name");
-                        MetaField field = MUTable.this.view.getMeta().getFieldByName(fieldName.toLowerCase());
-                        ViewProperty viewProperty = MUTable.this.view.getViewProperty(field, event.getName());
-                        viewProperty.setValue(event.getNewValue());
-                        config.setPropertyValue(field, event.getName(), event.getNewValue());
-                        // 保存到数据库
-                        viewProperty.persist();
-                    }
-                });
-                root.getItems().addAll(list);
+
                 MUDialog.showCustomDialog(null, "列信息", root, new Callback<Void, Void>() {
                     @Override
                     public Void call(Void param) {
@@ -140,6 +135,38 @@ public class MUTable extends BorderPane {
             }
         });
         toolBar.getItems().addAll(btnCol);
+    }
+
+
+    public MUTable getColInfoTable(View view, List<TableFieldProperty> fieldProperties) {
+        MUTable table = new MUTable(view);
+        table.showToolbar(false);
+        table.setEditable(true);
+        List<DataMap> list = new ArrayList<>();
+        for (final TableFieldProperty property : fieldProperties) {
+            DataMap data = new DataMap();
+            for (ViewProperty prop : view.getViewProperties()) {
+                String id = prop.getProperty().getId();
+                String name = prop.getProperty().getName();
+                data.put(name, property.getPropertyValue(id));
+            }
+            list.add(data);
+        }
+        table.addEventHandler(DataChangeEvent.EVENT_TYPE, new MuEventHandler<DataChangeEvent>() {
+            @Override
+            public void doHandler(DataChangeEvent event) throws Exception {
+                String fieldName = event.getRowData().getString("name");
+                MetaField field = MUTable.this.view.getMeta().getFieldByName(fieldName.toLowerCase());
+                ViewProperty viewProperty = MUTable.this.view.getViewProperty(field, event.getName());
+                viewProperty.setValue(event.getNewValue());
+                config.setPropertyValue(field, event.getName(), event.getNewValue());
+                // 保存到数据库
+                viewProperty.persist();
+            }
+        });
+        table.getItems().addAll(list);
+
+        return table;
     }
 
     public TableProperty getConfig() {

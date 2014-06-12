@@ -11,6 +11,7 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
@@ -321,10 +322,17 @@ public class Meta {
     }
 
     public View getFormView() {
-        return null;
+        return ViewManager.getViewByName(getName() + "FormView");
+    }
+
+    public View getTableView() {
+        return ViewManager.getViewByName(getName() + "TableView");
     }
 
     public List<MetaReference> getReferences() {
+        if (references == null) {
+            references = new ArrayList<>();
+        }
         return references;
     }
 

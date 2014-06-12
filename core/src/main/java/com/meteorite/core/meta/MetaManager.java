@@ -78,6 +78,9 @@ public class MetaManager {
                 for (MetaReference reference : referenceList) {
                     reference.getPkMeta().getChildren().add(reference.getFkMeta());
                     reference.getFkMetaField().setRefField(reference.getPkMetaField());
+
+                    // 外键引用
+                    reference.getFkMeta().getReferences().add(reference);
                 }
             } else {
                 metaSortNum = 10;
@@ -112,8 +115,16 @@ public class MetaManager {
                             template.save(MetaPDBFactory.getMetaReference(metaRef));
                             metaRef.getPkMeta().getChildren().add(metaRef.getFkMeta());
                             metaRef.getFkMetaField().setRefField(metaRef.getPkMetaField());
+
+                            // 外键引用
+                            fkMeta.getReferences().add(metaRef);
                         }
                     }
+                }
+
+                // 创建元数据视图
+                for (Meta meta : metaMap.values()) {
+                    ViewManager.createViews(meta, template);
                 }
 
                 sysInfo.setMetaInit(true);
@@ -389,8 +400,5 @@ public class MetaManager {
             fieldIdMap.put(field.getId(), field);
         }
         meta.setFields(fieldList);
-
-        // 创建视图
-        ViewManager.createViews(meta, template);
     }
 }

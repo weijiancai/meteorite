@@ -3,6 +3,7 @@ package com.meteorite.core.ui.layout.property;
 import com.meteorite.core.dict.EnumAlign;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.PropertyNames;
 import com.meteorite.core.ui.model.*;
@@ -72,7 +73,13 @@ public class TableProperty implements PropertyNames {
 
         // 创建属性配置
         for (MetaField field : meta.getFields()) {
-            viewProperties.addAll(TableFieldProperty.getViewProperties(view, field));
+            viewProperties.addAll(TableFieldProperty.getViewProperties(view, field, true));
+        }
+        // 创建引用Meta属性配置
+        for (MetaReference reference : meta.getReferences()) {
+            for (MetaField field : reference.getPkMeta().getFields()) {
+                viewProperties.addAll(TableFieldProperty.getViewProperties(view, field, false));
+            }
         }
         view.setViewProperties(viewProperties);
 
