@@ -334,4 +334,9 @@ public class DBDataSource implements DataSource {
         }
         return connection;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

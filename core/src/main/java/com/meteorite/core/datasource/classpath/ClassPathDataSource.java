@@ -82,4 +82,9 @@ public class ClassPathDataSource implements DataSource {
     public void save(Map<String, IValue> valueMap) throws Exception {
 
     }
+
+    @Override
+    public String toString() {
+        return loader.getNavTree().toString();
+    }
 }

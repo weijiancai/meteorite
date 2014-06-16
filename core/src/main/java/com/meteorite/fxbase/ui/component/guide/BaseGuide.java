@@ -1,5 +1,6 @@
 package com.meteorite.fxbase.ui.component.guide;
 
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.ICanInput;
 import com.meteorite.fxbase.ui.IValue;
@@ -22,6 +23,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
@@ -156,13 +158,13 @@ public abstract class BaseGuide extends BasePane {
 
     public abstract List<GuideModel> getModelList();
 
-    public abstract void doFinish(Map<String, String> param) throws FileNotFoundException, SQLException;
+    public abstract void doFinish(DataMap param) throws FileNotFoundException, SQLException;
 
-    public Map<String, String> getValueMap() {
-        Map<String, String> result = new HashMap<>();
+    public DataMap getValueMap() {
+        DataMap result = new DataMap();
         for (GuideModel model : modelList) {
             ICanInput value = (ICanInput) model.getContent();
-            result.put(value.getName(), value.getValueString());
+            result.put(value.getName(), value.getInputValue());
         }
 
         return result;

@@ -363,13 +363,13 @@ public class Meta {
         return result;
     }
 
-    public void toTxtFile(File file, Map<String, String> param) throws FileNotFoundException, SQLException {
+    public void toTxtFile(File file, DataMap param) throws FileNotFoundException, SQLException {
         query(QueryBuilder.create(this));
         List<DataMap> dataList = getDataList();
         if (dataList == null) {
             return;
         }
-        String[] colNames = param.get("colNames").split(",");
+        String[] colNames = param.getString("colNames").split(",");
         PrintWriter pw = new PrintWriter(file);
         for (DataMap map : dataList) {
             for (Map.Entry<String, Object> entry : map.entrySet()) {

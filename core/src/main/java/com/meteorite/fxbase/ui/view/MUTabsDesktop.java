@@ -19,6 +19,7 @@ import com.meteorite.fxbase.ui.IDesktop;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.search.MUSearchBox;
 import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
+import com.meteorite.fxbase.ui.meta.AddMetaGuide;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -151,11 +152,22 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
                 });
             }
         });
+
+        // 添加元数据
+        Button btnAddMeta = new Button("添加元数据");
+        btnAddMeta.setOnAction(new MuEventHandler<ActionEvent>() {
+            @Override
+            public void doHandler(ActionEvent event) throws Exception {
+                AddMetaGuide guide = new AddMetaGuide();
+                MUDialog.showCustomDialog(null, "添加元数据向导", guide, null);
+            }
+        });
+
+        toolBar.getItems().addAll(btnAddDs, btnAddMeta);
+
         Region region = new Region();
         HBox.setHgrow(region, Priority.ALWAYS);
-
         searchBox.setPrefWidth(200);
-        toolBar.getItems().addAll(btnAddDs);
 
         tree.setOnMouseClicked(new MuEventHandler<MouseEvent>() {
             @Override

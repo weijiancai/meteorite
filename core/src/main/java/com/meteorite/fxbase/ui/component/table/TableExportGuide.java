@@ -1,5 +1,6 @@
 package com.meteorite.fxbase.ui.component.table;
 
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.fxbase.ui.ValueConverter;
 import com.meteorite.fxbase.ui.component.form.MUCheckListView;
@@ -78,10 +79,10 @@ public class TableExportGuide extends BaseGuide {
     }
 
     @Override
-    public void doFinish(Map<String, String> param) throws FileNotFoundException, SQLException {
+    public void doFinish(DataMap param) throws FileNotFoundException, SQLException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("保存文件");
-        String fileType = param.get("fileType");
+        String fileType = param.getString("fileType");
         if ("文本文件".equals(fileType)) {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("文本文件", "*.txt"));
         }
