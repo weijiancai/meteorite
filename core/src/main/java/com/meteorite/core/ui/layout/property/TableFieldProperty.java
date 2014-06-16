@@ -185,11 +185,11 @@ public class TableFieldProperty extends BaseProperty {
         return sortNum;
     }
 
-    public static List<ViewProperty> getViewProperties(View view, MetaField field) {
+    public static List<ViewProperty> getViewProperties(View view, MetaField field, boolean isDisplay) {
         List<ViewProperty> viewProperties = new ArrayList<>();
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.NAME), field, field.getName()));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
-        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_DISPLAY), field, "true"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_DISPLAY), field, isDisplay ? "true" : "false"));
 
         DBColumn column = field.getColumn();
         int w = 80;
