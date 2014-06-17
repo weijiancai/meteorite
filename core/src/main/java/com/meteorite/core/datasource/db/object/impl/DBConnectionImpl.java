@@ -12,6 +12,7 @@ import com.meteorite.core.datasource.db.object.loader.MySqlLoader;
 import com.meteorite.core.datasource.db.object.loader.SqlServerLoader;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.sql.*;
@@ -25,6 +26,7 @@ import java.util.List;
  * @since  1.0.0
  */
 public class DBConnectionImpl implements DBConnection {
+    private static final Logger log = Logger.getLogger(DBConnectionImpl.class);
     private DBDataSource dataSource;
     private DBLoader loader;
     private List<DBSchema> schemas;
@@ -106,7 +108,7 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
-    public List<DataMap> getResultSet(String sql) throws Exception {
+    public List<DataMap> getResultSet(String sql) {
         List<DataMap> list = new ArrayList<>();
         Connection conn = null;
 
@@ -128,6 +130,11 @@ public class DBConnectionImpl implements DBConnection {
             }
             rs.close();
             stmt.close();
+        } catch (Exception e) {
+            log.info("SQL语句执行错误： ================================");
+            log.info(sql);
+            log.error(e.getMessage(), e);
+            e.printStackTrace();
         } finally {
             ConnectionUtil.closeConnection(conn);
         }

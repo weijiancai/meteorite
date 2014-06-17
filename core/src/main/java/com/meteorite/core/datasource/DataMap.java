@@ -35,6 +35,9 @@ public class DataMap extends HashMap<String,Object> {
      */
     @Override
     public Object put(String key, Object value) {
+        if (UString.isEmpty(key)) {
+            return null;
+        }
         return super.put(key.toLowerCase(), value);
     }
 

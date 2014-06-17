@@ -28,6 +28,7 @@ public class ClassPathLoader implements ILoader {
 
     private BaseNavTreeNode navTree;
     private Map<String, ResourceItem> nodeMap;
+    private String baseDir;
 
     private ClassPathLoader() {
         navTree = new BaseNavTreeNode();
@@ -59,13 +60,14 @@ public class ClassPathLoader implements ILoader {
             // 获取包的物理路径
             String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
             File root = new File(filePath);
-            String baseDir = root.getAbsolutePath();
+            baseDir = root.getAbsolutePath();
             // 以文件的方式扫描整个包下的文件 并添加到集合中
             loadByFile(baseDir, baseDir);
         } else if ("jar".equals(protocol)) {
             // 如果是jar包文件
             // 定义一个JarFile
             log.info("jar类型的扫描");
+            baseDir = url.getFile();
             JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
             // 从此jar包 得到一个枚举类
             Enumeration<JarEntry> entries = jar.entries();
@@ -148,5 +150,9 @@ public class ClassPathLoader implements ILoader {
 
     public ResourceItem getResource(String path) {
         return nodeMap.get(path);
+    }
+
+    public String getBaseDir() {
+        return baseDir;
     }
 }

@@ -108,7 +108,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBUser> loadUsers() throws Exception {
+    public List<DBUser> loadUsers() {
         List<DBUser> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(getUserSql());
         for (DataMap map : list) {
@@ -126,7 +126,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBObject> loadPrivileges() throws Exception {
+    public List<DBObject> loadPrivileges() {
         List<DBObject> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(getPrivilegesSql());
         for (DataMap map : list) {
@@ -143,7 +143,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBObject> loadCharsets() throws Exception {
+    public List<DBObject> loadCharsets() {
         List<DBObject> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(getCharsetsSql());
         for (DataMap map : list) {
@@ -160,7 +160,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBSchema> loadSchemas() throws Exception {
+    public List<DBSchema> loadSchemas() {
         List<DBSchema> result = new ArrayList<DBSchema>();
         List<DataMap> list = dbConn.getResultSet(getSchemaSql());
         for (DataMap map : list) {
@@ -230,7 +230,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBIndex> loadIndexes(DBSchema schema) throws Exception {
+    public List<DBIndex> loadIndexes(DBSchema schema) {
         List<DBIndex> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(String.format(getIndexesSql(), schema.getName()));
         Map<String, DBIndexImpl> indexMap = new HashMap<>();
@@ -265,7 +265,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBTrigger> loadTriggers(DBSchema schema) throws Exception {
+    public List<DBTrigger> loadTriggers(DBSchema schema) {
         List<DBTrigger> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(String.format(getTriggersSql(), schema.getName()));
 
@@ -288,7 +288,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBProcedure> loadProcedures(DBSchema schema) throws Exception {
+    public List<DBProcedure> loadProcedures(DBSchema schema) {
         List<DBProcedure> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(String.format(getProceduresSql(), schema.getName()));
 
@@ -304,7 +304,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBFunction> loadFunctions(DBSchema schema) throws Exception {
+    public List<DBFunction> loadFunctions(DBSchema schema) {
         List<DBFunction> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(String.format(getFunctionsSql(), schema.getName()));
 
@@ -319,7 +319,7 @@ public abstract class BaseDBLoader implements DBLoader {
         return result;
     }
 
-    public void loadParameters(DBSchema schema) throws Exception {
+    public void loadParameters(DBSchema schema) {
         List<DataMap> list = dbConn.getResultSet(String.format(getParametersSql(), schema.getName()));
         for (DataMap map : list) {
             String methodName = map.getString("METHOD_NAME");
@@ -372,7 +372,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBTable> loadTables(DBSchema schema) throws Exception {
+    public List<DBTable> loadTables(DBSchema schema) {
         List<DBTable> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(String.format(getTableSql(), schema.getName()));
         for (DataMap map : list) {
@@ -405,7 +405,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
 
     @Override
-    public List<DBView> loadViews(DBSchema schema) throws Exception {
+    public List<DBView> loadViews(DBSchema schema) {
         List<DBView> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(String.format(getViewSql(), schema.getName()));
         for (DataMap map : list) {
@@ -431,7 +431,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBColumn> loadColumns(DBDataset table) throws Exception {
+    public List<DBColumn> loadColumns(DBDataset table) {
         List<DBColumn> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(String.format(getColumnSql(), table.getSchema().getName(), table.getName()));
         for (DataMap map : list) {
@@ -455,7 +455,7 @@ public abstract class BaseDBLoader implements DBLoader {
         return result;
     }
 
-    public List<DBConstraint> loadConstraint(DBDataset dataset) throws Exception {
+    public List<DBConstraint> loadConstraint(DBDataset dataset) {
         DBSchemaImpl schema = (DBSchemaImpl) dataset.getSchema();
         List<DBConstraint> result = new ArrayList<>();
         List<DataMap> list = dbConn.getResultSet(String.format(getConstraintsSql(), dataset.getSchema().getName(), dataset.getName()));
@@ -473,7 +473,7 @@ public abstract class BaseDBLoader implements DBLoader {
         return result;
     }
 
-    public void loadFkConstraints(DBSchema schema) throws Exception {
+    public void loadFkConstraints(DBSchema schema) {
         List<DataMap> list = dbConn.getResultSet(String.format(getFKConstraintsColumnsSql(), schema.getName()));
         for (DataMap map : list) {
             String constraintName = map.getString("constraint_name");

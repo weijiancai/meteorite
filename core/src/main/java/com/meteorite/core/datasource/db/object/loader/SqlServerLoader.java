@@ -54,9 +54,9 @@ public class SqlServerLoader extends BaseDBLoader {
     protected String getTableSql() {
         return "select\n" +
                 "                name TABLE_NAME,\n" +
-                "                (select top 1 convert(varchar, value) from %1$s.sys.extended_properties where major_id = object_id) TABLE_COMMENT,\n" +
+                "                (select top 1 convert(varchar, value) from [%1$s].sys.extended_properties where major_id = object_id) TABLE_COMMENT,\n" +
                 "                'N' as IS_TEMPORARY\n" +
-                "            from  %s.sys.TABLES\n" +
+                "            from  [%s].sys.TABLES\n" +
                 "            order by name asc";
     }
 
@@ -67,7 +67,7 @@ public class SqlServerLoader extends BaseDBLoader {
                 "                null as VIEW_TYPE_OWNER,\n" +
                 "                null as VIEW_TYPE,\n" +
                 "                'N' as IS_SYSTEM_VIEW\n" +
-                "            from %s.INFORMATION_SCHEMA.views\n" +
+                "            from [%s].INFORMATION_SCHEMA.views\n" +
                 "            order by table_name asc";
     }
 
@@ -76,9 +76,9 @@ public class SqlServerLoader extends BaseDBLoader {
         return "select\n" +
                 "                '%2$s' as DATASET_NAME,\n" +
                 "                col.name as COLUMN_NAME,\n" +
-                "                (select top 1 convert(varchar, value) from %1$s.sys.extended_properties where major_id = col.object_id and minor_id = col.column_id) COLUMN_COMMENT,\n" +
+                "                (select top 1 convert(varchar, value) from [%1$s].sys.extended_properties where major_id = col.object_id and minor_id = col.column_id) COLUMN_COMMENT,\n" +
                 "                col.column_id as POSITION,\n" +
-                "                (select top 1 name from %1$s.sys.types where system_type_id = col.system_type_id) as DATA_TYPE_NAME,\n" +
+                "                (select top 1 name from [%1$s].sys.types where system_type_id = col.system_type_id) as DATA_TYPE_NAME,\n" +
                 "                null as DATA_TYPE_OWNER,\n" +
                 "                null as DATA_TYPE_PACKAGE,\n" +
                 "                col.max_length as DATA_LENGTH,\n" +
@@ -88,9 +88,9 @@ public class SqlServerLoader extends BaseDBLoader {
                 "                'N' as IS_HIDDEN,\n" +
                 "                'N' as IS_PRIMARY_KEY,\n" +
                 "                'N' as IS_FOREIGN_KEY\n" +
-                "            from %1$s.sys.columns col\n" +
+                "            from [%1$s].sys.columns col\n" +
                 "            where\n" +
-                "                col.object_id = (select object_id from %1$s.sys.tables where name='%2$s')\n" +
+                "                col.object_id = (select object_id from [%1$s].sys.tables where name='%2$s')\n" +
                 "            order by col.name asc";
     }
 
@@ -128,7 +128,7 @@ public class SqlServerLoader extends BaseDBLoader {
                 "                (case when is_unique = 0 then 'N' else 'Y' end) as IS_UNIQUE,\n" +
                 "                'Y' as IS_ASC,\n" +
                 "                (case when is_disabled = 0 then 'N' else 'Y' end) as IS_VALID\n" +
-                "            from %1$s.sys.indexes\n" +
+                "            from [%1$s].sys.indexes\n" +
                 "            where\n" +
                 "                name is not null\n" +
                 "            order by name asc";
@@ -137,7 +137,7 @@ public class SqlServerLoader extends BaseDBLoader {
     @Override
     protected String getTriggersSql() {
         return "select\n" +
-                "                (select top 1 name from %1$s.sys.tables where object_id = t.parent_id) as DATASET_NAME,\n" +
+                "                (select top 1 name from [%1$s].sys.tables where object_id = t.parent_id) as DATASET_NAME,\n" +
                 "                t.name TRIGGER_NAME,\n" +
                 "                '' as TRIGGER_TYPE,\n" +
                 "                '' as TRIGGERING_EVENT,\n" +
@@ -145,7 +145,7 @@ public class SqlServerLoader extends BaseDBLoader {
                 "                'Y' as IS_VALID,\n" +
                 "                'N' as IS_DEBUG,\n" +
                 "                'Y' as IS_FOR_EACH_ROW\n" +
-                "            from %1$s.sys.TRIGGERS t\n" +
+                "            from [%1$s].sys.TRIGGERS t\n" +
                 "            order by parent_id, name asc";
     }
 
@@ -156,7 +156,7 @@ public class SqlServerLoader extends BaseDBLoader {
                 "                'Y' as IS_VALID,\n" +
                 "                'N' as IS_DEBUG,\n" +
                 "                'N' as IS_DETERMINISTIC\n" +
-                "            from %1$s.INFORMATION_SCHEMA.ROUTINES\n" +
+                "            from [%1$s].INFORMATION_SCHEMA.ROUTINES\n" +
                 "            where\n" +
                 "                ROUTINE_CATALOG = '%1$s' and\n" +
                 "                ROUTINE_TYPE = 'PROCEDURE'\n" +
@@ -170,7 +170,7 @@ public class SqlServerLoader extends BaseDBLoader {
                 "                'Y' as IS_VALID,\n" +
                 "                'N' as IS_DEBUG,\n" +
                 "                'N' as IS_DETERMINISTIC\n" +
-                "            from %1$s.INFORMATION_SCHEMA.ROUTINES\n" +
+                "            from [%1$s].INFORMATION_SCHEMA.ROUTINES\n" +
                 "            where\n" +
                 "                ROUTINE_CATALOG = '%1$s' and\n" +
                 "                ROUTINE_TYPE = 'FUNCTION'\n" +
@@ -194,7 +194,7 @@ public class SqlServerLoader extends BaseDBLoader {
                 "                a.CHARACTER_MAXIMUM_LENGTH  as DATA_LENGTH,\n" +
                 "                a.NUMERIC_PRECISION as DATA_PRECISION,\n" +
                 "                a.NUMERIC_SCALE as DATA_SCALE\n" +
-                "            from %1$s.INFORMATION_SCHEMA.PARAMETERS a, %1$s.INFORMATION_SCHEMA.ROUTINES b\n" +
+                "            from [%1$s].INFORMATION_SCHEMA.PARAMETERS a, [%1$s].INFORMATION_SCHEMA.ROUTINES b\n" +
                 "            where\n" +
                 "                a.SPECIFIC_CATALOG = b.ROUTINE_CATALOG and\n" +
                 "                a.SPECIFIC_NAME = b.SPECIFIC_NAME and\n" +

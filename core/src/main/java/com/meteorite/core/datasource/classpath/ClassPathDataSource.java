@@ -85,6 +85,6 @@ public class ClassPathDataSource implements DataSource {
 
     @Override
     public String toString() {
-        return loader.getNavTree().toString();
+        return loader.getBaseDir();
     }
 }

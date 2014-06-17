@@ -23,9 +23,8 @@ public interface DBConnection {
      *
      * @param sql sql语句
      * @return 返回查询结果集
-     * @throws Exception
      */
-    List<DataMap> getResultSet(String sql) throws Exception;
+    List<DataMap> getResultSet(String sql);
 
     /**
      * 获得数据库加载器

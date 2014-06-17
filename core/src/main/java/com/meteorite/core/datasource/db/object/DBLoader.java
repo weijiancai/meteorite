@@ -11,25 +11,25 @@ import java.util.List;
 public interface DBLoader {
     void load() throws Exception;
 
-    List<DBUser> loadUsers() throws Exception;
+    List<DBUser> loadUsers();
 
-    List<DBObject> loadPrivileges() throws Exception;
+    List<DBObject> loadPrivileges();
 
-    List<DBObject> loadCharsets() throws Exception;
+    List<DBObject> loadCharsets();
 
-    List<DBSchema> loadSchemas() throws Exception;
+    List<DBSchema> loadSchemas();
 
-    List<DBIndex> loadIndexes(DBSchema schema) throws Exception;
+    List<DBIndex> loadIndexes(DBSchema schema);
 
-    List<DBTrigger> loadTriggers(DBSchema schema) throws Exception;
+    List<DBTrigger> loadTriggers(DBSchema schema);
 
-    List<DBProcedure> loadProcedures(DBSchema schema) throws Exception;
+    List<DBProcedure> loadProcedures(DBSchema schema);
 
-    List<DBFunction> loadFunctions(DBSchema schema) throws Exception;
+    List<DBFunction> loadFunctions(DBSchema schema);
 
-    List<DBTable> loadTables(DBSchema schema) throws Exception;
+    List<DBTable> loadTables(DBSchema schema);
 
-    List<DBView> loadViews(DBSchema schema) throws Exception;
+    List<DBView> loadViews(DBSchema schema);
 
-    List<DBColumn> loadColumns(DBDataset table) throws Exception;
+    List<DBColumn> loadColumns(DBDataset table);
 }
