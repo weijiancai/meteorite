@@ -41,6 +41,7 @@ public abstract class BaseGuide extends BasePane {
 
     private MUStackPane stackPane;
     private List<GuideModel> modelList;
+    private DataMap dataMap = new DataMap();
     private int curPage;
 
     /*protected BaseGuide(List<GuideModel> modelList) {
@@ -129,6 +130,13 @@ public abstract class BaseGuide extends BasePane {
             page = modelList.size();
         }
         curPage = page;
+        GuideModel curModel = modelList.get(page - 2 < 0 ? 0 : page - 2);
+        // 当前向导页是否OK
+        if(!curModel.isOk()) {
+            return;
+        }
+        // 下一个模型
+        curModel.doNext();
 
         if(modelList.size() == 1) {
             btnPrev.setDisable(true);
@@ -152,8 +160,11 @@ public abstract class BaseGuide extends BasePane {
             btnFinish.setDisable(false);
         }
 
+        // 打开下一页
+        GuideModel nextModel = modelList.get(page - 1);
+        nextModel.doOpen();
         stackPane.show(page - 1);
-        labelTitle.setText(modelList.get(page - 1).getTitle());
+        labelTitle.setText(nextModel.getTitle());
     }
 
     public abstract List<GuideModel> getModelList();
@@ -168,5 +179,9 @@ public abstract class BaseGuide extends BasePane {
         }
 
         return result;
+    }
+
+    public DataMap getDataMap() {
+        return dataMap;
     }
 }

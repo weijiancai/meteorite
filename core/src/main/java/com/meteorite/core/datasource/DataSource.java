@@ -76,4 +76,11 @@ public interface DataSource {
     ResourceItem getResource(String path);
 
     void save(Map<String, IValue> valueMap) throws Exception;
+
+    /**
+     * 是否可用
+     *
+     * @return 如果可以获得数据源连接，返回true，否则返回false
+     */
+    boolean isAvailable();
 }

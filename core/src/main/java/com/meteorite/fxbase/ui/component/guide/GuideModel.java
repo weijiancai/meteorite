@@ -8,9 +8,10 @@ import javafx.scene.Node;
  * @author wei_jc
  * @since 1.0.0
  */
-public class GuideModel {
+public abstract class GuideModel {
     private String title;
     private Node content;
+    private BaseGuide guide;
 
     public String getTitle() {
         return title;
@@ -27,4 +28,17 @@ public class GuideModel {
     public void setContent(Node content) {
         this.content = content;
     }
+
+    public BaseGuide getGuide() {
+        return guide;
+    }
+
+    public void setGuide(BaseGuide guide) {
+        this.guide = guide;
+    }
+
+    public abstract boolean isOk();
+
+    public abstract void doOpen();
+    public abstract void doNext();
 }

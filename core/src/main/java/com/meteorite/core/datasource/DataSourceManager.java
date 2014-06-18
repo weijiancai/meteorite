@@ -104,4 +104,20 @@ public class DataSourceManager {
     public static ClassPathDataSource getClassPathDataSource() {
         return (ClassPathDataSource) dataSourceMap.get("classpath");
     }
+
+    /**
+     * 获得可用的数据库数据源
+     *
+     * @return 返回可用的数据库数据源
+     * @since 1.0.0
+     */
+    public static List<DBDataSource> getAvailableDbDataSource() {
+        List<DBDataSource> result = new ArrayList<>();
+        for (DataSource ds : dataSourceMap.values()) {
+            if (ds instanceof DBDataSource && ds.isAvailable()) {
+                result.add((DBDataSource) ds);
+            }
+        }
+        return result;
+    }
 }

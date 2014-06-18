@@ -68,4 +68,9 @@ public class FileDataSource implements DataSource {
     public void save(Map<String, IValue> valueMap) throws Exception {
 
     }
+
+    @Override
+    public boolean isAvailable() {
+        return false;
+    }
 }

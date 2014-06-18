@@ -37,40 +37,9 @@ public class TableExportGuide extends BaseGuide {
     public void initPrep() {
         super.initPrep();
 
-        GuideModel selectColModel = new GuideModel();
-        selectColModel.setTitle("选择列");
-
-        List<TableFieldProperty> cols = new ArrayList<>();
-        for (TableFieldProperty field : table.getConfig().getFieldProperties()) {
-            cols.add(field);
-        }
-        MUCheckListView<TableFieldProperty> listView = new MUCheckListView<>(cols);
-        listView.setName("colNames");
-        listView.setValueConvert(new ValueConverter<TableFieldProperty>() {
-            @Override
-            public String toString(TableFieldProperty field) {
-                return field.getName();
-            }
-
-            @Override
-            public TableFieldProperty fromString(String string) {
-                return null;
-            }
-        });
-        // 默认选择所有
-        listView.selectAll();
-        selectColModel.setContent(listView);
-
         modelList = new ArrayList<>();
-        modelList.add(selectColModel);
-
-        GuideModel model = new GuideModel();
-        model.setTitle("选择文件类型");
-        MUListView<String> listView1 = new MUListView<>();
-        listView1.setName("fileType");
-        listView1.getItems().add("文本文件");
-        model.setContent(listView1);
-        modelList.add(model);
+        modelList.add(new ColSelectModel("选择列", this));
+        modelList.add(new FileTypeModel("选择文件类型", this));
     }
 
     @Override
@@ -89,6 +58,78 @@ public class TableExportGuide extends BaseGuide {
         File file = fileChooser.showSaveDialog(null);
         if (file != null) {
             table.getView().getMeta().toTxtFile(file, param);
+        }
+    }
+
+    class ColSelectModel extends GuideModel {
+        private MUCheckListView<TableFieldProperty> listView;
+
+        public ColSelectModel(String title, BaseGuide guide) {
+            this.setTitle(title);
+            this.setGuide(guide);
+
+            List<TableFieldProperty> cols = new ArrayList<>();
+            for (TableFieldProperty field : table.getConfig().getFieldProperties()) {
+                cols.add(field);
+            }
+            listView = new MUCheckListView<>(cols);
+            listView.setName("colNames");
+            listView.setValueConvert(new ValueConverter<TableFieldProperty>() {
+                @Override
+                public String toString(TableFieldProperty field) {
+                    return field.getName();
+                }
+
+                @Override
+                public TableFieldProperty fromString(String string) {
+                    return null;
+                }
+            });
+            // 默认选择所有
+            listView.selectAll();
+            this.setContent(listView);
+        }
+
+        @Override
+        public boolean isOk() {
+            return !listView.getSelectionModel().isEmpty();
+        }
+
+        @Override
+        public void doOpen() {
+
+        }
+
+        @Override
+        public void doNext() {
+
+        }
+    }
+
+    class FileTypeModel extends GuideModel {
+        public FileTypeModel(String title, BaseGuide guide) {
+            this.setTitle(title);
+            this.setGuide(guide);
+
+            MUListView<String> listView1 = new MUListView<>();
+            listView1.setName("fileType");
+            listView1.getItems().add("文本文件");
+            this.setContent(listView1);
+        }
+
+        @Override
+        public boolean isOk() {
+            return false;
+        }
+
+        @Override
+        public void doOpen() {
+
+        }
+
+        @Override
+        public void doNext() {
+
         }
     }
 }

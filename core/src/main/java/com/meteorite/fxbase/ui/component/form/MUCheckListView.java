@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import org.controlsfx.control.CheckListView;
@@ -34,8 +35,15 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
         this.init();
     }
 
+    public MUCheckListView() {
+        super();
+        this.init();
+    }
+
     public void init() {
-        listView.getItems().addAll(data);
+        if (data != null) {
+            listView.getItems().addAll(data);
+        }
         this.setCenter(listView);
 
         HBox box = new HBox(12);
@@ -63,6 +71,16 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
 
     public void selectAll() {
         listView.getCheckModel().selectAll();
+    }
+
+    public MultipleSelectionModel getSelectionModel() {
+        return listView.getCheckModel();
+    }
+
+    public void setItems(List<T> list) {
+        this.data = list;
+        listView.getItems().clear();
+        listView.getItems().addAll(list);
     }
 
     // ======================== ICanInput ================================

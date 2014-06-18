@@ -84,6 +84,11 @@ public class ClassPathDataSource implements DataSource {
     }
 
     @Override
+    public boolean isAvailable() {
+        return true;
+    }
+
+    @Override
     public String toString() {
         return loader.getBaseDir();
     }

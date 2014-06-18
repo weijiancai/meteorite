@@ -18,10 +18,12 @@ import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
+import org.apache.log4j.Logger;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,6 +44,8 @@ import java.util.Map;
 @XmlType(propOrder = {"databaseType", "driverClass", "url", "username", "password", "dbVersion", "filePath"})
 @MetaElement(displayName = "数据库数据源")
 public class DBDataSource implements DataSource {
+    private static final Logger log = Logger.getLogger(DBDataSource.class);
+
     public static final String DRIVER_CLASS = "driverClass";
     public static final String URL = "url";
     public static final String USER_NAME = "username";
@@ -57,6 +61,7 @@ public class DBDataSource implements DataSource {
     private Meta properties;
     private DBConnection connection;
     private DBObjectImpl navTree;
+    private boolean isAvailable;
 
     public DBDataSource() {
         initProperties();
@@ -196,11 +201,16 @@ public class DBDataSource implements DataSource {
 
     @Override
     public QueryResult<DataMap> retrieve(QueryBuilder builder, int page, int rows) throws SQLException {
+        Meta meta = builder.getMeta();
         DBDataset table = builder.getMeta().getDbTable();
-        if (table.getDataSource().getDatabaseType() == DatabaseType.SQLSERVER) {
+        /*if (table.getDataSource().getDatabaseType() == DatabaseType.SQLSERVER) {
             builder.sql().from(table.getSchema().getName() + ".dbo." + table.getName());
         } else {
             builder.sql().from(table.getSchema().getName() + "." + table.getName());
+        }*/
+        builder.sql().from(table.getFullName());
+        for (MetaReference ref : meta.getReferences()) {
+            builder.sql().join(ref.getFkMeta().getDbTable().getFullName() );
         }
 
         QueryResult<DataMap> queryResult = new QueryResult<>();
@@ -258,6 +268,16 @@ public class DBDataSource implements DataSource {
         } finally {
             template.close();
         }
+    }
+
+    @Override
+    public boolean isAvailable() {
+        try {
+            return getDbConnection().isAvailable();
+        } catch (Exception e) {
+            log.error("获得数据库连接失败！", e);
+        }
+        return false;
     }
 
     @Override
