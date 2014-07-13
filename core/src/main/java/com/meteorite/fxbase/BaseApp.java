@@ -24,6 +24,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * JavaFX 主应用程序
@@ -47,7 +48,7 @@ public abstract class BaseApp extends Application {
         System.setProperty("logs_dir", SystemConfig.DIR_LOG.getAbsolutePath());
         try {
             PropertyConfigurator.configure(UIO.getInputStream("/log4j.properties", UIO.FROM.CP));
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
+import com.meteorite.core.util.UUIDUtil;
 
 import java.util.HashMap;
 
@@ -14,6 +15,34 @@ import java.util.HashMap;
  * @since 1.0.0
  */
 public class DataMap extends HashMap<String,Object> {
+    /**
+     * 状态
+     */
+    public static enum STATUS {
+        NEW, // 新增
+        MODIFY, // 修改
+        NOT_MODIFY // 未修改
+    }
+
+    private STATUS status = STATUS.NOT_MODIFY;
+    private String uid; // 标识此DataMap的唯一值
+
+    public DataMap() {
+        uid = UUIDUtil.getUUID();
+    }
+
+    public STATUS getStatus() {
+        return status;
+    }
+
+    public void setStatus(STATUS status) {
+        this.status = status;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
     /**
      * 获得key对应的字符串值
      *

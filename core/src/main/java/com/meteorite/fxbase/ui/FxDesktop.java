@@ -109,6 +109,11 @@ public class FxDesktop extends BorderPane implements IDesktop {
         return this;
     }
 
+    @Override
+    public MUTree getNavTree() {
+        return null;
+    }
+
     /*public void showDialog(Dialog dialog) {
         if (workbench.getChildren().contains(dialog)) {
             return;

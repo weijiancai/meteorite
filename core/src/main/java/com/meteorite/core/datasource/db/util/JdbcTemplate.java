@@ -272,7 +272,7 @@ public class JdbcTemplate {
     }
 
     public void save(IPDB po) throws Exception {
-        Map<String, Map<String, Object>> map = po.getPDBMap();
+        Map<String, ? extends Map<String, Object>> map = po.getPDBMap();
         for (String table : map.keySet()) {
             save(map.get(table), table);
         }

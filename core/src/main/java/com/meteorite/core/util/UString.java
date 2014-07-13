@@ -60,6 +60,9 @@ public class UString {
      */
     public static String tableNameToClassName(String tableName) {
         tableName = tableName.toLowerCase();
+        if (tableName.startsWith("sys_db_")) {
+            tableName = tableName.substring(7);
+        }
         StringBuilder result = new StringBuilder();
         int i = 0;
         for (String str : tableName.split("_")) {

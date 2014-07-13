@@ -9,8 +9,11 @@ import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaManager;
+import com.meteorite.core.meta.action.MUAction;
+import com.meteorite.core.meta.action.MUActionConfig;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.parser.mobile.MobileNumberAction;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.ui.layout.LayoutManager;
@@ -75,6 +78,9 @@ public class SystemManager {
         MetaManager.load();
         // 加载视图
         ViewManager.load();
+        // 注册Action
+//        MUActionConfig.getInstance().addAction(new MUAction(MetaManager.getMeta("MobileNumber"), "downloadMobileNumber", "下载手机号", MobileNumberAction.class, "fetchMobileNumber"));
+        MetaManager.getMeta("MobileNumber").addAction(new MUAction(MetaManager.getMeta("MobileNumber"), "downloadMobileNumber", "下载手机号", MobileNumberAction.class, "fetchMobileNumber"));
     }
 
     private static void loadProjectConfig() throws Exception {

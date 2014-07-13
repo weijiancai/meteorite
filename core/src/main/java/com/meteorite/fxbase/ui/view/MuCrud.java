@@ -2,6 +2,7 @@ package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.db.QueryResult;
+import com.meteorite.core.meta.action.MUAction;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.layout.property.CrudProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
@@ -23,6 +24,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+
+import java.lang.reflect.Method;
 
 /**
  * MetaUI CRUD视图
@@ -129,6 +132,20 @@ public class MuCrud extends StackPane {
 
         queryForm = new MUForm(new FormProperty(crudProperty.getQueryView()));
         box.getChildren().add(queryForm);
+
+        // Actions
+        for (final MUAction action : crudProperty.getMeta().getActionList()) {
+            Button button = new Button(action.getDisplayName());
+            button.setOnAction(new MuEventHandler<ActionEvent>() {
+                @Override
+                public void doHandler(ActionEvent event) throws Exception {
+                    Class<?> clazz = action.getActionClass();
+                    Method method = clazz.getMethod(action.getMethodName());
+                    method.invoke(clazz.newInstance());
+                }
+            });
+            toolBar.getItems().add(button);
+        }
 
         return box;
     }

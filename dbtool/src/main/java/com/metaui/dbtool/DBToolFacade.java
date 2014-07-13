@@ -1,14 +1,16 @@
-package com.meteorite.fxbase;
+package com.metaui.dbtool;
 
 import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.DataSourceManager;
-import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.facade.impl.BaseFacade;
-import com.meteorite.core.util.HSqlDBServer;
-import com.meteorite.core.util.UFile;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IDesktop;
 import com.meteorite.fxbase.ui.view.MUTabsDesktop;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeView;
+import javafx.util.Callback;
 
 /**
  * 数据库工具Facade
@@ -24,6 +26,7 @@ public class DBToolFacade extends BaseFacade {
     private static DBToolFacade instance;
 
     private ProjectConfig projectConfig;
+    private MUTabsDesktop desktop;
 
     private DBToolFacade() {
 
@@ -56,6 +59,15 @@ public class DBToolFacade extends BaseFacade {
 
     @Override
     public IDesktop getDesktop() throws Exception {
-        return new MUTabsDesktop(DataSourceManager.getNavTree());
+        if (desktop == null) {
+            desktop = new MUTabsDesktop(DataSourceManager.getNavTree());
+            desktop.getNavTree().setCellFactory(new Callback<TreeView<ITreeNode>, TreeCell<ITreeNode>>() {
+                @Override
+                public TreeCell<ITreeNode> call(TreeView<ITreeNode> param) {
+                    return new DBNavTreeCell();
+                }
+            });
+        }
+        return desktop;
     }
 }

@@ -2,7 +2,11 @@ package com.meteorite.core.util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * IO工具类
@@ -19,7 +23,11 @@ public class UIO {
         /**
          * FileSystem，文件系统
          */
-        FS
+        FS,
+        /**
+         * URL, HTTP URL
+         */
+        URL
     }
 
     /**
@@ -30,11 +38,14 @@ public class UIO {
      * @return 返回InputStream
      * @throws FileNotFoundException
      */
-    public static InputStream getInputStream(String path, FROM from) throws FileNotFoundException {
+    public static InputStream getInputStream(String path, FROM from) throws IOException {
         if(FROM.CP == from) {
             return UIO.class.getResourceAsStream(path);
         } else if (FROM.FS == from) {
             return new FileInputStream(path);
+        } else if (FROM.URL == from) {
+            HttpURLConnection httpConn = (HttpURLConnection) new URL(path).openConnection();
+            return httpConn.getInputStream();
         }
 
         return null;

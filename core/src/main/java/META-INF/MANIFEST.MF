@@ -4,5 +4,5 @@ Class-Path: jsoup-1.7.2.jar httpclient-4.2.6.jar commons-logging-1.1.1
  let-api-3.0-alpha-1.jar mysql-connector-java-5.1.27.jar commons-codec
  -1.8.jar sqljdbc4.jar log4j-1.2.17.jar mysql-connector-java-5.1.27.ja
  r hsqldb-2.3.0.jar
-Main-Class: com.meteorite.fxbase.DBToolApp
+Main-Class: com.metaui.dbtool.DBToolApp
 

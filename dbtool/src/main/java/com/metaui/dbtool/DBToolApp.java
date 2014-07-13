@@ -1,6 +1,7 @@
-package com.meteorite.fxbase;
+package com.metaui.dbtool;
 
 import com.meteorite.core.facade.IFacade;
+import com.meteorite.fxbase.BaseApp;
 
 /**
  * 数据库工具App

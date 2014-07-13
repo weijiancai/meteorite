@@ -1,0 +1,41 @@
+apply plugin: "java"
+
+version = '1.0'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':core')
+    testCompile 'junit:junit:4.+'
+
+    compile group: 'org.hsqldb', name: 'hsqldb', version: '2.3.0'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
+    compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.metaui.dbtool.DBToolApp'
+    }
+}
+
+sourceSets {
+    /*main {
+        output.resourcesDir = "${project.rootDir}/core/src/main/resources/dbversion/"
+    }*/
+}
+
+task hello(type: Copy) {
+    println 'hello ...............'
+    from '${project.rootDir}/core/src/main/resources'
+    into 'resourcesDir'
+}
+
+
+ext {
+    // 资源文件名称
+    resourceList =["**/*.sql"]
+}

@@ -14,5 +14,5 @@ public interface IPDB {
      *
      * @return 返回持久化数据Map
      */
-    Map<String, Map<String, Object>> getPDBMap();
+    Map<String, ? extends Map<String, Object>> getPDBMap();
 }

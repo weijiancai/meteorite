@@ -9,6 +9,7 @@ import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.meta.MetaManager;
+import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.model.View;
@@ -227,7 +228,9 @@ public class DBObjectImpl implements DBObject {
             if (view == null) {
                 JdbcTemplate template = new JdbcTemplate();
                 try {
-                    MetaManager.initMetaFromTable(template, (DBDataset) this);
+                    Meta meta = MetaManager.initMetaFromTable(template, (DBDataset) this);
+                    // 创建视图
+                    ViewManager.createViews(meta, template);
                     template.commit();
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -5,7 +5,6 @@ import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
-import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.dict.FormType;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
@@ -15,16 +14,12 @@ import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
-import com.meteorite.fxbase.ui.IDesktop;
-import com.meteorite.fxbase.ui.IValue;
+import com.meteorite.fxbase.ui.*;
 import com.meteorite.fxbase.ui.component.search.MUSearchBox;
 import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.meta.AddMetaGuide;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -39,7 +34,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Popup;
-import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 import org.controlsfx.control.MasterDetailPane;
 
@@ -66,6 +60,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
 
     public MUTabsDesktop(INavTreeNode navTree) {
         this.navTree = navTree;
+        tree = new MUTree(navTree);
         /*TreeView<File> fileTree = new TreeView<>();
         fileTree.setRoot(new FileTreeItem(new File("/")));
         this.setRight(fileTree);*/
@@ -74,7 +69,6 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     public void initUI() {
         toolBar = new ToolBar();
         searchBox = new MUSearchBox(this);
-        tree = new MUTree(navTree);
         tabPane = new MUTabPane();
         popup.getContent().add(searchBox);
 
@@ -254,5 +248,10 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     @Override
     public Parent getDesktop() {
         return this;
+    }
+
+    @Override
+    public MUTree getNavTree() {
+        return tree;
     }
 }

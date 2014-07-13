@@ -1,11 +1,8 @@
 package com.meteorite.fxbase.ui.component.form;
 
-import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.ICanInput;
-import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.ValueConverter;
-import javafx.beans.property.StringProperty;
 import javafx.scene.control.ListView;
 
 import java.util.ArrayList;

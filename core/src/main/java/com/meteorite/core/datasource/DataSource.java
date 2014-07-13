@@ -1,9 +1,9 @@
 package com.meteorite.core.datasource;
 
 import com.meteorite.core.datasource.db.QueryResult;
+import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
-import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
@@ -76,6 +76,8 @@ public interface DataSource {
     ResourceItem getResource(String path);
 
     void save(Map<String, IValue> valueMap) throws Exception;
+
+    void save(IPDB pdb) throws Exception;
 
     /**
      * 是否可用

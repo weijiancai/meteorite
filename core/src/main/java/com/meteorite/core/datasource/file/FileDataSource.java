@@ -2,6 +2,7 @@ package com.meteorite.core.datasource.file;
 
 import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.db.QueryResult;
+import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
@@ -66,6 +67,11 @@ public class FileDataSource implements DataSource {
 
     @Override
     public void save(Map<String, IValue> valueMap) throws Exception {
+
+    }
+
+    @Override
+    public void save(IPDB pdb) throws Exception {
 
     }
 

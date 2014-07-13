@@ -343,7 +343,7 @@ public class MetaManager {
 
     private static int metaSortNum = 10;
 
-    public static void initMetaFromTable(JdbcTemplate template, DBDataset table) throws Exception {
+    public static Meta initMetaFromTable(JdbcTemplate template, DBDataset table) throws Exception {
         // 将表定义信息插入到元数据信息中
         Meta meta = new Meta();
         meta.setName(UString.tableNameToClassName(table.getName()));
@@ -400,5 +400,7 @@ public class MetaManager {
             fieldIdMap.put(field.getId(), field);
         }
         meta.setFields(fieldList);
+
+        return meta;
     }
 }

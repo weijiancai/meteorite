@@ -20,11 +20,13 @@ public class CrudProperty implements PropertyNames {
     private View formView;
     private View tableView;
     private View queryView;
+    private Meta meta;
 
     public CrudProperty(View view) {
         formView = ViewManager.getViewById(view.getStringProperty(CRUD.FORM));
         tableView = ViewManager.getViewById(view.getStringProperty(CRUD.TABLE));
         queryView = ViewManager.getViewById(view.getStringProperty(CRUD.QUERY));
+        meta = view.getMeta();
     }
 
     public View getFormView() {
@@ -49,6 +51,10 @@ public class CrudProperty implements PropertyNames {
 
     public void setQueryView(View queryView) {
         this.queryView = queryView;
+    }
+
+    public Meta getMeta() {
+        return meta;
     }
 
     public static View createCrudView(Meta meta, View formView, View tableView, View queryView) {

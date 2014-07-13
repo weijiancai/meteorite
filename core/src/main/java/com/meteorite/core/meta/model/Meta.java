@@ -4,17 +4,17 @@ import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.db.object.DBColumn;
-import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.DBDataset;
+import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.exception.MessageException;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.meta.action.MUAction;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UObject;
-import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import javafx.beans.property.IntegerProperty;
@@ -59,6 +59,9 @@ public class Meta {
     private IntegerProperty totalRows = new SimpleIntegerProperty(0); // 总行数
     private IntegerProperty pageCount = new SimpleIntegerProperty(0); // 总页数
     private IntegerProperty pageRows = new SimpleIntegerProperty(15); // 每页行数
+
+    private List<DataMap> insertCache = new ArrayList<>(); // 新增缓存
+    private List<MUAction> actionList = new ArrayList<>(); // Action List
 
     public Meta() {}
 
@@ -349,7 +352,7 @@ public class Meta {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(java.lang.Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -398,6 +401,26 @@ public class Meta {
     public void save(Map<String, IValue> valueMap) throws Exception {
         dataSource.save(valueMap);
     }
+    
+    public void insertRow(DataMap dataMap) {
+        insertCache.add(dataMap);
+    }
+    
+    public void save() throws Exception {
+        for (final DataMap dataMap : insertCache) {
+            dataSource.save(new IPDB() {
+                @Override
+                public Map<String, Map<String, Object>> getPDBMap() {
+                    Map<String, Map<String, Object>> map = new HashMap<>();
+                    map.put(getDbTable().getName(), dataMap);
+                    return map;
+                }
+            });
+        }
+
+
+        insertCache.clear();
+    }
 
     public MetaField getFieldByName(String fieldName) {
         for (MetaField field : fields) {
@@ -406,5 +429,13 @@ public class Meta {
             }
         }
         return null;
+    }
+
+    public void addAction(MUAction action) {
+        actionList.add(action);
+    }
+
+    public List<MUAction> getActionList() {
+        return actionList;
     }
 }

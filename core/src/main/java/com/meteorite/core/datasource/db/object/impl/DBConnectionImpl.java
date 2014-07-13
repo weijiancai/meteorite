@@ -177,16 +177,16 @@ public class DBConnectionImpl implements DBConnection {
                 if(UString.isEmpty(sql)) {
                     continue;
                 }
-                System.out.println("SQL = " + sql);
+                log.info("SQL = " + sql);
                 Statement stmt = conn.createStatement();
                 stmt.execute(sql);
             }
             conn.commit();
         } catch (Exception e) {
             if (conn != null) {
-                conn.commit();
+                conn.rollback();
             }
-            e.printStackTrace();
+            log.error("这行升级Sql脚本错误：", e);
         } finally {
             if (conn != null) {
                 conn.close();

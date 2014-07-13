@@ -5,12 +5,20 @@ repositories {
     mavenCentral()
 }
 
-/*
+allprojects {
+    apply plugin: 'idea'
+}
+
 subprojects {
     apply plugin: 'java'
 
     repositories {
         mavenCentral()
+    }
+
+    ext {
+        // 资源文件名称
+        resourceList =["**/*.sql"]
     }
 
     dependencies {
@@ -23,7 +31,19 @@ subprojects {
     jar {
         manifest.attributes provider: 'gradle'
     }
-}*/
+}
+
+task replace(type: Sync) {
+    def configHome = "${project.rootDir}/core/src/main/resources/dbversion/"
+
+    from(configHome) {
+        include '**/*.sql'
+        include '**/*.xml'
+//        filter org.apache.tools.ant.filters.ReplaceTokens, tokens: loadGroovyConfig()
+    }
+
+    into "${buildDir}/resources/main"
+}
 
 // top-level build task that depends on the underlying tasks
 

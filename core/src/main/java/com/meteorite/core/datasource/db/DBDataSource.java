@@ -7,7 +7,6 @@ import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
-import com.meteorite.core.datasource.db.object.impl.DBObjectList;
 import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
@@ -20,7 +19,6 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.model.INavTreeNode;
-import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import org.apache.log4j.Logger;
@@ -203,14 +201,19 @@ public class DBDataSource implements DataSource {
     public QueryResult<DataMap> retrieve(QueryBuilder builder, int page, int rows) throws SQLException {
         Meta meta = builder.getMeta();
         DBDataset table = builder.getMeta().getDbTable();
-        /*if (table.getDataSource().getDatabaseType() == DatabaseType.SQLSERVER) {
+        if (table.getDataSource().getDatabaseType() == DatabaseType.SQLSERVER) {
             builder.sql().from(table.getSchema().getName() + ".dbo." + table.getName());
         } else {
             builder.sql().from(table.getSchema().getName() + "." + table.getName());
-        }*/
-        builder.sql().from(table.getFullName());
+        }
+//        builder.sql().from(table.getFullName());
         for (MetaReference ref : meta.getReferences()) {
-            builder.sql().join(ref.getFkMeta().getDbTable().getFullName() );
+            String fkTableName = ref.getFkMeta().getDbTable().getName();
+            String fkField = ref.getFkMetaField().getColumn().getName();
+            String pkTableName = ref.getPkMeta().getDbTable().getName();
+            String pkField = ref.getPkMetaField().getColumn().getName();
+            String join = String.format("%s on %s=%s", pkTableName, fkTableName + "." + fkField, pkTableName + "." + pkField);
+            builder.sql().join(join);
         }
 
         QueryResult<DataMap> queryResult = new QueryResult<>();
@@ -240,7 +243,6 @@ public class DBDataSource implements DataSource {
 
     @Override
     public void save(final Map<String, IValue> valueMap) throws Exception {
-        JdbcTemplate template = new JdbcTemplate(this);
         IPDB pdb = new IPDB() {
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
@@ -262,6 +264,12 @@ public class DBDataSource implements DataSource {
             }
         };
 
+        save(pdb);
+    }
+
+    @Override
+    public void save(IPDB pdb) throws Exception {
+        JdbcTemplate template = new JdbcTemplate(this);
         try {
             template.save(pdb);
             template.commit();
@@ -269,6 +277,7 @@ public class DBDataSource implements DataSource {
             template.close();
         }
     }
+
 
     @Override
     public boolean isAvailable() {
@@ -335,7 +344,7 @@ public class DBDataSource implements DataSource {
         DBConnection conn = getDbConnection();
         if (DBUtil.existsTable(conn, SystemConfig.SYS_DB_VERSION_TABLE_NAME)) {
             List<DataMap> result = conn.getResultSet(sql);
-            if(result.size() > 0) {
+            if (result.size() > 0) {
                 return result.get(0).getString("max_db_version");
             }
         }

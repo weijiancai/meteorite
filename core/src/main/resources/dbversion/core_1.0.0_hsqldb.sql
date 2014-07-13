@@ -12,6 +12,7 @@ drop table if exists sys_layout;
 drop table if exists sys_view;
 drop table if exists sys_meta_field;
 drop table if exists sys_meta;
+drop table if exists sys_db_mobile_number;
 
 
 /*==============================================================*/
@@ -302,6 +303,30 @@ comment on column sys_meta_reference.pk_meta_id is '主元数据ID';
 comment on column sys_meta_reference.pk_meta_field_id is '主元数据列ID';
 comment on column sys_meta_reference.fk_meta_id is '引用元数据ID';
 comment on column sys_meta_reference.fk_meta_field_id is '引用元数据列ID';
+
+
+/*==============================================================*/
+/* Table: sys_db_mobile_number                                  */
+/*==============================================================*/
+create table sys_db_mobile_number
+(
+   code                 char(11) not null,
+   province             varchar(64),
+   city                 varchar(64),
+   card_type            varchar(64),
+   operators            varchar(64),
+   code_segment         varchar(11),
+   primary key (code)
+);
+
+comment on table sys_db_mobile_number is '手机号码';
+comment on column sys_db_mobile_number.code is '手机号码';
+comment on column sys_db_mobile_number.province is '省';
+comment on column sys_db_mobile_number.city is '城市';
+comment on column sys_db_mobile_number.card_type is '手机卡类型';
+comment on column sys_db_mobile_number.operators is '运营商';
+comment on column sys_db_mobile_number.code_segment is '号段';
+
 
 -- 约束
 alter table sys_dz_code add constraint FK_code_categoryId foreign key (category_id)
