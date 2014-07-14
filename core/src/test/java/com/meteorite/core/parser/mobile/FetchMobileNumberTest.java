@@ -8,7 +8,7 @@ public class FetchMobileNumberTest {
 
     @Test
     public void testFetch() throws Exception {
-        FetchMobileNumber fetchMobileNumber = new FetchMobileNumber();
+        FetchMobileNumber fetchMobileNumber = new FetchMobileNumber(null);
         fetchMobileNumber.fetch();
     }
 }

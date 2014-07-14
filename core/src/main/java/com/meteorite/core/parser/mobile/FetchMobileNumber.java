@@ -1,5 +1,6 @@
 package com.meteorite.core.parser.mobile;
 
+import com.meteorite.core.util.Callback;
 import com.meteorite.core.util.UString;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -24,14 +25,17 @@ public class FetchMobileNumber {
     public static final String BASE_URL = "http://www.jihaoba.com/tools/?com=haoduan";
 
     private Map<String, String> cookies;
+    private Callback<List<MobileNumber>> callback;
 
-    public List<MobileNumber> fetch() throws IOException {
-        List<MobileNumber> result = new ArrayList<>();
-        getProvinceUrl();
-        return result;
+    public FetchMobileNumber(Callback<List<MobileNumber>> callback) {
+        this.callback = callback;
     }
 
-    private void getProvinceUrl() throws IOException {
+    public void fetch() throws Exception {
+        getProvinceUrl();
+    }
+
+    private void getProvinceUrl() throws Exception {
         Connection conn = Jsoup.connect("http://www.jihaoba.com/").userAgent(USER_AGENT);
         Connection.Response response = conn.execute();
         cookies = response.cookies();
@@ -50,7 +54,7 @@ public class FetchMobileNumber {
         }
     }
 
-    private void getCityUrl(String url, String province) throws IOException {
+    private void getCityUrl(String url, String province) throws Exception {
         Document doc = Jsoup.connect(url).userAgent(USER_AGENT).cookies(cookies).timeout(TIME_OUT).get();
         Elements elements = doc.select("div#right div.right1 div.nr div.nr1 a");
         for (Element element : elements) {
@@ -63,7 +67,7 @@ public class FetchMobileNumber {
         }
     }
 
-    private void getCardTypeUrl(String url, String province, String city) throws IOException {
+    private void getCardTypeUrl(String url, String province, String city) throws Exception {
         Document doc = Jsoup.connect(url).userAgent(USER_AGENT).cookies(cookies).timeout(TIME_OUT).get();
         Elements elements = doc.select("div#right div.right1 div.nr div.nr1 a");
         for (Element element : elements) {
@@ -76,7 +80,7 @@ public class FetchMobileNumber {
         }
     }
 
-    private void getCodeSegmentUrl(String url, String province, String city) throws IOException {
+    private void getCodeSegmentUrl(String url, String province, String city) throws Exception {
         Document doc = Jsoup.connect(url).userAgent(USER_AGENT).cookies(cookies).timeout(TIME_OUT).get();
         Elements elements = doc.select("div#right div.right3 div.nr1 a");
         for (Element element : elements) {
@@ -87,7 +91,7 @@ public class FetchMobileNumber {
         }
     }
 
-    private void getCodeUrl(String url, String province, String city, String codeSegment) throws IOException {
+    private void getCodeUrl(String url, String province, String city, String codeSegment) throws Exception {
         Document doc = Jsoup.connect(url).userAgent(USER_AGENT).cookies(cookies).timeout(TIME_OUT).get();
         Elements liElement = doc.select("div#right div.right22 div.nr3 div.left li");
         String cardType = liElement.get(2).select("span").get(0).text();
@@ -96,10 +100,15 @@ public class FetchMobileNumber {
         String codes = doc.select("div#right div.right22 div.nr1 div.fleft textarea").get(0).text();
         /*System.out.println(cardType + " --> " + operator);
         System.out.println(codes);*/
+        List<MobileNumber> list = new ArrayList<>();
         for (String code : codes.split("\n")) {
             MobileNumber mobileNumber = new MobileNumber(code, province, city, cardType, operator, codeSegment);
             System.out.println(mobileNumber);
+            list.add(mobileNumber);
         }
 
+        if (callback != null) {
+            callback.call(list);
+        }
     }
 }
