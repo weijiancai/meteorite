@@ -188,6 +188,11 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
+    public INavTreeNode getNavTree(String parent) throws Exception {
+        return null;
+    }
+
+    @Override
     public void load() throws Exception {
         if (navTree == null) {
             navTree = new DBObjectImpl();

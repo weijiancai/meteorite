@@ -65,6 +65,15 @@ public interface DataSource {
     INavTreeNode getNavTree() throws Exception;
 
     /**
+     * 获得某个节点下的导航树
+     *
+     * @param parent 父节点
+     * @return 返回导航树
+     * @throws Exception
+     */
+    INavTreeNode getNavTree(String parent) throws Exception;
+
+    /**
      * 加载数据源
      *
      * @throws Exception

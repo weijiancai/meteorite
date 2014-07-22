@@ -51,6 +51,11 @@ public class FileDataSource implements DataSource {
     }
 
     @Override
+    public INavTreeNode getNavTree(String parent) throws Exception {
+        return null;
+    }
+
+    @Override
     public void load() throws Exception {
 
     }

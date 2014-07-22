@@ -1,9 +1,13 @@
 package com.meteorite.core.util;
 
+import com.meteorite.core.datasource.classpath.ClassPathDataSource;
+import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 /**
  * 文件工具类
@@ -169,5 +173,32 @@ public class UFile {
         write(is, fos);
         fos.close();
         is.close();
+    }
+
+    public static void copyTreeFromClassPath(String source, final File target) {
+        ClassPathDataSource cp = ClassPathDataSource.getInstance();
+        try {
+            INavTreeNode tree = cp.getNavTree(source);
+            iteratorTree(tree, new Callback<ITreeNode>() {
+                @Override
+                public void call(ITreeNode node, Object... obj) throws Exception {
+                    InputStream is = UIO.getInputStream(node.getId(), UIO.FROM.CP);
+                    write(is, new FileOutputStream(new File(target, node.getId())));
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void iteratorTree(ITreeNode node, Callback<ITreeNode> callback) throws Exception {
+        callback.call(node);
+        List<ITreeNode> children = node.getChildren();
+        if (children != null && children.size() > 0) {
+            for (ITreeNode treeNode : children) {
+                iteratorTree(treeNode, callback);
+            }
+        }
     }
 }

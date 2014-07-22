@@ -2,6 +2,8 @@ package com.meteorite.core.util;
 
 import org.junit.Test;
 
+import java.io.File;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -15,5 +17,9 @@ public class UFileTest {
         String expect = "file.txt";
         String actual = UFile.getFileExt(expect);
         assertThat(actual, equalTo("txt"));
+    }
+
+    @Test public void testCopyTree() {
+        UFile.copyTreeFromClassPath("com", new File("D:\\fetch\\ectons"));
     }
 }

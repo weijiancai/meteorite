@@ -10,9 +10,7 @@ import java.io.File;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -142,6 +140,17 @@ public class ClassPathLoader implements ILoader {
                 }
             }
         }
+    }
+
+    private List<String> splitString(String str, String splitChar) {
+        List<String> result = new ArrayList<>();
+        String[] strs = str.split(splitChar);
+        for (int i = 0; i < strs.length; i++) {
+            for(int j = 0; j < i; j++) {
+
+            }
+        }
+        return result;
     }
 
     public BaseNavTreeNode getNavTree() {

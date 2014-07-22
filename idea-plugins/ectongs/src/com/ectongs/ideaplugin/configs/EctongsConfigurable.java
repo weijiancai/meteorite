@@ -1,11 +1,13 @@
 package com.ectongs.ideaplugin.configs;
 
+import com.ectongs.ideaplugin.EctongsApplicationPlugin;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.io.File;
 
 /**
  * @author wei_jc
@@ -58,5 +60,15 @@ public class EctongsConfigurable implements Configurable {
     @Override
     public void disposeUIResources() {
 
+    }
+
+    private void copyJsdocTemplate() {
+        File tmpDir = new File(EctongsApplicationPlugin.BASE_DIR, "jsdoc-template");
+        if(!tmpDir.exists()) {
+            tmpDir.mkdirs();
+
+            // 复制模板
+
+        }
     }
 }
