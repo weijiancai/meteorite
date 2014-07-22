@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -68,5 +69,21 @@ public class UStringTest {
         assertThat(UString.getLastName(str, "/"), equalTo("config"));
         str = "com/meteorite/core/config/ProjectConfig.class";
         assertThat(UString.getLastName(str, "/"), equalTo("ProjectConfig.class"));
+    }
+
+    @Test public void testSplitString() {
+        String str = "com/metaui/core/ui/Test.java";
+        List<String> result = UString.splitString(str, "/");
+        assertThat(result.size(), equalTo(5));
+        assertThat(result.get(0), equalTo("com"));
+        assertThat(result.get(1), equalTo("com/metaui"));
+        assertThat(result.get(2), equalTo("com/metaui/core"));
+        assertThat(result.get(3), equalTo("com/metaui/core/ui"));
+        assertThat(result.get(4), equalTo("com/metaui/core/ui/Test.java"));
+
+        str = "com";
+        result = UString.splitString(str, "/");
+        assertThat(result.size(), equalTo(1));
+        assertThat(result.get(0), equalTo("com"));
     }
 }

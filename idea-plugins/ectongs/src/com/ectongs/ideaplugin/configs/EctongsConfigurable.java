@@ -3,6 +3,7 @@ package com.ectongs.ideaplugin.configs;
 import com.ectongs.ideaplugin.EctongsApplicationPlugin;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import com.meteorite.core.util.UFile;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +41,7 @@ public class EctongsConfigurable implements Configurable {
 
     @Override
     public boolean isModified() {
-        return false;
+        return true;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class EctongsConfigurable implements Configurable {
         String nodejsDir = tfJsdocDir.getText();
         String outDir = tfOutDir.getText();
 
-
+        copyJsdocTemplate();
 //        Runtime.getRuntime().exec();
     }
 
@@ -64,11 +65,14 @@ public class EctongsConfigurable implements Configurable {
 
     private void copyJsdocTemplate() {
         File tmpDir = new File(EctongsApplicationPlugin.BASE_DIR, "jsdoc-template");
-        if(!tmpDir.exists()) {
+        /*if(!tmpDir.exists()) {
             tmpDir.mkdirs();
 
             // 复制模板
+            UFile.copyTreeFromClassPath("template/ectong/", tmpDir);
+        }*/
 
-        }
+        // 复制模板
+        UFile.copyTreeFromClassPath("template/ectong/", tmpDir);
     }
 }

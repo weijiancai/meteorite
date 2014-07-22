@@ -1,5 +1,6 @@
 package com.meteorite.core.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -254,5 +255,29 @@ public class UString {
         }
         String[] strs = str.split(splitChar);
         return strs[strs.length - 1];
+    }
+
+    /**
+     * 按指定的分隔符，拆分字符串，例如字符串com/metaui/core/ui/Test.java
+     * 拆分结果为：['com', 'com/metaui', 'com/metaui/core', 'com/metaui/core/ui/', 'com/metaui/core/ui/Test.java']
+     *
+     * @param str 要拆分的字符串
+     * @param splitChar 分隔符
+     * @return 返回拆分后的字符串数组
+     */
+    public static List<String> splitString(String str, String splitChar) {
+        List<String> result = new ArrayList<>();
+        String[] strs = str.split(splitChar);
+        for (int i = 1; i <= strs.length; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < i; j++) {
+                sb.append(strs[j]);
+                if(j < i - 1) {
+                    sb.append(splitChar);
+                }
+            }
+            result.add(sb.toString());
+        }
+        return result;
     }
 }

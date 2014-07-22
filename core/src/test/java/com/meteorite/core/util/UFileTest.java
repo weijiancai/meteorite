@@ -20,6 +20,6 @@ public class UFileTest {
     }
 
     @Test public void testCopyTree() {
-        UFile.copyTreeFromClassPath("com", new File("D:\\fetch\\ectons"));
+        UFile.copyTreeFromClassPath("com/meteorite", new File("D:\\fetch\\ectons"));
     }
 }

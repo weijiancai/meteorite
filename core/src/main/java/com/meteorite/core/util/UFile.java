@@ -182,8 +182,17 @@ public class UFile {
             iteratorTree(tree, new Callback<ITreeNode>() {
                 @Override
                 public void call(ITreeNode node, Object... obj) throws Exception {
-                    InputStream is = UIO.getInputStream(node.getId(), UIO.FROM.CP);
-                    write(is, new FileOutputStream(new File(target, node.getId())));
+                    InputStream is = UIO.getInputStream("/" + node.getId(), UIO.FROM.CP);
+                    File file = new File(target, node.getId());
+                    if (node.getChildren().size() > 0) {
+                        return;
+                    }
+
+                    File parentDir = file.getParentFile();
+                    if (!parentDir.exists()) {
+                        parentDir.mkdirs();
+                    }
+                    write(is, new FileOutputStream(file));
                 }
             });
 

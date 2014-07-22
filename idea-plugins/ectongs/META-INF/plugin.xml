@@ -26,6 +26,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <applicationConfigurable instance="com.ectongs.ideaplugin.configs.EctongsConfigurable" />
     </extensions>
 
     <application-components>

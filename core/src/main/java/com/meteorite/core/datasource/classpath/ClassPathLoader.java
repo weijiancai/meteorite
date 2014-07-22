@@ -29,11 +29,6 @@ public class ClassPathLoader implements ILoader {
     private String baseDir;
 
     private ClassPathLoader() {
-        navTree = new BaseNavTreeNode();
-        navTree.setId("/");
-        navTree.setName("Root");
-        navTree.setDisplayName("Root");
-        nodeMap = new HashMap<>();
     }
 
     public static ClassPathLoader getLoader() {
@@ -46,9 +41,15 @@ public class ClassPathLoader implements ILoader {
 
     @Override
     public void load() throws Exception {
-        URL url = Thread.currentThread().getContextClassLoader().getResource("");
+        navTree = new BaseNavTreeNode();
+        navTree.setId("/");
+        navTree.setName("Root");
+        navTree.setDisplayName("Root");
+        nodeMap = new HashMap<>();
+
+        URL url = Thread.currentThread().getContextClassLoader().getResource("/");
         if (url == null) {
-            url = getClass().getResource("");
+            url = getClass().getResource("/");
         }
         // 得到协议的名称
         String protocol = url.getProtocol();
@@ -125,6 +126,7 @@ public class ClassPathLoader implements ILoader {
             ClassPathResourceItem node = new ClassPathResourceItem("file", basePath);
             node.setName(file.getName());
             node.setDisplayName(node.getName());
+            System.out.println(file);
 
             // 如果是目录 则继续扫描
             if (file.isDirectory()) {
@@ -140,17 +142,6 @@ public class ClassPathLoader implements ILoader {
                 }
             }
         }
-    }
-
-    private List<String> splitString(String str, String splitChar) {
-        List<String> result = new ArrayList<>();
-        String[] strs = str.split(splitChar);
-        for (int i = 0; i < strs.length; i++) {
-            for(int j = 0; j < i; j++) {
-
-            }
-        }
-        return result;
     }
 
     public BaseNavTreeNode getNavTree() {
