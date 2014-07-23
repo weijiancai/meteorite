@@ -50,4 +50,12 @@ public class UIO {
 
         return null;
     }
+
+    public static void main(String[] args) {
+        try {
+            Runtime.getRuntime().exec("C:\\Users\\wei_jc\\node_modules\\.bin\\jsdoc.cmd");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

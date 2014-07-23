@@ -47,9 +47,9 @@ public class ClassPathLoader implements ILoader {
         navTree.setDisplayName("Root");
         nodeMap = new HashMap<>();
 
-        URL url = Thread.currentThread().getContextClassLoader().getResource("/");
+        URL url = Thread.currentThread().getContextClassLoader().getResource("/com/meteorite");
         if (url == null) {
-            url = getClass().getResource("/");
+            url = getClass().getResource("/com/meteorite");
         }
         // 得到协议的名称
         String protocol = url.getProtocol();
@@ -58,7 +58,7 @@ public class ClassPathLoader implements ILoader {
             log.info("file类型的扫描");
             // 获取包的物理路径
             String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
-            File root = new File(filePath);
+            File root = new File(filePath).getParentFile().getParentFile();
             baseDir = root.getAbsolutePath();
             // 以文件的方式扫描整个包下的文件 并添加到集合中
             loadByFile(baseDir, baseDir);
