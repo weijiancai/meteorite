@@ -1,10 +1,12 @@
 package com.meteorite.core.ui.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
 
+import java.beans.Transient;
 import java.util.*;
 
 /**
@@ -95,6 +97,7 @@ public class View {
         this.sortNum = sortNum;
     }
 
+    @JSONField(serialize = false)
     public List<ViewLayout> getLayoutList() {
         if (layoutList == null) {
             layoutList = new ArrayList<>();
@@ -106,6 +109,7 @@ public class View {
         this.layoutList = layoutList;
     }
 
+    @JSONField(serialize = false)
     public List<ViewConfig> getConfigs() {
         if (configs == null) {
             configs = new ArrayList<>();
@@ -121,26 +125,7 @@ public class View {
         getConfigs().add(config);
     }
 
-    public ViewLayout getTableLayout() {
-        for (ViewLayout layout : layoutList) {
-            if (layout.getLayout().getName().equals("TABLE")) {
-                return layout;
-            }
-        }
-
-        return null;
-    }
-
-    public ViewLayout getFormLayout() {
-        for (ViewLayout layout : layoutList) {
-            if (layout.getLayout().getName().equals("FORM")) {
-                return layout;
-            }
-        }
-
-        return null;
-    }
-
+    @JSONField(serialize = false)
     public List<ViewProperty> getViewProperties() {
         return viewProperties;
     }
@@ -187,10 +172,12 @@ public class View {
         return fieldPropMap.get(field);
     }
 
+    @JSONField(serialize = false)
     public List<MetaField> getMetaFieldList() {
         return new ArrayList<>(fieldPropMap.keySet());
     }
 
+    @JSONField(serialize = false)
     public Meta getMeta() {
         return meta;
     }

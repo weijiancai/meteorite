@@ -7,6 +7,7 @@ import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -94,4 +95,13 @@ public interface DataSource {
      * @return 如果可以获得数据源连接，返回true，否则返回false
      */
     boolean isAvailable();
+
+    /**
+     * 将资源内容写入到输出流中
+     *
+     * @param id 资源id
+     * @param os 输出流
+     * @since 1.0.0
+     */
+    void write(String id, OutputStream os) throws Exception;
 }

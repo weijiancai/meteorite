@@ -10,7 +10,8 @@ import org.junit.Test;
  */
 public class SystemNavigationTest {
     @Test
-    public void testSystemNav() {
+    public void testSystemNav() throws Exception {
+        SystemManager.getInstance().init();
         SystemNavigation nav = new SystemNavigation();
         System.out.println(JSON.toJSONString(nav, SerializerFeature.PrettyFormat));
     }

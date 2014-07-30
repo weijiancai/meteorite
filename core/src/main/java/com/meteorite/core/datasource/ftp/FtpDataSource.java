@@ -7,11 +7,9 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPReply;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -23,13 +21,10 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class FtpDataSource implements DataSource {
-    private FTPClient client;
+    private FtpLoader loader;
 
     public FtpDataSource(String ip, String user, String password) throws IOException {
-        client = new FTPClient();
-        client.connect(ip);
-        boolean isSuccess = client.login(user, password);
-        System.out.println(isSuccess);
+        loader = new FtpLoader(ip, user, password);
     }
 
     @Override
@@ -59,32 +54,17 @@ public class FtpDataSource implements DataSource {
 
     @Override
     public INavTreeNode getNavTree() throws Exception {
-        return null;
+        return loader.getNavTree();
     }
 
     @Override
     public INavTreeNode getNavTree(String parent) throws Exception {
-        return null;
+        return loader.getTreeNode(parent);
     }
 
     @Override
     public void load() throws Exception {
-        /*String[] names = client.listNames("/wei_jc");
-        for (String name : names) {
-            System.out.println(name);
-        }*/
-        System.out.println(client.getReplyCode());
-        System.out.println(FTPReply.isPositiveCompletion(client.getReplyCode()));
-        System.out.println(client.list());
-        System.out.println(client.getStatus());
-        FTPFile[] files = client.listFiles();
-        for (FTPFile file : files) {
-            System.out.println(file.getLink());
-        }
-    }
-
-    private void iterator(String path) {
-
+        loader.load();
     }
 
     @Override
@@ -110,5 +90,10 @@ public class FtpDataSource implements DataSource {
     @Override
     public boolean isAvailable() {
         return false;
+    }
+
+    @Override
+    public void write(String id, OutputStream os) throws Exception{
+        loader.write(id, os);
     }
 }

@@ -19,23 +19,23 @@ public class SystemNavigation {
     private String displayName = "系统管理";
     private List<Object> children = new ArrayList<>();
 
-    public SystemNavigation() {
-        Map<String, Object> metaManager = new HashMap<>();
+    public SystemNavigation() throws Exception {
+        /*Map<String, Object> metaManager = new HashMap<>();
         metaManager.put("id", "MetaManager");
         metaManager.put("displayName", "元数据管理");
         metaManager.put("action", "/view/meta_view");
-        children.add(metaManager);
+        children.add(metaManager);*/
 
-        Map<String, Object> projectManager = new HashMap<>();
+        /*Map<String, Object> projectManager = new HashMap<>();
         projectManager.put("id", "ProjectManager");
         projectManager.put("displayName", "项目管理");
         projectManager.put("children", SystemManager.getInstance().getProjectConfigs());
-        children.add(projectManager);
+        children.add(projectManager);*/
 
         Map<String, Object> dataSourceManager = new HashMap<>();
         dataSourceManager.put("id", "DataSourceManager");
         dataSourceManager.put("displayName", "数据源管理");
-        dataSourceManager.put("children", DataSourceManager.getDataSources());
+        dataSourceManager.put("children", DataSourceManager.getNavTree());
         children.add(dataSourceManager);
     }
 

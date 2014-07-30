@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.ftp.FtpDataSource;
 import com.meteorite.core.util.UFile;
 import com.meteorite.fxbase.ui.view.MUTree;
 import javafx.application.Application;
@@ -39,14 +40,10 @@ public class Main extends Application {
         ds.setUsername("root");
         ds.setPassword("7758521");*/
 
-        ClassPathDataSource ds = ClassPathDataSource.getInstance();
+//        ClassPathDataSource ds = ClassPathDataSource.getInstance();
         try {
+            FtpDataSource ds = new FtpDataSource("115.29.163.55", "wei_jc", "wjcectong2013#");
             ds.load();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
             primaryStage.setScene(new Scene(new MUTree(ds.getNavTree())));
         } catch (Exception e) {
             e.printStackTrace();

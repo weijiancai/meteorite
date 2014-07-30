@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -292,6 +293,11 @@ public class DBDataSource implements DataSource {
             log.error("获得数据库连接失败！", e);
         }
         return false;
+    }
+
+    @Override
+    public void write(String id, OutputStream os) throws Exception {
+
     }
 
     @Override
