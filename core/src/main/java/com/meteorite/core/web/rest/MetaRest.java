@@ -48,4 +48,9 @@ public class MetaRest extends BaseRest {
 //        writeJsonObject(res, MetaManager.getMeta(metaName));
         res.getWriter().write(new String(sb.toString().getBytes(), "UTF-8"));
     }
+
+    @Override
+    protected void handle(HttpServletRequest req, HttpServletResponse res) {
+
+    }
 }

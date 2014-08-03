@@ -1,5 +1,6 @@
 package com.meteorite.core.meta.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
@@ -161,6 +162,7 @@ public class MetaField {
     }
 
     @XmlTransient
+    @JSONField(serialize = false)
     public Meta getMeta() {
         return meta;
     }
@@ -169,6 +171,7 @@ public class MetaField {
         this.meta = meta;
     }
 
+    @JSONField(serialize = false)
     public DBColumn getColumn() {
         return column;
     }

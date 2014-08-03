@@ -55,7 +55,7 @@
 
 <div>
     <!--<div style="width: 250px;display: inline-block"
-            data-mu-tree="" data-tree-options="treeOptions">
+            data-mu-tree="dbTree" data-tree-options="treeOptions">
     </div>-->
 
     <div data-mu-tree="dbTree" data-tree-model="layout" data-node-label="displayName" data-node-label-template="dbTreeNodeLabelTemplate"
@@ -68,10 +68,12 @@
     <!--<div class="gridStyle" ng-grid="gridOptions" style="height: 300px;"></div>-->
     <hr/>
     <button type="button" ng-click="addRow()">增加</button>
-    <div id="tableView" mu-table="Meta"></div>
+    <!--<div id="tableView" mu-table="Meta"></div>-->
     <!--<div mu-table="ProjectConfig"></div>-->
     <hr/>
     {{dict}}
     <hr/>
     <!--<div mu-dict="com_meteorite_core_dict_EnumBoolean" is-display-text="true" data="F"></div>-->
+
+    <abn-tree tree-data="my_data"></abn-tree>
 </div>

@@ -1,5 +1,6 @@
 package com.meteorite.core.meta;
 
+import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.DataSourceManager;
@@ -39,10 +40,10 @@ public class MetaManager {
     private static Map<String, Meta> tableMeta = new HashMap<>();
     private static List<MetaField> metaFieldList = new ArrayList<>();
 
-    /*static {
+    static {
         try {
-            addMeta(ProjectConfig.class);
-            addMeta(DBDataSource.class);
+            addMeta(ProjectConfig.class, null);
+            addMeta(DBDataSource.class, null);
 //            addMeta(Meta.class);
 //            addMeta(MetaField.class);
 
@@ -50,7 +51,7 @@ public class MetaManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     public static void load() throws Exception {
         SystemInfo sysInfo = SystemManager.getSystemInfo();
@@ -239,7 +240,9 @@ public class MetaManager {
         meta.setDataSource(DataSourceManager.getSysDataSource());
 
         // 插入元数据信息
-        template.save(MetaPDBFactory.getMeta(meta));
+        if (template != null) {
+            template.save(MetaPDBFactory.getMeta(meta));
+        }
         metaMap.put(meta.getName(), meta);
         metaIdMap.put(meta.getId(), meta);
 
@@ -270,7 +273,9 @@ public class MetaManager {
 
                 fieldList.add(metaField);
                 // 插入表sys_class_field
-                template.save(MetaPDBFactory.getMetaField(metaField));
+                if (template != null) {
+                    template.save(MetaPDBFactory.getMetaField(metaField));
+                }
                 fieldList.add(metaField);
 //            classFieldIdMap.put(field.getId(), field);
                 // 加入缓存
@@ -288,7 +293,9 @@ public class MetaManager {
         meta.setFields(fieldList);
 
         // 创建视图
-        ViewManager.createViews(meta, template);
+        if (template != null) {
+            ViewManager.createViews(meta, template);
+        }
 
         return meta;
     }

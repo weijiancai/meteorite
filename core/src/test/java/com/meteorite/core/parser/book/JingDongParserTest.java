@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author wei_jc
@@ -17,5 +18,7 @@ public class JingDongParserTest {
         List<IWebProduct> list = parser.parse();
         MatcherAssert.assertThat(list.size(), equalTo(1));
         System.out.println(list.get(0));
+        IWebProduct product = list.get(0);
+        assertThat(product.getName(), equalTo(""));
     }
 }

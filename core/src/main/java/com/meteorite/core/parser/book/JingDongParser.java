@@ -25,23 +25,23 @@ import java.util.List;
  */
 public class JingDongParser implements IProductParser {
 	private static final Logger log = Logger.getLogger(JingDongParser.class);
-	
+
 	public static final String SEARCH_URL = "http://search.jd.com/Search?enc=utf-8&book=y&keyword=";
 	public static final String OTHER_SEARCH_URL = "http://search.jd.com/Search?enc=utf-8&keyword=";
-	public static final String JOURNAL_SEARCH_URL = "http://search.jd.com/bookadvsearch?keyword=%s&isbn=%s"; 
-	
+	public static final String JOURNAL_SEARCH_URL = "http://search.jd.com/bookadvsearch?keyword=%s&isbn=%s";
+
 	private String userId;
 	private String isbn;
-	
+
 	public JingDongParser(String isbn) {
 		this(null, isbn);
 	}
-	
+
 	public JingDongParser(String userId, String isbn) {
 		this.userId = userId;
 		this.isbn = isbn;
 	}
-	
+
 	@Override
 	public List<IWebProduct> parse() {
 		List<IWebProduct> prodList = new ArrayList<IWebProduct>();
@@ -51,9 +51,9 @@ public class JingDongParser implements IProductParser {
 			Document doc;
 			if(isbn.startsWith("977")) { // 杂志处理
 				String year = Calendar.getInstance().get(Calendar.YEAR) + "";
-				doc = get(String.format(JOURNAL_SEARCH_URL, year, isbn));
+				doc = get(String.format(JOURNAL_SEARCH_URL, year, isbn), "UTF-8");
 			} else {
-				doc = get(SEARCH_URL + isbn);
+				doc = get(SEARCH_URL + isbn, "UTF-8");
 			}
 			if (doc == null) {
 				return prodList;
@@ -62,43 +62,51 @@ public class JingDongParser implements IProductParser {
 			IWebProduct prod;
 			if (elements != null && elements.size() > 0) {
 				for (Element element : elements) {
+                    String text = element.select("ul.summary li.summary-service div.dd").first().text();
+                    if (!text.contains("由 京东 发货")) {
+                        continue;
+                    }
 					prod = parseProduct(element);
 					if (prod != null) {
 						prodList.add(prod);
 					}
 				}
 			} else {
-				doc = get(OTHER_SEARCH_URL + isbn);
+				doc = get(OTHER_SEARCH_URL + isbn, "UTF-8");
 		        elements = doc.select("div.main div.right-extra div#plist ul.list-h li.item-book");
 		        for (Element element : elements) {
+                    String text = element.select("div.service").first().text();
+                    if (!text.contains("由 京东 发货")) {
+                        continue;
+                    }
 					prod = parseOtherProduct(element);
 					if (prod != null) {
 						prodList.add(prod);
 					}
 				}
-		        
+
 			}
 		} catch (Exception e) {
 			log.error("连接京东网站失败！", e);
 		}
-		
+
 		return prodList;
 	}
-	
+
 	private IWebProduct parseProduct(Element element) {
 		Document detailDoc = null;
 		try {
 			WebProductImpl prod = new WebProductImpl();
 			prod.setSourceSite(SiteName.JING_DONG.name());
 			List<ProductPic> picList = new ArrayList<ProductPic>();
-			
+
 			// 取搜索结果图片 160 * 160
 			picList.add(new ProductPic(new URL(element.select("div.p-img a img").first().attr("data-lazyload")), false));
-            
+
             Elements mElements;
 			// 打开详细页面
 			String detailUrl = element.select("div.p-img a").first().attr("href");
-			detailDoc = get(detailUrl);
+			detailDoc = get(detailUrl, "GBK");
 			if (detailDoc == null) {
 				return null;
 			}
@@ -116,9 +124,9 @@ public class JingDongParser implements IProductParser {
 				prod.setPrice(priceElement.first().text().replace("￥", "").replace("?", "").trim());
 			}
             // 取作者
-			Elements authorElement = detailDoc.select("li#summary-author div.dd"); 
+			Elements authorElement = detailDoc.select("div#name div#product-authorinfo");
 			if(authorElement != null && authorElement.size() > 0) {
-				String authorStr = authorElement.first().text();
+				String authorStr = authorElement.text();
 	            StringBuilder sb = new StringBuilder();
 	            for(char c : authorStr.toCharArray()) {
 	                if(c == '著') {
@@ -138,39 +146,39 @@ public class JingDongParser implements IProductParser {
 				return null;
 			}
             // 取出版社
-            prod.setPublishing(detailDoc.select("div.w div.right ul#summary li#summary-ph div.dd").first().text());
+//            prod.setPublishing(detailDoc.select("div.w div.right ul#summary li#summary-ph div.dd").first().text());
             // 取出版时间
             mElements = detailDoc.select("div.w div.right ul#summary li#summary-published div.dd");
             if(mElements != null && mElements.size() > 0) {
             	prod.setPublishDate(mElements.first().text());
             }
-            
+
             // 取ISBN
-            prod.setIsbn(detailDoc.select("div.w div.right ul#summary li#summary-isbn div.dd").first().text());
+//            prod.setIsbn(detailDoc.select("div.w div.right ul#summary li#summary-isbn div.dd").first().text());
             // 取商品介绍
             mElements = detailDoc.select("div.w div.right div#product-detail div#product-detail-1 > ul li");
             for (Element aElement : mElements) {
-                String text = aElement.ownText();
+                String text = aElement.text().trim();
                 if (text.startsWith("版次：")) { // 取版次
-                    prod.setBanci(aElement.ownText().substring(3).trim());
+                    prod.setBanci(text.substring(3).trim());
                 } else if (text.startsWith("装帧：")) { // 取装帧
-                    prod.setPack(aElement.ownText().substring(3).trim());
+                    prod.setPack(text.substring(3).trim());
                 } else if (text.startsWith("纸张：")) { // 取纸张
-                    prod.setPaper(aElement.ownText().substring(3).trim());
+                    prod.setPaper(text.substring(3).trim());
                 } else if (text.startsWith("印刷时间：")) { // 取印刷时间
-                    prod.setPrintDate(aElement.ownText().substring(5).trim());
+                    prod.setPrintDate(text.substring(5).trim());
                 } else if (text.startsWith("印次：")) { // 取印次
-                    prod.setPrintNum(aElement.ownText().substring(3).trim());
+                    prod.setPrintNum(text.substring(3).trim());
                 } else if (text.startsWith("正文语种：")) { // 取正文语种
-                    prod.setLanguage(aElement.ownText().substring(5).trim());
+                    prod.setLanguage(text.substring(5).trim());
                 } else if (text.startsWith("开本：")) { // 取开本
-                    prod.setKaiben(aElement.ownText().substring(3).trim());
+                    prod.setKaiben(text.substring(3).trim());
                 } else if (text.startsWith("页数：")) { // 取页数
-                    prod.setPageNum(aElement.ownText().substring(3).trim());
-                } else if (text.startsWith("作者：")) { // 作者
-                    prod.setAuthor(aElement.ownText().substring(3).trim());
+                    prod.setPageNum(text.substring(3).trim());
+//                } else if (text.startsWith("作者：")) { // 作者
+                    prod.setAuthor(text.substring(3).trim());
                 } else if (text.startsWith("尺寸：")) { // 尺寸
-                    String[] strs = aElement.ownText().substring(3).trim().split(";");
+                    String[] strs = text.substring(3).trim().split(";");
                     if(strs.length == 1) {
                         prod.setSize(strs[0]);
                     } else if(strs.length == 2) {
@@ -185,6 +193,10 @@ public class JingDongParser implements IProductParser {
                             prod.setDeep(strs[2]);
                         }
                     }
+                } else if (text.startsWith("出版社：")) { // 出版社
+                    prod.setPublishing(text.substring(4).trim());
+                } else if (text.startsWith("ISBN：")) { // ISBN
+                    prod.setIsbn(text.substring(4).trim());
                 }
             }
 
@@ -213,17 +225,18 @@ public class JingDongParser implements IProductParser {
 			// 下载图片
 			new DownloadPicture(picList);
 			prod.setProductPic(picList);
-			
+
 			prod.setUserId(userId);
-			
+
 			return prod;
 		} catch (Exception e) {
+            e.printStackTrace();
 			log.error(String.format("解析京东网上图书信息【%s】失败！", isbn), e);
 		}
-		
+
 		return null;
 	}
-	
+
 	private IWebProduct parseOtherProduct(Element element) {
 		Document detailDoc = null;
         try {
@@ -235,8 +248,8 @@ public class JingDongParser implements IProductParser {
             picList.add(new ProductPic(new URL(element.select("div.p-img a img").first().attr("data-lazyload")), false));
             // 打开详细页面
             String detailUrl = element.select("div.p-img a").first().attr("href");
-            
-            detailDoc = get(detailUrl);
+
+            detailDoc = get(detailUrl, "GBK");
             // 取书名
             prod.setName(detailDoc.select("div#name h1").first().ownText());
             // 取详细页面图片 280 * 280
@@ -285,7 +298,7 @@ public class JingDongParser implements IProductParser {
             // 下载图片
 			new DownloadPicture(picList);
 			prod.setProductPic(picList);
-			
+
 			prod.setUserId(userId);
 
             return prod;
@@ -302,7 +315,7 @@ public class JingDongParser implements IProductParser {
      * @param url
      * @return 返回Jsoup Document对象
      */
-    public static Document get(String url) {
+    public static Document get(String url, String charset) {
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
         httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
@@ -314,7 +327,7 @@ public class JingDongParser implements IProductParser {
                 return null;
             }
             HttpEntity entity = response.getEntity();
-            String content = new String(EntityUtils.toByteArray(entity), "GBK");
+            String content = new String(EntityUtils.toByteArray(entity), charset);
 
             return Jsoup.parse(content);
         } catch (Exception e) {

@@ -50,4 +50,10 @@ public class MetaManagerTest {
         String metaXml = JAXBUtil.marshalToString(metaForm, MetaForm.class);
         System.out.println(metaXml);
     }
+
+    @Test
+    public void testMetaToJson() throws Exception {
+        Meta meta = MetaManager.getMeta(ProjectConfig.class);
+        System.out.println(JSON.toJSONString(meta));
+    }
 }

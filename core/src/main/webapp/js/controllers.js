@@ -86,6 +86,38 @@ app.controller('MainCtl', ['$scope', '$resource', '$http', 'Layout', 'MUConfig',
     };
 
 
+    var treedata_avm = [
+        {
+            label: 'Animal',
+            children: [
+                {
+                    label: 'Dog',
+                    data: {
+                        description: "man's best friend"
+                    }
+                },
+                {
+                    label: 'Cat',
+                    data: {
+                        description: "Felis catus"
+                    }
+                },
+                {
+                    label: 'Hippopotamus',
+                    data: {
+                        description: "hungry, hungry"
+                    }
+                },
+                {
+                    label: 'Chicken',
+                    children: ['White Leghorn', 'Rhode Island Red', 'Jersey Giant']
+                }
+            ]
+        }
+    ];
+
+    $scope.my_data = treedata_avm;
+    $scope.my_tree = {};
 }]);
 
 /*

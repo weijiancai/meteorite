@@ -19,6 +19,11 @@ public class LayoutRest extends BaseRest {
 
     }
 
+    @Override
+    protected void handle(HttpServletRequest req, HttpServletResponse res) {
+
+    }
+
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String uri = req.getRequestURI();
         if(uri.endsWith("/layout")) {

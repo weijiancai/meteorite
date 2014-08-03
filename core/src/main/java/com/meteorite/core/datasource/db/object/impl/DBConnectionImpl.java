@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.object.impl;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
@@ -87,6 +88,7 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
+    @JSONField(serialize = false)
     public Connection getConnection() throws Exception {
         Connection conn;
         try {
@@ -143,6 +145,7 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
+    @JSONField(serialize = false)
     public DBLoader getLoader() throws Exception {
         return loader;
     }
@@ -153,11 +156,13 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
+    @JSONField(serialize = false)
     public DBSchema getSchema() throws Exception {
         return currentSchema;
     }
 
     @Override
+    @JSONField(serialize = false)
     public List<DBSchema> getSchemas() throws Exception {
         return schemas;
     }
@@ -200,6 +205,7 @@ public class DBConnectionImpl implements DBConnection {
     }
 
     @Override
+    @JSONField(serialize = false)
     public boolean isAvailable() {
         if (!isAvailable) {
             Connection conn = null;

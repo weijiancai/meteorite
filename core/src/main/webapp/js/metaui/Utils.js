@@ -78,4 +78,23 @@ var Utils = {
 
         }
     }
+};
+
+function cookieEnable()   {
+    var result=false;
+    if(navigator.cookiesEnabled)  return true;
+
+    document.cookie = "testcookie=yes;";
+
+    var cookieSet = document.cookie;
+
+    if (cookieSet.indexOf("testcookie=yes") > -1)  result=true;
+
+    document.cookie = "";
+
+    return result;
+}
+
+if(!cookieEnable()){
+    alert("对不起，您的浏览器的Cookie功能被禁用，请开启");
 }

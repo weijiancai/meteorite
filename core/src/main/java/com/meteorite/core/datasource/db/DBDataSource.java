@@ -184,6 +184,7 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
+    @JSONField(serialize = false)
     public INavTreeNode getNavTree() throws Exception {
         return navTree;
     }
@@ -286,6 +287,7 @@ public class DBDataSource implements DataSource {
 
 
     @Override
+    @JSONField(serialize = false)
     public boolean isAvailable() {
         try {
             return getDbConnection().isAvailable();
@@ -313,7 +315,7 @@ public class DBDataSource implements DataSource {
         properties.setFieldValue(DB_VERSION, dbVersion);
     }
 
-    @JSONField(name = "children")
+    @JSONField(name = "children", serialize = false)
     public List<DBSchema> getSchemas() throws Exception {
         return getDbConnection().getSchemas();
     }
@@ -368,6 +370,7 @@ public class DBDataSource implements DataSource {
      *
      * @return 返回数据库连接信息
      */
+    @JSONField(serialize = false)
     public DBConnection getDbConnection() throws Exception {
         if (connection == null) {
             connection = new DBConnectionImpl(this);

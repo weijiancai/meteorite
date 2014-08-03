@@ -27,6 +27,7 @@ import static com.meteorite.core.config.SystemConfig.SYS_DB_NAME;
  * @since  1.0.0
  */
 public class DataSourceManager {
+    private static List<DataSource> dataSources = new ArrayList<>();
     private static Map<String, DataSource> dataSourceMap = new HashMap<>();
 
     /**
@@ -35,6 +36,7 @@ public class DataSourceManager {
      * @param dataSource 数据源
      */
     public static void addDataSource(DataSource dataSource) throws Exception {
+        dataSources.add(dataSource);
         dataSourceMap.put(dataSource.getName(), dataSource);
     }
 
@@ -56,7 +58,7 @@ public class DataSourceManager {
      * @return 返回所有数据库数据源
      */
     public static List<DataSource> getDataSources() {
-        return new ArrayList<>(dataSourceMap.values());
+        return dataSources;
     }
 
     /**

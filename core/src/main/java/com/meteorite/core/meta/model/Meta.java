@@ -1,5 +1,6 @@
 package com.meteorite.core.meta.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.QueryResult;
@@ -149,6 +150,7 @@ public class Meta {
         this.fields = fields;
     }
 
+    @JSONField(serialize = false)
     public DataSource getDataSource() {
         return dataSource;
     }
@@ -157,6 +159,7 @@ public class Meta {
         this.dataSource = dataSource;
     }
 
+    @JSONField(serialize = false)
     public DBDataset getDbTable() {
         if (dbTable != null) {
             return dbTable;
@@ -201,6 +204,7 @@ public class Meta {
      *
      * @return 返回主键元字段列表
      */
+    @JSONField(serialize = false)
     public List<MetaField> getPkFields() {
         List<MetaField> result = new ArrayList<>();
         for (MetaField field : fields) {
@@ -221,6 +225,7 @@ public class Meta {
         return null;
     }
 
+    @JSONField(serialize = false)
     public ObjectProperty<ObservableList<DataMap>> dataListProperty() {
         return dataList;
     }
@@ -233,6 +238,7 @@ public class Meta {
         dataList.set(FXCollections.observableList(list));
     }
 
+    @JSONField(serialize = false)
     public IntegerProperty totalRowsProperty() {
         return totalRows;
     }
@@ -249,6 +255,7 @@ public class Meta {
         return pageCount.get();
     }
 
+    @JSONField(serialize = false)
     public IntegerProperty pageCountProperty() {
         return pageCount;
     }
@@ -261,6 +268,7 @@ public class Meta {
         return pageRows.get();
     }
 
+    @JSONField(serialize = false)
     public IntegerProperty pageRowsProperty() {
         return pageRows;
     }
@@ -324,14 +332,17 @@ public class Meta {
         return null;
     }
 
+    @JSONField(serialize = false)
     public View getFormView() {
         return ViewManager.getViewByName(getName() + "FormView");
     }
 
+    @JSONField(serialize = false)
     public View getTableView() {
         return ViewManager.getViewByName(getName() + "TableView");
     }
 
+    @JSONField(serialize = false)
     public List<MetaReference> getReferences() {
         if (references == null) {
             references = new ArrayList<>();
@@ -343,6 +354,7 @@ public class Meta {
         this.references = references;
     }
 
+    @JSONField(serialize = false)
     public Set<Meta> getChildren() {
         return children;
     }

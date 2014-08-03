@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="zh-cn">
+    <info>
+        <title>Intellij Idea 插件开发</title>
+        <author>
+            <personname>wei_jc</personname>
+        </author>
+    </info>
+
+    <preface>
+        <title>前言</title>
+        <para>本书提供了大量的idea插件实例，供您参考。</para>
+    </preface>
+
+    <preface>
+        <title>介绍</title>
+        <para>在IntelliJ IDEA中, 插件是独立的模块，它可以通过手动和内置工具的方式加载到IntelliJ IDEA中。</para>
+        <para>IntelliJ IDEA的插件依据他们的功能可以进行分组，主要包括：</para>
+        <orderedlist>
+            <listitem>
+                <para>代码审查和重构 (Inspection Gadgets, Intension Power Pack, Refactor-J, Refactor-X等等)</para>
+                <para>自定义编辑器 (例如 Images)和工具窗口 (SQLQuery, PsiViewer等)</para>
+                <para>其他语言支持 (Groovy, JavaScript等)</para>
+                <para>应用服务器整合(Resin, JBoss, Tomcat等)</para>
+                <para>版本控制系统整合 (CVS, Clearcase等)</para>
+                <para>框架和其他技术支持(Hibernate Tools, IdeaSpring, XPathView, Struts等)</para>
+                <para>外部应用整合 (Jira Browser, JFormdesigner等)</para>
+                <para>用户界面提升, 各种工具栏和菜单 (TabSwitch, CVS bar等)</para>
+                <para>自定义编译器 (Native2Ascii)</para>
+                <para>其他：包括各种工具插件和游戏(IdeaJad, simpleUML, Tetris, Sokoban等)</para>
+            </listitem>
+        </orderedlist>
+    </preface>
+
+    <chapter>
+        <title></title>
+        <para></para>
+    </chapter>
+</book>
