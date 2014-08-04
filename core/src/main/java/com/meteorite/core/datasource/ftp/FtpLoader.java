@@ -3,15 +3,13 @@ package com.meteorite.core.datasource.ftp;
 import com.meteorite.core.loader.ILoader;
 import com.meteorite.core.model.impl.BaseNavTreeNode;
 import com.meteorite.core.util.UString;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPConnectionClosedException;
-import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.*;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -39,6 +37,9 @@ public class FtpLoader implements ILoader {
         client = new FTPClient();
 //        client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out), true));
         client.setControlEncoding("GBK");
+        FTPClientConfig config = new FTPClientConfig();
+        config.setServerTimeZoneId("zh-CN");
+        client.configure(config);
     }
 
     @Override

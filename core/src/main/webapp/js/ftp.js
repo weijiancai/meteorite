@@ -1,12 +1,14 @@
-app.controller('FtpCtl', ['$scope', '$http', function($scope, $http) {
+app.controller('FtpCtl', ['$scope', '$http', '$locale', function($scope, $http, $locale) {
     $scope.myData = [];
+
+    console.log($locale.id);
 
     $scope.gridOptions = {
         data: 'myData',
         columnDefs: [
             {field: 'displayName', displayName: '名称'},
-            {field: 'lastModified', displayName: '最后修改时间', cellFilter: 'date:"yyyy-MM-dd HH:mm:ss Z"'},
-            {field: 'size', displayName: '大小', cellFilter: 'currency'},
+            {field: 'lastModified', displayName: '最后修改时间', cellFilter: 'date:"yyyy-MM-dd HH:mm"'},
+            {field: 'size', displayName: '大小', cellFilter: 'fileSize'},
             {field: 'type', displayName: '类型'}
         ]
     };
