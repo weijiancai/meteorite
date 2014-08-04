@@ -1,10 +1,8 @@
 package com.meteorite.core.datasource.ftp;
 
-import com.meteorite.core.datasource.ResourceItem;
 import com.meteorite.core.loader.ILoader;
 import com.meteorite.core.model.impl.BaseNavTreeNode;
 import com.meteorite.core.util.UString;
-import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPConnectionClosedException;
@@ -13,7 +11,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +29,7 @@ public class FtpLoader implements ILoader {
 
     private FTPClient client;
     private BaseNavTreeNode navTree;
-    private Map<String, BaseNavTreeNode> nodeMap;
+    private Map<String, FtpResourceItem> nodeMap;
 
     public FtpLoader(String ip, String user, String password) {
         this.ip = ip;
@@ -53,10 +50,10 @@ public class FtpLoader implements ILoader {
         nodeMap = new HashMap<>();
 
         if (connect()) {
-            iterator("/he_gy");
+            iterator("/he_gy", null);
 
             // 第二次循环，设置父节点
-            for (Map.Entry<String, BaseNavTreeNode> entry : nodeMap.entrySet()) {
+            for (Map.Entry<String, FtpResourceItem> entry : nodeMap.entrySet()) {
                 String name = entry.getKey();
                 BaseNavTreeNode node = entry.getValue();
                 if (name.endsWith("/")) {
@@ -79,11 +76,17 @@ public class FtpLoader implements ILoader {
         client.disconnect();
     }
 
-    private void iterator(String parent) throws IOException {
-        BaseNavTreeNode node = new BaseNavTreeNode();
+    private void iterator(String parent, FTPFile ftpFile) throws IOException {
+        FtpResourceItem node = new FtpResourceItem();
         node.setId(parent);
         node.setName(UString.getLastName(parent, "/"));
         node.setDisplayName(node.getName());
+        if (ftpFile != null) {
+            node.setDisplayName(node.getName());
+            node.setLastModified(ftpFile.getTimestamp().getTime());
+            node.setSize(ftpFile.getSize());
+            node.setType(ftpFile.isDirectory() ? "目录" : "文件");
+        }
         nodeMap.put(parent, node);
 
         FTPFile[] files = client.listFiles(parent);
@@ -91,12 +94,15 @@ public class FtpLoader implements ILoader {
             String name = parent + "/" + file.getName();
 //            System.out.println(name);
             if (file.isDirectory()) {
-                iterator(name);
+                iterator(name, file);
             } else {
-                node = new BaseNavTreeNode();
+                node = new FtpResourceItem();
                 node.setId(name);
                 node.setName(file.getName());
                 node.setDisplayName(node.getName());
+                node.setLastModified(file.getTimestamp().getTime());
+                node.setSize(file.getSize());
+                node.setType(file.isDirectory() ? "目录" : "文件");
                 nodeMap.put(name, node);
             }
         }
