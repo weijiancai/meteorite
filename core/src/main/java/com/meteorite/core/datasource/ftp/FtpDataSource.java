@@ -9,6 +9,7 @@ import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
@@ -95,5 +96,9 @@ public class FtpDataSource implements DataSource {
     @Override
     public void write(String id, OutputStream os) throws Exception{
         loader.write(id, os);
+    }
+
+    public void store(String path, InputStream is) throws IOException {
+        loader.save(path, is);
     }
 }

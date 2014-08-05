@@ -7,7 +7,9 @@ import org.apache.commons.net.ftp.*;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -150,6 +152,12 @@ public class FtpLoader implements ILoader {
     public void write(String path, OutputStream os) throws IOException {
         if (connect()) {
             client.retrieveFile(path, os);
+        }
+    }
+
+    public void save(String path, InputStream is) throws IOException {
+        if(connect()) {
+            client.storeFile(path, is);
         }
     }
 }

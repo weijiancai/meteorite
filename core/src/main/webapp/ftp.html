@@ -1,4 +1,4 @@
-<div class="container" ng-controller="FtpCtl">
+<div class="container" ng-controller="FtpCtl as ftp">
     <div class="page-header">
         <h1>FTP: <small>115.29.163.55</small></h1>
     </div>
@@ -18,6 +18,18 @@
         </div>
         <div class="panel-body">
             <div class="gridStyle" ng-grid="gridOptions" style="height: 600px;"></div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>剪贴板</h3>
+        </div>
+        <div class="panel-body">
+            <textarea class="form-control" style="height: 300px;" ng-model="temp_text"></textarea>
+            <div class="text-center">
+                <button type="button" class="btn btn-default" ng-click="ftp.storeFile()">保存</button>
+            </div>
         </div>
     </div>
 </div>
