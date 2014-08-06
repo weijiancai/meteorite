@@ -1,7 +1,10 @@
 package com.meteorite.core.datasource.ftp;
 
+import com.meteorite.core.ITree;
 import com.meteorite.core.loader.ILoader;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.model.impl.BaseNavTreeNode;
+import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.util.UString;
 import org.apache.commons.net.ftp.*;
 import org.apache.log4j.Logger;
@@ -10,9 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Ftp加载器
@@ -28,7 +29,7 @@ public class FtpLoader implements ILoader {
     private final String password;
 
     private FTPClient client;
-    private BaseNavTreeNode navTree;
+    private FtpResourceItem navTree;
     private Map<String, FtpResourceItem> nodeMap;
 
     public FtpLoader(String ip, String user, String password) {
@@ -42,28 +43,37 @@ public class FtpLoader implements ILoader {
         FTPClientConfig config = new FTPClientConfig();
         config.setServerTimeZoneId("zh-CN");
         client.configure(config);
+
+        nodeMap = new HashMap<>();
+        navTree = new FtpResourceItem();
+        navTree.setId("/");
+        navTree.setName("Root");
+        navTree.setDisplayName("Root");
+        nodeMap.put("/", navTree);
     }
 
     @Override
     public void load() throws Exception {
-        navTree = new BaseNavTreeNode();
+        /*nodeMap = new HashMap<>();
+        navTree = new FtpResourceItem();
         navTree.setId("/");
         navTree.setName("Root");
         navTree.setDisplayName("Root");
-        nodeMap = new HashMap<>();
+        nodeMap.put("/", navTree);*/
 
-        if (connect()) {
+        // 异步获取，不需要一次全部加载完
+        /*if (connect()) {
             iterator("/he_gy", null);
 
             // 第二次循环，设置父节点
             for (Map.Entry<String, FtpResourceItem> entry : nodeMap.entrySet()) {
                 String name = entry.getKey();
-                BaseNavTreeNode node = entry.getValue();
+                FtpResourceItem node = entry.getValue();
                 if (name.endsWith("/")) {
                     name = name.substring(0, name.length() - 1);
                 }
 
-                BaseNavTreeNode parent = null;
+                FtpResourceItem parent = null;
                 int idx = name.lastIndexOf("/");
                 if (idx > 0) {
                     parent = nodeMap.get(name.substring(0, idx));
@@ -74,9 +84,9 @@ public class FtpLoader implements ILoader {
                     navTree.addChild(node);
                 }
             }
-        }
+        }*/
 
-        client.disconnect();
+//        client.disconnect();
     }
 
     private void iterator(String parent, FTPFile ftpFile) throws IOException {
@@ -146,7 +156,47 @@ public class FtpLoader implements ILoader {
     }
 
     public BaseNavTreeNode getTreeNode(String path) {
-        return nodeMap.get(path);
+        BaseNavTreeNode node = nodeMap.get(path);
+        if (node == null) {
+
+        }
+
+        return node;
+    }
+
+    public List<ITreeNode> getChildren(String path) throws IOException {
+        BaseNavTreeNode parent = getTreeNode(path);
+        if (parent == null) {
+            return new ArrayList<>();
+        }
+        if (parent.getChildren().size() > 0) {
+            return parent.getChildren();
+        }
+
+        List<ITreeNode> result = new ArrayList<>();
+
+        if (connect()) {
+            FTPFile[] files = client.listFiles(path);
+            for (FTPFile file : files) {
+                String name = path + "/" + file.getName();
+                if ("/".equals(path)) {
+                    name = "/" + file.getName();
+                }
+
+                FtpResourceItem node = new FtpResourceItem();
+                node.setId(name);
+                node.setName(file.getName());
+                node.setDisplayName(node.getName());
+                node.setLastModified(file.getTimestamp().getTime());
+                node.setSize(file.getSize());
+                node.setType(file.isDirectory() ? "目录" : "文件");
+                nodeMap.put(name, node);
+                parent.getChildren().add(node);
+                result.add(node);
+            }
+        }
+
+        return result;
     }
 
     public void write(String path, OutputStream os) throws IOException {

@@ -42,7 +42,7 @@ public class Main extends Application {
 
 //        ClassPathDataSource ds = ClassPathDataSource.getInstance();
         try {
-            FtpDataSource ds = new FtpDataSource("115.29.163.55", "wei_jc", "wjcectong2013#");
+            FtpDataSource ds = FtpDataSource.getInstance("115.29.163.55", "wei_jc", "wjcectong2013#");
             ds.load();
             primaryStage.setScene(new Scene(new MUTree(ds.getNavTree())));
         } catch (Exception e) {

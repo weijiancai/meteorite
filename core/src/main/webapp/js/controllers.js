@@ -4,6 +4,7 @@ app.controller('MainCtl', ['$scope', '$resource', '$http', 'Layout', 'MUConfig',
         { label : "元数据管理", id : "role1"},
         { label : "布局管理", id : "role1"}
     ];
+    console.log('MainCtl ' + $scope);
     /*$scope.onTreeNodeClick = function(selectedNode) {
         alert(selectedNode);
     };*/
@@ -19,9 +20,9 @@ app.controller('MainCtl', ['$scope', '$resource', '$http', 'Layout', 'MUConfig',
         ]
     };*/
 
-    $http.post('/getSystemInfo').success(function(data) {
+    /*$http.post('/getSystemInfo').success(function(data) {
         $scope.layout = data.children;
-    });
+    });*/
 
     /*$scope.layout = [
         {label: '安全管理', children: []},
@@ -124,3 +125,7 @@ app.controller('MainCtl', ['$scope', '$resource', '$http', 'Layout', 'MUConfig',
 app.controller('TreeCtl', function($scope) {
     alert('TreeCtl = ' + $scope.name);
 });*/
+
+app.controller('AdminCtl', ['$scope', '$http', function($scope, $http) {
+
+}]);

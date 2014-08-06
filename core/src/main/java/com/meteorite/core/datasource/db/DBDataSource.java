@@ -19,6 +19,7 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import org.apache.log4j.Logger;
@@ -191,6 +192,11 @@ public class DBDataSource implements DataSource {
 
     @Override
     public INavTreeNode getNavTree(String parent) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<ITreeNode> getChildren(String parent) throws Exception {
         return null;
     }
 

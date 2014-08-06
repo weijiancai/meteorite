@@ -1,4 +1,6 @@
 apply plugin: "java"
+apply plugin: "war"
+apply plugin: 'jetty'
 
 version = '1.0.0'
 
@@ -8,7 +10,13 @@ repositories {
 
 ext {
     // 资源文件名称
-    resourceList =["**/*.sql"]
+    resourceList =["**/*.sql", "**/*.properties"]
+}
+
+sourceSets {
+    main {
+        output.resourcesDir = "${buildDir}/classes/main"
+    }
 }
 
 dependencies {
@@ -24,4 +32,32 @@ dependencies {
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.2.6'
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.27'
     compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+httpPort = 8080
+stopPort = 9451
+stopKey = 'foo'
+
+task hello {
+    doLast {
+        println 'Hello Word!'
+    }
+}
+
+task hello1 << {
+    println 'Hell World 1!'
+}
+
+task upper << {
+    String someString = 'myName'
+    println 'Original:' + someString
+    println 'Upper case:' + someString.toUpperCase()
+}
+
+task count << {
+    4.times {print "$it"}
+}
+
+task intro(dependsOn: hello) << {
+    println "I'm Gradle"
 }

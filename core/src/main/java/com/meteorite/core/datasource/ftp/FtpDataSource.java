@@ -5,6 +5,7 @@ import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
@@ -22,10 +23,18 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class FtpDataSource implements DataSource {
+    private static FtpDataSource instance;
     private FtpLoader loader;
 
-    public FtpDataSource(String ip, String user, String password) throws IOException {
+    private FtpDataSource(String ip, String user, String password) throws IOException {
         loader = new FtpLoader(ip, user, password);
+    }
+
+    public static FtpDataSource getInstance(String ip, String user, String password) throws IOException {
+        if (instance == null) {
+            instance = new FtpDataSource(ip, user, password);
+        }
+        return instance;
     }
 
     @Override
@@ -61,6 +70,11 @@ public class FtpDataSource implements DataSource {
     @Override
     public INavTreeNode getNavTree(String parent) throws Exception {
         return loader.getTreeNode(parent);
+    }
+
+    @Override
+    public List<ITreeNode> getChildren(String parent) throws Exception {
+        return loader.getChildren(parent);
     }
 
     @Override

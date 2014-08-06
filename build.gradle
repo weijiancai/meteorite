@@ -1,6 +1,3 @@
-// the top-level build isn't oomplete until all the child projects are complete
-dependsOnChildren()
-
 repositories {
     mavenCentral()
 }

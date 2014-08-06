@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
@@ -73,6 +74,15 @@ public interface DataSource {
      * @throws Exception
      */
     INavTreeNode getNavTree(String parent) throws Exception;
+
+    /**
+     * 获得某个节点下的孩子节点
+     *
+     * @param parent 父节点
+     * @return 返回孩子节点
+     * @throws Exception
+     */
+    List<ITreeNode> getChildren(String parent) throws Exception;
 
     /**
      * 加载数据源

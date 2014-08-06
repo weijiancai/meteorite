@@ -9,6 +9,7 @@ import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,11 @@ public class FileDataSource implements DataSource {
     }
 
     @Override
+    public List<ITreeNode> getChildren(String parent) throws Exception {
+        return null;
+    }
+
+    @Override
     public void load() throws Exception {
 
     }
@@ -83,5 +89,10 @@ public class FileDataSource implements DataSource {
     @Override
     public boolean isAvailable() {
         return false;
+    }
+
+    @Override
+    public void write(String id, OutputStream os) throws Exception {
+
     }
 }

@@ -22,7 +22,7 @@ public class TreeRest extends BaseRest {
     @Override
     protected void handle(HttpServletRequest req, HttpServletResponse res) {
         try {
-            FtpDataSource ds = new FtpDataSource("115.29.163.55", "wei_jc", "wjcectong2013#");
+            FtpDataSource ds = FtpDataSource.getInstance("115.29.163.55", "wei_jc", "wjcectong2013#");
             ds.load();
 
             if (req.getRequestURI().endsWith("/tree")) {
@@ -43,7 +43,7 @@ public class TreeRest extends BaseRest {
                     String text = req.getParameter("text");
                     ds.store(store, new ByteArrayInputStream(text.getBytes("UTF-8")));
                 } else {
-                    writeJsonObject(res, ds.getNavTree(path));
+                    writeJsonObject(res, ds.getChildren(path));
                 }
             }
         } catch (Exception e) {

@@ -6,7 +6,8 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', function($scope, $http, 
     $scope.gridOptions = {
         data: 'myData',
         columnDefs: [
-            {field: 'displayName', displayName: '名称'},
+            {field: 'displayName', displayName: '名称',
+            cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><span ng-switch="row.entity[\'type\']"><a href="javascript:void(0)" ng-click="ftp.goTo(row.entity[\'id\'])" ng-switch-when="目录">{{row.entity["displayName"]}}</a><span ng-switch-default="">{{row.entity["displayName"]}}</span></span></div>'},
             {field: 'lastModified', displayName: '最后修改时间', cellFilter: 'date:"yyyy-MM-dd HH:mm"'},
             {field: 'size', displayName: '大小', cellFilter: 'fileSize'},
             {field: 'type', displayName: '类型'},
@@ -14,10 +15,6 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', function($scope, $http, 
             {field: '', displayName: '下载', cellTemplate: '<a href="/tree?down={{row.entity[\'id\']}}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span></a>'}
         ]
     };
-
-    $http({url:'/tree', params: {path: '/he_gy'}}).success(function(data) {
-        $scope.myData = data.children;
-    });
 
     this.downFile = function(row) {
         console.log(row);
@@ -33,5 +30,28 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', function($scope, $http, 
 
         });*/
         $.post('/tree', {store: '/he_gy/temp_text.txt', text: $scope.temp_text});
-    }
+    };
+
+    $scope.parents = ["/"];
+    $scope.parent = "/";
+    this.goTo = function(path) {
+        var array = path.split("/");
+        array.shift();
+        array.unshift("/");
+        $scope.parents = array;
+        console.log($scope.parents);
+        $scope.parent = path.substring(0, path.lastIndexOf('/'));
+        console.log($scope.parent);
+
+        $http({url:'/tree', params: {path: path}}).success(function(data) {
+            console.log(data);
+            $scope.myData = data;
+        });
+    };
+
+    this.goToParent = function() {
+        this.goTo($scope.parent);
+    };
+
+    this.goTo('/');
 }]);

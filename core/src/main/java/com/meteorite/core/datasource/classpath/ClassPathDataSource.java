@@ -5,10 +5,12 @@ import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import org.apache.log4j.Logger;
 
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +80,11 @@ public class ClassPathDataSource implements DataSource {
     }
 
     @Override
+    public List<ITreeNode> getChildren(String parent) throws Exception {
+        return null;
+    }
+
+    @Override
     public void load() throws Exception {
         loader.load();
     }
@@ -105,6 +112,11 @@ public class ClassPathDataSource implements DataSource {
     @Override
     public boolean isAvailable() {
         return true;
+    }
+
+    @Override
+    public void write(String id, OutputStream os) throws Exception {
+
     }
 
     @Override

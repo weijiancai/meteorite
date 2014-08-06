@@ -1,19 +1,19 @@
-<div class="container" ng-controller="FtpCtl as ftp">
+<div class="container">
     <div class="page-header">
         <h1>FTP: <small>115.29.163.55</small></h1>
     </div>
 
     <div class="row">
         <ol class="breadcrumb">
-            <li><a href="/">/</a></li>
+            <li ng-repeat="path in parents"><a href="javascript:void(0)">{{path}}</a></li>
         </ol>
     </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">
             <ul class="nav nav-pills" role="tablist">
-                <li><a href="#"><span class="icon-reply"></span> 上一级</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-refresh"></span> 刷新</a></li>
+                <li><a href="javascript:void(0)" ng-click="ftp.goToParent()"><span class="icon-reply"></span> 上一级</a></li>
+                <li><a href="javascript:void(0)"><span class="glyphicon glyphicon-refresh"></span> 刷新</a></li>
             </ul>
         </div>
         <div class="panel-body">
