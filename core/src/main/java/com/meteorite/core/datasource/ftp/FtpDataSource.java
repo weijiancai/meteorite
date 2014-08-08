@@ -63,6 +63,11 @@ public class FtpDataSource implements DataSource {
     }
 
     @Override
+    public void delete(String id) throws Exception {
+        loader.delete(id);
+    }
+
+    @Override
     public INavTreeNode getNavTree() throws Exception {
         return loader.getNavTree();
     }

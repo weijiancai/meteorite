@@ -12,7 +12,8 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', function($scope, $http, 
             {field: 'size', displayName: '大小', cellFilter: 'fileSize'},
             {field: 'type', displayName: '类型'},
 //            {field: '', displayName: '下载', cellTemplate: '<button type="button" class="btn btn-default" title="{{row.entity[\'id\']}}" ng-click="ftp.downFile(row.entity)"><span class="glyphicon glyphicon-download"></span></button>'}
-            {field: '', displayName: '下载', cellTemplate: '<a href="/tree?down={{row.entity[\'id\']}}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span></a>'}
+            {field: '', displayName: '下载', cellTemplate: '<a href="/tree?down={{row.entity[\'id\']}}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span></a>' +
+                '<a ng-click="ftp.deleteFile(row.entity[\'id\'])" href="javascript:void(0)" class="btn btn-default"><span class="icon-trash"></span></a>'}
         ]
     };
 
@@ -34,7 +35,11 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', function($scope, $http, 
 
     $scope.parents = ["/"];
     $scope.parent = "/";
+    $scope.current = "/";
+
     this.goTo = function(path) {
+        $scope.current = path;
+
         var array = path.split("/");
         array.shift();
         array.unshift("/");
@@ -51,6 +56,19 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', function($scope, $http, 
 
     this.goToParent = function() {
         this.goTo($scope.parent);
+    };
+
+    this.deleteFile = function(path) {
+        var self = this;
+        $http({url:'/tree', params: {delete: path}}).success(function() {
+            self.refresh();
+        });
+    };
+
+    this.refresh = function() {
+        $http({url:'/tree', params: {refresh: $scope.parent}}).success(function(data) {
+            $scope.myData = data;
+        });
     };
 
     this.goTo('/');

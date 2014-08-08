@@ -70,6 +70,11 @@ public class ClassPathDataSource implements DataSource {
     }
 
     @Override
+    public void delete(String id) throws Exception {
+
+    }
+
+    @Override
     public INavTreeNode getNavTree() throws Exception {
         return loader.getNavTree();
     }

@@ -185,6 +185,11 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
+    public void delete(String id) throws Exception {
+
+    }
+
+    @Override
     @JSONField(serialize = false)
     public INavTreeNode getNavTree() throws Exception {
         return navTree;

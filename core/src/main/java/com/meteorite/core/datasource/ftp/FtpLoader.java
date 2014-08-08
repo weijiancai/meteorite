@@ -169,9 +169,9 @@ public class FtpLoader implements ILoader {
         if (parent == null) {
             return new ArrayList<>();
         }
-        if (parent.getChildren().size() > 0) {
+        /*if (parent.getChildren().size() > 0) {
             return parent.getChildren();
-        }
+        }*/
 
         List<ITreeNode> result = new ArrayList<>();
 
@@ -196,6 +196,8 @@ public class FtpLoader implements ILoader {
             }
         }
 
+//        client.disconnect();
+
         return result;
     }
 
@@ -209,5 +211,13 @@ public class FtpLoader implements ILoader {
         if(connect()) {
             client.storeFile(path, is);
         }
+    }
+
+    public void delete(String path) throws IOException {
+        if(connect()) {
+            boolean isSuccess = client.deleteFile(path);
+            System.out.println(isSuccess);
+        }
+        client.disconnect();
     }
 }

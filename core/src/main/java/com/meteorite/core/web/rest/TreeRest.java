@@ -32,6 +32,8 @@ public class TreeRest extends BaseRest {
                 }
                 String down = req.getParameter("down");
                 String store = req.getParameter("store");
+                String delete = req.getParameter("delete");
+                String refresh = req.getParameter("refresh");
                 if (UString.isNotEmpty(down)) {
                     res.setContentType("application/octet-stream");
                     res.setHeader("Content-disposition", "attachment;filename=" + UString.getLastName(down, "/"));
@@ -42,6 +44,10 @@ public class TreeRest extends BaseRest {
                 } else if (UString.isNotEmpty(store)) {
                     String text = req.getParameter("text");
                     ds.store(store, new ByteArrayInputStream(text.getBytes("UTF-8")));
+                } else if (UString.isNotEmpty(delete)) {
+                    ds.delete(delete);
+                } else if (UString.isNotEmpty(refresh)) {
+                    writeJsonObject(res, ds.getChildren(path));
                 } else {
                     writeJsonObject(res, ds.getChildren(path));
                 }

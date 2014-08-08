@@ -60,6 +60,14 @@ public interface DataSource {
     void delete(Meta meta, String... keys) throws Exception;
 
     /**
+     * 删除数据
+     *
+     * @param id 资源ID
+     * @throws Exception
+     */
+    void delete(String id) throws Exception;
+
+    /**
      * 获得导航树
      *
      * @return 返回导航树
