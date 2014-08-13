@@ -14,6 +14,7 @@
             <ul class="nav nav-pills" role="tablist">
                 <li><a href="javascript:void(0)" ng-click="ftp.goToParent()"><span class="icon-reply"></span> 上一级</a></li>
                 <li><a href="javascript:void(0)"><span class="glyphicon glyphicon-refresh"></span> 刷新</a></li>
+                <li><a href="javascript:void(0)" ng-click="ftp.openFileUploadDialog('fileUploadContent.html')"><span class="glyphicon glyphicon-upload"></span> 上传</a></li>
             </ul>
         </div>
         <div class="panel-body">
@@ -33,3 +34,68 @@
         </div>
     </div>
 </div>
+
+<!-- 上传文件弹出窗口 -->
+<div>
+    <script type="text/ng-template" id="fileUploadContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">文件上传</h3>
+        </div>
+
+        <div class="modal-body">
+            <div class="row demo-columns">
+                <div class="col-md-6">
+                    <!-- D&D Zone-->
+                    <div id="drag-and-drop-zone" class="uploader" ng-init="initFileUploadDialog()">
+                        <div>Drag &amp; Drop Images Here</div>
+                        <div class="or">-or-</div>
+                        <div class="browser">
+                            <label>
+                                <span>Click to open the file Browser</span>
+                                <input type="file" name="files[]" multiple="multiple" title='Click to add Files'>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /D&D Zone -->
+
+                    <!-- Debug box -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Debug</h3>
+                        </div>
+                        <div class="panel-body demo-panel-debug">
+                            <ul id="demo-debug">
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /Debug box -->
+                </div>
+                <!-- / Left column -->
+
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Uploads</h3>
+                        </div>
+                        <div class="panel-body demo-panel-files" id='demo-files'>
+                            <span class="demo-note">No Files have been selected/droped yet...</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- / Right column -->
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-click="cancel()">关闭</button>
+            <button class="btn btn-primary" ng-click="upload()">上传</button>
+        </div>
+    </script>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        console.log($('#drag-and-drop-zone'));
+
+    });
+</script>
