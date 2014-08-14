@@ -40,11 +40,6 @@ public class FtpLoader implements ILoader {
         client = new FTPClient();
 //        client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out), true));
         client.setControlEncoding("GBK");
-        try {
-            client.setFileType(FTP.BINARY_FILE_TYPE);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         FTPClientConfig config = new FTPClientConfig();
         config.setServerTimeZoneId("zh-CN");
         client.configure(config);
@@ -218,7 +213,7 @@ public class FtpLoader implements ILoader {
 
     public void save(String path, InputStream is) throws IOException {
         if(connect()) {
-            client.setControlEncoding("UTF-8");
+            client.setFileType(FTP.BINARY_FILE_TYPE);
             client.storeFile(path, is);
         }
     }

@@ -13,7 +13,7 @@
         <div class="panel-heading">
             <ul class="nav nav-pills" role="tablist">
                 <li><a href="javascript:void(0)" ng-click="ftp.goToParent()"><span class="icon-reply"></span> 上一级</a></li>
-                <li><a href="javascript:void(0)"><span class="glyphicon glyphicon-refresh"></span> 刷新</a></li>
+                <li><a href="javascript:void(0)" ng-click="ftp.refreshPath()"><span class="glyphicon glyphicon-refresh"></span> 刷新</a></li>
                 <li><a href="javascript:void(0)" ng-click="ftp.openFileUploadDialog('fileUploadContent.html')"><span class="glyphicon glyphicon-upload"></span> 上传</a></li>
             </ul>
         </div>
@@ -88,14 +88,7 @@
 
         <div class="modal-footer">
             <button class="btn btn-default" ng-click="cancel()">关闭</button>
-            <button class="btn btn-primary" ng-click="upload()">上传</button>
+            <!--<button class="btn btn-primary" ng-click="upload()">上传</button>-->
         </div>
     </script>
 </div>
-
-<script type="text/javascript">
-    $(function() {
-        console.log($('#drag-and-drop-zone'));
-
-    });
-</script>

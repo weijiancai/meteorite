@@ -61,12 +61,13 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scop
     this.deleteFile = function(path) {
         var self = this;
         $http({url:'/tree', params: {delete: path}}).success(function() {
-            self.refresh();
+            self.refreshPath();
         });
     };
 
-    this.refresh = function() {
-        $http({url:'/tree', params: {refresh: $scope.parent}}).success(function(data) {
+    this.refreshPath = function() {
+        console.log($scope.current);
+        $http({url:'/tree', params: {refresh: $scope.current}}).success(function(data) {
             $scope.myData = data;
         });
     };
@@ -93,7 +94,7 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scop
 
 }]);
 
-var FileUploadCtrl = function ($scope, path) {
+var FileUploadCtrl = function ($scope, path, $modalInstance) {
     $scope.initFileUploadDialog = function() {
         console.log(path);
         $('#drag-and-drop-zone').dmUploader({
@@ -159,6 +160,6 @@ var FileUploadCtrl = function ($scope, path) {
     };
 
     $scope.cancel = function() {
-
+        $modalInstance.dismiss('cancel');
     }
 };
