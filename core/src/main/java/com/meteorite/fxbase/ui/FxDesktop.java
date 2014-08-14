@@ -40,9 +40,9 @@ public class FxDesktop extends BorderPane implements IDesktop {
     }
 
     public void initUI() {
-        TreeItem<Hyperlink> root = new TreeItem<>(new Hyperlink("Root"));
+        TreeItem<Hyperlink> root = new TreeItem<Hyperlink>(new Hyperlink("Root"));
         Hyperlink metaLink = new Hyperlink("元数据");
-        root.getChildren().add(new TreeItem<>(metaLink));
+        root.getChildren().add(new TreeItem<Hyperlink>(metaLink));
 
         Hyperlink dictLink = new Hyperlink("表格测试");
         dictLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -53,7 +53,7 @@ public class FxDesktop extends BorderPane implements IDesktop {
                 setCenter(table);
             }
         });
-        root.getChildren().add(new TreeItem<>(dictLink));
+        root.getChildren().add(new TreeItem<Hyperlink>(dictLink));
 
         Hyperlink formLink = new Hyperlink("表单测试");
         formLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -64,7 +64,7 @@ public class FxDesktop extends BorderPane implements IDesktop {
                 setCenter(form);
             }
         });
-        root.getChildren().add(new TreeItem<>(formLink));
+        root.getChildren().add(new TreeItem<Hyperlink>(formLink));
 
         Hyperlink queryLink = new Hyperlink("查询测试");
         queryLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -75,7 +75,7 @@ public class FxDesktop extends BorderPane implements IDesktop {
                 setCenter(form);
             }
         });
-        root.getChildren().add(new TreeItem<>(queryLink));
+        root.getChildren().add(new TreeItem<Hyperlink>(queryLink));
 
         Hyperlink crudLink = new Hyperlink("CRUD");
         crudLink.setOnAction(new EventHandler<ActionEvent>() {
@@ -86,9 +86,9 @@ public class FxDesktop extends BorderPane implements IDesktop {
                 setCenter(crud);
             }
         });
-        root.getChildren().add(new TreeItem<>(crudLink));
+        root.getChildren().add(new TreeItem<Hyperlink>(crudLink));
 
-        TreeView<Hyperlink> tree = new TreeView<>();
+        TreeView<Hyperlink> tree = new TreeView<Hyperlink>();
         tree.setRoot(root);
         tree.setShowRoot(false);
         this.setLeft(tree);

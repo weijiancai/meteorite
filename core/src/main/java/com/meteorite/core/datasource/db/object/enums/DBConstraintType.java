@@ -17,13 +17,18 @@ public enum DBConstraintType {
     ;
 
     public static DBConstraintType convert(String type) {
-        switch (type) {
-            case "CHECK": return CHECK;
-            case "PRIMARY KEY": return PRIMARY_KEY;
-            case "UNIQUE": return UNIQUE_KEY;
-            case "FOREIGN KEY": return FOREIGN_KEY;
-            case "VIEW CHECK": return VIEW_CHECK;
-            case "VIEW READONLY": return VIEW_READONLY;
+        if (type.equals("CHECK")) {
+            return CHECK;
+        } else if (type.equals("PRIMARY KEY")) {
+            return PRIMARY_KEY;
+        } else if (type.equals("UNIQUE")) {
+            return UNIQUE_KEY;
+        } else if (type.equals("FOREIGN KEY")) {
+            return FOREIGN_KEY;
+        } else if (type.equals("VIEW CHECK")) {
+            return VIEW_CHECK;
+        } else if (type.equals("VIEW READONLY")) {
+            return VIEW_READONLY;
         }
 
         return DEFAULT;

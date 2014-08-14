@@ -38,7 +38,7 @@ public class MUListView<T> extends ListView<T> implements ICanInput<T> {
     @Override
     public String getValueString() {
         if (convert != null) {
-            List<String> list = new ArrayList<>();
+            List<String> list = new ArrayList<String>();
             for (T t : this.getSelectionModel().getSelectedItems()) {
                 list.add(convert.toString(t));
             }

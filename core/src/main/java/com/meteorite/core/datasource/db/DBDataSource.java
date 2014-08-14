@@ -79,7 +79,7 @@ public class DBDataSource implements DataSource {
     }
 
     private void initProperties() {
-        List<MetaField> fields = new ArrayList<>();
+        List<MetaField> fields = new ArrayList<MetaField>();
         fields.add(new MetaField(DRIVER_CLASS, "驱动类"));
         fields.add(new MetaField(URL, "数据库URL"));
         fields.add(new MetaField(USER_NAME, "用户名"));
@@ -171,7 +171,7 @@ public class DBDataSource implements DataSource {
         }
 
         JdbcTemplate template = new JdbcTemplate(this);
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<String, Object>();
 
         for (int i = 0; i < pkColumns.size(); i++) {
             params.put(pkColumns.get(i).getName(), keys[i]);
@@ -234,12 +234,12 @@ public class DBDataSource implements DataSource {
             builder.sql().join(join);
         }
 
-        QueryResult<DataMap> queryResult = new QueryResult<>();
+        QueryResult<DataMap> queryResult = new QueryResult<DataMap>();
         queryResult.setPageRows(rows);
 
         builder.sql().build(getDatabaseType());
         JdbcTemplate template = new JdbcTemplate(this);
-        List<DataMap> list = new ArrayList<>();
+        List<DataMap> list = new ArrayList<DataMap>();
         try {
             // 查询rows
             list = template.queryForList(builder, page, rows);
@@ -264,7 +264,7 @@ public class DBDataSource implements DataSource {
         IPDB pdb = new IPDB() {
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
-                Map<String, Map<String, Object>> map = new HashMap<>();
+                Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
                 for (IValue value : valueMap.values()) {
                     MetaField field = value.getMetaField();
                     String tableName = field.getColumn().getDataset().getName();
@@ -272,7 +272,7 @@ public class DBDataSource implements DataSource {
                     if (map.containsKey(tableName)) {
                         param = map.get(tableName);
                     } else {
-                        param = new HashMap<>();
+                        param = new HashMap<String, Object>();
                         map.put(tableName, param);
                     }
                     param.put(field.getColumn().getName(), value.value());

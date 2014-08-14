@@ -24,9 +24,9 @@ public class ViewLayout {
     private List<ViewConfig> configs;
 
     /** 元字段属性Map */
-    private Map<String, Map<String, String>> fieldPropMap = new HashMap<>();
+    private Map<String, Map<String, String>> fieldPropMap = new HashMap<String, Map<String, String>>();
     // 属性配置map
-    private Map<String, String> configValueMap = new HashMap<>();
+    private Map<String, String> configValueMap = new HashMap<String, String>();
 
     public String getId() {
         return id;
@@ -75,7 +75,7 @@ public class ViewLayout {
             String fieldId = config.getField().getId();
             Map<String, String> propMap = fieldPropMap.get(fieldId);
             if (propMap == null) {
-                propMap = new HashMap<>();
+                propMap = new HashMap<String, String>();
                 fieldPropMap.put(fieldId, propMap);
             }
             propMap.put(config.getProperty().getName(), config.getValue());
@@ -88,7 +88,7 @@ public class ViewLayout {
      * @return 返回明细属性配置
      */
     public List<ViewConfig> getIPConfigs() {
-        List<ViewConfig> result = new ArrayList<>();
+        List<ViewConfig> result = new ArrayList<ViewConfig>();
         for (ViewConfig config : configs) {
             if (config.getProperty().getPropType() == PropertyType.IP) {
                 result.add(config);

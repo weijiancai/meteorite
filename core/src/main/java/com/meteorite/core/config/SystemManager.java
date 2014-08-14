@@ -38,8 +38,19 @@ public class SystemManager {
 
     private static SystemManager instance;
     private static SystemInfo sysInfo;
-    private static Map<String, ProjectConfig> cache = new HashMap<>();
+    private static Map<String, ProjectConfig> cache = new HashMap<String, ProjectConfig>();
     private LayoutConfig layoutConfig;
+
+    public static enum SystemType {
+        /**
+         * 桌面程序
+         */
+        DESKTOP,
+        /**
+         * WEB程序
+         */
+        WEB
+    }
 
     static {
         // 加载系统信息
@@ -64,23 +75,31 @@ public class SystemManager {
     /**
      * 初始化系统
      */
-    public void init() throws Exception {
-        // 加载数据源
-        loadDataSource();
-        //  启动数据库
-//        HSqlDBServer.getInstance().start();
-        checkDbVersion();
-        // 加载数据字典
-        DictManager.load();
-        // 加载布局配置
-        LayoutManager.load();
-        // 加载元数据
-        MetaManager.load();
-        // 加载视图
-        ViewManager.load();
-        // 注册Action
-//        MUActionConfig.getInstance().addAction(new MUAction(MetaManager.getMeta("MobileNumber"), "downloadMobileNumber", "下载手机号", MobileNumberAction.class, "fetchMobileNumber"));
-        MetaManager.getMeta("MobileNumber").addAction(new MUAction(MetaManager.getMeta("MobileNumber"), "downloadMobileNumber", "下载手机号", MobileNumberAction.class, "fetchMobileNumber"));
+    public void init(SystemType type) throws Exception {
+        switch (type) {
+            case DESKTOP: {
+                // 加载数据源
+                loadDataSource();
+                // 启动数据库
+                // HSqlDBServer.getInstance().start();
+                checkDbVersion();
+                // 加载数据字典
+                DictManager.load();
+                // 加载布局配置
+                LayoutManager.load();
+                // 加载元数据
+                MetaManager.load();
+                // 加载视图
+                ViewManager.load();
+                // 注册Action
+                // MUActionConfig.getInstance().addAction(new MUAction(MetaManager.getMeta("MobileNumber"), "downloadMobileNumber", "下载手机号", MobileNumberAction.class, "fetchMobileNumber"));
+                MetaManager.getMeta("MobileNumber").addAction(new MUAction(MetaManager.getMeta("MobileNumber"), "downloadMobileNumber", "下载手机号", MobileNumberAction.class, "fetchMobileNumber"));
+                break;
+            }
+            case WEB: {
+
+            }
+        }
     }
 
     private static void loadProjectConfig() throws Exception {
@@ -164,7 +183,7 @@ public class SystemManager {
     }
 
     public List<ProjectConfig> getProjectConfigs() {
-        return new ArrayList<>(cache.values());
+        return new ArrayList<ProjectConfig>(cache.values());
     }
 
     public static void save(ProjectConfig projectConfig) throws Exception {

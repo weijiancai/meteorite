@@ -48,7 +48,7 @@ public class MUForm extends BorderPane {
 
     private TabPane tabPane;
     private DataMap data;
-    private List<MUTable> children = new ArrayList<>();
+    private List<MUTable> children = new ArrayList<MUTable>();
 
     private BooleanProperty isModified = new SimpleBooleanProperty();
 

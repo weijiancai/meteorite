@@ -128,7 +128,7 @@ public class LayoutConfig implements ILayoutConfig {
     @XmlElementWrapper(name = "children")
     public List<ILayoutConfig> getChildren() {
         if (children == null) {
-            children = new ArrayList<>();
+            children = new ArrayList<ILayoutConfig>();
         }
         return children;
     }
@@ -138,7 +138,7 @@ public class LayoutConfig implements ILayoutConfig {
     @XmlElementWrapper(name = "Actions")
     public List<IActionConfig> getActionConfigs() {
         if (actionConfigs == null) {
-            actionConfigs = new ArrayList<>();
+            actionConfigs = new ArrayList<IActionConfig>();
         }
         return actionConfigs;
     }
@@ -148,7 +148,7 @@ public class LayoutConfig implements ILayoutConfig {
     @XmlElementWrapper(name = "Properties")
     public List<ILayoutProperty> getProperties() {
         if (properties == null) {
-            properties = new ArrayList<>();
+            properties = new ArrayList<ILayoutProperty>();
         }
         return properties;
     }

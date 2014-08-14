@@ -29,8 +29,8 @@ import java.util.Map;
  */
 public class MUFormLayout extends BorderPane {
     private FormProperty formConfig;
-    private Map<String, IValue> valueMap = new HashMap<>();
-    private List<ICanQuery> queryList = new ArrayList<>();
+    private Map<String, IValue> valueMap = new HashMap<String, IValue>();
+    private List<ICanQuery> queryList = new ArrayList<ICanQuery>();
 
     public MUFormLayout(FormProperty property) {
         this.formConfig = property;

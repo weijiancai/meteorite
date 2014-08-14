@@ -266,7 +266,7 @@ public class UString {
      * @return 返回拆分后的字符串数组
      */
     public static List<String> splitString(String str, String splitChar) {
-        List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<String>();
         String[] strs = str.split(splitChar);
         for (int i = 1; i <= strs.length; i++) {
             StringBuilder sb = new StringBuilder();

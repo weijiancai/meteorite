@@ -37,7 +37,7 @@ public class TableExportGuide extends BaseGuide {
     public void initPrep() {
         super.initPrep();
 
-        modelList = new ArrayList<>();
+        modelList = new ArrayList<GuideModel>();
         modelList.add(new ColSelectModel("选择列", this));
         modelList.add(new FileTypeModel("选择文件类型", this));
     }
@@ -68,11 +68,11 @@ public class TableExportGuide extends BaseGuide {
             this.setTitle(title);
             this.setGuide(guide);
 
-            List<TableFieldProperty> cols = new ArrayList<>();
+            List<TableFieldProperty> cols = new ArrayList<TableFieldProperty>();
             for (TableFieldProperty field : table.getConfig().getFieldProperties()) {
                 cols.add(field);
             }
-            listView = new MUCheckListView<>(cols);
+            listView = new MUCheckListView<TableFieldProperty>(cols);
             listView.setName("colNames");
             listView.setValueConvert(new ValueConverter<TableFieldProperty>() {
                 @Override
@@ -111,7 +111,7 @@ public class TableExportGuide extends BaseGuide {
             this.setTitle(title);
             this.setGuide(guide);
 
-            MUListView<String> listView1 = new MUListView<>();
+            MUListView<String> listView1 = new MUListView<String>();
             listView1.setName("fileType");
             listView1.getItems().add("文本文件");
             this.setContent(listView1);

@@ -65,7 +65,7 @@ public class BaseTreeNode implements ITreeNode {
     @Override
     public List<ITreeNode> getChildren() {
         if (children == null) {
-            children = new ArrayList<>();
+            children = new ArrayList<ITreeNode>();
         }
         return children;
     }

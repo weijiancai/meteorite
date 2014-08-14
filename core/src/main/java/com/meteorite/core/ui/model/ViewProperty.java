@@ -81,10 +81,10 @@ public class ViewProperty {
     public void persist() throws Exception {
         JdbcTemplate template = new JdbcTemplate();
         try {
-            Map<String, Object> valueMap = new HashMap<>();
+            Map<String, Object> valueMap = new HashMap<String, Object>();
             valueMap.put("value", getValue());
 
-            Map<String, Object> conditionMap = new HashMap<>();
+            Map<String, Object> conditionMap = new HashMap<String, Object>();
             conditionMap.put("id", getId());
 
             template.update(valueMap, conditionMap, "sys_view_prop");

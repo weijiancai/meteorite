@@ -32,13 +32,13 @@ public class View {
     private int sortNum;
 
     /** 元字段属性Map */
-    private Map<MetaField, Map<String, ViewProperty>> fieldPropMap = new HashMap<>();
+    private Map<MetaField, Map<String, ViewProperty>> fieldPropMap = new HashMap<MetaField, Map<String, ViewProperty>>();
 
     private List<ViewLayout> layoutList;
     private List<ViewConfig> configs;
     private List<ViewProperty> viewProperties;
 
-    private Map<String, ViewProperty> propMap = new HashMap<>();
+    private Map<String, ViewProperty> propMap = new HashMap<String, ViewProperty>();
     private Meta meta;
 
     public String getId() {
@@ -100,7 +100,7 @@ public class View {
     @JSONField(serialize = false)
     public List<ViewLayout> getLayoutList() {
         if (layoutList == null) {
-            layoutList = new ArrayList<>();
+            layoutList = new ArrayList<ViewLayout>();
         }
         return layoutList;
     }
@@ -112,7 +112,7 @@ public class View {
     @JSONField(serialize = false)
     public List<ViewConfig> getConfigs() {
         if (configs == null) {
-            configs = new ArrayList<>();
+            configs = new ArrayList<ViewConfig>();
         }
         return configs;
     }
@@ -138,7 +138,7 @@ public class View {
             if (field != null) {
                 Map<String, ViewProperty> propMap = fieldPropMap.get(field);
                 if (propMap == null) {
-                    propMap = new HashMap<>();
+                    propMap = new HashMap<String, ViewProperty>();
                     fieldPropMap.put(field, propMap);
                 }
                 propMap.put(property.getProperty().getId(), property);
@@ -174,7 +174,7 @@ public class View {
 
     @JSONField(serialize = false)
     public List<MetaField> getMetaFieldList() {
-        return new ArrayList<>(fieldPropMap.keySet());
+        return new ArrayList<MetaField>(fieldPropMap.keySet());
     }
 
     @JSONField(serialize = false)

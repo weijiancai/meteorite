@@ -11,7 +11,7 @@ import java.util.List;
 public class QueryResult<T> implements Serializable {
     private int total;
     private int pageRows = 15;
-    private List<T> rows = new ArrayList<>();
+    private List<T> rows = new ArrayList<T>();
 
     public int getTotal() {
         return total;

@@ -17,7 +17,7 @@ import java.util.List;
  * @since  1.0.0
  */
 public class FxFormConfig extends FormConfig {
-    private List<FxFormFieldConfig> formFields = new ArrayList<>();
+    private List<FxFormFieldConfig> formFields = new ArrayList<FxFormFieldConfig>();
 
     private StringProperty nameProperty = new SimpleStringProperty();
     private StringProperty displayNameProperty = new SimpleStringProperty();

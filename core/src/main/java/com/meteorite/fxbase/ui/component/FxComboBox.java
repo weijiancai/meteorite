@@ -33,7 +33,7 @@ public class FxComboBox extends FxFormField {
     public FxComboBox(FxFormFieldConfig fieldConfig) {
         super(fieldConfig);
 
-        comboBox = new ComboBox<>();
+        comboBox = new ComboBox<DictCode>();
 
         this.category = fieldConfig.getDict();
         comboBox.setEditable(true);

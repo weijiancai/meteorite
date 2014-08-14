@@ -47,7 +47,7 @@ public class MuComboBox extends BaseFormField implements IValue {
     protected void initPrep() {
         this.category = config.getDict();
 
-        comboBox = new ComboBox<>();
+        comboBox = new ComboBox<DictCode>();
         comboBox.setEditable(true);
         comboBox.setConverter(new DictCodeConverter());
         comboBox.setCellFactory(new Callback<ListView<DictCode>, ListCell<DictCode>>() {

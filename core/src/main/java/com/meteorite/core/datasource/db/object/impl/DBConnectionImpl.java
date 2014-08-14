@@ -111,7 +111,7 @@ public class DBConnectionImpl implements DBConnection {
 
     @Override
     public List<DataMap> getResultSet(String sql) {
-        List<DataMap> list = new ArrayList<>();
+        List<DataMap> list = new ArrayList<DataMap>();
         Connection conn = null;
 
         try {

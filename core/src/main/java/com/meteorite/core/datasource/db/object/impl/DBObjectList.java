@@ -24,7 +24,7 @@ public class DBObjectList extends DBObjectImpl {
     public List<ITreeNode> getChildren() {
         List<ITreeNode> children =  super.getChildren();
         if (children == null) {
-            children = new ArrayList<>();
+            children = new ArrayList<ITreeNode>();
         }
 
         return children;

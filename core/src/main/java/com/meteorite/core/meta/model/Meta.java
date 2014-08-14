@@ -50,19 +50,19 @@ public class Meta {
     private int sortNum;
     private Date inputDate;
 
-    private List<MetaField> fields = new ArrayList<>();
-    private List<MetaReference> references = new ArrayList<>();
-    private Set<Meta> children = new HashSet<>();
+    private List<MetaField> fields = new ArrayList<MetaField>();
+    private List<MetaReference> references = new ArrayList<MetaReference>();
+    private Set<Meta> children = new HashSet<Meta>();
     private DBDataset dbTable;
     private DataSource dataSource;
 
-    private ObjectProperty<ObservableList<DataMap>> dataList = new SimpleObjectProperty<>();
+    private ObjectProperty<ObservableList<DataMap>> dataList = new SimpleObjectProperty<ObservableList<DataMap>>();
     private IntegerProperty totalRows = new SimpleIntegerProperty(0); // 总行数
     private IntegerProperty pageCount = new SimpleIntegerProperty(0); // 总页数
     private IntegerProperty pageRows = new SimpleIntegerProperty(15); // 每页行数
 
-    private List<DataMap> insertCache = new ArrayList<>(); // 新增缓存
-    private List<MUAction> actionList = new ArrayList<>(); // Action List
+    private List<DataMap> insertCache = new ArrayList<DataMap>(); // 新增缓存
+    private List<MUAction> actionList = new ArrayList<MUAction>(); // Action List
 
     public Meta() {}
 
@@ -206,7 +206,7 @@ public class Meta {
      */
     @JSONField(serialize = false)
     public List<MetaField> getPkFields() {
-        List<MetaField> result = new ArrayList<>();
+        List<MetaField> result = new ArrayList<MetaField>();
         for (MetaField field : fields) {
             if (field.getColumn().isPk()) {
                 result.add(field);
@@ -345,7 +345,7 @@ public class Meta {
     @JSONField(serialize = false)
     public List<MetaReference> getReferences() {
         if (references == null) {
-            references = new ArrayList<>();
+            references = new ArrayList<MetaReference>();
         }
         return references;
     }
@@ -423,7 +423,7 @@ public class Meta {
             dataSource.save(new IPDB() {
                 @Override
                 public Map<String, Map<String, Object>> getPDBMap() {
-                    Map<String, Map<String, Object>> map = new HashMap<>();
+                    Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
                     map.put(getDbTable().getName(), dataMap);
                     return map;
                 }

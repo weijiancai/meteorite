@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class PropertyManager {
     public static List<LayoutProperty> buildFormField() {
-        List<LayoutProperty> list = new ArrayList<>();
+        List<LayoutProperty> list = new ArrayList<LayoutProperty>();
         list.add(PropBuilder.create().name(PropertyNames.FORM_FIELD.NAME).displayName("名称").layoutType(LayoutType.FORM_FIELD).build());
         return list;
     }

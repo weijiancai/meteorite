@@ -27,8 +27,8 @@ import static com.meteorite.core.config.SystemConfig.SYS_DB_NAME;
  * @since  1.0.0
  */
 public class DataSourceManager {
-    private static List<DataSource> dataSources = new ArrayList<>();
-    private static Map<String, DataSource> dataSourceMap = new HashMap<>();
+    private static List<DataSource> dataSources = new ArrayList<DataSource>();
+    private static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
 
     /**
      * 添加数据源
@@ -85,7 +85,7 @@ public class DataSourceManager {
     }
 
     public static INavTreeNode getNavTree() throws Exception {
-        List<ITreeNode> children = new ArrayList<>();
+        List<ITreeNode> children = new ArrayList<ITreeNode>();
         for (DataSource ds : getDataSources()) {
             if (ds instanceof ClassPathDataSource) {
                 continue;
@@ -114,7 +114,7 @@ public class DataSourceManager {
      * @since 1.0.0
      */
     public static List<DBDataSource> getAvailableDbDataSource() {
-        List<DBDataSource> result = new ArrayList<>();
+        List<DBDataSource> result = new ArrayList<DBDataSource>();
         for (DataSource ds : dataSourceMap.values()) {
             if (ds instanceof DBDataSource && ds.isAvailable()) {
                 result.add((DBDataSource) ds);

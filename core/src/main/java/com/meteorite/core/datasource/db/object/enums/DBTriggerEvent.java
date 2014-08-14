@@ -18,7 +18,7 @@ public enum DBTriggerEvent {
     UNKNOWN;
 
     public static List<DBTriggerEvent> convertToList(String event) {
-        List<DBTriggerEvent> result = new ArrayList<>();
+        List<DBTriggerEvent> result = new ArrayList<DBTriggerEvent>();
 
         if (event.contains("INSERT")) {
             result.add(INSERT);

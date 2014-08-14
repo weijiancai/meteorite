@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class DBObjCache {
     private static DBObjCache cache;
-    private Map<String, DBObject> dbObjectMap = new HashMap<>();
+    private Map<String, DBObject> dbObjectMap = new HashMap<String, DBObject>();
 
     private DBObjCache() {
 

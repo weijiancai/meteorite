@@ -48,7 +48,7 @@ public class MuDateRange extends BaseFormField implements IValue {
 
     @Override
     public List<Condition> getConditions() {
-        List<Condition> list = new ArrayList<>();
+        List<Condition> list = new ArrayList<Condition>();
 
         if (UString.isNotEmpty(startField.value())) {
             list.add(new Condition(config.getColumnName(), QueryModel.GREATER_EQUAL, startField.value(), MetaDataType.DATE));

@@ -60,7 +60,7 @@ public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
     @Override
     public List<DBColumn> getColumns() {
         if (columns == null) {
-            columns = new ArrayList<>();
+            columns = new ArrayList<DBColumn>();
         }
         return columns;
     }

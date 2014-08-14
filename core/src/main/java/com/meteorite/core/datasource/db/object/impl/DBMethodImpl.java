@@ -18,7 +18,7 @@ import java.util.Map;
 public abstract class DBMethodImpl extends DBObjectImpl implements DBMethod {
     private List<DBArgument> arguments;
     private String content;
-    private Map<String, DBArgument> argumentMap = new HashMap<>();
+    private Map<String, DBArgument> argumentMap = new HashMap<String, DBArgument>();
 
     @Override
     public List<DBArgument> getArguments() {

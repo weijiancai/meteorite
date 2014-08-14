@@ -2,6 +2,7 @@ apply plugin: "java"
 apply plugin: "war"
 apply plugin: 'jetty'
 
+sourceCompatibility = 1.6
 version = '1.0.0'
 
 repositories {
@@ -62,4 +63,14 @@ task count << {
 
 task intro(dependsOn: hello) << {
     println "I'm Gradle"
+}
+
+task baidu(dependsOn: war) << {
+    println "deploay baidu"
+    copy {
+        from 'build/libs/'
+        into 'D:\\workspace\\appida8bje4yetp'
+        include '*.war'
+        rename('core-' + version + '.war', 'ROOT.war')
+    }
 }

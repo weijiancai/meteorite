@@ -43,7 +43,7 @@ public class MUSearchBox extends VBox {
     private final Region innerBackground = new Region();
     private final Region icon = new Region();
 
-    private ListView<DBObject> listView = new ListView<>(FXCollections.<DBObject>observableArrayList());
+    private ListView<DBObject> listView = new ListView<DBObject>(FXCollections.<DBObject>observableArrayList());
 
     public MUSearchBox(final MUTabsDesktop tabsDesktop) {
         textField = new TextField() {
@@ -146,8 +146,8 @@ public class MUSearchBox extends VBox {
         }
 
         listView.getItems().clear();
-        List<DBObject> result = new ArrayList<>();
-        List<DBObject> list = new ArrayList<>();
+        List<DBObject> result = new ArrayList<DBObject>();
+        List<DBObject> list = new ArrayList<DBObject>();
         for (DBObject object : DBManager.getCache().getAllDBObject()) {
             if (object.getName().toLowerCase().contains(searchText.toLowerCase())) {
                 if (object.getName().equalsIgnoreCase(searchText)) {

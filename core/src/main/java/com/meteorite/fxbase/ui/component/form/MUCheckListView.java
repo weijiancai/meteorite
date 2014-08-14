@@ -23,7 +23,7 @@ import java.util.List;
  * @since 1.0.0
  */
 public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
-    private CheckListView<T> listView = new CheckListView<>();
+    private CheckListView<T> listView = new CheckListView<T>();
     private List<T> data;
 
     public MUCheckListView(List<T> list) {
@@ -101,7 +101,7 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
     @Override
     public String getValueString() {
         if (convert != null) {
-            List<String> list = new ArrayList<>();
+            List<String> list = new ArrayList<String>();
             for (T t : listView.getCheckModel().getSelectedItems()) {
                 list.add(convert.toString(t));
             }

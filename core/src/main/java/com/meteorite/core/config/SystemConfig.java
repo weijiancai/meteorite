@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
  * @version 1.0.0
  */
 public class SystemConfig {
-    public static final String DIR_NAME_METEORITE = ".meteorite"; // 系统名称
+    public static final String DIR_NAME_METEORITE = ".metaui"; // 系统名称
     public static final String DIR_NAME_SQLDB = "hsqldb"; // hsqldb数据库存储数据库文件的目录名
     public static final String DIR_NAME_DBCONF = "dbconf"; // 数据库配置信息目录名
 

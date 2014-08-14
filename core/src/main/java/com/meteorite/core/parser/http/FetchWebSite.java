@@ -83,9 +83,9 @@ public class FetchWebSite {
         LINK, MEDIA, IMPORT
     }
 
-    private Set<String> urlList = new HashSet<>();
-    private Set<String> pathList = new HashSet<>();
-    private Set<String> excludeList = new HashSet<>();
+    private Set<String> urlList = new HashSet<String>();
+    private Set<String> pathList = new HashSet<String>();
+    private Set<String> excludeList = new HashSet<String>();
     private static final int MAX_LEVEL = 1;
 
     public void addExcludeUrl(String url) {
@@ -179,7 +179,7 @@ public class FetchWebSite {
                 Elements links = doc.select("a[href]");
                 Elements media = doc.select("[src]");
                 Elements imports = doc.select("link[href]");
-                Set<String> hrefList = new HashSet<>();
+                Set<String> hrefList = new HashSet<String>();
 
                 for (Element link : imports) {
                     String href = link.attr("abs:href");
@@ -227,7 +227,7 @@ public class FetchWebSite {
                     System.out.println(e.getMessage());
                 }
 
-                Set<String> result = new HashSet<>();
+                Set<String> result = new HashSet<String>();
                 for (String href : hrefList) {
                     boolean flag = false;
 
@@ -284,7 +284,7 @@ public class FetchWebSite {
         Elements imports = doc.select("link[href]");*/
     }
 
-    private Set<String> urlSet = new HashSet<>();
+    private Set<String> urlSet = new HashSet<String>();
 
     public void fetchImages(String url) throws IOException {
         System.out.println(url);

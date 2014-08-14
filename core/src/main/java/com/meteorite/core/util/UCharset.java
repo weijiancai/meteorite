@@ -9,7 +9,7 @@ import java.util.Set;
  */
 public class UCharset {
     public static Set<String> getUtfChinese() {
-        Set<String> set = new HashSet<>();
+        Set<String> set = new HashSet<String>();
         for (int i = '\u4e00'; i < '\u9fbf'; i++) {
             System.out.println((char)i);
             set.add("" + (char)i);

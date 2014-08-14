@@ -25,7 +25,7 @@ public class BaseProperty implements PropertyNames {
         this.metaField = field;
         this.dbColumn = field.getColumn();
 
-        propNameMap = new HashMap<>();
+        propNameMap = new HashMap<String, ViewProperty>();
         for (ViewProperty prop : propMap.values()) {
             propNameMap.put(prop.getProperty().getName(), prop);
         }

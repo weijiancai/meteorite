@@ -61,13 +61,13 @@ public class JdbcTemplate {
 
     public List<DataMap> queryForList(String sql, Map<String, Object> conditionMap) throws Exception {
         if (conditionMap == null) {
-            conditionMap = new HashMap<>();
+            conditionMap = new HashMap<String, Object>();
         }
         StringBuilder sb = new StringBuilder();
         if (!sql.toLowerCase().contains("where")) {
             sb.append(" WHERE 1=1");
         }
-        List<String> conditionKeyList = new ArrayList<>();
+        List<String> conditionKeyList = new ArrayList<String>();
         for (String key : conditionMap.keySet()) {
             conditionKeyList.add(key);
             sb.append(" AND ").append(key).append("=?");
@@ -82,7 +82,7 @@ public class JdbcTemplate {
         ResultSetMetaData md = rs.getMetaData();
         int columnCount = md.getColumnCount();
 //        System.out.println("------------------------------------------------");
-        List<DataMap> list = new ArrayList<>();
+        List<DataMap> list = new ArrayList<DataMap>();
         DataMap map;
         while (rs.next()) {
             map = new DataMap();
@@ -119,7 +119,7 @@ public class JdbcTemplate {
         ResultSetMetaData md = rs.getMetaData();
         int columnCount = md.getColumnCount();
 
-        List<DataMap> list = new ArrayList<>();
+        List<DataMap> list = new ArrayList<DataMap>();
         DataMap map;
         while (rs.next()) {
             map = new DataMap();
@@ -192,10 +192,10 @@ public class JdbcTemplate {
         ResultSetMetaData md = rs.getMetaData();
         int columnCount = md.getColumnCount();
         //        System.out.println("------------------------------------------------");
-        List<Map<String, Object>> list = new ArrayList<>();
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map;
         while (rs.next()) {
-            map = new HashMap<>();
+            map = new HashMap<String, Object>();
             for (i = 1; i <= columnCount; i++) {
                 Object obj = rs.getObject(i);
                 map.put(md.getColumnLabel(i), obj);
@@ -222,7 +222,7 @@ public class JdbcTemplate {
             }
         }
         ResultSet rs = pstmt.executeQuery();
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<String, Object>();
         while (rs.next()) {
             for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                 map.put(rs.getMetaData().getColumnLabel(i), rs.getObject(i));
@@ -259,7 +259,7 @@ public class JdbcTemplate {
             }
         }
         ResultSet rs = pstmt.executeQuery();
-        List<T> list = new ArrayList<>();
+        List<T> list = new ArrayList<T>();
         T t;
         while (rs.next()) {
             t = rowMapper.mapRow(rs);
@@ -282,7 +282,7 @@ public class JdbcTemplate {
         try {
             StringBuilder sql = new StringBuilder("INSERT INTO " + table + " (");
 
-            List<String> keyList = new ArrayList<>();
+            List<String> keyList = new ArrayList<String>();
 
             String values = "";
             int i = 0;
@@ -328,7 +328,7 @@ public class JdbcTemplate {
         try {
             StringBuilder sql = new StringBuilder("DELETE FROM " + table + " WHERE ");
 
-            List<String> keyList = new ArrayList<>();
+            List<String> keyList = new ArrayList<String>();
 
             int i = 0;
             for(String key : params.keySet()) {
@@ -382,8 +382,8 @@ public class JdbcTemplate {
         try {
             StringBuilder sql = new StringBuilder("UPDATE " + tableName + " SET ");
 
-            List<String> keyList = new ArrayList<>();
-            List<String> conditionKeyList = new ArrayList<>();
+            List<String> keyList = new ArrayList<String>();
+            List<String> conditionKeyList = new ArrayList<String>();
 
             int i = 0;
             for(String key : valueMap.keySet()) {
@@ -399,7 +399,7 @@ public class JdbcTemplate {
                 conditionKeyList.add(key);
             }
             PreparedStatement pstmt = conn.prepareStatement(sql.toString());
-            List<Object> objects = new ArrayList<>();
+            List<Object> objects = new ArrayList<Object>();
             i = 1;
             for (String key : keyList) {
                 pstmt.setObject(i++, valueMap.get(key));

@@ -186,7 +186,7 @@ public class FormFieldProperty extends BaseProperty {
     }
 
     public static List<ViewProperty> getViewProperties(View view, MetaField field, FormType formType) {
-        List<ViewProperty> configList = new ArrayList<>();
+        List<ViewProperty> configList = new ArrayList<ViewProperty>();
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.NAME), field, field.getName()));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_DISPLAY), field, "true"));

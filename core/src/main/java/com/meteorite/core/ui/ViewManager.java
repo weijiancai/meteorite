@@ -27,11 +27,11 @@ import java.util.*;
  * @since  1.0.0
  */
 public class ViewManager {
-    private static Map<String, View> viewIdMap = new HashMap<>();
-    private static Map<String, View> viewNameMap = new HashMap<>();
-    private static Map<String, ViewLayout> viewLayoutMap = new HashMap<>();
-    private static Map<String, ViewConfig> configMap = new HashMap<>();
-    private static Map<String, ViewProperty> propertyMap = new HashMap<>();
+    private static Map<String, View> viewIdMap = new HashMap<String, View>();
+    private static Map<String, View> viewNameMap = new HashMap<String, View>();
+    private static Map<String, ViewLayout> viewLayoutMap = new HashMap<String, ViewLayout>();
+    private static Map<String, ViewConfig> configMap = new HashMap<String, ViewConfig>();
+    private static Map<String, ViewProperty> propertyMap = new HashMap<String, ViewProperty>();
 
     public static void load() throws Exception {
         SystemInfo sysInfo = SystemManager.getSystemInfo();
@@ -139,7 +139,7 @@ public class ViewManager {
         viewLayout.setMeta(meta);
         viewLayout.setLayout(layout);
 
-        List<ViewConfig> configList = new ArrayList<>();
+        List<ViewConfig> configList = new ArrayList<ViewConfig>();
 
         // 创建属性配置
         if (layout.getProperties() != null) {

@@ -92,7 +92,7 @@ public class TreeRest extends BaseRest {
                         }
                     }
 
-                    Map<String, String> result = new HashMap<>();
+                    Map<String, String> result = new HashMap<String, String>();
                     result.put("status", "success");
                     writeJsonObject(res, result);
                 } else {

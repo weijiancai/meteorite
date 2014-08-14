@@ -51,7 +51,7 @@ public class DictTableCell extends BaseTableCell {
         }*/
 
         if (comboBox == null) {
-            comboBox = new ComboBox<>(items);
+            comboBox = new ComboBox<DictCode>(items);
 //            comboBox.editableProperty().bind(comboBoxEditableProperty());
             comboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DictCode>() {
                 @Override

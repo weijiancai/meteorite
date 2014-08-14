@@ -27,7 +27,7 @@ public class DBTableImpl extends DBDatasetImpl implements DBTable {
     @Override
     public List<DBIndex> getIndexes() {
         if (indexes == null) {
-            indexes = new ArrayList<>();
+            indexes = new ArrayList<DBIndex>();
         }
         return indexes;
     }
@@ -35,7 +35,7 @@ public class DBTableImpl extends DBDatasetImpl implements DBTable {
     @Override
     public List<DBTrigger> getTriggers() {
         if (triggers == null) {
-            triggers = new ArrayList<>();
+            triggers = new ArrayList<DBTrigger>();
         }
         return triggers;
     }

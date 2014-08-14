@@ -13,7 +13,7 @@ public class HSqlDBServer {
     private static HSqlDBServer instance;
 
     private Server server;
-    private Map<String, String> filePathMap = new HashMap<>();
+    private Map<String, String> filePathMap = new HashMap<String, String>();
 
     private HSqlDBServer() {
         server = new Server();

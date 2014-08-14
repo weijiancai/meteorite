@@ -27,7 +27,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class DictManager {
-    private static Map<String, DictCategory> categoryMap = new HashMap<>();
+    private static Map<String, DictCategory> categoryMap = new HashMap<String, DictCategory>();
     private static DictCategory root = new DictCategory();
 
     static {
@@ -41,7 +41,7 @@ public class DictManager {
 
             root.setId("ROOT");
             root.setName("数据字典");
-            List<DictCode> codeList = new ArrayList<>();
+            List<DictCode> codeList = new ArrayList<DictCode>();
             for (DictCategory category : categoryMap.values()) {
                 DictCode code = new DictCode();
                 code.setCategory(category);
@@ -125,7 +125,7 @@ public class DictManager {
             Method method = clazz.getMethod("values");
             Enum[] ems = (Enum[]) method.invoke(null); // 调用静态方法，不需要实例对象
             int sortNum = 0;
-            List<DictCode> codeList = new ArrayList<>();
+            List<DictCode> codeList = new ArrayList<DictCode>();
             for (Enum em : ems) {
                 DictCode code = new DictCode();
                 if ("name".equals(dict.codeNameMethod())) {
@@ -173,7 +173,7 @@ public class DictManager {
      * @return 返回所有数据字典列表
      */
     public static List<DictCategory> getDictList() {
-        return new ArrayList<>(categoryMap.values());
+        return new ArrayList<DictCategory>(categoryMap.values());
     }
 
     /**

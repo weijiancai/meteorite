@@ -34,11 +34,11 @@ import static com.meteorite.core.config.SystemConfig.FILE_NAME_META_FIELD_CONFIG
  * @version 1.0.0
  */
 public class MetaManager {
-    private static Map<String, Meta> metaMap = new HashMap<>();
-    private static Map<String, Meta> metaIdMap = new HashMap<>();
-    private static Map<String, MetaField> fieldIdMap = new HashMap<>();
-    private static Map<String, Meta> tableMeta = new HashMap<>();
-    private static List<MetaField> metaFieldList = new ArrayList<>();
+    private static Map<String, Meta> metaMap = new HashMap<String, Meta>();
+    private static Map<String, Meta> metaIdMap = new HashMap<String, Meta>();
+    private static Map<String, MetaField> fieldIdMap = new HashMap<String, MetaField>();
+    private static Map<String, Meta> tableMeta = new HashMap<String, Meta>();
+    private static List<MetaField> metaFieldList = new ArrayList<MetaField>();
 
     static {
         try {
@@ -152,7 +152,7 @@ public class MetaManager {
         File file = new File(DIR_SYSTEM, FILE_NAME_META_FIELD_CONFIG);
 
         if(!file.exists()) {
-            metaFieldList = new ArrayList<>();
+            metaFieldList = new ArrayList<MetaField>();
         } else {
             InputStream is = UIO.getInputStream(file.getAbsolutePath(), UIO.FROM.FS);
             metaFieldList = JAXBUtil.unmarshalList(is, MetaField.class);
@@ -314,7 +314,7 @@ public class MetaManager {
         metaForm.setVgap(5);
 
         int sortNum = 0;
-        List<MetaFormField> formFields = new ArrayList<>();
+        List<MetaFormField> formFields = new ArrayList<MetaFormField>();
         for (MetaField field : meta.getFields()) {
             MetaFormField formField = new MetaFormField();
             formField.setInputDate(new Date());
@@ -345,7 +345,7 @@ public class MetaManager {
     }
 
     public static List<Meta> getMetaList() {
-        return new ArrayList<>(metaMap.values());
+        return new ArrayList<Meta>(metaMap.values());
     }
 
     private static int metaSortNum = 10;
@@ -374,7 +374,7 @@ public class MetaManager {
         metaIdMap.put(meta.getId(), meta);
         tableMeta.put(table.getFullName(), meta);
 
-        List<MetaField> fieldList = new ArrayList<>();
+        List<MetaField> fieldList = new ArrayList<MetaField>();
 
         // 将表列信息插入到类字段信息中
         MetaField field;

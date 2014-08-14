@@ -81,7 +81,7 @@ public abstract class BaseDBLoader implements DBLoader {
         DBObjectList dbCharsets = new DBObjectList("Charset", null, new ArrayList<ITreeNode>(charsetList));
         dbCharsets.setParent(navTree);
 
-        List<ITreeNode> list = new ArrayList<>();
+        List<ITreeNode> list = new ArrayList<ITreeNode>();
         list.add(dbSchemas);
         list.add(dbUsers);
         list.add(dbPrivileges);
@@ -109,7 +109,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBUser> loadUsers() {
-        List<DBUser> result = new ArrayList<>();
+        List<DBUser> result = new ArrayList<DBUser>();
         List<DataMap> list = dbConn.getResultSet(getUserSql());
         for (DataMap map : list) {
             DBUserImpl user = new DBUserImpl();
@@ -127,7 +127,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBObject> loadPrivileges() {
-        List<DBObject> result = new ArrayList<>();
+        List<DBObject> result = new ArrayList<DBObject>();
         List<DataMap> list = dbConn.getResultSet(getPrivilegesSql());
         for (DataMap map : list) {
             DBObjectImpl privilege = new DBObjectImpl();
@@ -144,7 +144,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBObject> loadCharsets() {
-        List<DBObject> result = new ArrayList<>();
+        List<DBObject> result = new ArrayList<DBObject>();
         List<DataMap> list = dbConn.getResultSet(getCharsetsSql());
         for (DataMap map : list) {
             DBObjectImpl privilege = new DBObjectImpl();
@@ -189,7 +189,7 @@ public abstract class BaseDBLoader implements DBLoader {
             result.add(schema);
 
             // 设置Schema子节点
-            List<ITreeNode> children = new ArrayList<>();
+            List<ITreeNode> children = new ArrayList<ITreeNode>();
             // 加载表
             DBObjectList tables = new DBObjectList("Tables", DBIcons.DBO_TABLES, new ArrayList<ITreeNode>(schema.getTables()));
             // 加载视图
@@ -231,9 +231,9 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBIndex> loadIndexes(DBSchema schema) {
-        List<DBIndex> result = new ArrayList<>();
+        List<DBIndex> result = new ArrayList<DBIndex>();
         List<DataMap> list = dbConn.getResultSet(String.format(getIndexesSql(), schema.getName()));
-        Map<String, DBIndexImpl> indexMap = new HashMap<>();
+        Map<String, DBIndexImpl> indexMap = new HashMap<String, DBIndexImpl>();
 
         for (DataMap map : list) {
             String indexName = map.getString("INDEX_NAME");
@@ -266,7 +266,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBTrigger> loadTriggers(DBSchema schema) {
-        List<DBTrigger> result = new ArrayList<>();
+        List<DBTrigger> result = new ArrayList<DBTrigger>();
         List<DataMap> list = dbConn.getResultSet(String.format(getTriggersSql(), schema.getName()));
 
         for (DataMap map : list) {
@@ -289,7 +289,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBProcedure> loadProcedures(DBSchema schema) {
-        List<DBProcedure> result = new ArrayList<>();
+        List<DBProcedure> result = new ArrayList<DBProcedure>();
         List<DataMap> list = dbConn.getResultSet(String.format(getProceduresSql(), schema.getName()));
 
         for (DataMap map : list) {
@@ -305,7 +305,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBFunction> loadFunctions(DBSchema schema) {
-        List<DBFunction> result = new ArrayList<>();
+        List<DBFunction> result = new ArrayList<DBFunction>();
         List<DataMap> list = dbConn.getResultSet(String.format(getFunctionsSql(), schema.getName()));
 
         for (DataMap map : list) {
@@ -344,20 +344,19 @@ public abstract class BaseDBLoader implements DBLoader {
             argument.setPosition(map.getInt("POSITION"));
             argument.setSequence(map.getInt("SEQUENCE"));
             String inOut = map.getString("IN_OUT");
-            switch (inOut) {
-                case "INOUT":
-                    argument.setInput(true);
-                    argument.setOutput(true);
-                    break;
-                case "IN":
-                    argument.setInput(true);
-                    break;
-                case "OUT":
-                    if (UString.isEmpty(argument.getName())) {
-                        argument.setName("out");
-                    }
-                    argument.setOutput(true);
-                    break;
+            if (inOut.equals("INOUT")) {
+                argument.setInput(true);
+                argument.setOutput(true);
+
+            } else if (inOut.equals("IN")) {
+                argument.setInput(true);
+
+            } else if (inOut.equals("OUT")) {
+                if (UString.isEmpty(argument.getName())) {
+                    argument.setName("out");
+                }
+                argument.setOutput(true);
+
             }
 
             DBDataType dataType = new DBDataType();
@@ -373,7 +372,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBTable> loadTables(DBSchema schema) {
-        List<DBTable> result = new ArrayList<>();
+        List<DBTable> result = new ArrayList<DBTable>();
         List<DataMap> list = dbConn.getResultSet(String.format(getTableSql(), schema.getName()));
         for (DataMap map : list) {
             DBTableImpl table = new DBTableImpl();
@@ -389,7 +388,7 @@ public abstract class BaseDBLoader implements DBLoader {
             result.add(table);
 
             // 设置Table子节点
-            List<ITreeNode> children = new ArrayList<>();
+            List<ITreeNode> children = new ArrayList<ITreeNode>();
             // 列
             DBObjectList columns = new DBObjectList("Columns", DBIcons.DBO_COLUMNS, new ArrayList<ITreeNode>(table.getColumns()));
             // 约束
@@ -406,7 +405,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBView> loadViews(DBSchema schema) {
-        List<DBView> result = new ArrayList<>();
+        List<DBView> result = new ArrayList<DBView>();
         List<DataMap> list = dbConn.getResultSet(String.format(getViewSql(), schema.getName()));
         for (DataMap map : list) {
             DBViewImpl view = new DBViewImpl();
@@ -420,7 +419,7 @@ public abstract class BaseDBLoader implements DBLoader {
             result.add(view);
 
             // 设置View子节点
-            List<ITreeNode> children = new ArrayList<>();
+            List<ITreeNode> children = new ArrayList<ITreeNode>();
             // 列
             DBObjectList columns = new DBObjectList("Columns", DBIcons.DBO_COLUMNS, new ArrayList<ITreeNode>(view.getColumns()));
 
@@ -432,7 +431,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public List<DBColumn> loadColumns(DBDataset table) {
-        List<DBColumn> result = new ArrayList<>();
+        List<DBColumn> result = new ArrayList<DBColumn>();
         List<DataMap> list = dbConn.getResultSet(String.format(getColumnSql(), table.getSchema().getName(), table.getName()));
         for (DataMap map : list) {
             DBColumnImpl column = new DBColumnImpl();
@@ -457,7 +456,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
     public List<DBConstraint> loadConstraint(DBDataset dataset) {
         DBSchemaImpl schema = (DBSchemaImpl) dataset.getSchema();
-        List<DBConstraint> result = new ArrayList<>();
+        List<DBConstraint> result = new ArrayList<DBConstraint>();
         List<DataMap> list = dbConn.getResultSet(String.format(getConstraintsSql(), dataset.getSchema().getName(), dataset.getName()));
         for (DataMap map : list) {
             DBConstraintImpl constraint = new DBConstraintImpl();

@@ -145,7 +145,7 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
     @XmlElementWrapper(name = "Properties")
     public List<LayoutProperty> getProperties() {
         if (properties == null) {
-            properties = new ArrayList<>();
+            properties = new ArrayList<LayoutProperty>();
         }
         return properties;
     }
@@ -158,7 +158,7 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
     @XmlElementWrapper(name = "children")
     public List<Layout> getChildren() {
         if (children == null) {
-            children = new ArrayList<>();
+            children = new ArrayList<Layout>();
         }
         return children;
     }

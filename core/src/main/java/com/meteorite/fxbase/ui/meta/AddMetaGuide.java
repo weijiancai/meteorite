@@ -38,7 +38,7 @@ public class AddMetaGuide extends BaseGuide {
         GuideModel selectTableModel = new TableSelectModel("选择表");
         selectTableModel.setGuide(this);
 
-        modelList = new ArrayList<>();
+        modelList = new ArrayList<GuideModel>();
         modelList.add(selectDbModel);
         modelList.add(selectTableModel);
     }
@@ -58,7 +58,7 @@ public class AddMetaGuide extends BaseGuide {
      * 选择数据库GuideModel
      */
     class DbSelectModel extends GuideModel {
-        MUListView<DBDataSource> dbListView = new MUListView<>();
+        MUListView<DBDataSource> dbListView = new MUListView<DBDataSource>();
 
         public DbSelectModel(String title) {
             this.setTitle(title);
@@ -88,7 +88,7 @@ public class AddMetaGuide extends BaseGuide {
         public TableSelectModel(String title) {
             this.setTitle(title);
 
-            tableListView = new MUCheckListView<>();
+            tableListView = new MUCheckListView<DBTable>();
             this.setContent(tableListView);
         }
 
@@ -100,7 +100,7 @@ public class AddMetaGuide extends BaseGuide {
         @Override
         public void doOpen() {
             DBDataSource ds = (DBDataSource) getGuide().getDataMap().get("dbds");
-            List<DBTable> result = new ArrayList<>();
+            List<DBTable> result = new ArrayList<DBTable>();
             try {
                 for (DBSchema schema : ds.getSchemas()) {
                     result.addAll(schema.getTables());

@@ -133,7 +133,7 @@ public class JSoupParserTest {
     @Test
     public void testCargo() throws IOException {
         String url = "http://cargo2.ce-air.com/MU/Service/FlightQuery.aspx?strCul=zh-CN";
-        Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<String, String>();
         data.put("cmbSelValue", "MU");
         data.put("fltdate", "1; and (select count(*) from admin) > 0 ");
         data.put("fltmonth", "11");

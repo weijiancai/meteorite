@@ -57,7 +57,7 @@ public class FxFormPane extends FxPane {
 
     public GridPane createCenter() {
         this.formConfig = new FxFormConfig(layoutConfig);
-        formFieldList = new ArrayList<>();
+        formFieldList = new ArrayList<IFormField>();
 
         GridPane gridPane = new GridPane();
 //        gridPane.setGridLinesVisible(true);
@@ -202,7 +202,7 @@ public class FxFormPane extends FxPane {
 
     @Override
     public Map<String, String> getValueMap() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<String, String>();
         for (IFormField field : formFieldList) {
             map.put(field.getFormFieldConfig().getName(), field.getValue());
         }

@@ -76,43 +76,43 @@ public class MetaPane extends BorderPane {
 
         TableColumn idCol = new TableColumn();
         idCol.setText("ID");
-        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idCol.setCellValueFactory(new PropertyValueFactory("id"));
 
         TableColumn nameCol = new TableColumn();
         nameCol.setText("名称");
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameCol.setCellValueFactory(new PropertyValueFactory("name"));
 
         TableColumn displayNameCol = new TableColumn();
         displayNameCol.setText("显示名");
-        displayNameCol.setCellValueFactory(new PropertyValueFactory<>("displayName"));
+        displayNameCol.setCellValueFactory(new PropertyValueFactory("displayName"));
 
         TableColumn dataTypeCol = new TableColumn();
         dataTypeCol.setText("数据类型");
-        dataTypeCol.setCellValueFactory(new PropertyValueFactory<>("dataType"));
+        dataTypeCol.setCellValueFactory(new PropertyValueFactory("dataType"));
 
         TableColumn descCol = new TableColumn();
         descCol.setText("描述");
-        descCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        descCol.setCellValueFactory(new PropertyValueFactory("desc"));
 
         TableColumn defaultValueCol = new TableColumn();
         defaultValueCol.setText("默认值");
-        defaultValueCol.setCellValueFactory(new PropertyValueFactory<>("defaultValue"));
+        defaultValueCol.setCellValueFactory(new PropertyValueFactory("defaultValue"));
 
         TableColumn dictCol = new TableColumn();
         dictCol.setText("数据字典");
-        dictCol.setCellValueFactory(new PropertyValueFactory<>("dictId"));
+        dictCol.setCellValueFactory(new PropertyValueFactory("dictId"));
 
         TableColumn isValidCol = new TableColumn();
         isValidCol.setText("是否有效");
-        isValidCol.setCellValueFactory(new PropertyValueFactory<>("isValid"));
+        isValidCol.setCellValueFactory(new PropertyValueFactory("isValid"));
 
         TableColumn sortNumCol = new TableColumn();
         sortNumCol.setText("排序号");
-        sortNumCol.setCellValueFactory(new PropertyValueFactory<>("sortNum"));
+        sortNumCol.setCellValueFactory(new PropertyValueFactory("sortNum"));
 
         TableColumn inputDateCol = new TableColumn();
         inputDateCol.setText("录入时间");
-        inputDateCol.setCellValueFactory(new PropertyValueFactory<>("inputDate"));
+        inputDateCol.setCellValueFactory(new PropertyValueFactory("inputDate"));
 
         tableView.setEditable(true);
         tableView.getColumns().addAll(idCol, nameCol, displayNameCol, dataTypeCol, descCol, defaultValueCol, dictCol, isValidCol, sortNumCol, inputDateCol);

@@ -13,10 +13,12 @@ public enum DBTriggerType {
     UNKNOWN;
 
     public static DBTriggerType convert(String type) {
-        switch (type) {
-            case "BEFORE" : return BEFORE;
-            case "AFTER" : return AFTER;
-            case "INSTEAD OF" : return INSTEAD_OF;
+        if (type.equals("BEFORE")) {
+            return BEFORE;
+        } else if (type.equals("AFTER")) {
+            return AFTER;
+        } else if (type.equals("INSTEAD OF")) {
+            return INSTEAD_OF;
         }
         return UNKNOWN;
     }

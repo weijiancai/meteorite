@@ -18,8 +18,8 @@ import java.util.Map;
 public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
     private List<DBColumn> columns;
     private List<DBConstraint> constraints;
-    private Map<String, DBColumn> columnMap = new HashMap<>();
-    private Map<String, DBConstraint> constraintMap = new HashMap<>();
+    private Map<String, DBColumn> columnMap = new HashMap<String, DBColumn>();
+    private Map<String, DBConstraint> constraintMap = new HashMap<String, DBConstraint>();
 
     @Override
     public DBColumn getColumn(String columnName) {
@@ -45,7 +45,7 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
 
     @Override
     public List<DBColumn> getPkColumns() {
-        List<DBColumn> list = new ArrayList<>();
+        List<DBColumn> list = new ArrayList<DBColumn>();
         for (DBColumn column : getColumns()) {
             if (column.isPk()) {
                 list.add(column);

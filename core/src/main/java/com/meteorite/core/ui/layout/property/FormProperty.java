@@ -165,7 +165,7 @@ public class FormProperty implements PropertyNames {
         view.setInputDate(new Date());
         view.setSortNum(0);
 
-        List<ViewProperty> viewProperties = new ArrayList<>();
+        List<ViewProperty> viewProperties = new ArrayList<ViewProperty>();
 
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.NAME), name));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.DISPLAY_NAME), displayName));

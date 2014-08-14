@@ -27,7 +27,7 @@ public class LayoutRest extends BaseRest {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String uri = req.getRequestURI();
         if(uri.endsWith("/layout")) {
-            List<LayoutConfig> list = new ArrayList<>();
+            List<LayoutConfig> list = new ArrayList<LayoutConfig>();
             list.add(SystemManager.getInstance().getLayoutConfig());
             writeJsonObject(res, list);
         }

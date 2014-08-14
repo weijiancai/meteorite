@@ -2,17 +2,15 @@ package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UString;
-import com.meteorite.fxbase.ui.component.tree.BaseTreeCell;
 import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
-import javafx.scene.Node;
-import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.util.Callback;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * MetaUI Tree
@@ -21,7 +19,7 @@ import java.util.*;
  * @since 1.0.0
  */
 public class MUTree extends TreeView<ITreeNode> {
-    private Map<ITreeNode, TreeItem<ITreeNode>> nodeItemMap = new HashMap<>();
+    private Map<ITreeNode, TreeItem<ITreeNode>> nodeItemMap = new HashMap<ITreeNode, TreeItem<ITreeNode>>();
 
     public MUTree(ITreeNode root) {
 //        MUTreeItem rootItem = new MUTreeItem(this, root);
@@ -38,7 +36,7 @@ public class MUTree extends TreeView<ITreeNode> {
     }
 
     public TreeItem<ITreeNode> addTreeNode(ITreeNode node) {
-        TreeItem<ITreeNode> rootItem = new TreeItem<>(node);
+        TreeItem<ITreeNode> rootItem = new TreeItem<ITreeNode>(node);
         setIcon(rootItem);
         buildTree(node, rootItem);
         return rootItem;
@@ -48,7 +46,7 @@ public class MUTree extends TreeView<ITreeNode> {
         List<? extends ITreeNode> children = parentNode.getChildren();
         if (children != null && children.size() > 0) {
             for (ITreeNode node : children) {
-                TreeItem<ITreeNode> item = new TreeItem<>(node);
+                TreeItem<ITreeNode> item = new TreeItem<ITreeNode>(node);
                 setIcon(item);
                 parentItem.getChildren().add(item);
                 nodeItemMap.put(node, item);

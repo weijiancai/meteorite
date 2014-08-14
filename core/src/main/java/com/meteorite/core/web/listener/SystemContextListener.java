@@ -17,7 +17,7 @@ public class SystemContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         try { // 初始化配置信息
-            SystemManager.getInstance().init();
+            SystemManager.getInstance().init(SystemManager.SystemType.WEB);
             //  启动数据库
 //            HSqlDBServer.getInstance().start();
         } catch (Exception e) {

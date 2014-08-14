@@ -5,7 +5,6 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.ui.ViewManager;
-import com.meteorite.core.ui.layout.property.BaseProperty;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.ui.layout.property.TableProperty;
 import com.meteorite.core.ui.model.View;
@@ -46,7 +45,7 @@ public class MUTable extends BorderPane {
     }
 
     private void initUI() {
-        table = new TableView<>();
+        table = new TableView<DataMap>();
         toolBar = new ToolBar();
 //        tableView.setEditable(true);
         // 创建工具条
@@ -61,7 +60,7 @@ public class MUTable extends BorderPane {
 
     private void createTableColumns() {
         // 创建序号列
-        TableColumn<DataMap, String> sortNumCol = new TableColumn<>("序号");
+        TableColumn<DataMap, String> sortNumCol = new TableColumn<DataMap, String>("序号");
         sortNumCol.setPrefWidth(50);
         sortNumCol.setCellFactory(new Callback<TableColumn<DataMap, String>, TableCell<DataMap, String>>() {
             @Override
@@ -82,7 +81,7 @@ public class MUTable extends BorderPane {
             @Override
             public void onChanged(Change<? extends TableColumn<DataMap, ?>> change) {
                 if (change.next()) {
-                    Map<TableFieldProperty, Integer> map = new HashMap<>();
+                    Map<TableFieldProperty, Integer> map = new HashMap<TableFieldProperty, Integer>();
                     for (int i = 0; i < config.getFieldProperties().size(); i++) {
                         TableFieldProperty property = config.getFieldProperties().get(i);
                         BaseTableColumn cur = (BaseTableColumn) change.getList().get(i + 1);
@@ -142,7 +141,7 @@ public class MUTable extends BorderPane {
         MUTable table = new MUTable(view);
         table.showToolbar(false);
         table.setEditable(true);
-        List<DataMap> list = new ArrayList<>();
+        List<DataMap> list = new ArrayList<DataMap>();
         for (final TableFieldProperty property : fieldProperties) {
             DataMap data = new DataMap();
             for (ViewProperty prop : view.getViewProperties()) {

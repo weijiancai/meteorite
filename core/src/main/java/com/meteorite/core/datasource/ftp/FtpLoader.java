@@ -1,10 +1,8 @@
 package com.meteorite.core.datasource.ftp;
 
-import com.meteorite.core.ITree;
 import com.meteorite.core.loader.ILoader;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.model.impl.BaseNavTreeNode;
-import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.util.UString;
 import org.apache.commons.net.ftp.*;
 import org.apache.log4j.Logger;
@@ -12,8 +10,10 @@ import org.apache.log4j.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Ftp加载器
@@ -44,7 +44,7 @@ public class FtpLoader implements ILoader {
         config.setServerTimeZoneId("zh-CN");
         client.configure(config);
 
-        nodeMap = new HashMap<>();
+        nodeMap = new HashMap<String, FtpResourceItem>();
         navTree = new FtpResourceItem();
         navTree.setId("/");
         navTree.setName("Root");
@@ -173,13 +173,13 @@ public class FtpLoader implements ILoader {
     public List<ITreeNode> getChildren(String path) throws IOException {
         BaseNavTreeNode parent = getTreeNode(path);
         if (parent == null) {
-            return new ArrayList<>();
+            return new ArrayList<ITreeNode>();
         }
         /*if (parent.getChildren().size() > 0) {
             return parent.getChildren();
         }*/
 
-        List<ITreeNode> result = new ArrayList<>();
+        List<ITreeNode> result = new ArrayList<ITreeNode>();
 
         if (connect()) {
             FTPFile[] files = client.listFiles(path);

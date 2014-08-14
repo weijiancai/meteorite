@@ -54,7 +54,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     private MUTree tree;
     private MUTabPane tabPane;
     private MUTabPane dbObjTabPane;
-    private Map<String, Tab> tabCache = new HashMap<>();
+    private Map<String, Tab> tabCache = new HashMap<String, Tab>();
     private INavTreeNode navTree;
     private Popup popup = new Popup();
 

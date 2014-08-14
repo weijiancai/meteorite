@@ -21,10 +21,10 @@ import java.util.*;
  */
 public class TableProperty implements PropertyNames {
     private List<TableFieldProperty> fieldProperties;
-    private Map<MetaField, TableFieldProperty> fieldMap = new HashMap<>();
+    private Map<MetaField, TableFieldProperty> fieldMap = new HashMap<MetaField, TableFieldProperty>();
 
     public TableProperty(View view) {
-        fieldProperties = new ArrayList<>();
+        fieldProperties = new ArrayList<TableFieldProperty>();
         for (MetaField field : view.getMetaFieldList()) {
             Map<String, ViewProperty> map = view.getMetaFieldConfig(field);
             TableFieldProperty fieldProperty = new TableFieldProperty(field, map);
@@ -68,7 +68,7 @@ public class TableProperty implements PropertyNames {
         view.setInputDate(new Date());
         view.setSortNum(0);
 
-        List<ViewProperty> viewProperties = new ArrayList<>();
+        List<ViewProperty> viewProperties = new ArrayList<ViewProperty>();
 
 
         // 创建属性配置

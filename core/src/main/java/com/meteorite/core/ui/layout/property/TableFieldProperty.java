@@ -38,7 +38,7 @@ public class TableFieldProperty extends BaseProperty {
     private BooleanProperty isDisplay = new SimpleBooleanProperty(true);
     private DisplayStyle displayStyle;
     private DictCategory dict;
-    private ObjectProperty<EnumAlign> align = new SimpleObjectProperty<>();
+    private ObjectProperty<EnumAlign> align = new SimpleObjectProperty<EnumAlign>();
     private IntegerProperty sortNum = new SimpleIntegerProperty(0);
 
     public TableFieldProperty(MetaField field, Map<String, ViewProperty> propMap) {
@@ -186,7 +186,7 @@ public class TableFieldProperty extends BaseProperty {
     }
 
     public static List<ViewProperty> getViewProperties(View view, MetaField field, boolean isDisplay) {
-        List<ViewProperty> viewProperties = new ArrayList<>();
+        List<ViewProperty> viewProperties = new ArrayList<ViewProperty>();
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.NAME), field, field.getName()));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_DISPLAY), field, isDisplay ? "true" : "false"));

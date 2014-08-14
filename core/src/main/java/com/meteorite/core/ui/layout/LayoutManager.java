@@ -33,13 +33,13 @@ import static com.meteorite.core.ui.ConfigConst.*;
  * @since 1.0.0
  */
 public class LayoutManager {
-    private static Map<String, ILayoutConfig> cache = new HashMap<>();
-    private static Map<String, Layout> layoutIdMap = new HashMap<>();
-    private static Map<String, Layout> layoutNameMap = new HashMap<>();
-    private static List<Layout> layoutList = new ArrayList<>();
-    private static Map<String, LayoutProperty> propMap = new HashMap<>();
-    private static Map<String, LayoutProperty> propNameMap = new HashMap<>();
-    private static Map<String, List<LayoutProperty>> layoutTypeMap = new HashMap<>();
+    private static Map<String, ILayoutConfig> cache = new HashMap<String, ILayoutConfig>();
+    private static Map<String, Layout> layoutIdMap = new HashMap<String, Layout>();
+    private static Map<String, Layout> layoutNameMap = new HashMap<String, Layout>();
+    private static List<Layout> layoutList = new ArrayList<Layout>();
+    private static Map<String, LayoutProperty> propMap = new HashMap<String, LayoutProperty>();
+    private static Map<String, LayoutProperty> propNameMap = new HashMap<String, LayoutProperty>();
+    private static Map<String, List<LayoutProperty>> layoutTypeMap = new HashMap<String, List<LayoutProperty>>();
     private static Layout root;
 
     public static void load() throws Exception {
@@ -69,7 +69,7 @@ public class LayoutManager {
                 propMap.put(prop.getId(), prop);
                 List<LayoutProperty> list = layoutTypeMap.get(prop.getLayoutType().name());
                 if (list == null) {
-                    list = new ArrayList<>();
+                    list = new ArrayList<LayoutProperty>();
                     layoutTypeMap.put(prop.getLayoutType().name(), list);
                 }
                 list.add(prop);
@@ -140,7 +140,7 @@ public class LayoutManager {
         form.setPropValue(FORM_NAME, meta.getName() + "Form");
         form.setPropValue(FORM_DISPLAY_NAME, meta.getDisplayName() + "表单");
 
-        List<ILayoutConfig> children = new ArrayList<>();
+        List<ILayoutConfig> children = new ArrayList<ILayoutConfig>();
         for (MetaField field : meta.getFields()) {
             ILayoutConfig formField = getLayout(R.layout.FORM_FIELD);
             formField.setPropValue(FORM_FIELD_NAME, field.getName());
@@ -177,7 +177,7 @@ public class LayoutManager {
         form.setPropValue(FORM_NAME, LAYOUT_FORM);
         form.setPropValue(FORM_DISPLAY_NAME, layoutConfig.getDisplayName() + "表单");
 
-        List<ILayoutConfig> children = new ArrayList<>();
+        List<ILayoutConfig> children = new ArrayList<ILayoutConfig>();
         for (ILayoutProperty field : layoutConfig.getProperties()) {
             if ("value".equals(field.getName())) {
                 continue;

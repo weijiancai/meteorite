@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class MUActionConfig {
     private static MUActionConfig instance = new MUActionConfig();
-    private Map<String, MUAction> cache = new HashMap<>();
+    private Map<String, MUAction> cache = new HashMap<String, MUAction>();
 
     public static MUActionConfig getInstance() {
         return instance;

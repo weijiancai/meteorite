@@ -100,7 +100,7 @@ public class FetchMobileNumber {
         String codes = doc.select("div#right div.right22 div.nr1 div.fleft textarea").get(0).text();
         /*System.out.println(cardType + " --> " + operator);
         System.out.println(codes);*/
-        List<MobileNumber> list = new ArrayList<>();
+        List<MobileNumber> list = new ArrayList<MobileNumber>();
         for (String code : codes.split("\n")) {
             MobileNumber mobileNumber = new MobileNumber(code, province, city, cardType, operator, codeSegment);
             System.out.println(mobileNumber);

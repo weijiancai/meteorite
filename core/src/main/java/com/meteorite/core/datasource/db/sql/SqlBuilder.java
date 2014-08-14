@@ -39,13 +39,13 @@ public class SqlBuilder {
     private boolean haveWith;
     private boolean isQuery = true;
     private boolean isBracket = false;
-    private Queue<Object> paramQueue = new LinkedList<>();
+    private Queue<Object> paramQueue = new LinkedList<Object>();
     private List<QueryCondition> conditionList;
     private DatabaseType dbType;
     private String sql;
 
     private SqlBuilder() {
-        conditionList = new ArrayList<>();
+        conditionList = new ArrayList<QueryCondition>();
     }
 
     public static SqlBuilder create() {

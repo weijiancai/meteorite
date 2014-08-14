@@ -114,7 +114,7 @@ public class DBObjectImpl implements DBObject {
     @XmlTransient
     public List<ITreeNode> getChildren() {
         if (children == null) {
-            children = new ArrayList<>();
+            children = new ArrayList<ITreeNode>();
         }
         return children;
     }

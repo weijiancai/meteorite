@@ -66,7 +66,7 @@ public class CrudProperty implements PropertyNames {
         view.setInputDate(new Date());
         view.setSortNum(0);
 
-        List<ViewProperty> viewProperties = new ArrayList<>();
+        List<ViewProperty> viewProperties = new ArrayList<ViewProperty>();
 
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(CRUD.FORM), formView.getId()));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(CRUD.TABLE), tableView.getId()));

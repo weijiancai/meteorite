@@ -70,7 +70,7 @@ public abstract class BaseApp extends Application {
         stage.setTitle(projectConfig.getDisplayName());
 
         //  系统初始化
-        SystemManager.getInstance().init();
+        SystemManager.getInstance().init(SystemManager.SystemType.DESKTOP);
 
         // 初始化完成
         facade.initAfter();

@@ -6,20 +6,14 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.util.UString;
-import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
-import com.meteorite.fxbase.ui.component.FxLookDictPane;
-import com.meteorite.fxbase.ui.view.MUDialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuItem;
@@ -38,7 +32,7 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
     protected boolean isAddQueryMode;
     private Hyperlink btnQueryModel;
     private String oldValue;
-    private List<Condition> list = new ArrayList<>();
+    private List<Condition> list = new ArrayList<Condition>();
     private StringProperty value = new SimpleStringProperty();
 
     public BaseFormField(FormFieldProperty property) {
@@ -77,16 +71,24 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
                 @Override
                 public void handle(ActionEvent event) {
                     String text = btnQueryModel.getText();
-                    switch (text) {
-                        case "=":  setQueryModel("!="); break;
-                        case "!=": setQueryModel(">"); break;
-                        case ">": setQueryModel(">="); break;
-                        case ">=": setQueryModel("<");  break;
-                        case "<": setQueryModel("<="); break;
-                        case "<=": setQueryModel("%%"); break;
-                        case "%%": setQueryModel("*%"); break;
-                        case "*%": setQueryModel("%*"); break;
-                        case "%*": setQueryModel("=");
+                    if (text.equals("=")) {
+                        setQueryModel("!=");
+                    } else if (text.equals("!=")) {
+                        setQueryModel(">");
+                    } else if (text.equals(">")) {
+                        setQueryModel(">=");
+                    } else if (text.equals(">=")) {
+                        setQueryModel("<");
+                    } else if (text.equals("<")) {
+                        setQueryModel("<=");
+                    } else if (text.equals("<=")) {
+                        setQueryModel("%%");
+                    } else if (text.equals("%%")) {
+                        setQueryModel("*%");
+                    } else if (text.equals("*%")) {
+                        setQueryModel("%*");
+                    } else if (text.equals("%*")) {
+                        setQueryModel("=");
                     }
                 }
             });
@@ -164,16 +166,24 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
 
     private void setQueryModel(String queryModel) {
         btnQueryModel.setText(queryModel);
-        switch (queryModel) {
-            case "=": config.setQueryModel(QueryModel.EQUAL); break;
-            case "!=": config.setQueryModel(QueryModel.NOT_EQUAL); break;
-            case ">": config.setQueryModel(QueryModel.GREATER_THAN); break;
-            case ">=": config.setQueryModel(QueryModel.GREATER_EQUAL); break;
-            case "<": config.setQueryModel(QueryModel.LESS_THAN); break;
-            case "<=": config.setQueryModel(QueryModel.LESS_EQUAL); break;
-            case "%%": config.setQueryModel(QueryModel.LIKE); break;
-            case "*%": config.setQueryModel(QueryModel.LEFT_LIKE); break;
-            case "%*": config.setQueryModel(QueryModel.RIGHT_LIKE);
+        if (queryModel.equals("=")) {
+            config.setQueryModel(QueryModel.EQUAL);
+        } else if (queryModel.equals("!=")) {
+            config.setQueryModel(QueryModel.NOT_EQUAL);
+        } else if (queryModel.equals(">")) {
+            config.setQueryModel(QueryModel.GREATER_THAN);
+        } else if (queryModel.equals(">=")) {
+            config.setQueryModel(QueryModel.GREATER_EQUAL);
+        } else if (queryModel.equals("<")) {
+            config.setQueryModel(QueryModel.LESS_THAN);
+        } else if (queryModel.equals("<=")) {
+            config.setQueryModel(QueryModel.LESS_EQUAL);
+        } else if (queryModel.equals("%%")) {
+            config.setQueryModel(QueryModel.LIKE);
+        } else if (queryModel.equals("*%")) {
+            config.setQueryModel(QueryModel.LEFT_LIKE);
+        } else if (queryModel.equals("%*")) {
+            config.setQueryModel(QueryModel.RIGHT_LIKE);
         }
     }
 

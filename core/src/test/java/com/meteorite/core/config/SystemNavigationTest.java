@@ -11,7 +11,7 @@ import org.junit.Test;
 public class SystemNavigationTest {
     @Test
     public void testSystemNav() throws Exception {
-        SystemManager.getInstance().init();
+        SystemManager.getInstance().init(SystemManager.SystemType.DESKTOP);
         SystemNavigation nav = new SystemNavigation();
         System.out.println(JSON.toJSONString(nav, SerializerFeature.PrettyFormat));
     }

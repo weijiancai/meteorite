@@ -20,9 +20,9 @@ public class FxFormFieldConfig extends FormFieldConfig {
     private BooleanProperty displayProperty = new SimpleBooleanProperty();
     private IntegerProperty widthProperty = new SimpleIntegerProperty();
     private IntegerProperty heightProperty = new SimpleIntegerProperty();
-    private ObjectProperty<DisplayStyle> displayStyleProperty = new SimpleObjectProperty<>();
-    private ObjectProperty<MetaDataType> dataTypeProperty = new SimpleObjectProperty<>();
-    private ObjectProperty<DictCategory> dictProperty = new SimpleObjectProperty<>();
+    private ObjectProperty<DisplayStyle> displayStyleProperty = new SimpleObjectProperty<DisplayStyle>();
+    private ObjectProperty<MetaDataType> dataTypeProperty = new SimpleObjectProperty<MetaDataType>();
+    private ObjectProperty<DictCategory> dictProperty = new SimpleObjectProperty<DictCategory>();
     private IntegerProperty sortNumProperty = new SimpleIntegerProperty();
 
     public FxFormFieldConfig(FormConfig formConfig, ILayoutConfig config) {

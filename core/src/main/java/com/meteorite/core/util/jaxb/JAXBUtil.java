@@ -33,7 +33,7 @@ public class JAXBUtil {
     }
 
     public static <T> void marshalListToFile(List<T> list, File file, Class<?> classes) throws Exception {
-        ListBean<T> listBean = new ListBean<>(list);
+        ListBean<T> listBean = new ListBean<T>(list);
 
         marshalToFile(listBean, file, classes);
     }

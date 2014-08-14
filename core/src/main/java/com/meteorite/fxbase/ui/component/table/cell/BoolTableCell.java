@@ -62,7 +62,7 @@ public class BoolTableCell extends BaseTableCell {
     @Override
     public void startEdit() {
         if (comboBox == null) {
-            comboBox = new ComboBox<>();
+            comboBox = new ComboBox<DictCode>();
             comboBox.setItems(FXCollections.observableArrayList(dictCategory.getCodeList()));
             comboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DictCode>() {
                 @Override

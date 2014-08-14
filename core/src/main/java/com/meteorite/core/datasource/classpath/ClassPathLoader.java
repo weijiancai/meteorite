@@ -45,7 +45,7 @@ public class ClassPathLoader implements ILoader {
         navTree.setId("/");
         navTree.setName("Root");
         navTree.setDisplayName("Root");
-        nodeMap = new HashMap<>();
+        nodeMap = new HashMap<String, ResourceItem>();
 
         URL url = Thread.currentThread().getContextClassLoader().getResource("/com/meteorite");
         if (url == null) {
