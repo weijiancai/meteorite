@@ -1,7 +1,6 @@
 package com.meteorite.core.web.listener;
 
 import com.meteorite.core.config.SystemManager;
-import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.util.HSqlDBServer;
 
 import javax.servlet.ServletContextEvent;
@@ -15,7 +14,9 @@ import javax.servlet.ServletContextListener;
  */
 public class SystemContextListener implements ServletContextListener {
     @Override
-    public void contextInitialized(ServletContextEvent servletContextEvent) {
+    public void contextInitialized(ServletContextEvent event) {
+        // 设置日志目录属性
+        System.setProperty("logs_dir", event.getServletContext().getRealPath("/log"));
         try { // 初始化配置信息
             SystemManager.getInstance().init(SystemManager.SystemType.WEB);
             //  启动数据库
