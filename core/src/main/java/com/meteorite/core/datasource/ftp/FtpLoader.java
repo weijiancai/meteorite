@@ -39,6 +39,7 @@ public class FtpLoader implements ILoader {
 
         client = new FTPClient();
 //        client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out), true));
+        client.addProtocolCommandListener(new LogCommandListener());
         client.setControlEncoding("GBK");
         FTPClientConfig config = new FTPClientConfig();
         config.setServerTimeZoneId("zh-CN");
@@ -128,7 +129,7 @@ public class FtpLoader implements ILoader {
                 System.out.println(status);
                 return true;
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage(), e);
             }
         }
 

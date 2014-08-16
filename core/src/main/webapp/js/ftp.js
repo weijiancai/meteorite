@@ -13,7 +13,7 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scop
             {field: 'type', displayName: '类型'},
 //            {field: '', displayName: '下载', cellTemplate: '<button type="button" class="btn btn-default" title="{{row.entity[\'id\']}}" ng-click="ftp.downFile(row.entity)"><span class="glyphicon glyphicon-download"></span></button>'}
             {field: '', displayName: '下载', cellTemplate: '<a href="/tree?down={{row.entity[\'id\']}}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span></a>' +
-                '<a ng-click="ftp.deleteFile(row.entity[\'id\'])" href="javascript:void(0)" class="btn btn-default"><span class="icon-trash"></span></a>'}
+                '<a ng-click="ftp.deleteFile(row.entity)" href="javascript:void(0)" class="btn btn-default"><span class="icon-trash"></span></a>'}
         ]
     };
 
@@ -58,7 +58,7 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scop
         this.goTo($scope.parent);
     };
 
-    this.deleteFile = function(path) {
+    this.deleteFile = function(rowData) {
         var self = this;
         $http({url:'/tree', params: {delete: path}}).success(function() {
             self.refreshPath();
