@@ -40,7 +40,6 @@ public class FtpLoader implements ILoader {
         client = new FTPClient();
 //        client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out), true));
         client.addProtocolCommandListener(new LogCommandListener());
-        client.setControlEncoding("GBK");
         FTPClientConfig config = new FTPClientConfig();
         config.setServerTimeZoneId("zh-CN");
         client.configure(config);
@@ -123,13 +122,18 @@ public class FtpLoader implements ILoader {
     }
 
     public boolean connect() {
-        if(client.isConnected()) {
+        if(client.isConnected() && client.isAvailable()) {
             try {
                 String status = client.getStatus();
                 System.out.println(status);
                 return true;
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
+                try {
+                    client.disconnect();
+                } catch (IOException e1) {
+                    log.error(e1.getMessage(), e1);
+                }
             }
         }
 
@@ -147,7 +151,8 @@ public class FtpLoader implements ILoader {
                 log.error(String.format("登陆【%s】失败，用户名【%s】！", ip, user));
                 return false;
             }
-            client.setFileType(FTP.ASCII_FILE_TYPE);
+            client.setControlEncoding("GBK");
+            client.setFileType(FTP.BINARY_FILE_TYPE);
             client.enterLocalPassiveMode();
         } catch (FTPConnectionClosedException e) {
             log.error("Server closed connection.", e);
@@ -214,16 +219,39 @@ public class FtpLoader implements ILoader {
 
     public void save(String path, InputStream is) throws IOException {
         if(connect()) {
-            client.setFileType(FTP.BINARY_FILE_TYPE);
             client.storeFile(path, is);
         }
     }
 
     public void delete(String path) throws IOException {
         if(connect()) {
-            boolean isSuccess = client.deleteFile(path);
-            System.out.println(isSuccess);
+            FtpResourceItem item = nodeMap.get(path);
+
+            if ("目录".equals(item.getType())) {
+                deleteAll(path);
+                client.removeDirectory(path);
+            } else {
+                client.deleteFile(path);
+            }
         }
-        client.disconnect();
+    }
+
+    /**
+     * 删除此目录下的所有文件
+     *
+     * @param path 目录路径
+     * @throws IOException
+     */
+    public void deleteAll(String path) throws IOException {
+        FTPFile[] files = client.listFiles(path);
+        for (FTPFile f : files) {
+            if (f.isDirectory()) {
+                this.deleteAll(path + "/" + f.getName());
+                client.removeDirectory(path + "/" + f.getName());
+            }
+            if (f.isFile()) {
+                client.deleteFile(path + "/" + f.getName());
+            }
+        }
     }
 }

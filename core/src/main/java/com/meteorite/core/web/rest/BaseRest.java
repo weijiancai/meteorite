@@ -15,6 +15,12 @@ import java.io.IOException;
  * @since 1.0.0
  */
 public abstract class BaseRest extends HttpServlet {
+    public enum BrowserType {
+        MSIE, FIREFOX, CHROME
+    }
+
+    protected BrowserType browserType;
+
     protected void writeJsonObject(HttpServletResponse res, Object obj) throws IOException {
         res.setContentType("application/json;charset=UTF-8");
         res.getWriter().write(JSON.toJSONString(obj));
@@ -23,13 +29,22 @@ public abstract class BaseRest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
-        handle(req, res);
+        String userAgent = req.getHeader("User-Agent");
+        if (userAgent.contains("MSIE")) {
+            browserType = BrowserType.MSIE;
+        } else if (userAgent.contains("Firefox")) {
+            browserType = BrowserType.FIREFOX;
+        } else if (userAgent.contains("Chrome")) {
+            browserType = BrowserType.CHROME;
+        }
+        doPost(req, res);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         handle(req, res);
+
     }
 
     protected abstract void handle(HttpServletRequest req, HttpServletResponse res);

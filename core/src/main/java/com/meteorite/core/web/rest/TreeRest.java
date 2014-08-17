@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,12 +48,19 @@ public class TreeRest extends BaseRest {
                 String refresh = req.getParameter("refresh");
                 String uploadStr = req.getParameter("upload");
                 if (UString.isNotEmpty(down)) {
-                    res.setContentType("application/octet-stream");
-                    res.setHeader("Content-disposition", "attachment;filename=" + UString.getLastName(down, "/"));
-                    ServletOutputStream os = res.getOutputStream();
-                    ds.write(down, os);
-                    os.flush();
-                    os.close();
+                    File downloadDir = UFile.getWebDir("/download");
+                    File file = new File(downloadDir, UString.getLastName(down, "/"));
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    FileOutputStream fos = new FileOutputStream(file);
+                    ds.write(down, fos);
+                    fos.flush();
+                    fos.close();
+
+                    Map<String, String> result = new HashMap<String, String>();
+                    result.put("url", req.getContextPath() + "/download/" + UString.getLastName(down, "/"));
+                    writeJsonObject(res, result);
                 } else if (UString.isNotEmpty(store)) {
                     String text = req.getParameter("text");
                     ds.store(store, new ByteArrayInputStream(text.getBytes("UTF-8")));

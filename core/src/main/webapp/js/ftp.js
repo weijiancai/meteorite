@@ -1,4 +1,4 @@
-app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scope, $http, $locale, $modal) {
+app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', 'Message', function($scope, $http, $locale, $modal, Message) {
     $scope.myData = [];
 
     console.log($locale.id);
@@ -12,17 +12,23 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scop
             {field: 'size', displayName: '大小', cellFilter: 'fileSize'},
             {field: 'type', displayName: '类型'},
 //            {field: '', displayName: '下载', cellTemplate: '<button type="button" class="btn btn-default" title="{{row.entity[\'id\']}}" ng-click="ftp.downFile(row.entity)"><span class="glyphicon glyphicon-download"></span></button>'}
-            {field: '', displayName: '下载', cellTemplate: '<a href="/tree?down={{row.entity[\'id\']}}" class="btn btn-default"><span class="glyphicon glyphicon-download"></span></a>' +
+            {field: '', displayName: '下载', cellTemplate: '<a href="javascript:void(0)" ng-click="ftp.downFile(row.entity)" class="btn btn-default"><span class="glyphicon glyphicon-download"></span></a>' +
                 '<a ng-click="ftp.deleteFile(row.entity)" href="javascript:void(0)" class="btn btn-default"><span class="icon-trash"></span></a>'}
         ]
     };
 
     this.downFile = function(row) {
-        console.log(row);
-        /*$http({url:'/tree', params: {down: row['id']}}).success(function() {
-            alert("OK!");
-        });*/
-        $.post('/tree', {down: row['id']});
+        if(row['type'] == '目录') {
+            Message.alert('请选择文件下载！');
+            return;
+        }
+        var progress = Message.progress("正在下载文件：");
+        $.get('/tree', {down: row['id']}, function(data) {
+            progress.close();
+            if(data.url) {
+                location.href = data.url;
+            }
+        });
     };
 
     $scope.temp_text = '请输入内容！';
@@ -44,12 +50,9 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scop
         array.shift();
         array.unshift("/");
         $scope.parents = array;
-        console.log($scope.parents);
         $scope.parent = path.substring(0, path.lastIndexOf('/'));
-        console.log($scope.parent);
 
         $http({url:'/tree', params: {path: path}}).success(function(data) {
-            console.log(data);
             $scope.myData = data;
         });
     };
@@ -60,13 +63,16 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scop
 
     this.deleteFile = function(rowData) {
         var self = this;
-        $http({url:'/tree', params: {delete: path}}).success(function() {
-            self.refreshPath();
-        });
+        if(rowData['type'] == '目录') {
+            Message.confirm('您确定要删除整个目录吗？', function() {
+                $http({url:'/tree', params: {delete: rowData['id']}}).success(function() {
+                    self.refreshPath();
+                });
+            });
+        }
     };
 
     this.refreshPath = function() {
-        console.log($scope.current);
         $http({url:'/tree', params: {refresh: $scope.current}}).success(function(data) {
             $scope.myData = data;
         });
@@ -78,7 +84,6 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scop
     var fileUploadDialog;
 
     this.openFileUploadDialog = function(templateUrl) {
-        console.log(templateUrl);
         fileUploadDialog = $modal.open({
             templateUrl: templateUrl,
             size: 'lg',
@@ -96,7 +101,6 @@ app.controller('FtpCtl', ['$scope', '$http', '$locale', '$modal', function($scop
 
 var FileUploadCtrl = function ($scope, path, $modalInstance) {
     $scope.initFileUploadDialog = function() {
-        console.log(path);
         $('#drag-and-drop-zone').dmUploader({
             url: '/tree?upload=' + path,
             dataType: 'json',

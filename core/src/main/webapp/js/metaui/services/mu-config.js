@@ -133,3 +133,73 @@ metauiServices.factory('Phone', ['$resource',
 metauiServices.factory('Layout', ['$resource', function($resource) {
     return $resource('/layout/:id');
 }]);
+
+metauiServices.factory('Message', ['$modal', function($modal) {
+    return {
+        alert: function(msg, title) {
+            $modal.open({
+                templateUrl: 'js/metaui/templates/message/alert.html',
+                size: 'sm',
+                controller: MessageCtl,
+                resolve: {
+                    param: function() {
+                        return {
+                            title: title || '消息',
+                            msg: msg
+                        }
+                    }
+                }
+            });
+        },
+        confirm: function(msg, okHandler, title) {
+            $modal.open({
+                templateUrl: 'js/metaui/templates/message/confirm.html',
+                size: 'sm',
+                controller: MessageCtl,
+                resolve: {
+                    param: function() {
+                        return {
+                            title: title || '消息',
+                            msg: msg,
+                            okHandler: okHandler
+                        }
+                    }
+                }
+            });
+        },
+        progress: function(title) {
+            var modalInstance = $modal.open({
+                templateUrl: 'js/metaui/templates/message/progressbar.html',
+                size: 'sm',
+                controller: MessageCtl,
+                resolve: {
+                    param: function() {
+                        return {
+                            title: title || '消息'
+                        }
+                    }
+                }
+            });
+
+            return {
+                close: function() {
+                    modalInstance.dismiss('cancel');
+                }
+            }
+        }
+    }
+}]);
+
+function MessageCtl($scope, $modalInstance, param) {
+    $scope.title = param.title;
+    $scope.msg = param.msg;
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+
+    $scope.okHandler = function() {
+        param.okHandler();
+        $scope.cancel();
+    }
+}
