@@ -1,8 +1,10 @@
 package com.meteorite.core.web.listener;
 
+import com.meteorite.core.config.PathManager;
+import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.config.SystemType;
 import com.meteorite.core.util.HSqlDBServer;
-import com.meteorite.core.util.UFile;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -20,9 +22,11 @@ public class SystemContextListener implements ServletContextListener {
         // 设置日志目录属性
         System.setProperty("logs_dir", event.getServletContext().getRealPath("/log"));
         // 设置web项目根目录
-        UFile.WEB_BASE_DIR = new File(event.getServletContext().getRealPath("/"));
+        PathManager.WEB_ROOT_DIR = new File(event.getServletContext().getRealPath("/"));
+        // 初始化系统类型
+        SystemConfig.SYSTEM_TYPE = SystemType.WEB;
         try { // 初始化配置信息
-            SystemManager.getInstance().init(SystemManager.SystemType.WEB);
+            SystemManager.getInstance().init();
             //  启动数据库
 //            HSqlDBServer.getInstance().start();
         } catch (Exception e) {

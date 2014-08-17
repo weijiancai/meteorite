@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class DBTableTest {
     @Test
     public void testTable() throws Exception {
-        SystemManager.getInstance().init(SystemManager.SystemType.DESKTOP);
+        SystemManager.getInstance().init();
         DBConnection conn = DataSourceManager.getSysDataSource().getDbConnection();
         assertNotNull(conn);
         assertThat(conn.getDatabaseType(), equalTo(DatabaseType.HSQLDB));

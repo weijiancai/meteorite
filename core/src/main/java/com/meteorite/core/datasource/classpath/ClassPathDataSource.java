@@ -101,6 +101,9 @@ public class ClassPathDataSource implements DataSource {
 
     @Override
     public ResourceItem getResource(String path) {
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
         return loader.getResource(path);
     }
 

@@ -41,17 +41,6 @@ public class SystemManager {
     private static Map<String, ProjectConfig> cache = new HashMap<String, ProjectConfig>();
     private LayoutConfig layoutConfig;
 
-    public static enum SystemType {
-        /**
-         * 桌面程序
-         */
-        DESKTOP,
-        /**
-         * WEB程序
-         */
-        WEB
-    }
-
     static {
         // 加载系统信息
         sysInfo = new SystemInfo();
@@ -75,14 +64,18 @@ public class SystemManager {
     /**
      * 初始化系统
      */
-    public void init(SystemType type) throws Exception {
-        switch (type) {
+    public void init() throws Exception {
+        // 初始化系统数据源
+        DataSourceManager.initSysDataSource();
+        // 检查数据库版本
+        checkDbVersion();
+
+        switch (SystemConfig.SYSTEM_TYPE) {
             case DESKTOP: {
                 // 加载数据源
                 loadDataSource();
                 // 启动数据库
                 // HSqlDBServer.getInstance().start();
-                checkDbVersion();
                 // 加载数据字典
                 DictManager.load();
                 // 加载布局配置
@@ -150,22 +143,19 @@ public class SystemManager {
     private void checkDbVersion() throws Exception {
         DBDataSource dataSource = DataSourceManager.getSysDataSource();
         // 获得数据库当前系统的最大版本号
-        String maxVersion = dataSource.getMaxVersion(SystemConfig.SYS_NAME);
+        String maxVersion = dataSource.getMaxVersion(SystemConfig.SYSTEM_NAME);
         DatabaseType dbType = dataSource.getDatabaseType();
         log.info("当前系统版本为：" + maxVersion + ", 数据库为：" + dbType.getDisplayName());
         // 获得升级目录下升级脚本
         ClassPathDataSource cpDataSource = DataSourceManager.getClassPathDataSource();
-        ResourceItem dbUpgrade = cpDataSource.getResource("dbversion/");
+        ResourceItem dbUpgrade = cpDataSource.getResource("db_upgrade/");
         for (ITreeNode node : dbUpgrade.getChildren()) {
-            String[] names = node.getName().replace(".sql","").toLowerCase().split("_");
-            String version = names[1];
-            if(dbType.getName().toLowerCase().endsWith(names[2]) && maxVersion.compareTo(version) < 0) {
+            String version = node.getName();
+            if(maxVersion.compareTo(version) < 0) {
                 log.info("检测到新版本需要升级：" + version);
-                ResourceItem item = cpDataSource.getResource("dbversion/" + node.getName());
+                ResourceItem item = cpDataSource.getResource("db_upgrade/" + maxVersion + "/" + SYSTEM_NAME + "_" + dbType.getName().toLowerCase() + ".sql");
                 dataSource.getDbConnection().execSqlScript(item.getContent());
                 log.info("升级完成");
-                // 重置SystemInfo
-                sysInfo.reset();
             }
         }
     }

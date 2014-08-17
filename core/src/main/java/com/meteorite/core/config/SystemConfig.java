@@ -15,7 +15,10 @@ import java.io.FileNotFoundException;
  * @version 1.0.0
  */
 public class SystemConfig {
-    public static final String DIR_NAME_METEORITE = ".metaui"; // 系统名称
+    // ================================= 系统信息 ==============================================
+    public static final String SYSTEM_NAME = "metaui"; // 系统名称
+    public static SystemType SYSTEM_TYPE = SystemType.DESKTOP; // 系统类型，默认桌面系统
+
     public static final String DIR_NAME_SQLDB = "hsqldb"; // hsqldb数据库存储数据库文件的目录名
     public static final String DIR_NAME_DBCONF = "dbconf"; // 数据库配置信息目录名
 
@@ -34,13 +37,10 @@ public class SystemConfig {
      */
     public static final String FILE_NAME_DICT_CATEGORY = "DictCategory.xml";
 
-    public static String userHome = System.getProperty("user.home");
-    public static String userDir = System.getProperty("user.dir");
-
     /**
      * 系统默认目录
      */
-    public static File DIR_SYSTEM = UFile.makeDirs(userHome, DIR_NAME_METEORITE);
+    public static File DIR_SYSTEM = UFile.makeDirs(PathManager.getHomePath(), SYSTEM_NAME);
     /**
      * 类路径目录
      */
@@ -53,23 +53,12 @@ public class SystemConfig {
      * 数据库升级脚本目录
      */
     public static File DIR_DB_UPGRADE = UFile.makeDirs(DIR_CLASS_PATH, "dbversion");
-    /**
-     * 日志目录
-     */
-    public static File DIR_LOG = UFile.makeDirs(DIR_SYSTEM, "logs");
 
-    /**
-     * 系统名称
-     */
-    public static final String SYS_NAME = "core";
+    // ================================= 数据库信息 ==============================================
     /**
      * 系统数据库版本
      */
     public static final String SYS_DB_VERSION = "1.0.0";
-    /**
-     * 系统数据库名称
-     */
-    public static final String SYS_DB_NAME = "sys";
     /**
      * 系统数据库版本表名
      */

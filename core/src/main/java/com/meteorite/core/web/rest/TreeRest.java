@@ -1,5 +1,6 @@
 package com.meteorite.core.web.rest;
 
+import com.meteorite.core.config.PathManager;
 import com.meteorite.core.datasource.ftp.FtpDataSource;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
@@ -48,7 +49,7 @@ public class TreeRest extends BaseRest {
                 String refresh = req.getParameter("refresh");
                 String uploadStr = req.getParameter("upload");
                 if (UString.isNotEmpty(down)) {
-                    File downloadDir = UFile.getWebDir("/download");
+                    File downloadDir = PathManager.getWebPath("/download");
                     File file = new File(downloadDir, UString.getLastName(down, "/"));
                     if (file.exists()) {
                         file.delete();

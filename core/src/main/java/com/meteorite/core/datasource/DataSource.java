@@ -48,7 +48,7 @@ public interface DataSource {
      * @param queryList 查询条件列表
      * @return 返回查询结果
      */
-    QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException;
+    QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws Exception;
 
     /**
      * 删除数据
@@ -99,7 +99,7 @@ public interface DataSource {
      */
     void load() throws Exception;
 
-    QueryResult<DataMap> retrieve(QueryBuilder queryBuilder, int page, int rows) throws SQLException;
+    QueryResult<DataMap> retrieve(QueryBuilder queryBuilder, int page, int rows) throws Exception;
 
     ResourceItem getResource(String path);
 

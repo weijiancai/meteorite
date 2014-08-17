@@ -34,4 +34,9 @@ public class ClassPathResourceItem extends ResourceItem {
 
         return null;
     }
+
+    @Override
+    public InputStream getInputStream() throws Exception {
+        return UIO.getInputStream("/" + getId(), UIO.FROM.CP);
+    }
 }

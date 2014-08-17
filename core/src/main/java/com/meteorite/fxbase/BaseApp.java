@@ -1,7 +1,7 @@
 package com.meteorite.fxbase;
 
+import com.meteorite.core.config.PathManager;
 import com.meteorite.core.config.ProjectConfig;
-import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.facade.IFacade;
 import com.meteorite.core.ui.IView;
@@ -10,9 +10,9 @@ import com.meteorite.core.util.HSqlDBServer;
 import com.meteorite.core.util.UIO;
 import com.meteorite.fxbase.ui.FxDesktop;
 import com.meteorite.fxbase.ui.IDesktop;
-import com.meteorite.fxbase.ui.view.MUDialog;
 import com.meteorite.fxbase.ui.view.FxPane;
 import com.meteorite.fxbase.ui.view.FxView;
+import com.meteorite.fxbase.ui.view.MUDialog;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -22,8 +22,6 @@ import javafx.util.Callback;
 import netscape.javascript.JSObject;
 import org.apache.log4j.PropertyConfigurator;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -45,7 +43,7 @@ public abstract class BaseApp extends Application {
 
     public BaseApp() {
         // 设置日志目录属性
-        System.setProperty("logs_dir", SystemConfig.DIR_LOG.getAbsolutePath());
+        System.setProperty("logs_dir", PathManager.getLogPath().getAbsolutePath());
         try {
             PropertyConfigurator.configure(UIO.getInputStream("/log4j.properties", UIO.FROM.CP));
         } catch (IOException e) {
@@ -70,7 +68,7 @@ public abstract class BaseApp extends Application {
         stage.setTitle(projectConfig.getDisplayName());
 
         //  系统初始化
-        SystemManager.getInstance().init(SystemManager.SystemType.DESKTOP);
+        SystemManager.getInstance().init();
 
         // 初始化完成
         facade.initAfter();

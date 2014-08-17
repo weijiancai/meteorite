@@ -20,6 +20,7 @@ import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import org.apache.log4j.Logger;
@@ -115,8 +116,14 @@ public class DBDataSource implements DataSource {
 
     @XmlAttribute
     @MetaFieldElement(displayName = "数据库类型", dataType = MetaDataType.DICT, dictId = "DatabaseType", sortNum = 40)
-    public DatabaseType getDatabaseType() {
-        return DatabaseType.get(properties.getFieldValue(DATABASE_TYPE));
+    public DatabaseType getDatabaseType() throws Exception {
+        String type = properties.getFieldValue(DATABASE_TYPE);
+        if (UString.isNotEmpty(type)) {
+            return DatabaseType.get(properties.getFieldValue(DATABASE_TYPE));
+        }
+        DatabaseType dbType = getDbConnection().getDatabaseType();
+        setDatabaseType(dbType);
+        return dbType;
     }
 
     @MetaFieldElement(displayName = "驱动类", sortNum = 50)
@@ -151,7 +158,7 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
-    public QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
+    public QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws Exception {
         QueryBuilder builder = QueryBuilder.create(meta);
         for (ICanQuery query : queryList) {
             for (ICanQuery.Condition condition : query.getConditions()) {
@@ -216,7 +223,7 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
-    public QueryResult<DataMap> retrieve(QueryBuilder builder, int page, int rows) throws SQLException {
+    public QueryResult<DataMap> retrieve(QueryBuilder builder, int page, int rows) throws Exception {
         Meta meta = builder.getMeta();
         DBDataset table = builder.getMeta().getDbTable();
         if (table.getDataSource().getDatabaseType() == DatabaseType.SQLSERVER) {

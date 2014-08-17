@@ -20,7 +20,7 @@ public class DBUtil {
      * @return 存在表，返回true，否则false
      */
     public static boolean existsTable(String tableName) throws Exception {
-        return exitsTable(SystemConfig.SYS_DB_NAME, tableName);
+        return exitsTable(SystemConfig.SYSTEM_NAME, tableName);
     }
 
     public static boolean exitsTable(String dataSourceName, String tableName) throws Exception {

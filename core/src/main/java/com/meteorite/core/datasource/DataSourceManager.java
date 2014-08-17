@@ -3,22 +3,14 @@ package com.meteorite.core.datasource;
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
-import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
-import com.meteorite.core.util.UFile;
+import org.apache.log4j.Logger;
+import static com.meteorite.core.config.SystemConfig.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.meteorite.core.config.SystemConfig.DIR_SYSTEM_HSQL_DB;
-import static com.meteorite.core.config.SystemConfig.SYS_DB_NAME;
+import java.util.*;
 
 /**
  * 数据源管理
@@ -27,6 +19,8 @@ import static com.meteorite.core.config.SystemConfig.SYS_DB_NAME;
  * @since  1.0.0
  */
 public class DataSourceManager {
+    private static final Logger log = Logger.getLogger(DataSourceManager.class);
+
     private static List<DataSource> dataSources = new ArrayList<DataSource>();
     private static Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
 
@@ -62,14 +56,14 @@ public class DataSourceManager {
     }
 
     /**
-     * 获得系统数据库sys
+     * 获得系统数据源
      *
-     * @return 返回系统数据库sys
+     * @return 返回系统数据源
      */
     public static DBDataSource getSysDataSource() {
-        DBDataSource dataSource = (DBDataSource) dataSourceMap.get(SystemConfig.SYS_DB_NAME);
+        DBDataSource dataSource = (DBDataSource) dataSourceMap.get(SYSTEM_NAME);
         if (dataSource == null) {
-            File sysDbFile = null;
+           /* File sysDbFile = null;
             try {
                 sysDbFile = UFile.createFile(DIR_SYSTEM_HSQL_DB, SYS_DB_NAME);
             } catch (IOException e) {
@@ -78,10 +72,37 @@ public class DataSourceManager {
             dataSource = new DBDataSource(SystemConfig.SYS_DB_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:hsql://localhost/sys", "sa", "", SystemConfig.SYS_DB_VERSION);
             dataSource.setDatabaseType(DatabaseType.HSQLDB);
             assert sysDbFile != null;
-            dataSource.setFilePath(sysDbFile.getAbsolutePath());
-//            dataSourceMap.put(SystemConfig.SYS_DB_NAME, dataSource);
+            dataSource.setFilePath(sysDbFile.getAbsolutePath());*/
+            return initSysDataSource();
         }
         return dataSource;
+    }
+
+    /**
+     * 从类路径下/db.property文件中初始化系统数据源
+     *
+     * @return 返回系统数据源
+     */
+    public static DBDataSource initSysDataSource() {
+        // 从类路径下获得db.property配置信息
+        ResourceItem dbProperty = ClassPathDataSource.getInstance().getResource("db.properties");
+        Properties properties = new Properties();
+        try {
+            properties.load(dbProperty.getInputStream());
+            String driverClass = properties.getProperty("driverClass");
+            String url = properties.getProperty("url");
+            String userName = properties.getProperty("userName");
+            String password = properties.getProperty("password");
+            log.debug("初始化系统数据源：" + url);
+            DBDataSource dataSource = new DBDataSource(SYSTEM_NAME, driverClass, url, userName, password, SystemConfig.SYS_DB_VERSION);
+            dataSourceMap.put(SYSTEM_NAME, dataSource);
+            return dataSource;
+        } catch (Exception e) {
+            log.error("获得db.property文件失败！", e);
+        }
+
+
+        return null;
     }
 
     public static INavTreeNode getNavTree() throws Exception {

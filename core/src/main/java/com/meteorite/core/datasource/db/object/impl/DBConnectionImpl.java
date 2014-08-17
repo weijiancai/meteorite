@@ -41,17 +41,10 @@ public class DBConnectionImpl implements DBConnection {
         initDatabaseType();
         // 初始化加载器
         initLoader();
-        // 设置数据源的数据库类型
-        dataSource.setDatabaseType(dbType);
     }
 
     // 初始化数据库类型
     private void initDatabaseType() throws Exception {
-        if (dataSource.getDatabaseType() != null) {
-            dbType = dataSource.getDatabaseType();
-            return;
-        }
-
         Connection conn = null;
         try {
             conn = getConnection();

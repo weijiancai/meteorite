@@ -2,6 +2,7 @@ package com.meteorite.core.datasource.ftp;
 
 import com.meteorite.core.datasource.ResourceItem;
 
+import java.io.InputStream;
 import java.util.Date;
 
 /**
@@ -17,6 +18,11 @@ public class FtpResourceItem extends ResourceItem {
 
     @Override
     public String getContent() throws Exception {
+        return null;
+    }
+
+    @Override
+    public InputStream getInputStream() throws Exception {
         return null;
     }
 

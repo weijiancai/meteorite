@@ -2,6 +2,8 @@ package com.meteorite.core.datasource;
 
 import com.meteorite.core.model.impl.BaseNavTreeNode;
 
+import java.io.InputStream;
+
 /**
  * 资源项
  *
@@ -10,4 +12,6 @@ import com.meteorite.core.model.impl.BaseNavTreeNode;
  */
 public abstract class ResourceItem extends BaseNavTreeNode {
     public abstract String getContent() throws Exception;
+
+    public abstract InputStream getInputStream() throws Exception;
 }

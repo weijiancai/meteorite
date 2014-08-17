@@ -17,7 +17,6 @@ import java.util.List;
  */
 public class UFile {
     private static final Logger log = Logger.getLogger(UFile.class);
-    public static File WEB_BASE_DIR; // WEB项目根目录
 
     public static String readString(File file) throws IOException {
         return readString(file, "UTF-8");
@@ -210,19 +209,5 @@ public class UFile {
                 iteratorTree(treeNode, callback);
             }
         }
-    }
-
-    /**
-     * 获得web项目下的某个目录
-     *
-     * @param path 相对路径
-     * @return 返回File对象
-     */
-    public static File getWebDir(String path) {
-        File file = new File(WEB_BASE_DIR, path);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return file;
     }
 }

@@ -25,7 +25,7 @@ import static org.junit.Assert.assertThat;
 public class DBManagerTest {
     @Test
     public void testGetConnection() throws Exception {
-        SystemManager.getInstance().init(SystemManager.SystemType.DESKTOP);
+        SystemManager.getInstance().init();
         DBConnection conn = DataSourceManager.getSysDataSource().getDbConnection();
         System.out.println(conn);
         assertNotNull(conn);

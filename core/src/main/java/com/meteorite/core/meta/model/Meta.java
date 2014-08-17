@@ -378,7 +378,7 @@ public class Meta {
         return id.hashCode();
     }
 
-    public QueryResult<DataMap> query(QueryBuilder queryBuilder) throws SQLException {
+    public QueryResult<DataMap> query(QueryBuilder queryBuilder) throws Exception {
         QueryResult<DataMap> result = dataSource.retrieve(queryBuilder, -1, 0);
         setDataList(result.getRows());
         setTotalRows(result.getTotal());
@@ -386,7 +386,7 @@ public class Meta {
         return result;
     }
 
-    public void toTxtFile(File file, DataMap param) throws FileNotFoundException, SQLException {
+    public void toTxtFile(File file, DataMap param) throws Exception {
         query(QueryBuilder.create(this));
         List<DataMap> dataList = getDataList();
         if (dataList == null) {
