@@ -117,6 +117,11 @@ public class FtpDataSource implements DataSource {
         loader.write(id, os);
     }
 
+    @Override
+    public VirtualResource findResourceByPath(String path) {
+        return null;
+    }
+
     public void store(String path, InputStream is) throws IOException {
         loader.save(path, is);
     }

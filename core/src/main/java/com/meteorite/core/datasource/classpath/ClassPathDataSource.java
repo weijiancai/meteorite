@@ -128,6 +128,11 @@ public class ClassPathDataSource implements DataSource {
     }
 
     @Override
+    public VirtualResource findResourceByPath(String path) {
+        return null;
+    }
+
+    @Override
     public String toString() {
         return loader.getBaseDir();
     }

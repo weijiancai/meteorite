@@ -321,6 +321,11 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
+    public VirtualResource findResourceByPath(String path) {
+        return null;
+    }
+
+    @Override
     public ResourceItem getResource(String path) {
         return null;
     }

@@ -100,4 +100,9 @@ public class FileDataSource implements DataSource {
     public void write(String id, OutputStream os) throws Exception {
 
     }
+
+    @Override
+    public VirtualResource findResourceByPath(String path) {
+        return null;
+    }
 }

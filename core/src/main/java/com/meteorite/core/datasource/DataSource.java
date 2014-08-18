@@ -122,4 +122,6 @@ public interface DataSource {
      * @since 1.0.0
      */
     void write(String id, OutputStream os) throws Exception;
+
+    public abstract VirtualResource findResourceByPath(String path);
 }
