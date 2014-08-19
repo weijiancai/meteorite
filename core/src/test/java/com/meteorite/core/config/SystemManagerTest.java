@@ -27,7 +27,7 @@ public class SystemManagerTest {
     }
 
     @Test
-    public void testLoadProject() {
+    public void testLoadProject() throws Exception {
         ProjectConfig projectConfig = SystemManager.getInstance().getProjectConfig(".taobao");
         assertThat(projectConfig.getName(), equalTo(".taobao"));
         assertThat(projectConfig.getDataSources().size(), equalTo(1));

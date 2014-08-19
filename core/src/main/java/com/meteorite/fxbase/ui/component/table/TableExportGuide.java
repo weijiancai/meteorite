@@ -48,7 +48,7 @@ public class TableExportGuide extends BaseGuide {
     }
 
     @Override
-    public void doFinish(DataMap param) throws FileNotFoundException, SQLException {
+    public void doFinish(DataMap param) throws Exception {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("保存文件");
         String fileType = param.getString("fileType");

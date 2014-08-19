@@ -127,7 +127,7 @@ public class MUForm extends BorderPane {
                             try {
                                 QueryResult<DataMap> queryResult = meta.query(builder);
                                 table.getItems().setAll(queryResult.getRows());
-                            } catch (SQLException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }

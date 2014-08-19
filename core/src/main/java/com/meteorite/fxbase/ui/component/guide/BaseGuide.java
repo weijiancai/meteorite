@@ -159,7 +159,7 @@ public abstract class BaseGuide extends BasePane {
 
     public abstract List<GuideModel> getModelList();
 
-    public abstract void doFinish(DataMap param) throws FileNotFoundException, SQLException;
+    public abstract void doFinish(DataMap param) throws Exception;
 
     public DataMap getValueMap() {
         DataMap result = new DataMap();
