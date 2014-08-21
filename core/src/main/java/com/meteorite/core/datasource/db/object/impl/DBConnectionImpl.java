@@ -162,20 +162,21 @@ public class DBConnectionImpl implements DBConnection {
 
     @Override
     public void execSqlFile(File sqlFile) throws Exception {
-        execSqlScript(UFile.readString(sqlFile));
+        execSqlScript(UFile.readString(sqlFile), ";");
     }
 
     @Override
-    public void execSqlScript(String script) throws Exception {
-        String[] sqls = script.split(";");
+    public void execSqlScript(String script, String splitStr) throws Exception {
+        String[] sqls = script.split(splitStr);
         Connection conn = null;
         try {
             conn = getConnection();
+            conn.setAutoCommit(false);
             for (String sql : sqls) {
                 if(UString.isEmpty(sql)) {
                     continue;
                 }
-                log.info("SQL = " + sql);
+                log.info("SQL = " + sql.trim());
                 Statement stmt = conn.createStatement();
                 stmt.execute(sql);
             }
@@ -184,7 +185,7 @@ public class DBConnectionImpl implements DBConnection {
             if (conn != null) {
                 conn.rollback();
             }
-            log.error("这行升级Sql脚本错误：", e);
+            log.error("执行升级Sql脚本错误：", e);
         } finally {
             if (conn != null) {
                 conn.close();

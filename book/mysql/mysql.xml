@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="mysql"
+         version="5.0"
+         xml:lang="en"
+         xmlns="http://docbook.org/ns/docbook"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xsi:schemaLocation="
+           http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/rnc/docbookxi.rnc
+           http://docbook.org/ns/docbook http://www.docbook.org/xml/5.0/xsd/docbook.xsd
+           http://www.w3.org/1999/xlink http://www.docbook.org/xml/5.0/xsd/xlink.xsd
+        ">
+    <title>MySql常用工具</title>
+
+    <para>
+        1. 修改密码
+        <code>
+            mysqladmin -u root -p password newPassword
+        </code>
+        输入这个命令后，需要输入root的原密码，然后root的密码将改为newPassword。
+        2. 创建数据库
+        <code>
+            create database db_name charset utf8;
+        </code>
+        db_name为数据库的名字
+    </para>
+</chapter>

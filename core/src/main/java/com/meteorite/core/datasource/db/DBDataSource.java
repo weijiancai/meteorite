@@ -321,7 +321,14 @@ public class DBDataSource implements DataSource {
     }
 
     @Override
-    public VirtualResource findResourceByPath(String path) {
+    public VirtualResource findResourceByPath(String path) throws Exception {
+        String tableStart = "/table/";
+        if (path.startsWith(tableStart)) {
+            DBObject table = getDbConnection().getLoader().getTable(path.substring(tableStart.length()));
+            if (table != null) {
+                return new DBResource(table);
+            }
+        }
         return null;
     }
 
@@ -378,7 +385,7 @@ public class DBDataSource implements DataSource {
                 .build(getDatabaseType());
 
         DBConnection conn = getDbConnection();
-        if (DBUtil.existsTable(conn, SystemConfig.SYS_DB_VERSION_TABLE_NAME)) {
+        if(this.findResourceByPath("/table/" + SystemConfig.SYS_DB_VERSION_TABLE_NAME) != null) {
             List<DataMap> result = conn.getResultSet(sql);
             if (result.size() > 0) {
                 return result.get(0).getString("max_db_version");

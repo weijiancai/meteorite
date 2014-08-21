@@ -1,17 +1,16 @@
-package com.meteorite.core.datasource.db;
+package com.meteorite.core.datasource.db.object.loader;
 
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class DBDataSourceTest {
+public class BaseDBLoaderTest {
 
     @Test
-    public void testFindResourceByPath() throws Exception {
-        String path = "/table/sys_db_version";
+    public void testGetTable() throws Exception {
         DataSource dataSource = DataSourceManager.getSysDataSource();
-        dataSource.findResourceByPath(path);
     }
 }

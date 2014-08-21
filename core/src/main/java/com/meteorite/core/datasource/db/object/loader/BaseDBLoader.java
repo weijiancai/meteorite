@@ -12,6 +12,8 @@ import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -490,5 +492,26 @@ public abstract class BaseDBLoader implements DBLoader {
             constraint.setForeignKeyTable(fkTable);
             constraint.getColumns().add(fkColumn);
         }
+    }
+
+    @Override
+    public DBTable getTable(String tableName) throws Exception {
+        Connection connection = dbConn.getConnection();
+        try {
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet rs = metaData.getTables(null, null, tableName, null);
+            if (rs.next()) {
+                DBTableImpl table = new DBTableImpl();
+                table.setDataSource(dbConn.getDataSource());
+                table.setName(UObject.toString(rs.getString("TABLE_NAME")));
+                table.setComment(UObject.toString(rs.getString("TABLE_COMMENT")));
+
+                return table;
+            }
+        } finally {
+            ConnectionUtil.closeConnection(connection);
+        }
+
+        return null;
     }
 }

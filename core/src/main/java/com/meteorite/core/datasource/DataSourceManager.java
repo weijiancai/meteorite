@@ -125,7 +125,12 @@ public class DataSourceManager {
      * @since 1.0.0
      */
     public static ClassPathDataSource getClassPathDataSource() {
-        return (ClassPathDataSource) dataSourceMap.get("classpath");
+        ClassPathDataSource classPathDataSource = (ClassPathDataSource) dataSourceMap.get("classpath");
+        if (classPathDataSource == null) {
+            classPathDataSource = ClassPathDataSource.getInstance();
+            dataSourceMap.put("classpath", classPathDataSource);
+        }
+        return classPathDataSource;
     }
 
     /**

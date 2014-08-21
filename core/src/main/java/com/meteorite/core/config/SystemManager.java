@@ -153,8 +153,15 @@ public class SystemManager {
             String version = node.getName();
             if(maxVersion.compareTo(version) < 0) {
                 log.info("检测到新版本需要升级：" + version);
-                ResourceItem item = cpDataSource.getResource("db_upgrade/" + maxVersion + "/" + SYSTEM_NAME + "_" + dbType.getName().toLowerCase() + ".sql");
-                dataSource.getDbConnection().execSqlScript(item.getContent());
+                ResourceItem item;
+                if ("0.0.0".equals(maxVersion)) {
+                    item = cpDataSource.getResource("db_upgrade/init_" + dbType.getName().toLowerCase() + ".sql");
+                    if (item != null) {
+                        dataSource.getDbConnection().execSqlScript(item.getContent(), "$$");
+                    }
+                }
+                item = cpDataSource.getResource("db_upgrade/" + version + "/" + SYSTEM_NAME + "_" + dbType.getName().toLowerCase() + ".sql");
+                dataSource.getDbConnection().execSqlScript(item.getContent(), "$$");
                 log.info("升级完成");
             }
         }

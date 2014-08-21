@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource.db;
 
 import com.meteorite.core.datasource.VirtualResource;
+import com.meteorite.core.datasource.db.object.DBObject;
 
 /**
  * 数据库资源
@@ -9,14 +10,20 @@ import com.meteorite.core.datasource.VirtualResource;
  * @since 1.0.0
  */
 public class DBResource extends VirtualResource {
+    private DBObject dbObject;
+
+    public DBResource(DBObject dbObject) {
+        this.dbObject = dbObject;
+    }
+
     @Override
     public String getName() {
-        return null;
+        return dbObject.getName();
     }
 
     @Override
     public String getPath() {
-        return null;
+        return dbObject.getFullName();
     }
 
     @Override
@@ -26,7 +33,7 @@ public class DBResource extends VirtualResource {
 
     @Override
     public VirtualResource getParent() {
-        return null;
+        return new DBResource((DBObject) dbObject.getParent());
     }
 
     @Override

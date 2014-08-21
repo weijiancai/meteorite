@@ -68,9 +68,10 @@ public interface DBConnection {
      * 执行SQL脚本
      *
      * @param script 脚本
+     * @param splitStr 分隔符，默认为;
      * @throws Exception
      */
-    void execSqlScript(String script) throws Exception;
+    void execSqlScript(String script, String splitStr) throws Exception;
 
     /**
      * 获得数据源

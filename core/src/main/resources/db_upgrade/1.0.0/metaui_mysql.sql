@@ -1,60 +1,49 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/8/17 21:58:43                           */
+/* Created on:     2014/8/21 18:24:54                           */
 /*==============================================================*/
 
 
-drop table if exists sys_db_mobile_number;
+DELIMITER $$
 
-drop table if exists sys_db_version;
 
-drop table if exists sys_dbms_column;
+drop table if exists sys_db_mobile_number$$
 
-drop index idx_dbms_define_name on sys_dbms_define;
+drop table if exists sys_db_version$$
 
-drop table if exists sys_dbms_define;
+call del_idx('sys_dz_category','iux_name')$$
 
-drop index idx_dbms_schema_name on sys_dbms_schema;
+drop table if exists sys_dz_category$$
 
-drop table if exists sys_dbms_schema;
+drop table if exists sys_dz_code$$
 
-drop index idx_dbms_table_name on sys_dbms_table;
+call del_idx('sys_layout','IUX_NAME')$$
 
-drop table if exists sys_dbms_table;
+drop table if exists sys_layout$$
 
-drop index iux_name on sys_dz_category;
+drop table if exists sys_layout_prop$$
 
-drop table if exists sys_dz_category;
+drop table if exists sys_meta$$
 
-drop table if exists sys_dz_code;
+drop table if exists sys_meta_field$$
 
-drop index IUX_NAME on sys_layout;
+drop table if exists sys_meta_obj$$
 
-drop table if exists sys_layout;
+drop table if exists sys_meta_obj_value$$
 
-drop table if exists sys_layout_prop;
+drop table if exists sys_meta_reference$$
 
-drop table if exists sys_meta;
+drop table if exists sys_module$$
 
-drop table if exists sys_meta_field;
+drop table if exists sys_nav_menu$$
 
-drop table if exists sys_meta_obj;
+drop table if exists sys_view$$
 
-drop table if exists sys_meta_obj_value;
+call del_idx('sys_view_config','idx_view_config_prop')$$
 
-drop table if exists sys_meta_reference;
+drop table if exists sys_view_config$$
 
-drop table if exists sys_module;
-
-drop table if exists sys_nav_menu;
-
-drop table if exists sys_view;
-
-drop index idx_view_config_prop on sys_view_config;
-
-drop table if exists sys_view_config;
-
-drop table if exists sys_view_prop;
+drop table if exists sys_view_prop$$
 
 /*==============================================================*/
 /* Table: sys_db_mobile_number                                  */
@@ -68,9 +57,9 @@ create table sys_db_mobile_number
    operators            varchar(64) comment '运营商',
    code_segment         varchar(11) comment '号段',
    primary key (code)
-);
+)$$
 
-alter table sys_db_mobile_number comment '手机号码';
+alter table sys_db_mobile_number comment '手机号码'$$
 
 /*==============================================================*/
 /* Table: sys_db_version                                        */
@@ -82,120 +71,9 @@ create table sys_db_version
    input_date           datetime not null comment '发布日期',
    memo                 varchar(1024) comment '备注',
    primary key (sys_name)
-);
+)$$
 
-alter table sys_db_version comment '系统版本信息';
-
-/*==============================================================*/
-/* Table: sys_dbms_column                                       */
-/*==============================================================*/
-create table sys_dbms_column
-(
-   id                   varchar(32) not null comment '列内码',
-   table_id             varchar(32) not null comment '表',
-   name                 varchar(64) not null comment '列名',
-   alias                varchar(64) not null comment '别名',
-   comment              varchar(64) comment '列注释',
-   display_name         varchar(64) comment '显示名',
-   data_type            varchar(64) comment '数据类型',
-   code_id              varchar(64) comment '字典代码',
-   default_value        varchar(64) comment '默认值',
-   is_nullable          char(1) not null comment '可空',
-   is_pk                char(1) not null comment '是否主键',
-   is_fk                char(1) not null comment '是否外键',
-   fk_column_id         varchar(32) comment '外键引用的列',
-   max_length           int comment '最大长度',
-   is_valid             char(1) not null comment '是否有效',
-   input_date           datetime not null comment '录入时间',
-   sort_num             int not null comment '排序号',
-   primary key (id)
-);
-
-alter table sys_dbms_column comment '数据库列';
-
-/*==============================================================*/
-/* Table: sys_dbms_define                                       */
-/*==============================================================*/
-create table sys_dbms_define
-(
-   id                   varchar(32) not null comment '内码',
-   name                 varchar(128) not null comment '名称',
-   type                 varchar(64) not null comment '类型',
-   host                 varchar(64) comment '主机',
-   port                 varchar(64) comment '端口',
-   driver_class         varchar(128) not null comment '驱动类',
-   is_valid             char(1) not null comment '是否有效',
-   input_date           datetime not null comment '录入时间',
-   sort_num             int not null comment '排序号',
-   primary key (id)
-);
-
-alter table sys_dbms_define comment '数据库管理系统定义';
-
-/*==============================================================*/
-/* Index: idx_dbms_define_name                                  */
-/*==============================================================*/
-create index idx_dbms_define_name on sys_dbms_define
-(
-   name
-);
-
-/*==============================================================*/
-/* Table: sys_dbms_schema                                       */
-/*==============================================================*/
-create table sys_dbms_schema
-(
-   id                   varchar(32) not null comment '内码',
-   dbms_id              varchar(32) not null comment 'dbms',
-   name                 varchar(64) not null comment '名称',
-   alias                varchar(64) comment '别名',
-   version              varchar(64) not null comment '版本',
-   is_valid             char(1) not null comment '是否有效',
-   input_date           datetime not null comment '录入时间',
-   sort_num             int not null comment '排序号',
-   url                  varchar(1024) comment 'JDBC URL',
-   is_default           char(1) not null comment '是否默认',
-   user_name            varchar(64) not null comment '用户名',
-   password             varchar(64) not null comment '密码',
-   primary key (id)
-);
-
-alter table sys_dbms_schema comment '数据库管理系统schema';
-
-/*==============================================================*/
-/* Index: idx_dbms_schema_name                                  */
-/*==============================================================*/
-create unique index idx_dbms_schema_name on sys_dbms_schema
-(
-   name
-);
-
-/*==============================================================*/
-/* Table: sys_dbms_table                                        */
-/*==============================================================*/
-create table sys_dbms_table
-(
-   id                   varchar(32) not null comment '内码',
-   schema_id            varchar(32) not null comment 'schema',
-   name                 varchar(64) not null comment '表名',
-   alias                varchar(64) comment '别名',
-   comment              varchar(128) not null comment '表注释',
-   display_name         varchar(64) comment '显示名',
-   is_valid             char(1) not null comment '是否有效',
-   input_date           datetime not null comment '录入时间',
-   sort_num             int not null comment '排序号',
-   primary key (id)
-);
-
-alter table sys_dbms_table comment '数据库表';
-
-/*==============================================================*/
-/* Index: idx_dbms_table_name                                   */
-/*==============================================================*/
-create unique index idx_dbms_table_name on sys_dbms_table
-(
-   name
-);
+alter table sys_db_version comment '系统版本信息'$$
 
 /*==============================================================*/
 /* Table: sys_dz_category                                       */
@@ -210,9 +88,9 @@ create table sys_dz_category
    sort_num             int not null comment '排序号',
    input_date           datetime not null comment '录入时间',
    primary key (id)
-);
+)$$
 
-alter table sys_dz_category comment '字典类别';
+alter table sys_dz_category comment '字典类别'$$
 
 /*==============================================================*/
 /* Index: iux_name                                              */
@@ -220,7 +98,7 @@ alter table sys_dz_category comment '字典类别';
 create unique index iux_name on sys_dz_category
 (
    name
-);
+)$$
 
 /*==============================================================*/
 /* Table: sys_dz_code                                           */
@@ -236,9 +114,9 @@ create table sys_dz_code
    input_date           datetime not null comment '录入时间',
    sort_num             int not null comment '排序号',
    primary key (id)
-);
+)$$
 
-alter table sys_dz_code comment '字典代码';
+alter table sys_dz_code comment '字典代码'$$
 
 /*==============================================================*/
 /* Table: sys_layout                                            */
@@ -255,9 +133,9 @@ create table sys_layout
    input_date           datetime not null comment '录入时间',
    sort_num             int not null comment '排序号',
    primary key (id)
-);
+)$$
 
-alter table sys_layout comment '布局管理器';
+alter table sys_layout comment '布局管理器'$$
 
 /*==============================================================*/
 /* Index: IUX_NAME                                              */
@@ -265,7 +143,7 @@ alter table sys_layout comment '布局管理器';
 create unique index IUX_NAME on sys_layout
 (
    name
-);
+)$$
 
 /*==============================================================*/
 /* Table: sys_layout_prop                                       */
@@ -282,9 +160,9 @@ create table sys_layout_prop
    "desc"               varchar(1024) comment '描述',
    sort_num             int not null comment '排序号',
    primary key (id)
-);
+)$$
 
-alter table sys_layout_prop comment '布局属性';
+alter table sys_layout_prop comment '布局属性'$$
 
 /*==============================================================*/
 /* Table: sys_meta                                              */
@@ -300,9 +178,9 @@ create table sys_meta
    sort_num             int not null comment '排序号',
    ds_name              varchar(128) not null comment '数据源名称',
    primary key (id)
-);
+)$$
 
-alter table sys_meta comment '元数据';
+alter table sys_meta comment '元数据'$$
 
 /*==============================================================*/
 /* Table: sys_meta_field                                        */
@@ -322,9 +200,9 @@ create table sys_meta_field
    sort_num             int not null comment '排序号',
    input_date           datetime not null comment '录入时间',
    primary key (id)
-);
+)$$
 
-alter table sys_meta_field comment '元字段信息';
+alter table sys_meta_field comment '元字段信息'$$
 
 /*==============================================================*/
 /* Table: sys_meta_obj                                          */
@@ -334,9 +212,9 @@ create table sys_meta_obj
    id                   varchar(32) not null comment '对象ID',
    meta_id              varchar(32) not null comment '元数据ID',
    primary key (id)
-);
+)$$
 
-alter table sys_meta_obj comment '元数据对象';
+alter table sys_meta_obj comment '元数据对象'$$
 
 /*==============================================================*/
 /* Table: sys_meta_obj_value                                    */
@@ -346,9 +224,9 @@ create table sys_meta_obj_value
    meta_obj_id          varchar(32) not null comment '元对象ID',
    meta_field_id        varchar(32) not null comment '元字段ID',
    value                varchar(1024) comment '元字段值'
-);
+)$$
 
-alter table sys_meta_obj_value comment '元对象值';
+alter table sys_meta_obj_value comment '元对象值'$$
 
 /*==============================================================*/
 /* Table: sys_meta_reference                                    */
@@ -361,9 +239,9 @@ create table sys_meta_reference
    fk_meta_id           varchar(32) not null comment '引用元数据ID',
    fk_meta_field_id     varchar(32) not null comment '引用元数据列ID',
    primary key (id)
-);
+)$$
 
-alter table sys_meta_reference comment '元数据引用';
+alter table sys_meta_reference comment '元数据引用'$$
 
 /*==============================================================*/
 /* Table: sys_module                                            */
@@ -380,9 +258,9 @@ create table sys_module
    sort_num             int not null comment '排序号',
    input_date           datetime not null comment '录入时间',
    primary key (id)
-);
+)$$
 
-alter table sys_module comment '系统模块';
+alter table sys_module comment '系统模块'$$
 
 /*==============================================================*/
 /* Table: sys_nav_menu                                          */
@@ -397,9 +275,9 @@ create table sys_nav_menu
    pid                  varchar(32) not null comment '父菜单ID',
    level                int not null comment '菜单级别',
    primary key (id)
-);
+)$$
 
-alter table sys_nav_menu comment '导航菜单';
+alter table sys_nav_menu comment '导航菜单'$$
 
 /*==============================================================*/
 /* Table: sys_view                                              */
@@ -415,9 +293,9 @@ create table sys_view
    sort_num             int not null comment '排序号',
    meta_id              varchar(32) not null comment '元数据ID',
    primary key (id)
-);
+)$$
 
-alter table sys_view comment '视图';
+alter table sys_view comment '视图'$$
 
 /*==============================================================*/
 /* Table: sys_view_config                                       */
@@ -429,9 +307,9 @@ create table sys_view_config
    meta_field_id        varchar(32) comment '元字段ID',
    value                varchar(128) comment '属性值',
    primary key (id)
-);
+)$$
 
-alter table sys_view_config comment '视图配置';
+alter table sys_view_config comment '视图配置'$$
 
 /*==============================================================*/
 /* Index: idx_view_config_prop                                  */
@@ -440,7 +318,7 @@ create unique index idx_view_config_prop on sys_view_config
 (
    prop_id,
    meta_field_id
-);
+)$$
 
 /*==============================================================*/
 /* Table: sys_view_prop                                         */
@@ -453,67 +331,61 @@ create table sys_view_prop
    meta_field_id        varchar(32) comment '元字段ID',
    value                varchar(128) comment '属性值',
    primary key (id)
-);
+)$$
 
-alter table sys_view_prop comment '视图属性';
-
-alter table sys_dbms_column add constraint FK_table_id foreign key (table_id)
-      references sys_dbms_table (id) on delete cascade on update cascade;
-
-alter table sys_dbms_schema add constraint FK_dbms_id foreign key (dbms_id)
-      references sys_dbms_define (id) on delete cascade on update cascade;
-
-alter table sys_dbms_table add constraint FK_schema_id foreign key (schema_id)
-      references sys_dbms_schema (id) on delete cascade on update cascade;
+alter table sys_view_prop comment '视图属性'$$
 
 alter table sys_dz_code add constraint FK_code_categoryId foreign key (category_id)
-      references sys_dz_category (id) on delete cascade on update cascade;
+      references sys_dz_category (id) on delete cascade on update cascade$$
 
 alter table sys_layout_prop add constraint FK_layout_prop_layoutId foreign key (layout_id)
-      references sys_layout (id) on delete cascade on update cascade;
+      references sys_layout (id) on delete cascade on update cascade$$
 
 alter table sys_meta_field add constraint FK_meta_field_metaId foreign key (meta_id)
-      references sys_meta (id) on delete cascade on update cascade;
+      references sys_meta (id) on delete cascade on update cascade$$
 
 alter table sys_meta_obj add constraint FK_meta_obj_metaId foreign key (meta_id)
-      references sys_meta (id) on delete restrict on update restrict;
+      references sys_meta (id) on delete restrict on update restrict$$
 
 alter table sys_meta_obj_value add constraint FK_meta_field_value_metaField foreign key (meta_field_id)
-      references sys_meta_field (id) on delete restrict on update restrict;
+      references sys_meta_field (id) on delete restrict on update restrict$$
 
 alter table sys_meta_obj_value add constraint FK_meta_obj_value_metaObjId foreign key (meta_obj_id)
-      references sys_meta_obj (id) on delete restrict on update restrict;
+      references sys_meta_obj (id) on delete restrict on update restrict$$
 
 alter table sys_meta_reference add constraint FK_meta_reference_fkMetaFieldId foreign key (fk_meta_field_id)
-      references sys_meta_field (id) on delete cascade on update cascade;
+      references sys_meta_field (id) on delete cascade on update cascade$$
 
 alter table sys_meta_reference add constraint FK_meta_reference_fkMetaId foreign key (fk_meta_id)
-      references sys_meta (id) on delete cascade on update cascade;
+      references sys_meta (id) on delete cascade on update cascade$$
 
 alter table sys_meta_reference add constraint FK_meta_reference_pkMetaFieldId foreign key (pk_meta_field_id)
-      references sys_meta_field (id) on delete cascade on update cascade;
+      references sys_meta_field (id) on delete cascade on update cascade$$
 
 alter table sys_meta_reference add constraint FK_meta_reference_pkMetaId foreign key (pk_meta_id)
-      references sys_meta (id) on delete restrict on update restrict;
+      references sys_meta (id) on delete restrict on update restrict$$
 
 alter table sys_module add constraint FK_module_viewId foreign key (view_id)
-      references sys_view (id) on delete restrict on update restrict;
+      references sys_view (id) on delete restrict on update restrict$$
 
 alter table sys_view add constraint FK_view_metaId foreign key (meta_id)
-      references sys_meta (id) on delete cascade on update cascade;
+      references sys_meta (id) on delete cascade on update cascade$$
 
 alter table sys_view_config add constraint FK_view_config_layoutPropId foreign key (prop_id)
-      references sys_layout_prop (id) on delete cascade on update cascade;
+      references sys_layout_prop (id) on delete cascade on update cascade$$
 
 alter table sys_view_config add constraint FK_view_config_metaFieldId foreign key (meta_field_id)
-      references sys_meta_field (id) on delete cascade on update cascade;
+      references sys_meta_field (id) on delete cascade on update cascade$$
 
 alter table sys_view_prop add constraint FK_view_prop_layoutPropId foreign key (layout_prop_id)
-      references sys_layout_prop (id) on delete cascade on update cascade;
+      references sys_layout_prop (id) on delete cascade on update cascade$$
 
 alter table sys_view_prop add constraint FK_view_prop_metaFieldId foreign key (meta_field_id)
-      references sys_meta_field (id) on delete cascade on update cascade;
+      references sys_meta_field (id) on delete cascade on update cascade$$
 
 alter table sys_view_prop add constraint FK_view_prop_viewId foreign key (view_id)
-      references sys_view (id) on delete cascade on update cascade;
+      references sys_view (id) on delete cascade on update cascade$$
 
+
+
+DELIMITER ; 
