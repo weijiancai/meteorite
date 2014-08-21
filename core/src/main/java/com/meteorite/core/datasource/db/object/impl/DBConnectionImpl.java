@@ -176,7 +176,12 @@ public class DBConnectionImpl implements DBConnection {
                 if(UString.isEmpty(sql)) {
                     continue;
                 }
-                log.info("SQL = " + sql.trim());
+                sql = sql.trim();
+                // MySql处理DELIMITER， 忽略此语句
+                if (sql.toUpperCase().startsWith("DELIMITER")) {
+                    continue;
+                }
+                log.info("SQL = " + sql);
                 Statement stmt = conn.createStatement();
                 stmt.execute(sql);
             }
@@ -186,6 +191,7 @@ public class DBConnectionImpl implements DBConnection {
                 conn.rollback();
             }
             log.error("执行升级Sql脚本错误：", e);
+            throw e;
         } finally {
             if (conn != null) {
                 conn.close();

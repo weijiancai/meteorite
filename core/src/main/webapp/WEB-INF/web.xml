@@ -38,6 +38,26 @@
         <servlet-class>com.meteorite.core.web.action.SystemAction</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>RestServlet</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>
+                com.meteorite
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>jersey.config.server.provider.scanning.recursive</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RestServlet</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>MetaRest</servlet-name>
         <url-pattern>/meta/*</url-pattern>

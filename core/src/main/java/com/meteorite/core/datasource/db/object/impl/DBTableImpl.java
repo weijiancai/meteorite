@@ -50,6 +50,9 @@ public class DBTableImpl extends DBDatasetImpl implements DBTable {
 
     @Override
     public String getFullName() {
+        if (getSchema() == null) {
+            return getName();
+        }
         return getSchema().getFullName() + "." + getName();
     }
 }

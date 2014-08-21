@@ -289,7 +289,7 @@ public class FetchWebSite {
     public void fetchImages(String url) throws IOException {
         System.out.println(url);
 
-        if(baseUrl == null) {
+        if (baseUrl == null) {
             int end = url.indexOf("/", 7);
             baseUrl = url.substring(0, end == -1 ? url.length() : end);
         }
@@ -324,8 +324,10 @@ public class FetchWebSite {
 
         for (Element link : links) {
             String href = link.attr("abs:href");
-            urlSet.add(href);
-            fetchImages(href);
+            if (!urlSet.contains(href)) {
+                urlSet.add(href);
+                fetchImages(href);
+            }
         }
     }
 }

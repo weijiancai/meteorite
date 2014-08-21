@@ -7,6 +7,7 @@ import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.action.MUAction;
@@ -22,10 +23,7 @@ import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.meteorite.core.config.SystemConfig.*;
 
@@ -150,18 +148,32 @@ public class SystemManager {
         ClassPathDataSource cpDataSource = DataSourceManager.getClassPathDataSource();
         ResourceItem dbUpgrade = cpDataSource.getResource("db_upgrade/");
         for (ITreeNode node : dbUpgrade.getChildren()) {
-            String version = node.getName();
-            if(maxVersion.compareTo(version) < 0) {
+            final String version = node.getName();
+            if(maxVersion.compareTo(version) < 0 && node.getChildren().size() > 0) {
                 log.info("检测到新版本需要升级：" + version);
                 ResourceItem item;
                 if ("0.0.0".equals(maxVersion)) {
                     item = cpDataSource.getResource("db_upgrade/init_" + dbType.getName().toLowerCase() + ".sql");
                     if (item != null) {
-                        dataSource.getDbConnection().execSqlScript(item.getContent(), "$$");
+                        dataSource.getDbConnection().execSqlScript(item.getContent(), "\\$\\$");
                     }
                 }
                 item = cpDataSource.getResource("db_upgrade/" + version + "/" + SYSTEM_NAME + "_" + dbType.getName().toLowerCase() + ".sql");
-                dataSource.getDbConnection().execSqlScript(item.getContent(), "$$");
+                dataSource.getDbConnection().execSqlScript(item.getContent(), ";");
+                // 插入新的数据库版本
+                dataSource.save(new IPDB() {
+                    @Override
+                    public Map<String, ? extends Map<String, Object>> getPDBMap() {
+                        Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+                        Map<String, Object> map = new HashMap<String, Object>();
+                        map.put("sys_name", SYSTEM_NAME);
+                        map.put("db_version", version);
+                        map.put("input_date", new Date());
+                        map.put("memo", "系统自动升级到" + version);
+                        result.put(SYS_DB_VERSION_TABLE_NAME, map);
+                        return result;
+                    }
+                });
                 log.info("升级完成");
             }
         }
