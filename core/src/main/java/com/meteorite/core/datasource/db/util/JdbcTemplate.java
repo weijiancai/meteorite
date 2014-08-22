@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.db.RowMapper;
+import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.persist.IPDB;
@@ -361,13 +362,7 @@ public class JdbcTemplate {
     }
 
     public void close() {
-        if(null != conn) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+        ConnectionUtil.closeConnection(conn);
     }
 
     public void clearTable(String... tables) throws SQLException {

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/8/21 22:52:19                           */
+/* Created on:     2014/8/22 12:29:59                           */
 /*==============================================================*/
 
 
@@ -8,13 +8,13 @@ drop table if exists sys_db_mobile_number;
 
 drop table if exists sys_db_version;
 
-call del_idx('sys_dz_category','iux_name');
+drop index iux_name on sys_dz_category;
 
 drop table if exists sys_dz_category;
 
 drop table if exists sys_dz_code;
 
-call del_idx('sys_layout','IUX_NAME');
+drop index IUX_NAME on sys_layout;
 
 drop table if exists sys_layout;
 
@@ -36,7 +36,7 @@ drop table if exists sys_nav_menu;
 
 drop table if exists sys_view;
 
-call del_idx('sys_view_config','idx_view_config_prop');
+drop index idx_view_config_prop on sys_view_config;
 
 drop table if exists sys_view_config;
 

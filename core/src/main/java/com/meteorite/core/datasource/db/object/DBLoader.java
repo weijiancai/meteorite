@@ -34,4 +34,6 @@ public interface DBLoader {
     List<DBColumn> loadColumns(DBDataset table);
 
     DBTable getTable(String tableName) throws Exception;
+
+    void deleteIndex(String tableName, String indexName) throws Exception;
 }

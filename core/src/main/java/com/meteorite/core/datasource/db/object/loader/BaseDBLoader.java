@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.*;
 import com.meteorite.core.datasource.db.object.impl.*;
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UObject;
@@ -13,6 +14,7 @@ import com.meteorite.core.util.UString;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +50,8 @@ public abstract class BaseDBLoader implements DBLoader {
     protected abstract String getConstraintsSql();
     // 获得Indexes Sql语句
     protected abstract String getIndexesSql();
+    // 获得Index Sql语句
+    protected abstract String getIndexSql(String schema, String tableName, String indexName);
     // 获得Triggers Sql语句
     protected abstract String getTriggersSql();
     // 获得Procedures Sql语句
@@ -504,6 +508,7 @@ public abstract class BaseDBLoader implements DBLoader {
                 DBTableImpl table = new DBTableImpl();
                 table.setDataSource(dbConn.getDataSource());
                 table.setName(UObject.toString(rs.getString("TABLE_NAME")));
+                table.setComment(UObject.toString(rs.getString("REMARKS")));
 
                 return table;
             }
@@ -512,5 +517,20 @@ public abstract class BaseDBLoader implements DBLoader {
         }
 
         return null;
+    }
+
+    @Override
+    public void deleteIndex(String tableName, String indexName) throws Exception {
+        Connection connection = dbConn.getConnection();
+        JdbcTemplate template = new JdbcTemplate(connection);
+        try {
+            String sql = getIndexSql(connection.getCatalog(), tableName, indexName);
+            List<DataMap> list = template.queryForList(sql);
+            if(list.size() == 1) {
+                template.update(String.format("drop index %s on %s", indexName, tableName));
+            }
+        } finally {
+            template.close();
+        }
     }
 }

@@ -160,6 +160,24 @@ public class MySqlLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getIndexSql(String schema, String tableName, String indexName) {
+        return String.format("select distinct\n" +
+                "                INDEX_NAME,\n" +
+                "                TABLE_NAME,\n" +
+                "                COLUMN_NAME,\n" +
+                "                if (NON_UNIQUE = 'YES', 'N', 'Y') as IS_UNIQUE,\n" +
+                "                (CASE WHEN COLLATION = 'A' THEN 'Y' ELSE 'N' END) as IS_ASC,\n" +
+                "                'Y' as IS_VALID\n" +
+                "            from INFORMATION_SCHEMA.STATISTICS\n" +
+                "            where TABLE_SCHEMA = '%s'\n" +
+                "                  AND TABLE_NAME = '%s'\n" +
+                "                  AND INDEX_NAME = '%s'\n" +
+                "            order by\n" +
+                "                TABLE_NAME,\n" +
+                "                INDEX_NAME asc", schema, tableName, indexName);
+    }
+
+    @Override
     protected String getTriggersSql() {
         return "select\n" +
                 "                EVENT_OBJECT_TABLE as DATASET_NAME,\n" +

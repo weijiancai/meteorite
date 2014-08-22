@@ -48,6 +48,7 @@ public class DBConnectionImpl implements DBConnection {
         Connection conn = null;
         try {
             conn = getConnection();
+            conn.getSchema();
             DatabaseMetaData metaData = conn.getMetaData();
             String productName = metaData.getDatabaseProductName().toUpperCase();
             if (productName.contains("ORACLE")) {
@@ -179,6 +180,17 @@ public class DBConnectionImpl implements DBConnection {
                 sql = sql.trim();
                 // MySql处理DELIMITER， 忽略此语句
                 if (sql.toUpperCase().startsWith("DELIMITER")) {
+                    continue;
+                }
+                // MySql Drop Index处理
+                String temp = sql.toLowerCase();
+                if(dbType == DatabaseType.MYSQL && temp.startsWith("drop index ")) {
+                    int idx = temp.indexOf("drop index ");
+                    int onIndex = temp.indexOf(" on ", idx + 11);
+                    String indexName = temp.substring(idx + 11, onIndex).trim();
+                    String tableName = temp.substring(onIndex + 4).trim();
+                    System.out.println("table =  " + tableName + ", index = " + indexName);
+                    loader.deleteIndex(tableName, indexName);
                     continue;
                 }
                 log.info("SQL = " + sql);
