@@ -1,8 +1,10 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/8/22 12:29:59                           */
+/* Created on:     2014/8/23 10:26:53                           */
 /*==============================================================*/
 
+
+drop table if exists mu_db_datasource;
 
 drop table if exists sys_db_mobile_number;
 
@@ -43,6 +45,28 @@ drop table if exists sys_view_config;
 drop table if exists sys_view_prop;
 
 /*==============================================================*/
+/* Table: mu_db_datasource                                      */
+/*==============================================================*/
+create table mu_db_datasource
+(
+   id                   varchar(32) not null,
+   name                 varchar(128) not null comment '名称',
+   display_name         varchar(128) comment '显示名',
+   type                 varchar(32) not null comment '类型',
+   description          varchar(1024) comment '描述',
+   host                 varchar(64) comment '主机',
+   port                 int comment '端口',
+   user_name            varchar(64) comment '用户名',
+   pwd                  varchar(64) comment '密码',
+   is_valid             char(1) not null comment '是否有效',
+   sort_num             int not null comment '排序号',
+   input_date           datetime not null comment '录入时间',
+   primary key (id)
+);
+
+alter table mu_db_datasource comment '数据源';
+
+/*==============================================================*/
 /* Table: sys_db_mobile_number                                  */
 /*==============================================================*/
 create table sys_db_mobile_number
@@ -79,7 +103,7 @@ create table sys_dz_category
 (
    id                   varchar(32) not null comment '类别ID',
    name                 varchar(64) not null comment '类别名称',
-   `desc`               varchar(1024) comment '描述',
+   description          varchar(1024) comment '描述',
    is_system            char(1) not null comment '是否系统内置',
    is_valid             char(1) not null comment '是否有效',
    sort_num             int not null comment '排序号',
@@ -106,7 +130,7 @@ create table sys_dz_code
    category_id          varchar(32) not null comment '类别ID',
    name                 varchar(128) not null comment '代码名称',
    display_name         varchar(128) not null comment '代码显示名',
-   `desc`               varchar(1024) comment '描述',
+   description          varchar(1024) comment '描述',
    is_valid             char(1) not null comment '是否有效',
    input_date           datetime not null comment '录入时间',
    sort_num             int not null comment '排序号',
@@ -124,7 +148,7 @@ create table sys_layout
    pid                  varchar(32) comment '布局父ID',
    name                 varchar(64) not null comment '布局名称',
    display_name         varchar(128) not null comment '布局显示名',
-   `desc`               varchar(1024) comment '描述',
+   description          varchar(1024) comment '描述',
    ref_id               varchar(32) comment '引用布局ID',
    is_valid             char(1) not null comment '是否有效',
    input_date           datetime not null comment '录入时间',
@@ -149,12 +173,12 @@ create table sys_layout_prop
 (
    id                   varchar(32) not null comment '布局属性ID',
    layout_type          varchar(32) not null comment '布局类型',
-   layout_id            varchar(32) not null comment '布局ID',
+   layout_id            varchar(32) comment '布局ID',
    name                 varchar(64) not null comment '属性名称',
    display_name         varchar(128) not null comment '显示名',
    default_value        varchar(128) comment '默认值',
    prop_type            char(2) not null comment '属性类型',
-   `desc`               varchar(1024) comment '描述',
+   description          varchar(1024) comment '描述',
    sort_num             int not null comment '排序号',
    primary key (id)
 );
@@ -169,7 +193,7 @@ create table sys_meta
    id                   varchar(32) not null comment '元数据ID',
    name                 varchar(128) not null comment '元数据名称',
    display_name         varchar(128) comment '元数据显示名',
-   `desc`               varchar(1024) comment '描述',
+   description          varchar(1024) comment '描述',
    is_valid             char(1) not null comment '是否有效',
    input_date           datetime not null comment '录入时间',
    sort_num             int not null comment '排序号',
@@ -189,7 +213,7 @@ create table sys_meta_field
    name                 varchar(128) not null comment '字段名称',
    display_name         varchar(64) comment '显示名',
    data_type            varchar(64) not null comment '数据类型',
-   `desc`               varchar(1024) comment '描述',
+   description          varchar(1024) comment '描述',
    default_value        varchar(256) not null comment '默认值',
    dict_id              varchar(32) comment '数据字典',
    db_column            varchar(128) comment '对应数据库列',
@@ -249,7 +273,7 @@ create table sys_module
    name                 varchar(64) not null comment '名称',
    display_name         varchar(64) not null comment '显示名',
    pid                  varchar(32) comment '父模块',
-   `desc`               varchar(1024) comment '描述',
+   description          varchar(1024) comment '描述',
    view_id              varchar(32) comment '视图ID',
    is_valid             char(1) not null comment '是否有效',
    sort_num             int not null comment '排序号',
@@ -284,7 +308,7 @@ create table sys_view
    id                   varchar(32) not null comment '视图ID',
    name                 varchar(64) not null comment '视图名称',
    display_name         varchar(128) comment '显示名',
-   `desc`               varchar(1024) comment '描述',
+   description          varchar(1024) comment '描述',
    is_valid             char(1) not null comment '是否有效',
    input_date           datetime not null comment '录入时间',
    sort_num             int not null comment '排序号',

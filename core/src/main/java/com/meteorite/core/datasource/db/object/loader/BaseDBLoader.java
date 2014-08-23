@@ -1,6 +1,8 @@
 package com.meteorite.core.datasource.db.object.loader;
 
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBIcons;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.*;
@@ -12,10 +14,7 @@ import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -520,6 +519,29 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
+    public DBColumn getColumn(String tableName, String columnName) throws Exception {
+        Connection connection = dbConn.getConnection();
+        try {
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet rs = metaData.getColumns(null, null, tableName, columnName);
+            if (rs.next()) {
+                DBColumnImpl column = new DBColumnImpl();
+                column.setDataSource(dbConn.getDataSource());
+                column.setName(UObject.toString(rs.getString("COLUMN_NAME")));
+                column.setComment(UObject.toString(rs.getString("REMARKS")));
+                String typeName = rs.getString("TYPE_NAME");
+                String columnSize = rs.getString("COLUMN_SIZE");
+                column.setDataTypeString(String.format("%s(%s)", typeName, columnSize));
+                column.setNullable("YES".equalsIgnoreCase(rs.getString("IS_NULLABLE")));
+                return column;
+            }
+        } finally {
+            ConnectionUtil.closeConnection(connection);
+        }
+        return null;
+    }
+
+    @Override
     public void deleteIndex(String tableName, String indexName) throws Exception {
         Connection connection = dbConn.getConnection();
         JdbcTemplate template = new JdbcTemplate(connection);
@@ -529,6 +551,93 @@ public abstract class BaseDBLoader implements DBLoader {
             if(list.size() == 1) {
                 template.update(String.format("drop index %s on %s", indexName, tableName));
             }
+        } finally {
+            template.close();
+        }
+    }
+
+
+    @Override
+    public void dropTable(String tableName) throws Exception {
+        DBTable table = getTable(tableName);
+        if (table == null) {
+            return;
+        }
+
+        String sql;
+        JdbcTemplate template = new JdbcTemplate(dbConn.getDataSource());
+        try {
+            for (DBConstraint constraint : getExportedKeys(tableName)) {
+                sql = String.format("ALTER TABLE %s DROP FOREIGN KEY %s", constraint.getFkTableName(), constraint.getFkName());
+                template.update(sql);
+            }
+
+            template.update(String.format("drop table %s", tableName));
+        } finally {
+            template.close();
+        }
+    }
+
+    @Override
+    public void dropForeignKey(String tableName, String referenceName) throws Exception {
+        JdbcTemplate template = new JdbcTemplate(dbConn.getDataSource());
+        try {
+            String sql = String.format("ALTER TABLE %s DROP FOREIGN KEY %s", tableName, referenceName);
+            template.update(sql);
+        } finally {
+            template.close();
+        }
+    }
+
+    @Override
+    public List<DBConstraint> getExportedKeys(String table) throws Exception {
+        List<DBConstraint> result = new ArrayList<DBConstraint>();
+
+        DBDataSource dataSource = DataSourceManager.getSysDataSource();
+        Connection conn = dataSource.getDbConnection().getConnection();
+        try {
+            DatabaseMetaData dbMetaData = conn.getMetaData();
+            ResultSet rs = dbMetaData.getExportedKeys(conn.getCatalog(), conn.getSchema(), table);
+            while (rs.next()) {
+                DBConstraintImpl constraint = new DBConstraintImpl();
+                constraint.setPkCatalog(rs.getString("PKTABLE_CAT"));
+                constraint.setPkSchema(rs.getString("PKTABLE_SCHEM"));
+                constraint.setPkTableName(rs.getString("PKTABLE_NAME"));
+                constraint.setPkColumnName(rs.getString("PKCOLUMN_NAME"));
+                constraint.setFkCatalog(rs.getString("FKTABLE_CAT"));
+                constraint.setFkSchema(rs.getString("FKTABLE_SCHEM"));
+                constraint.setFkTableName(rs.getString("FKTABLE_NAME"));
+                constraint.setFkColumnName(rs.getString("FKCOLUMN_NAME"));
+                constraint.setKeySeq(rs.getInt("KEY_SEQ"));
+                constraint.setUpdateRule(rs.getString("UPDATE_RULE"));
+                constraint.setDeleteRule(rs.getString("DELETE_RULE"));
+                constraint.setFkName(rs.getString("FK_NAME"));
+                constraint.setPkName(rs.getString("PK_NAME"));
+
+                result.add(constraint);
+            }
+            rs.close();
+        } finally {
+            ConnectionUtil.closeConnection(conn);
+        }
+
+        return result;
+    }
+
+    @Override
+    public void updateColumnNullable(String table, String column, boolean nullable) throws Exception {
+        DBColumn dbColumn = getColumn(table, column);
+        if (dbColumn == null) {
+            throw new Exception(String.format("表【%s】中没有此列【%s】", table, column));
+        }
+        if ((nullable && dbColumn.isNullable()) || (!nullable && !dbColumn.isNullable())) { // 如果nullable没有改变，数据库不需要更新
+            return;
+        }
+        // 更新列
+        String sql = String.format("ALTER TABLE %s MODIFY %s %s %s", table, column, dbColumn.getDataTypeString(), nullable ? "NULL" : "NOT NULL");
+        JdbcTemplate template = new JdbcTemplate();
+        try {
+            template.update(sql);
         } finally {
             template.close();
         }

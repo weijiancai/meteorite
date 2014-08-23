@@ -1,7 +1,5 @@
 package com.meteorite.core.dict;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
-
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -20,7 +18,7 @@ import java.util.List;
 public class DictCategory implements Serializable {
     private String id;
     private String name;
-    private String desc;
+    private String description;
     private boolean isValid;
     private boolean isSystem;
     private int sortNum;
@@ -46,12 +44,12 @@ public class DictCategory implements Serializable {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @XmlAttribute

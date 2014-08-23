@@ -20,6 +20,7 @@ import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.rest.Request;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
@@ -44,7 +45,7 @@ import java.util.Map;
 @XmlRootElement
 @XmlType(propOrder = {"databaseType", "driverClass", "url", "username", "password", "dbVersion", "filePath"})
 @MetaElement(displayName = "数据库数据源")
-public class DBDataSource implements DataSource {
+public class DBDataSource extends DataSource {
     private static final Logger log = Logger.getLogger(DBDataSource.class);
 
     public static final String DRIVER_CLASS = "driverClass";
@@ -149,12 +150,6 @@ public class DBDataSource implements DataSource {
     @Override
     public DataSourceType getType() {
         return DataSourceType.DATABASE;
-    }
-
-    @Override
-    @JSONField(serialize = false)
-    public Meta getProperties() {
-        return properties;
     }
 
     @Override
@@ -411,5 +406,34 @@ public class DBDataSource implements DataSource {
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public VirtualResource get(Request request) {
+        return null;
+    }
+
+    @Override
+    public void post(Request request) {
+
+    }
+
+    @Override
+    public void put(Request request) {
+        Map<String, String> keyMap = request.getPathHandler().parseForDb();
+        Map<String, String> params = request.getParams();
+        if (keyMap.containsKey("column")) {
+            String tableName = keyMap.get("table");
+            String columnName = keyMap.get("column");
+            if (params.containsKey("nullable")) { // 设置列属性是否可为空
+                boolean isNullable = UString.toBoolean(params.get("nullable"));
+
+            }
+        }
+    }
+
+    @Override
+    public void delete(Request request) {
+
     }
 }

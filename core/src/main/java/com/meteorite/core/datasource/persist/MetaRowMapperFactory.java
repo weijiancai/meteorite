@@ -1,6 +1,9 @@
 package com.meteorite.core.datasource.persist;
 
+import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.DataSourceType;
+import com.meteorite.core.datasource.DefaultDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.RowMapper;
 import com.meteorite.core.dict.DictCategory;
@@ -23,6 +26,30 @@ import java.sql.SQLException;
  * @since 1.0.0
  */
 public class MetaRowMapperFactory {
+    public static RowMapper<DataSource> getDataSource() {
+        return new RowMapper<DataSource>() {
+            @Override
+            public DataSource mapRow(ResultSet rs) throws SQLException {
+                DataSource dataSource = new DefaultDataSource();
+
+                dataSource.setId(rs.getString("id"));
+                dataSource.setName(rs.getString("name"));
+                dataSource.setDisplayName(rs.getString("display_name"));
+                dataSource.setDescription(rs.getString("description"));
+                dataSource.setValid("T".equals(rs.getString("is_valid")));
+                dataSource.setInputDate(rs.getDate("input_date"));
+                dataSource.setSortNum(rs.getInt("sort_num"));
+                dataSource.setHost(rs.getString("host"));
+                dataSource.setPort(rs.getInt("port"));
+                dataSource.setUserName(rs.getString("user_name"));
+                dataSource.setPwd(rs.getString("pwd"));
+                dataSource.setType(DataSourceType.valueOf(rs.getString("type")));
+
+                return dataSource;
+            }
+        };
+    }
+
     public static RowMapper<Meta> getMeta() {
         return new RowMapper<Meta>() {
             @Override
@@ -32,7 +59,7 @@ public class MetaRowMapperFactory {
                 meta.setId(rs.getString("id"));
                 meta.setName(rs.getString("name"));
                 meta.setDisplayName(rs.getString("display_name"));
-                meta.setDesc(rs.getString("desc"));
+                meta.setDescription(rs.getString("description"));
                 meta.setValid("T".equals(rs.getString("is_valid")));
                 meta.setInputDate(rs.getDate("input_date"));
                 meta.setSortNum(rs.getInt("sort_num"));
@@ -55,7 +82,7 @@ public class MetaRowMapperFactory {
                 field.setDisplayName(rs.getString("display_name"));
                 field.setDataType(MetaDataType.getDataType(rs.getString("data_type")));
                 field.setDefaultValue(rs.getString("default_value"));
-                field.setDesc(rs.getString("desc"));
+                field.setDescription(rs.getString("description"));
                 field.setDictId(rs.getString("dict_id"));
                 field.setValid("T".equals(rs.getString("is_valid")));
                 field.setInputDate(rs.getDate("input_date"));
@@ -94,7 +121,7 @@ public class MetaRowMapperFactory {
                 layout.setPid(rs.getString("pid"));
                 layout.setName(rs.getString("name"));
                 layout.setDisplayName(rs.getString("display_name"));
-                layout.setDesc(rs.getString("desc"));
+                layout.setDescription(rs.getString("description"));
                 layout.setRefId(rs.getString("ref_id"));
                 layout.setValid("T".equals(rs.getString("is_valid")));
                 layout.setInputDate(rs.getDate("input_date"));
@@ -117,7 +144,7 @@ public class MetaRowMapperFactory {
                 prop.setDisplayName(rs.getString("display_name"));
                 prop.setDefaultValue(rs.getString("default_value"));
                 prop.setPropType(PropertyType.getType(rs.getString("prop_type")));
-                prop.setDesc(rs.getString("desc"));
+                prop.setDescription(rs.getString("description"));
                 prop.setSortNum(rs.getInt("sort_num"));
                 prop.setLayoutType(LayoutType.valueOf(rs.getString("layout_type")));
 
@@ -135,7 +162,7 @@ public class MetaRowMapperFactory {
                 category.setId(rs.getString("id"));
                 category.setName(rs.getString("name"));
                 category.setSystem("T".equals(rs.getString("is_system")));
-                category.setDesc(rs.getString("desc"));
+                category.setDescription(rs.getString("description"));
                 category.setValid("T".equals(rs.getString("is_valid")));
                 category.setInputDate(rs.getDate("input_date"));
                 category.setSortNum(rs.getInt("sort_num"));
@@ -155,7 +182,7 @@ public class MetaRowMapperFactory {
                 code.setId(rs.getString("id"));
                 code.setName(rs.getString("name"));
                 code.setDisplayName(rs.getString("display_name"));
-                code.setDesc(rs.getString("desc"));
+                code.setDescription(rs.getString("description"));
                 code.setValid("T".equals(rs.getString("is_valid")));
                 code.setInputDate(rs.getDate("input_date"));
                 code.setSortNum(rs.getInt("sort_num"));
@@ -174,7 +201,7 @@ public class MetaRowMapperFactory {
                 view.setId(rs.getString("id"));
                 view.setName(rs.getString("name"));
                 view.setDisplayName(rs.getString("display_name"));
-                view.setDesc(rs.getString("desc"));
+                view.setDescription(rs.getString("description"));
                 view.setMeta(MetaManager.getMetaById(rs.getString("meta_id")));
                 view.setValid("T".equals(rs.getString("is_valid")));
                 view.setInputDate(rs.getDate("input_date"));

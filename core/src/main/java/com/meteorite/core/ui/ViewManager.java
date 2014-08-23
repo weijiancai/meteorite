@@ -46,7 +46,7 @@ public class ViewManager {
                 viewIdMap.put(view.getId(), view);
                 viewNameMap.put(view.getName(), view);
                 // 查询视图布局
-                sql = "SELECT * FROM sys_view_layout WHERE view_id=?";
+                /*sql = "SELECT * FROM sys_view_layout WHERE view_id=?";
                 List<ViewLayout> viewLayoutList = template.query(sql, MetaRowMapperFactory.getViewLayout(view), view.getId());
                 view.setLayoutList(viewLayoutList);
                 for (ViewLayout viewLayout : viewLayoutList) {
@@ -60,7 +60,7 @@ public class ViewManager {
                         configMap.put(config.getId(), config);
                         view.addConfig(config);
                     }
-                }
+                }*/
 
                 // 查询视图属性
                 sql = "SELECT * FROM sys_view_prop WHERE view_id=?";

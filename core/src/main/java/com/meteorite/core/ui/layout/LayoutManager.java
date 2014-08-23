@@ -80,7 +80,7 @@ public class LayoutManager {
                 root.load();
             }*/
             // 清空表
-            template.clearTable("sys_view_config", "sys_view_layout", "sys_layout", "sys_layout_prop");
+            template.clearTable("sys_view_config", "sys_layout", "sys_layout_prop");
 //            iterator(root);
 
             // 保存Layout到数据库

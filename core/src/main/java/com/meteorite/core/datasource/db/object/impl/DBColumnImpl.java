@@ -31,6 +31,8 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
     private DBColumn refColumn;
     private DBDataset dataset;
 
+    private String dataTypeString;
+
     public DBColumnImpl() {
         setObjectType(DBObjectType.COLUMN);
     }
@@ -77,6 +79,15 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
     @Override
     public DBDataset getDataset() {
         return dataset;
+    }
+
+    public void setDataTypeString(String dataTypeString) {
+        this.dataTypeString = dataTypeString;
+    }
+
+    @Override
+    public String getDataTypeString() {
+        return dataTypeString;
     }
 
     public void setMaxLength(int maxLength) {
@@ -155,6 +166,9 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
 
     @Override
     public String getFullName() {
+        if (getDataset() == null) {
+            return getName();
+        }
         return getDataset().getFullName() + "." + getName();
     }
 }

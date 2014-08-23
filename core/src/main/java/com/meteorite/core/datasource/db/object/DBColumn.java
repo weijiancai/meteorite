@@ -73,4 +73,11 @@ public interface DBColumn extends DBObject {
      * @return 返回列所在的表（视图）信息
      */
     DBDataset getDataset();
+
+    /**
+     * 获得数据类型的字符串表示，例如varchar(24)
+     *
+     * @return 返回数据类型字符串的表示
+     */
+    String getDataTypeString();
 }

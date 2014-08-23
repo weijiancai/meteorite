@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
  * @version 1.0.0
  */
 @XmlRootElement(name = "Property")
-@XmlType(propOrder = {"id", "name", "displayName", "defaultValue", "propType", "desc", "sortNum"})
+@XmlType(propOrder = {"id", "name", "displayName", "defaultValue", "propType", "description", "sortNum"})
 public class LayoutProperty {
     /** 属性ID */
     private String id;
@@ -32,7 +32,7 @@ public class LayoutProperty {
     /** 属性类型 */
     private PropertyType propType;
     /** 描述 */
-    private String desc;
+    private String description;
     /** 排序号*/
     private int sortNum;
 
@@ -40,12 +40,12 @@ public class LayoutProperty {
 
     public LayoutProperty() {}
 
-    public LayoutProperty(String name, String displayName, String defaultValue, PropertyType propType, String desc) {
+    public LayoutProperty(String name, String displayName, String defaultValue, PropertyType propType, String description) {
         this.name = name;
         this.displayName = displayName;
         this.defaultValue = defaultValue;
         this.propType = propType;
-        this.desc = desc;
+        this.description = description;
     }
 
     public LayoutProperty(String id, String displayName, LayoutType layoutType, String defaultValue, PropertyType propType, int sortNum) {
@@ -115,12 +115,12 @@ public class LayoutProperty {
         this.propType = propType;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @XmlAttribute

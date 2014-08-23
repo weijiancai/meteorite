@@ -1,5 +1,7 @@
 package com.meteorite.core.rest;
 
+import com.meteorite.core.datasource.VirtualResource;
+
 /**
  * Reset Handler
  *
@@ -7,5 +9,11 @@ package com.meteorite.core.rest;
  * @since 1.0.0
  */
 public interface RestHandler {
+    VirtualResource get(Request request);
 
+    void post(Request request);
+
+    void put(Request request);
+
+    void delete(Request request);
 }

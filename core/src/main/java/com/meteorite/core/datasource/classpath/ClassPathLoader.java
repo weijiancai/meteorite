@@ -75,7 +75,6 @@ public class ClassPathLoader implements ILoader {
                 // 获取jar里的一个实体 可以是目录 和一些jar包里的其他文件 如META-INF等文件
                 JarEntry entry = entries.nextElement();
                 String name = entry.getName().replace("//", "/");
-                System.out.println(name);
                 if (nodeMap.containsKey(name)) {
                     continue;
                 }
@@ -126,7 +125,6 @@ public class ClassPathLoader implements ILoader {
             ClassPathResourceItem node = new ClassPathResourceItem("file", basePath);
             node.setName(file.getName());
             node.setDisplayName(node.getName());
-            System.out.println(file);
 
             // 如果是目录 则继续扫描
             if (file.isDirectory()) {

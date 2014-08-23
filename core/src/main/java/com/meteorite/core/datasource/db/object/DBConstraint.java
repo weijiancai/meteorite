@@ -23,4 +23,30 @@ public interface DBConstraint extends DBObject {
     DBTable getForeignKeyTable();
 
     List<DBColumn> getColumns();
+
+    String getPkCatalog();
+
+    String getPkSchema();
+
+    String getPkTableName();
+
+    String getPkColumnName();
+
+    String getFkCatalog();
+
+    String getFkSchema();
+
+    String getFkTableName();
+
+    String getFkColumnName();
+
+    int getKeySeq();
+
+    String getUpdateRule();
+
+    String getDeleteRule();
+
+    String getFkName();
+
+    String getPkName();
 }

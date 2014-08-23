@@ -27,9 +27,7 @@ import javafx.collections.ObservableList;
 
 import javax.xml.bind.annotation.*;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -39,13 +37,13 @@ import java.util.*;
  * @version 1.0.0
  */
 @XmlRootElement
-@XmlType(propOrder = {"id", "name", "displayName", "valid", "sortNum", "inputDate", "desc", "fields"})
+@XmlType(propOrder = {"id", "name", "displayName", "valid", "sortNum", "inputDate", "description", "fields"})
 @MetaElement(displayName = "元数据")
 public class Meta {
     private String id;
     private String name;
     private String displayName;
-    private String desc;
+    private String description;
     private boolean isValid;
     private int sortNum;
     private Date inputDate;
@@ -102,12 +100,12 @@ public class Meta {
     }
 
     @MetaFieldElement(displayName = "描述", sortNum = 40)
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @XmlAttribute

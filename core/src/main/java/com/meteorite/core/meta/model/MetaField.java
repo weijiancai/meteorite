@@ -19,14 +19,14 @@ import java.util.Date;
  * @since 1.0.0
  */
 @XmlRootElement
-@XmlType(propOrder = {"id", "name", "displayName", "dataType", "value", "defaultValue", "dictId", "valid", "sortNum", "inputDate", "desc"})
+@XmlType(propOrder = {"id", "name", "displayName", "dataType", "value", "defaultValue", "dictId", "valid", "sortNum", "inputDate", "description"})
 @MetaElement(displayName = "元数据字段")
 public class MetaField {
     private String id;
     private String name;
     private String displayName;
     private MetaDataType dataType;
-    private String desc;
+    private String description;
     private String defaultValue;
     private String value;
     private String dictId;
@@ -103,12 +103,12 @@ public class MetaField {
 
     @XmlAttribute
     @MetaFieldElement(displayName = "描述")
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @XmlAttribute

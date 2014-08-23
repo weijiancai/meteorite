@@ -34,7 +34,7 @@ public class PropBuilder {
     }
 
     public PropBuilder desc(String desc) {
-        property.setDesc(desc);
+        property.setDescription(desc);
         return this;
     }
 

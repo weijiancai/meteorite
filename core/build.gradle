@@ -14,7 +14,7 @@ repositories {
 
 ext {
     // 资源文件名称
-    resourceList =["**/*.sql", "**/*.properties"]
+    resourceList =["**/*.sql", "**/*.properties", "**/*.css"]
 }
 
 sourceSets {

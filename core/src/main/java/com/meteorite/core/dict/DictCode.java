@@ -17,7 +17,7 @@ public class DictCode implements Serializable {
     private String id;
     private String name;
     private String displayName;
-    private String desc;
+    private String description;
     private boolean isValid;
     private int sortNum;
     private Date inputDate;
@@ -51,12 +51,12 @@ public class DictCode implements Serializable {
         this.displayName = displayName;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @XmlAttribute

@@ -120,7 +120,7 @@ public abstract class BaseApp extends Application {
     }
 
     public void setSkin(String skin) {
-        scene.getStylesheets().addAll(R.class.getResource("skin/" + skin + "/" + skin + ".css").toExternalForm());
+        scene.getStylesheets().addAll(R.class.getResource("/fxbase/skin/" + skin + "/" + skin + ".css").toExternalForm());
     }
 
     @Override

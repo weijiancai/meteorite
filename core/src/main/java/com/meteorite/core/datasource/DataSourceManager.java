@@ -96,6 +96,7 @@ public class DataSourceManager {
             log.debug("初始化系统数据源：" + url);
             DBDataSource dataSource = new DBDataSource(SYSTEM_NAME, driverClass, url, userName, password, SystemConfig.SYS_DB_VERSION);
             dataSourceMap.put(SYSTEM_NAME, dataSource);
+            dataSources.add(dataSource);
             return dataSource;
         } catch (Exception e) {
             log.error("获得db.property文件失败！", e);

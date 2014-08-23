@@ -184,14 +184,21 @@ public class DBConnectionImpl implements DBConnection {
                 }
                 // MySql Drop Index处理
                 String temp = sql.toLowerCase();
-                if(dbType == DatabaseType.MYSQL && temp.startsWith("drop index ")) {
-                    int idx = temp.indexOf("drop index ");
-                    int onIndex = temp.indexOf(" on ", idx + 11);
-                    String indexName = temp.substring(idx + 11, onIndex).trim();
-                    String tableName = temp.substring(onIndex + 4).trim();
-                    System.out.println("table =  " + tableName + ", index = " + indexName);
-                    loader.deleteIndex(tableName, indexName);
-                    continue;
+                if(dbType == DatabaseType.MYSQL) {
+                    if(temp.startsWith("drop index ")) {
+                        int idx = temp.indexOf("drop index ");
+                        int onIndex = temp.indexOf(" on ", idx + 11);
+                        String indexName = temp.substring(idx + 11, onIndex).trim();
+                        String tableName = temp.substring(onIndex + 4).trim();
+                        loader.deleteIndex(tableName, indexName);
+
+                        continue;
+                    } else if (temp.startsWith("drop table if exists ")) {
+                        String tableName = temp.substring("drop table if exists ".length());
+                        loader.dropTable(tableName);
+
+                        continue;
+                    }
                 }
                 log.info("SQL = " + sql);
                 Statement stmt = conn.createStatement();

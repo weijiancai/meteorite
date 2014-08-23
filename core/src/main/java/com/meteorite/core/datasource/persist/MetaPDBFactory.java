@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.persist;
 
+import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
@@ -7,19 +8,45 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.ui.model.*;
-import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UUIDUtil;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author wei_jc
  * @since 1.0.0
  */
 public class MetaPDBFactory {
+    public static IPDB getDataSource(final DataSource dataSource) {
+        return new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                dataSource.setId(UUIDUtil.getUUID());
+
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("id", dataSource.getId());
+                map.put("name", dataSource.getName());
+                map.put("display_name", dataSource.getDisplayName());
+                map.put("description", dataSource.getDescription());
+                map.put("is_valid", dataSource.isValid() ? "T" : "F");
+                map.put("input_date", new Date());
+                map.put("sort_num", dataSource.getSortNum());
+                map.put("host", dataSource.getHost());
+                map.put("port", dataSource.getPort());
+                map.put("user_name", dataSource.getUserName());
+                map.put("pwd", dataSource.getPwd());
+
+                result.put("mu_db_datasource", map);
+
+                return result;
+            }
+        };
+    }
+
     public static IPDB getMeta(final Meta meta) {
         return new IPDB() {
             @Override
@@ -32,7 +59,7 @@ public class MetaPDBFactory {
                 map.put("id", meta.getId());
                 map.put("name", meta.getName());
                 map.put("display_name", meta.getDisplayName());
-                map.put("desc", meta.getDesc());
+                map.put("description", meta.getDescription());
                 map.put("is_valid", meta.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", meta.getSortNum());
@@ -84,7 +111,7 @@ public class MetaPDBFactory {
                 map.put("name", field.getName());
                 map.put("display_name", field.getDisplayName());
                 map.put("data_type", field.getDataType().name());
-                map.put("desc", field.getDesc());
+                map.put("description", field.getDescription());
                 map.put("is_valid", field.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", field.getSortNum());
@@ -110,7 +137,7 @@ public class MetaPDBFactory {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("id", category.getId());
                 map.put("name", category.getName());
-                map.put("desc", category.getDesc());
+                map.put("description", category.getDescription());
                 map.put("is_system", category.isSystem() ? "T" : "F");
                 map.put("is_valid", category.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
@@ -136,7 +163,7 @@ public class MetaPDBFactory {
                 map.put("id", code.getId());
                 map.put("name", code.getName());
                 map.put("display_name", code.getDisplayName());
-                map.put("desc", code.getDesc());
+                map.put("description", code.getDescription());
                 map.put("is_valid", code.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", code.getSortNum());
@@ -161,7 +188,7 @@ public class MetaPDBFactory {
                 }
                 map.put("name", layout.getName());
                 map.put("display_name", layout.getDisplayName());
-                map.put("desc", layout.getDesc());
+                map.put("description", layout.getDescription());
                 map.put("ref_id", layout.getRefId());
                 map.put("is_valid", layout.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
@@ -190,7 +217,7 @@ public class MetaPDBFactory {
                 map.put("display_name", property.getDisplayName());
                 map.put("default_value", property.getDefaultValue());
                 map.put("prop_type", property.getPropType().name());
-                map.put("desc", property.getDesc());
+                map.put("description", property.getDescription());
                 map.put("sort_num", property.getSortNum());
 
                 result.put("sys_layout_prop", map);
@@ -210,7 +237,7 @@ public class MetaPDBFactory {
                 map.put("id", view.getId());
                 map.put("name", view.getName());
                 map.put("display_name", view.getDisplayName());
-                map.put("desc", view.getDesc());
+                map.put("description", view.getDescription());
                 map.put("meta_id", view.getMeta().getId());
                 map.put("is_valid", view.isValid() ? "T" : "F");
                 map.put("input_date", new Date());

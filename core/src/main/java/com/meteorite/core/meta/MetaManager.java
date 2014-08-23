@@ -42,8 +42,8 @@ public class MetaManager {
 
     static {
         try {
-            addMeta(ProjectConfig.class, null);
-            addMeta(DBDataSource.class, null);
+//            addMeta(ProjectConfig.class, null);
+//            addMeta(DBDataSource.class, null);
 //            addMeta(Meta.class);
 //            addMeta(MetaField.class);
 
@@ -86,7 +86,7 @@ public class MetaManager {
             } else {
                 metaSortNum = 10;
                 // 清空表sys_view_config, sys_view_layout, sys_view, sys_meta
-                template.clearTable("sys_meta_reference", "sys_view_config", "sys_view_layout", "sys_view", "sys_meta");
+                template.clearTable("sys_meta_reference", "sys_view_config", "sys_view", "sys_meta");
                 DBDataSource dataSource = DataSourceManager.getSysDataSource();
                 DBConnection dbConn = dataSource.getDbConnection();
                 DBSchema schema = dbConn.getSchema();
@@ -102,7 +102,7 @@ public class MetaManager {
                 }
 
                 // 初始化元数据引用
-                for (DBConstraint constraint : schema.getConstraints()) {
+                /*for (DBConstraint constraint : schema.getConstraints()) {
                     if (constraint.isForeignKey()) {
                         for (DBColumn column : constraint.getColumns()) {
                             MetaReference metaRef = new MetaReference();
@@ -121,7 +121,7 @@ public class MetaManager {
                             fkMeta.getReferences().add(metaRef);
                         }
                     }
-                }
+                }*/
 
                 // 创建元数据视图
                 for (Meta meta : metaMap.values()) {
@@ -234,7 +234,7 @@ public class MetaManager {
         meta.setName("##default".equals(metaElement.name()) ? clazz.getSimpleName() : metaElement.name());
         meta.setDisplayName(metaElement.displayName());
         meta.setValid(metaElement.isValid());
-        meta.setDesc(metaElement.desc());
+        meta.setDescription(metaElement.desc());
         meta.setInputDate(new Date());
         meta.setSortNum(metaElement.sortNum());
         meta.setDataSource(DataSourceManager.getSysDataSource());
@@ -256,7 +256,7 @@ public class MetaManager {
                 metaField.setName("##default".equals(metaFieldElement.name()) ? name : metaFieldElement.name());
                 metaField.setDisplayName(metaFieldElement.displayName());
                 metaField.setValid(metaFieldElement.isValid());
-                metaField.setDesc(metaFieldElement.desc());
+                metaField.setDescription(metaFieldElement.desc());
                 metaField.setInputDate(new Date());
                 metaField.setSortNum(metaFieldElement.sortNum());
                 metaField.setDataType(metaFieldElement.dataType());
@@ -361,7 +361,7 @@ public class MetaManager {
             meta.setDisplayName(comment);
         }
 
-        meta.setDesc(comment);
+        meta.setDescription(comment);
         meta.setValid(true);
         meta.setInputDate(new Date());
         meta.setSortNum(metaSortNum);
@@ -389,7 +389,7 @@ public class MetaManager {
             }
             field.setDisplayName(columnComment);
             field.setName(UString.columnNameToFieldName(column.getName()));
-            field.setDesc(column.getComment());
+            field.setDescription(column.getComment());
             if (column.getName().toLowerCase().startsWith("is_")) {
                 field.setDataType(MetaDataType.BOOLEAN);
             } else {

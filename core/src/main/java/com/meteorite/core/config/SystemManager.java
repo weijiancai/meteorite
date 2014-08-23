@@ -7,7 +7,9 @@ import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.IPDB;
+import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.action.MUAction;
@@ -67,13 +69,14 @@ public class SystemManager {
         DataSourceManager.initSysDataSource();
         // 检查数据库版本
         checkDbVersion();
+        // 加载数据源
+        loadDataSource();
 
         switch (SystemConfig.SYSTEM_TYPE) {
             case DESKTOP: {
-                // 加载数据源
-                loadDataSource();
                 // 启动数据库
                 // HSqlDBServer.getInstance().start();
+                DataSourceManager.getSysDataSource().load();
                 // 加载数据字典
                 DictManager.load();
                 // 加载布局配置
@@ -116,10 +119,10 @@ public class SystemManager {
         // 加载系统默认Hsqldb数据源
 //        File sysDbFile = UFile.createFile(DIR_SYSTEM_HSQL_DB, SYS_DB_NAME);
 //        HSqlDBServer.getInstance().addDbFile(SYS_DB_NAME, sysDbFile.getAbsolutePath());
-        DataSourceManager.addDataSource(DataSourceManager.getSysDataSource());
-        DataSourceManager.addDataSource(ClassPathDataSource.getInstance());
+//        DataSourceManager.addDataSource(DataSourceManager.getSysDataSource());
+//        DataSourceManager.addDataSource(ClassPathDataSource.getInstance());
 
-        for (ProjectConfig config : cache.values()) {
+        /*for (ProjectConfig config : cache.values()) {
             List<DBDataSource> list = config.getDataSources();
             if (list != null) {
                 for (DBDataSource dataSource : list) {
@@ -135,6 +138,12 @@ public class SystemManager {
         for (DataSource ds : DataSourceManager.getDataSources()) {
             log.info("==============加载数据源： " + ds.getName());
             ds.load();
+        }*/
+
+        JdbcTemplate template = new JdbcTemplate();
+        List<DataSource> list = template.query("select * from mu_db_datasource", MetaRowMapperFactory.getDataSource());
+        for (DataSource ds : list) {
+            DataSourceManager.addDataSource(ds);
         }
     }
 

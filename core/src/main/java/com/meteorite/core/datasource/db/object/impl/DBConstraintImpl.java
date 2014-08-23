@@ -89,4 +89,137 @@ public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
     public String getFullName() {
         return getSchema().getFullName() + ".constraint." + getName();
     }
+
+
+
+    private String pkCatalog;
+    private String pkSchema;
+    private String pkTableName;
+    private String pkColumnName;
+    private String fkCatalog;
+    private String fkSchema;
+    private String fkTableName;
+    private String fkColumnName;
+    private int keySeq;
+    private String updateRule;
+    private String deleteRule;
+    private String fkName;
+    private String pkName;
+
+    @Override
+    public String getPkCatalog() {
+        return pkCatalog;
+    }
+
+    @Override
+    public String getPkSchema() {
+        return pkSchema;
+    }
+
+    @Override
+    public String getPkTableName() {
+        return pkTableName;
+    }
+
+    @Override
+    public String getPkColumnName() {
+        return pkColumnName;
+    }
+
+    @Override
+    public String getFkCatalog() {
+        return fkCatalog;
+    }
+
+    @Override
+    public String getFkSchema() {
+        return fkSchema;
+    }
+
+    @Override
+    public String getFkTableName() {
+        return fkTableName;
+    }
+
+    @Override
+    public String getFkColumnName() {
+        return fkColumnName;
+    }
+
+    @Override
+    public int getKeySeq() {
+        return keySeq;
+    }
+
+    @Override
+    public String getUpdateRule() {
+        return updateRule;
+    }
+
+    @Override
+    public String getDeleteRule() {
+        return deleteRule;
+    }
+
+    @Override
+    public String getFkName() {
+        return fkName;
+    }
+
+    @Override
+    public String getPkName() {
+        return pkName;
+    }
+
+    public void setPkCatalog(String pkCatalog) {
+        this.pkCatalog = pkCatalog;
+    }
+
+    public void setPkSchema(String pkSchema) {
+        this.pkSchema = pkSchema;
+    }
+
+    public void setPkTableName(String pkTableName) {
+        this.pkTableName = pkTableName;
+    }
+
+    public void setPkColumnName(String pkColumnName) {
+        this.pkColumnName = pkColumnName;
+    }
+
+    public void setFkCatalog(String fkCatalog) {
+        this.fkCatalog = fkCatalog;
+    }
+
+    public void setFkSchema(String fkSchema) {
+        this.fkSchema = fkSchema;
+    }
+
+    public void setFkTableName(String fkTableName) {
+        this.fkTableName = fkTableName;
+    }
+
+    public void setFkColumnName(String fkColumnName) {
+        this.fkColumnName = fkColumnName;
+    }
+
+    public void setKeySeq(int keySeq) {
+        this.keySeq = keySeq;
+    }
+
+    public void setUpdateRule(String updateRule) {
+        this.updateRule = updateRule;
+    }
+
+    public void setDeleteRule(String deleteRule) {
+        this.deleteRule = deleteRule;
+    }
+
+    public void setFkName(String fkName) {
+        this.fkName = fkName;
+    }
+
+    public void setPkName(String pkName) {
+        this.pkName = pkName;
+    }
 }

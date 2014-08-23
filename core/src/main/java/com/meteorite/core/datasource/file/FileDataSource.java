@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.rest.Request;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
@@ -20,22 +21,7 @@ import java.util.Map;
  * @author wei_jc
  * @since 1.0.0
  */
-public class FileDataSource implements DataSource {
-    @Override
-    public String getName() {
-        return null;
-    }
-
-    @Override
-    public DataSourceType getType() {
-        return DataSourceType.FILE_SYSTEM;
-    }
-
-    @Override
-    public Meta getProperties() {
-        return null;
-    }
-
+public class FileDataSource extends DataSource {
     @Override
     public QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
         return null;
@@ -104,5 +90,25 @@ public class FileDataSource implements DataSource {
     @Override
     public VirtualResource findResourceByPath(String path) {
         return null;
+    }
+
+    @Override
+    public VirtualResource get(Request request) {
+        return null;
+    }
+
+    @Override
+    public void post(Request request) {
+
+    }
+
+    @Override
+    public void put(Request request) {
+
+    }
+
+    @Override
+    public void delete(Request request) {
+
     }
 }

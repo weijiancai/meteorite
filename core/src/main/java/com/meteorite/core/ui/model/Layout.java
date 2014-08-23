@@ -18,7 +18,7 @@ import java.util.List;
  * @since  1.0.0
  */
 @XmlRootElement(name = "Layout")
-@XmlType(propOrder = {"id", "pid", "name", "displayName", "valid", "inputDate", "sortNum", "desc", "refId", "properties", "children"})
+@XmlType(propOrder = {"id", "pid", "name", "displayName", "valid", "inputDate", "sortNum", "description", "refId", "properties", "children"})
 public class Layout extends AbstractXmlSerialization implements Cloneable {
     /** 布局ID */
     private String id;
@@ -29,7 +29,7 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
     /** 布局显示名 */
     private String displayName;
     /** 描述 */
-    private String desc;
+    private String description;
     /** 引用布局ID */
     private String refId;
     /** 是否有效 */
@@ -52,10 +52,10 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
         this.displayName = displayName;
     }
 
-    public Layout(String name, String displayName, String desc, Layout parent) {
+    public Layout(String name, String displayName, String description, Layout parent) {
         this.name = name;
         this.displayName = displayName;
-        this.desc = desc;
+        this.description = description;
         this.parent = parent;
         // 将子节点添加到父节点中
         if (parent != null) {
@@ -99,12 +99,12 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
     }
 
     @XmlAttribute
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @XmlAttribute
@@ -215,7 +215,7 @@ public class Layout extends AbstractXmlSerialization implements Cloneable {
                 ", pid='" + pid + '\'' +
                 ", name='" + name + '\'' +
                 ", displayName='" + displayName + '\'' +
-                ", desc='" + desc + '\'' +
+                ", desc='" + description + '\'' +
                 ", sortNum=" + sortNum +
                 ", properties=" + properties +
                 ", children=" + children +

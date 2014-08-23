@@ -6,7 +6,6 @@ import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
 
-import java.beans.Transient;
 import java.util.*;
 
 /**
@@ -23,7 +22,7 @@ public class View {
     /** 显示名 */
     private String displayName;
     /** 描述 */
-    private String desc;
+    private String description;
     /** 是否有效 */
     private boolean isValid;
     /** 录入时间 */
@@ -65,12 +64,12 @@ public class View {
         this.displayName = displayName;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isValid() {
