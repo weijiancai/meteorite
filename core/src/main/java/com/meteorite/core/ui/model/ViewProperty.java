@@ -87,7 +87,7 @@ public class ViewProperty {
             Map<String, Object> conditionMap = new HashMap<String, Object>();
             conditionMap.put("id", getId());
 
-            template.update(valueMap, conditionMap, "sys_view_prop");
+            template.update(valueMap, conditionMap, "mu_view_prop");
             template.commit();
         } finally {
             template.close();

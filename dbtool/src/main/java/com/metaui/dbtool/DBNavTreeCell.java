@@ -1,5 +1,8 @@
 package com.metaui.dbtool;
 
+import com.meteorite.core.datasource.ResourceTreeAdapter;
+import com.meteorite.core.datasource.ResourceType;
+import com.meteorite.core.datasource.VirtualResource;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.model.ITreeNode;
@@ -27,11 +30,20 @@ public class DBNavTreeCell extends BaseTreeCell {
             setText(null);
             setGraphic(null);
         } else {
-            DBObject dbObj = (DBObject) item;
+            /*DBObject dbObj = (DBObject) item;
             if (dbObj.getObjectType() == DBObjectType.VIEW) {
                 MenuItem menuItem = new MenuItem("新增视图");
                 addContextMenu(menuItem);
+            }*/
+            ResourceTreeAdapter adapter = (ResourceTreeAdapter) item;
+            VirtualResource resource = adapter.getResource();
+            ResourceType type = resource.getResourceType();
+
+            if (type.getName().equals(DBObjectType.VIEW.name())) {
+                MenuItem menuItem = new MenuItem("新增视图");
+                addContextMenu(menuItem);
             }
+
         }
     }
 }

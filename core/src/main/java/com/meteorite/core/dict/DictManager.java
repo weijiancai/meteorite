@@ -65,18 +65,18 @@ public class DictManager {
 
         if (sysInfo.isDictInit()) {
             // 查询布局
-            String sql = "SELECT * FROM sys_dz_category";
+            String sql = "SELECT * FROM mu_dz_category";
             List<DictCategory> categoryList = template.query(sql, MetaRowMapperFactory.getDictCategory());
             for (DictCategory category : categoryList) {
                 categoryMap.put(category.getId(), category);
                 // 查询布局属性
-                sql = "SELECT * FROM sys_dz_code WHERE category_id=?";
+                sql = "SELECT * FROM mu_dz_code WHERE category_id=?";
                 List<DictCode> codeList = template.query(sql, MetaRowMapperFactory.getDictCode(category), category.getId());
                 category.setCodeList(codeList);
             }
         } else { // 初始化数据字典
             // 清空表
-            template.clearTable("sys_dz_category");
+            template.clearTable("mu_dz_category");
 
             // 保存字典分类到数据库
             for (DictCategory category : getDictList()) {

@@ -11,13 +11,13 @@ import java.util.List;
 public interface DBLoader {
     void load() throws Exception;
 
-    List<DBUser> loadUsers();
+    List<DBUser> loadUsers() throws Exception;
 
     List<DBObject> loadPrivileges();
 
     List<DBObject> loadCharsets();
 
-    List<DBSchema> loadSchemas();
+    List<DBSchema> loadSchemas() throws Exception;
 
     List<DBIndex> loadIndexes(DBSchema schema);
 
@@ -27,11 +27,13 @@ public interface DBLoader {
 
     List<DBFunction> loadFunctions(DBSchema schema);
 
-    List<DBTable> loadTables(DBSchema schema);
+    List<DBTable> loadTables(DBSchema schema) throws Exception;
 
-    List<DBView> loadViews(DBSchema schema);
+    List<DBView> loadViews(DBSchema schema) throws Exception;
 
-    List<DBColumn> loadColumns(DBDataset table);
+    List<DBColumn> loadColumns(DBDataset table) throws Exception;
+
+    List<DBConstraint> loadConstraint(DBDataset table) throws Exception;
 
     DBTable getTable(String tableName) throws Exception;
 
@@ -58,4 +60,13 @@ public interface DBLoader {
     List<DBConstraint> getExportedKeys(String table) throws Exception;
 
     void updateColumnNullable(String table, String column, boolean nullable) throws Exception;
+
+    /**
+     * 重命名表
+     *
+     * @param oldName 旧表名
+     * @param newName 新表名
+     * @throws Exception
+     */
+    void renameTable(String oldName, String newName) throws Exception;
 }

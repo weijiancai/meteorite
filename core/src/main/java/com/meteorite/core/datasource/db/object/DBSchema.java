@@ -24,9 +24,9 @@ import java.util.List;
 public interface DBSchema extends DBObject {
     String getCatalog();
 
-    List<DBTable> getTables();
+    List<DBTable> getTables() throws Exception;
 
-    List<DBView> getViews();
+    List<DBView> getViews() throws Exception;
 
     List<DBProcedure> getProcedures();
 

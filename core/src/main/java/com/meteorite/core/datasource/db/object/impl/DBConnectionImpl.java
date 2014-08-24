@@ -60,6 +60,17 @@ public class DBConnectionImpl implements DBConnection {
             } else if (productName.contains("HSQL")) {
                 dbType = DatabaseType.HSQLDB;
             }
+
+            // 当前schema
+            DBSchemaImpl schema = new DBSchemaImpl();
+            String schemaName = conn.getSchema();
+            if (UString.isEmpty(schemaName)) {
+                schemaName = conn.getCatalog();
+            }
+            schema.setDataSource(dataSource);
+            schema.setName(schemaName);
+
+            currentSchema = schema;
         } finally {
             ConnectionUtil.closeConnection(conn);
         }
@@ -79,6 +90,8 @@ public class DBConnectionImpl implements DBConnection {
                 loader = new SqlServerLoader(this);
                 break;
         }
+
+        ((DBSchemaImpl)currentSchema).setLoader(loader);
     }
 
     @Override

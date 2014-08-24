@@ -39,6 +39,11 @@ public class FtpDataSource extends DataSource {
     }
 
     @Override
+    public VirtualResource getRootResource() {
+        return null;
+    }
+
+    @Override
     public QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws SQLException {
         return null;
     }

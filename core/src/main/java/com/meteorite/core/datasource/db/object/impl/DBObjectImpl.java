@@ -3,6 +3,7 @@ package com.meteorite.core.datasource.db.object.impl;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBObjCache;
+import com.meteorite.core.datasource.db.object.DBLoader;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.DBSchema;
@@ -187,7 +188,7 @@ public class DBObjectImpl implements DBObject {
         this.icon = icon;
     }
 
-    public void setDataSource(DBDataSource dataSource) {
+    public void setDataSource(DBDataSource dataSource) throws Exception {
         this.dataSource = dataSource;
     }
 

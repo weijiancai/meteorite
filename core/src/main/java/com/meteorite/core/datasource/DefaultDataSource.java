@@ -22,6 +22,11 @@ import java.util.Map;
 public class DefaultDataSource extends DataSource {
 
     @Override
+    public VirtualResource getRootResource() {
+        return null;
+    }
+
+    @Override
     public QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws Exception {
         return null;
     }

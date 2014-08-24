@@ -76,7 +76,7 @@ public class SystemManager {
             case DESKTOP: {
                 // 启动数据库
                 // HSqlDBServer.getInstance().start();
-                DataSourceManager.getSysDataSource().load();
+//                DataSourceManager.getSysDataSource().load();
                 // 加载数据字典
                 DictManager.load();
                 // 加载布局配置

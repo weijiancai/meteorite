@@ -22,14 +22,14 @@ public interface DBDataset extends DBObject {
      *
      * @return 返回数据库表中的所有列信息
      */
-    List<DBColumn> getColumns();
+    List<DBColumn> getColumns() throws Exception;
 
     /**
      * 获得数据库表的主键列
      *
      * @return 返回主键列
      */
-    List<DBColumn> getPkColumns();
+    List<DBColumn> getPkColumns() throws Exception;
 
     /**
      * 获得数据库表的约束信息
@@ -37,7 +37,7 @@ public interface DBDataset extends DBObject {
      * @return 返回数据库表中的约束信息
      * @since 1.0.0
      */
-    List<DBConstraint> getConstraints();
+    List<DBConstraint> getConstraints() throws Exception;
 
     /**
      * 根据约束名，获得约束信息

@@ -1,6 +1,5 @@
 package com.meteorite.core.datasource.db.object.impl;
 
-import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.util.UString;
@@ -31,6 +30,8 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     private Map<String, DBProcedure> procedureMap = new HashMap<String, DBProcedure>();
     private Map<String, DBConstraint> constraintMap = new HashMap<String, DBConstraint>();
 
+    private DBLoader loader;
+
     public DBSchemaImpl() {
         setObjectType(DBObjectType.SCHEMA);
     }
@@ -43,24 +44,36 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     @Override
     @XmlElementWrapper(name = "Tables")
     @XmlAnyElement
-    public List<DBTable> getTables() {
+    public List<DBTable> getTables() throws Exception {
+        if (tables == null) {
+            tables = loader.loadTables(this);
+        }
         return tables;
     }
 
     @Override
     @XmlElementWrapper(name = "Views")
     @XmlAnyElement
-    public List<DBView> getViews() {
+    public List<DBView> getViews() throws Exception {
+        if (views == null) {
+            views = loader.loadViews(this);
+        }
         return views;
     }
 
     @Override
     public List<DBProcedure> getProcedures() {
+        if (procedures == null) {
+            procedures = loader.loadProcedures(this);
+        }
         return procedures;
     }
 
     @Override
     public List<DBFunction> getFunctions() {
+        if (functions == null) {
+            functions = loader.loadFunctions(this);
+        }
         return functions;
     }
 
@@ -94,6 +107,9 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
 
     @Override
     public List<DBIndex> getIndexes() {
+        if (indexes == null) {
+            indexes = loader.loadIndexes(this);
+        }
         return indexes;
     }
 
@@ -114,6 +130,9 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
 
     @Override
     public List<DBTrigger> getTriggers() {
+        if (triggers == null) {
+            triggers = loader.loadTriggers(this);
+        }
         return triggers;
     }
 
@@ -174,6 +193,13 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
         constraintMap.put(constraint.getName(), constraint);
     }
 
+    public DBLoader getLoader() {
+        return loader;
+    }
+
+    public void setLoader(DBLoader loader) {
+        this.loader = loader;
+    }
 
     @Override
     public String getFullName() {

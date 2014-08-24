@@ -1,19 +1,15 @@
 package com.meteorite.core.datasource.db.object.loader;
 
-import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.DBLoader;
-import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-
-import static org.junit.Assert.*;
 
 public class BaseDBLoaderTest {
 
@@ -41,20 +37,27 @@ public class BaseDBLoaderTest {
     public void testDropTable() throws Exception {
         DBDataSource dataSource = DataSourceManager.getSysDataSource();
         DBLoader loader = dataSource.getDbConnection().getLoader();
-        loader.dropTable("sys_layout_prop");
+        loader.dropTable("mu_layout_prop");
     }
 
     @Test
     public void testUpdateColumnNullable() throws Exception {
         DBDataSource dataSource = DataSourceManager.getSysDataSource();
         DBLoader loader = dataSource.getDbConnection().getLoader();
-        loader.updateColumnNullable("sys_meta_field", "default_value", true);
+        loader.updateColumnNullable("mu_meta_field", "default_value", true);
     }
 
     @Test
     public void testDropForeignKey() throws Exception {
         DBDataSource dataSource = DataSourceManager.getSysDataSource();
         DBLoader loader = dataSource.getDbConnection().getLoader();
-        loader.dropForeignKey("sys_layout_prop", "FK_layout_prop_layoutId");
+        loader.dropForeignKey("mu_layout_prop", "FK_layout_prop_layoutId");
+    }
+
+    @Test
+    public void testRenameTable() throws Exception {
+        DBDataSource dataSource = DataSourceManager.getSysDataSource();
+        DBLoader loader = dataSource.getDbConnection().getLoader();
+        loader.renameTable("sys_nav_menu", "mu_nav_menu");
     }
 }

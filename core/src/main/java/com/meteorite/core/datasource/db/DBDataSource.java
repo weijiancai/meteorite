@@ -65,6 +65,8 @@ public class DBDataSource extends DataSource {
     private DBObjectImpl navTree;
     private boolean isAvailable;
 
+    private VirtualResource rootResource;
+
     public DBDataSource() {
         initProperties();
     }
@@ -150,6 +152,14 @@ public class DBDataSource extends DataSource {
     @Override
     public DataSourceType getType() {
         return DataSourceType.DATABASE;
+    }
+
+    @Override
+    public VirtualResource getRootResource() throws Exception {
+        if (rootResource == null) {
+            rootResource = new DBResource(getDbConnection().getSchema());
+        }
+        return rootResource;
     }
 
     @Override
@@ -419,15 +429,15 @@ public class DBDataSource extends DataSource {
     }
 
     @Override
-    public void put(Request request) {
+    public void put(Request request) throws Exception {
         Map<String, String> keyMap = request.getPathHandler().parseForDb();
         Map<String, String> params = request.getParams();
         if (keyMap.containsKey("column")) {
             String tableName = keyMap.get("table");
             String columnName = keyMap.get("column");
             if (params.containsKey("nullable")) { // 设置列属性是否可为空
-                boolean isNullable = UString.toBoolean(params.get("nullable"));
-
+                boolean nullable = UString.toBoolean(params.get("nullable"));
+                getDbConnection().getLoader().updateColumnNullable(tableName, columnName, nullable);
             }
         }
     }

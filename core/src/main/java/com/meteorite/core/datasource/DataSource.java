@@ -205,6 +205,13 @@ public abstract class DataSource implements RestHandler {
     }
 
     /**
+     * 获取根资源
+     *
+     * @return 返回根资源
+     */
+    public abstract VirtualResource getRootResource() throws Exception;
+
+    /**
      * 检索数据
      *
      * @param meta 元数据

@@ -67,7 +67,7 @@ public class MetaPDBFactory {
                     map.put("ds_name", meta.getDataSource().getName());
                 }
 
-                result.put("sys_meta", map);
+                result.put("mu_meta", map);
 
                 return result;
             }
@@ -89,7 +89,7 @@ public class MetaPDBFactory {
                 map.put("fk_meta_id", metaRef.getFkMeta().getId());
                 map.put("fk_meta_field_id", metaRef.getFkMetaField().getId());
 
-                result.put("sys_meta_reference", map);
+                result.put("mu_meta_reference", map);
 
                 return result;
             }
@@ -121,7 +121,7 @@ public class MetaPDBFactory {
                 }
                 map.put("dict_id", field.getDictId());
 
-                result.put("sys_meta_field", map);
+                result.put("mu_meta_field", map);
 
                 return result;
             }
@@ -143,7 +143,7 @@ public class MetaPDBFactory {
                 map.put("input_date", new Date());
                 map.put("sort_num", category.getSortNum());
 
-                result.put("sys_dz_category", map);
+                result.put("mu_dz_category", map);
 
                 return result;
             }
@@ -168,7 +168,7 @@ public class MetaPDBFactory {
                 map.put("input_date", new Date());
                 map.put("sort_num", code.getSortNum());
 
-                result.put("sys_dz_code", map);
+                result.put("mu_dz_code", map);
 
                 return result;
             }
@@ -194,7 +194,7 @@ public class MetaPDBFactory {
                 map.put("input_date", new Date());
                 map.put("sort_num", layout.getSortNum());
 
-                result.put("sys_layout", map);
+                result.put("mu_layout", map);
 
                 return result;
             }
@@ -220,7 +220,7 @@ public class MetaPDBFactory {
                 map.put("description", property.getDescription());
                 map.put("sort_num", property.getSortNum());
 
-                result.put("sys_layout_prop", map);
+                result.put("mu_layout_prop", map);
 
                 return result;
             }
@@ -243,7 +243,7 @@ public class MetaPDBFactory {
                 map.put("input_date", new Date());
                 map.put("sort_num", view.getSortNum());
 
-                result.put("sys_view", map);
+                result.put("mu_view", map);
 
                 return result;
             }
@@ -264,7 +264,7 @@ public class MetaPDBFactory {
                     map.put("meta_id", viewLayout.getMeta().getId());
                 }
 
-                result.put("sys_view_layout", map);
+                result.put("mu_view_layout", map);
 
                 return result;
             }
@@ -286,7 +286,7 @@ public class MetaPDBFactory {
                 }
                 map.put("value", config.getValue());
 
-                result.put("sys_view_config", map);
+                result.put("mu_view_config", map);
 
                 return result;
             }
@@ -308,7 +308,7 @@ public class MetaPDBFactory {
                 }
                 map.put("value", property.getValue());
 
-                result.put("sys_view_prop", map);
+                result.put("mu_view_prop", map);
 
                 return result;
             }

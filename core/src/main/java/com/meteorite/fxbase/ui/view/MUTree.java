@@ -22,14 +22,14 @@ public class MUTree extends TreeView<ITreeNode> {
     private Map<ITreeNode, TreeItem<ITreeNode>> nodeItemMap = new HashMap<ITreeNode, TreeItem<ITreeNode>>();
 
     public MUTree(ITreeNode root) {
-//        MUTreeItem rootItem = new MUTreeItem(this, root);
+        MUTreeItem rootItem = new MUTreeItem(this, root);
         /*this.setCellFactory(new Callback<TreeView<ITreeNode>, TreeCell<ITreeNode>>() {
             @Override
             public TreeCell<ITreeNode> call(TreeView<ITreeNode> param) {
                 return new BaseTreeCell();
             }
         });*/
-        TreeItem<ITreeNode> rootItem = addTreeNode(root);
+        /*TreeItem<ITreeNode> rootItem = addTreeNode(root);*/
         rootItem.setExpanded(true);
         this.setRoot(rootItem);
         this.setShowRoot(false);

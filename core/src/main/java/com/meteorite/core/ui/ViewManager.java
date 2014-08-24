@@ -40,20 +40,20 @@ public class ViewManager {
 
         // 从数据库中加载视图
         if (sysInfo.isViewInit()) {
-            String sql = "SELECT * FROM sys_view";
+            String sql = "SELECT * FROM mu_view";
             List<View> viewList = template.query(sql, MetaRowMapperFactory.getView());
             for (final View view : viewList) {
                 viewIdMap.put(view.getId(), view);
                 viewNameMap.put(view.getName(), view);
                 // 查询视图布局
-                /*sql = "SELECT * FROM sys_view_layout WHERE view_id=?";
+                /*sql = "SELECT * FROM mu_view_layout WHERE view_id=?";
                 List<ViewLayout> viewLayoutList = template.query(sql, MetaRowMapperFactory.getViewLayout(view), view.getId());
                 view.setLayoutList(viewLayoutList);
                 for (ViewLayout viewLayout : viewLayoutList) {
                     viewLayoutMap.put(viewLayout.getId(), viewLayout);
 
                     // 查询视图配置
-                    sql = "SELECT * FROM sys_view_config WHERE view_layout_id=?";
+                    sql = "SELECT * FROM mu_view_config WHERE view_layout_id=?";
                     List<ViewConfig> configList = template.query(sql, MetaRowMapperFactory.getViewConfig(viewLayout), viewLayout.getId());
                     viewLayout.setConfigs(configList);
                     for (ViewConfig config : configList) {
@@ -63,7 +63,7 @@ public class ViewManager {
                 }*/
 
                 // 查询视图属性
-                sql = "SELECT * FROM sys_view_prop WHERE view_id=?";
+                sql = "SELECT * FROM mu_view_prop WHERE view_id=?";
                 List<ViewProperty> configList = template.query(sql, MetaRowMapperFactory.getViewProperty(view), view.getId());
                 view.setViewProperties(configList);
                 for (ViewProperty config : configList) {

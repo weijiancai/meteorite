@@ -113,7 +113,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBUser> loadUsers() {
+    public List<DBUser> loadUsers() throws Exception {
         List<DBUser> result = new ArrayList<DBUser>();
         List<DataMap> list = dbConn.getResultSet(getUserSql());
         for (DataMap map : list) {
@@ -165,7 +165,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBSchema> loadSchemas() {
+    public List<DBSchema> loadSchemas() throws Exception {
         List<DBSchema> result = new ArrayList<DBSchema>();
         List<DataMap> list = dbConn.getResultSet(getSchemaSql());
         for (DataMap map : list) {
@@ -376,7 +376,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBTable> loadTables(DBSchema schema) {
+    public List<DBTable> loadTables(DBSchema schema) throws Exception {
         List<DBTable> result = new ArrayList<DBTable>();
         List<DataMap> list = dbConn.getResultSet(String.format(getTableSql(), schema.getName()));
         for (DataMap map : list) {
@@ -387,20 +387,20 @@ public abstract class BaseDBLoader implements DBLoader {
             table.setName(UObject.toString(map.get("TABLE_NAME")));
             table.setComment(UObject.toString(map.get("TABLE_COMMENT")));
             // 加载列
-            table.setColumns(loadColumns(table));
+//            table.setColumns(loadColumns(table));
             // 加载约束
-            table.setConstraints(loadConstraint(table));
+//            table.setConstraints(loadConstraint(table));
             result.add(table);
 
             // 设置Table子节点
             List<ITreeNode> children = new ArrayList<ITreeNode>();
             // 列
-            DBObjectList columns = new DBObjectList("Columns", DBIcons.DBO_COLUMNS, new ArrayList<ITreeNode>(table.getColumns()));
+//            DBObjectList columns = new DBObjectList("Columns", DBIcons.DBO_COLUMNS, new ArrayList<ITreeNode>(table.getColumns()));
             // 约束
-            DBObjectList constraints = new DBObjectList("Constraints", DBIcons.DBO_CONSTRAINTS, new ArrayList<ITreeNode>(table.getConstraints()));
+//            DBObjectList constraints = new DBObjectList("Constraints", DBIcons.DBO_CONSTRAINTS, new ArrayList<ITreeNode>(table.getConstraints()));
 
-            children.add(columns);
-            children.add(constraints);
+//            children.add(columns);
+//            children.add(constraints);
             table.setChildren(children);
         }
 
@@ -409,7 +409,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
 
     @Override
-    public List<DBView> loadViews(DBSchema schema) {
+    public List<DBView> loadViews(DBSchema schema) throws Exception {
         List<DBView> result = new ArrayList<DBView>();
         List<DataMap> list = dbConn.getResultSet(String.format(getViewSql(), schema.getName()));
         for (DataMap map : list) {
@@ -546,7 +546,7 @@ public abstract class BaseDBLoader implements DBLoader {
         Connection connection = dbConn.getConnection();
         JdbcTemplate template = new JdbcTemplate(connection);
         try {
-            String sql = getIndexSql(connection.getCatalog(), tableName, indexName);
+            String sql = getIndexSql(dbConn.getSchema().getName(), tableName, indexName);
             List<DataMap> list = template.queryForList(sql);
             if(list.size() == 1) {
                 template.update(String.format("drop index %s on %s", indexName, tableName));
@@ -635,6 +635,17 @@ public abstract class BaseDBLoader implements DBLoader {
         }
         // 更新列
         String sql = String.format("ALTER TABLE %s MODIFY %s %s %s", table, column, dbColumn.getDataTypeString(), nullable ? "NULL" : "NOT NULL");
+        JdbcTemplate template = new JdbcTemplate();
+        try {
+            template.update(sql);
+        } finally {
+            template.close();
+        }
+    }
+
+    @Override
+    public void renameTable(String oldName, String newName) throws Exception {
+        String sql = String.format("ALTER TABLE %s RENAME TO %s", oldName, newName);
         JdbcTemplate template = new JdbcTemplate();
         try {
             template.update(sql);

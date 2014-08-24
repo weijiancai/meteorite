@@ -58,13 +58,13 @@ public class MetaManager {
         JdbcTemplate template = new JdbcTemplate();
         try {
             if (sysInfo.isMetaInit()) { // ClassDef 已经初始化
-                String sql = "SELECT * FROM sys_meta order by sort_num";
+                String sql = "SELECT * FROM mu_meta order by sort_num";
                 List<Meta> metaList = template.query(sql, MetaRowMapperFactory.getMeta());
                 for (final Meta meta : metaList) {
                     metaMap.put(meta.getName(), meta);
                     metaIdMap.put(meta.getId(), meta);
                     // 查询元数据字段
-                    sql = "SELECT * FROM sys_meta_field WHERE meta_id=? order by sort_num";
+                    sql = "SELECT * FROM mu_meta_field WHERE meta_id=? order by sort_num";
                     List<MetaField> fieldList = template.query(sql, MetaRowMapperFactory.getMetaField(meta), meta.getId());
                     meta.setFields(fieldList);
                     for (MetaField field : fieldList) {
@@ -74,7 +74,7 @@ public class MetaManager {
                 }
 
                 // 查询元数据引用
-                sql = "SELECT * FROM sys_meta_reference";
+                sql = "SELECT * FROM mu_meta_reference";
                 List<MetaReference> referenceList = template.query(sql, MetaRowMapperFactory.getMetaReference());
                 for (MetaReference reference : referenceList) {
                     reference.getPkMeta().getChildren().add(reference.getFkMeta());
@@ -85,8 +85,8 @@ public class MetaManager {
                 }
             } else {
                 metaSortNum = 10;
-                // 清空表sys_view_config, sys_view_layout, sys_view, sys_meta
-                template.clearTable("sys_meta_reference", "sys_view_config", "sys_view", "sys_meta");
+                // 清空表mu_view_config, mu_view_layout, mu_view, mu_meta
+                template.clearTable("mu_meta_reference", "mu_view_config", "mu_view", "mu_meta");
                 DBDataSource dataSource = DataSourceManager.getSysDataSource();
                 DBConnection dbConn = dataSource.getDbConnection();
                 DBSchema schema = dbConn.getSchema();

@@ -3,6 +3,7 @@ package com.metaui.dbtool;
 import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.ResourceTreeAdapter;
 import com.meteorite.core.facade.impl.BaseFacade;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.fxbase.ui.IDesktop;
@@ -60,7 +61,8 @@ public class DBToolFacade extends BaseFacade {
     @Override
     public IDesktop getDesktop() throws Exception {
         if (desktop == null) {
-            desktop = new MUTabsDesktop(DataSourceManager.getNavTree());
+//            desktop = new MUTabsDesktop(DataSourceManager.getNavTree());
+            desktop = new MUTabsDesktop(new ResourceTreeAdapter(DataSourceManager.getSysDataSource().getRootResource()));
             desktop.getNavTree().setCellFactory(new Callback<TreeView<ITreeNode>, TreeCell<ITreeNode>>() {
                 @Override
                 public TreeCell<ITreeNode> call(TreeView<ITreeNode> param) {

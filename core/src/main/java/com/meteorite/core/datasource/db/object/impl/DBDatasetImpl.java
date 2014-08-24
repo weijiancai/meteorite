@@ -29,12 +29,18 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
     @Override
     @XmlElementWrapper(name = "Columns")
     @XmlAnyElement
-    public List<DBColumn> getColumns() {
+    public List<DBColumn> getColumns() throws Exception {
+        if (columns == null) {
+            columns = getDataSource().getDbConnection().getLoader().loadColumns(this);
+        }
         return columns;
     }
 
     @Override
-    public List<DBConstraint> getConstraints() {
+    public List<DBConstraint> getConstraints() throws Exception {
+        if (constraints == null) {
+            constraints = getDataSource().getDbConnection().getLoader().loadConstraint(this);
+        }
         return constraints;
     }
 
@@ -44,7 +50,7 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
     }
 
     @Override
-    public List<DBColumn> getPkColumns() {
+    public List<DBColumn> getPkColumns() throws Exception {
         List<DBColumn> list = new ArrayList<DBColumn>();
         for (DBColumn column : getColumns()) {
             if (column.isPk()) {

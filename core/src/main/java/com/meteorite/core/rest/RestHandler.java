@@ -13,7 +13,7 @@ public interface RestHandler {
 
     void post(Request request);
 
-    void put(Request request);
+    void put(Request request) throws Exception;
 
     void delete(Request request);
 }

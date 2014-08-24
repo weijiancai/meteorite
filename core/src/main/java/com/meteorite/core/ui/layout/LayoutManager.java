@@ -54,7 +54,7 @@ public class LayoutManager {
                 layoutIdMap.put(layout.getId(), layout);
                 layoutNameMap.put(layout.getName(), layout);
                 // 查询布局属性
-                sql = "SELECT * FROM sys_layout_prop WHERE layout_id=?";
+                sql = "SELECT * FROM mu_layout_prop WHERE layout_id=?";
                 List<LayoutProperty> propList = template.query(sql, MetaRowMapperFactory.getLayoutProperty(layout), layout.getId());
                 for (LayoutProperty prop : propList) {
                     propMap.put(prop.getId(), prop);
@@ -63,7 +63,7 @@ public class LayoutManager {
                 layout.setProperties(propList);
             }*/
 
-            String sql = "SELECT * FROM sys_layout_prop";
+            String sql = "SELECT * FROM mu_layout_prop";
             List<LayoutProperty> propList = template.query(sql, MetaRowMapperFactory.getLayoutProperty(null));
             for (LayoutProperty prop : propList) {
                 propMap.put(prop.getId(), prop);
@@ -80,14 +80,14 @@ public class LayoutManager {
                 root.load();
             }*/
             // 清空表
-            template.clearTable("sys_view_config", "sys_layout", "sys_layout_prop");
+            template.clearTable("mu_view_config", "mu_layout", "mu_layout_prop");
 //            iterator(root);
 
             // 保存Layout到数据库
             /*for (Layout layout : getLayoutList()) {
                 template.save(MetaPDBFactory.getLayout(layout));
                 for (LayoutProperty property : layout.getProperties()) {
-                    Map<String, Object> map = template.queryForMap(String.format("select * from sys_layout where id='%s'", layout.getId()));
+                    Map<String, Object> map = template.queryForMap(String.format("select * from mu_layout where id='%s'", layout.getId()));
                     System.out.println(map);
                     property.setLayout(layout);
                     // 保存布局属性到数据库
