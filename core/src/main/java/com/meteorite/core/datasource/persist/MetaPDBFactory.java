@@ -64,7 +64,7 @@ public class MetaPDBFactory {
                 map.put("input_date", new Date());
                 map.put("sort_num", meta.getSortNum());
                 if (meta.getDataSource() != null) {
-                    map.put("ds_name", meta.getDataSource().getName());
+                    map.put("ds_id", meta.getDataSource().getId());
                 }
 
                 result.put("mu_meta", map);

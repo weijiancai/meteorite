@@ -63,7 +63,7 @@ public class MetaRowMapperFactory {
                 meta.setValid("T".equals(rs.getString("is_valid")));
                 meta.setInputDate(rs.getDate("input_date"));
                 meta.setSortNum(rs.getInt("sort_num"));
-                meta.setDataSource(DataSourceManager.getDataSource(rs.getString("ds_name")));
+                meta.setDataSource(DataSourceManager.getDataSource(rs.getString("ds_id")));
 
                 return meta;
             }

@@ -31,17 +31,17 @@ public class DataSourceManager {
      */
     public static void addDataSource(DataSource dataSource) throws Exception {
         dataSources.add(dataSource);
-        dataSourceMap.put(dataSource.getName(), dataSource);
+        dataSourceMap.put(dataSource.getId(), dataSource);
     }
 
     /**
      * 获得数据源
      *
-     * @param dataSourceName 数据源名称
+     * @param dataSourceId 数据源ID
      * @return 返回数据源
      */
-    public static DataSource getDataSource(String dataSourceName) {
-        return dataSourceMap.get(dataSourceName);
+    public static DataSource getDataSource(String dataSourceId) {
+        return dataSourceMap.get(dataSourceId);
     }
 
 
@@ -95,6 +95,7 @@ public class DataSourceManager {
             String password = properties.getProperty("password");
             log.debug("初始化系统数据源：" + url);
             DBDataSource dataSource = new DBDataSource(SYSTEM_NAME, driverClass, url, userName, password, SystemConfig.SYS_DB_VERSION);
+            dataSource.setId("MetaUI_DataSource");
             dataSourceMap.put(SYSTEM_NAME, dataSource);
             dataSources.add(dataSource);
             return dataSource;
