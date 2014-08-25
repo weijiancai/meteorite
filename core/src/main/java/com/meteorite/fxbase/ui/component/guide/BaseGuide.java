@@ -165,7 +165,7 @@ public abstract class BaseGuide extends BasePane {
         DataMap result = new DataMap();
         for (GuideModel model : modelList) {
             ICanInput value = (ICanInput) model.getContent();
-            result.put(value.getName(), value.getInputValue());
+            result.put(value.getName(), value.getValueString());
         }
 
         return result;

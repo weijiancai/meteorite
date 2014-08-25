@@ -51,6 +51,7 @@ public class MUForm extends BorderPane {
     private List<MUTable> children = new ArrayList<MUTable>();
 
     private BooleanProperty isModified = new SimpleBooleanProperty();
+    private boolean isAdd;
 
     public MUForm(FormProperty property) {
         this(property, null);
@@ -89,7 +90,11 @@ public class MUForm extends BorderPane {
             btn_save.setOnAction(new MuEventHandler<ActionEvent>() {
                 @Override
                 public void doHandler(ActionEvent event) throws Exception {
-                    formConfig.getMeta().save(layout.getValueMap());
+                    if(isAdd) {
+                        formConfig.getMeta().save(layout.getValueMap());
+                    } else {
+
+                    }
                     isModified.set(false);
                 }
             });
@@ -186,6 +191,7 @@ public class MUForm extends BorderPane {
     }
 
     public void setValue(String name, String value) {
+        isAdd = false;
         IValue v = getValueMap().get(name);
         if (v != null) {
             v.setValue(value);
@@ -196,6 +202,7 @@ public class MUForm extends BorderPane {
      * 新增
      */
     public void add() {
+        isAdd = true;
         for (Map.Entry<String, IValue> entry : layout.getValueMap().entrySet()) {
             String defaultValue = entry.getValue().getDefaultValue();
             if ("GUID()".equals(defaultValue)) {
