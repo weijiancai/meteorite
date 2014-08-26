@@ -117,7 +117,7 @@ public class MetaPDBFactory {
                 map.put("sort_num", field.getSortNum());
                 DBColumn column = field.getColumn();
                 if (column != null) {
-                    map.put("db_column", column.getFullName());
+                    map.put("db_column", column.getDataset().getName() + "." + column.getName());
                 }
                 map.put("dict_id", field.getDictId());
 

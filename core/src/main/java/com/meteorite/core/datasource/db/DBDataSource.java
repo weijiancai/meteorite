@@ -432,13 +432,15 @@ public class DBDataSource extends DataSource {
     public void put(Request request) throws Exception {
         Map<String, String> keyMap = request.getPathHandler().parseForDb();
         Map<String, String> params = request.getParams();
-        if (keyMap.containsKey("column")) {
+        if (keyMap.containsKey("column")) { // 修改列
             String tableName = keyMap.get("table");
             String columnName = keyMap.get("column");
             if (params.containsKey("nullable")) { // 设置列属性是否可为空
                 boolean nullable = UString.toBoolean(params.get("nullable"));
                 getDbConnection().getLoader().updateColumnNullable(tableName, columnName, nullable);
             }
+        } else if(keyMap.containsKey("table")) { // 修改表
+
         }
     }
 

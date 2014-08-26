@@ -96,7 +96,7 @@ public class DataSourceManager {
             log.debug("初始化系统数据源：" + url);
             DBDataSource dataSource = new DBDataSource(SYSTEM_NAME, driverClass, url, userName, password, SystemConfig.SYS_DB_VERSION);
             dataSource.setId("MetaUI_DataSource");
-            dataSourceMap.put(SYSTEM_NAME, dataSource);
+            dataSourceMap.put(dataSource.getId(), dataSource);
             dataSources.add(dataSource);
             return dataSource;
         } catch (Exception e) {

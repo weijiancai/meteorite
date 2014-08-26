@@ -448,4 +448,8 @@ public class Meta {
     public List<MUAction> getActionList() {
         return actionList;
     }
+
+    public void update(Map<String, IValue> modifiedValueMap) {
+
+    }
 }

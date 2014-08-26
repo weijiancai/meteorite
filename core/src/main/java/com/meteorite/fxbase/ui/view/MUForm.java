@@ -28,6 +28,7 @@ import javafx.scene.layout.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +52,7 @@ public class MUForm extends BorderPane {
     private List<MUTable> children = new ArrayList<MUTable>();
 
     private BooleanProperty isModified = new SimpleBooleanProperty();
+    private Map<String, IValue> modifiedValueMap;
     private boolean isAdd;
 
     public MUForm(FormProperty property) {
@@ -93,7 +95,7 @@ public class MUForm extends BorderPane {
                     if(isAdd) {
                         formConfig.getMeta().save(layout.getValueMap());
                     } else {
-
+                        formConfig.getMeta().update(modifiedValueMap);
                     }
                     isModified.set(false);
                 }
@@ -161,12 +163,14 @@ public class MUForm extends BorderPane {
         }
 
         // 监听FormField状态变化
-        for (final IValue value : getValueMap().values()) {
+        for (final Map.Entry<String, IValue> entry : getValueMap().entrySet()) {
+            final IValue value = entry.getValue();
             value.valueProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                     if (oldValue == null || !oldValue.equals(newValue)) {
                         isModified.set(true);
+                        modifiedValueMap.put(entry.getKey(), value);
                     }
                     fireEvent(new FormFieldValueEvent((BaseFormField) value, oldValue, newValue));
                 }
@@ -188,6 +192,7 @@ public class MUForm extends BorderPane {
         }
         // 重置修改状态
         isModified.set(false);
+        modifiedValueMap = new HashMap<String, IValue>();
     }
 
     public void setValue(String name, String value) {

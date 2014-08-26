@@ -39,7 +39,7 @@ public class DragTest extends Application {
             @Override
             public void handle(DragEvent dragEvent) {
                 if (dragEvent.getGestureSource() != target && dragEvent.getDragboard().hasString()) {
-                    dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    dragEvent.acceptTransferModes(TransferMode.MOVE);
                 }
 
                 dragEvent.consume();

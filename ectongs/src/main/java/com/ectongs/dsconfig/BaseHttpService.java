@@ -35,7 +35,7 @@ public class BaseHttpService {
     // 入口url
     public static String ENTRY_URL = "";
     // 应用url
-    public static String APP_URL = "http://115.29.163.55:11031/ectmss-server";
+    public static String APP_URL = "http://115.29.163.55:11030/";
     private HttpClient client = new DefaultHttpClient();
 
     protected String serviceName;
