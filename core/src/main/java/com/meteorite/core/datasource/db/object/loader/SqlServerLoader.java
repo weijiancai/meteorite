@@ -135,6 +135,11 @@ public class SqlServerLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getIndexSql(String schema, String tableName, String indexName) {
+        return null;
+    }
+
+    @Override
     protected String getTriggersSql() {
         return "select\n" +
                 "                (select top 1 name from [%1$s].sys.tables where object_id = t.parent_id) as DATASET_NAME,\n" +

@@ -154,6 +154,11 @@ public class HsqldbLoader extends BaseDBLoader {
     }
 
     @Override
+    protected String getIndexSql(String schema, String tableName, String indexName) {
+        return null;
+    }
+
+    @Override
     protected String getTriggersSql() {
         return "select\n" +
                 "  EVENT_OBJECT_TABLE as DATASET_NAME,\n" +

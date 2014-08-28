@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/8/26 9:41:10                            */
+/* Created on:     2014/8/28 23:02:22                           */
 /*==============================================================*/
 
 
@@ -35,6 +35,8 @@ drop table if exists mu_meta_reference;
 drop table if exists mu_module;
 
 drop table if exists mu_nav_menu;
+
+drop table if exists mu_project_define;
 
 drop table if exists mu_view;
 
@@ -302,6 +304,25 @@ create table mu_nav_menu
 );
 
 alter table mu_nav_menu comment '导航菜单';
+
+/*==============================================================*/
+/* Table: mu_project_define                                     */
+/*==============================================================*/
+create table mu_project_define
+(
+   id                   varchar(32) not null comment '项目内码',
+   name                 varchar(64) not null comment '名称',
+   display_name         varchar(64) not null comment '显示名',
+   description          varchar(1024) comment '描述',
+   package_name         varchar(64) comment '包名',
+   is_valid             char(1) not null comment '是否有效',
+   sort_num             int(11) not null comment '排序号',
+   input_date           datetime not null comment '录入时间',
+   project_url          varchar(1024) comment '项目url',
+   primary key (id)
+);
+
+alter table mu_project_define comment '项目定义';
 
 /*==============================================================*/
 /* Table: mu_view                                               */
