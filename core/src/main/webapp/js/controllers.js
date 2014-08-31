@@ -89,27 +89,32 @@ app.controller('MainCtl', ['$scope', '$resource', '$http', 'Layout', 'MUConfig',
 
     var treedata_avm = [
         {
+            uid:0,
             label: 'Animal',
             children: [
                 {
+                    uid:1,
                     label: 'Dog',
                     data: {
                         description: "man's best friend"
                     }
                 },
                 {
+                    uid:2,
                     label: 'Cat',
                     data: {
                         description: "Felis catus"
                     }
                 },
                 {
+                    uid:3,
                     label: 'Hippopotamus',
                     data: {
                         description: "hungry, hungry"
                     }
                 },
                 {
+                    uid:4,
                     label: 'Chicken',
                     children: ['White Leghorn', 'Rhode Island Red', 'Jersey Giant']
                 }

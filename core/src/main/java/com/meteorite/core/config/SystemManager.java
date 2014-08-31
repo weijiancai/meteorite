@@ -71,20 +71,24 @@ public class SystemManager {
         checkDbVersion();
         // 加载数据源
         loadDataSource();
+        // 加载数据字典
+        DictManager.load();
+        // 加载布局配置
+        LayoutManager.load();
+        // 加载元数据
+        MetaManager.load();
+        // 加载视图
+        ViewManager.load();
 
         switch (SystemConfig.SYSTEM_TYPE) {
             case DESKTOP: {
                 // 启动数据库
                 // HSqlDBServer.getInstance().start();
 //                DataSourceManager.getSysDataSource().load();
-                // 加载数据字典
-                DictManager.load();
-                // 加载布局配置
-                LayoutManager.load();
-                // 加载元数据
-                MetaManager.load();
-                // 加载视图
-                ViewManager.load();
+
+
+
+
                 // 注册Action
                 // MUActionConfig.getInstance().addAction(new MUAction(MetaManager.getMeta("MobileNumber"), "downloadMobileNumber", "下载手机号", MobileNumberAction.class, "fetchMobileNumber"));
 //                MetaManager.getMeta("MobileNumber").addAction(new MUAction(MetaManager.getMeta("MobileNumber"), "downloadMobileNumber", "下载手机号", MobileNumberAction.class, "fetchMobileNumber"));

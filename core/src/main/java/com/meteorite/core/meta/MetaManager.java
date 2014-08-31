@@ -12,6 +12,7 @@ import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.*;
+import com.meteorite.core.project.ProjectDefine;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.util.UFile;
@@ -132,12 +133,9 @@ public class MetaManager {
                 sysInfo.store();
             }
 
-            if (getMeta("DBDataSource") == null) {
-                addMeta(DBDataSource.class, template);
-            }
-            if (getMeta("TableFieldProperty") == null) {
-                addMeta(TableFieldProperty.class, template);
-            }
+            addMeta(DBDataSource.class, template);
+            addMeta(TableFieldProperty.class, template);
+            addMeta(ProjectDefine.class, template);
 
             template.commit();
         } finally {
@@ -164,6 +162,9 @@ public class MetaManager {
     }
 
     public static void addMeta(Class<?> clazz, JdbcTemplate template) throws Exception {
+        if (getMeta(clazz.getSimpleName()) != null) {
+            return;
+        }
         Meta meta = toMeta(clazz, template);
         metaMap.put(meta.getName(), meta);
     }

@@ -1,6 +1,8 @@
 package com.meteorite.core.project;
 
 import com.alibaba.fastjson.JSON;
+import com.meteorite.core.meta.annotation.MetaElement;
+import com.meteorite.core.meta.annotation.MetaFieldElement;
 
 import java.util.Date;
 
@@ -10,6 +12,7 @@ import java.util.Date;
  * @author wei_jc
  * @since 1.0.0
  */
+@MetaElement(displayName = "项目定义")
 public class ProjectDefine {
     private String id;
     private String name;
@@ -21,6 +24,7 @@ public class ProjectDefine {
     private boolean isValid;
     private int sortNum;
 
+    @MetaFieldElement(displayName = "项目ID")
     public String getId() {
         return id;
     }
@@ -29,6 +33,7 @@ public class ProjectDefine {
         this.id = id;
     }
 
+    @MetaFieldElement(displayName = "项目名称")
     public String getName() {
         return name;
     }
@@ -37,6 +42,7 @@ public class ProjectDefine {
         this.name = name;
     }
 
+    @MetaFieldElement(displayName = "显示名")
     public String getDisplayName() {
         return displayName;
     }
@@ -45,6 +51,7 @@ public class ProjectDefine {
         this.displayName = displayName;
     }
 
+    @MetaFieldElement(displayName = "项目描述")
     public String getDescription() {
         return description;
     }
@@ -53,6 +60,7 @@ public class ProjectDefine {
         this.description = description;
     }
 
+    @MetaFieldElement(displayName = "包名")
     public String getPackageName() {
         return packageName;
     }
@@ -61,6 +69,7 @@ public class ProjectDefine {
         this.packageName = packageName;
     }
 
+    @MetaFieldElement(displayName = "录入时间")
     public Date getInputDate() {
         return inputDate;
     }
@@ -69,6 +78,7 @@ public class ProjectDefine {
         this.inputDate = inputDate;
     }
 
+    @MetaFieldElement(displayName = "是否有效")
     public boolean isValid() {
         return isValid;
     }
@@ -77,6 +87,7 @@ public class ProjectDefine {
         isValid = valid;
     }
 
+    @MetaFieldElement(displayName = "排序号")
     public int getSortNum() {
         return sortNum;
     }
@@ -85,6 +96,7 @@ public class ProjectDefine {
         this.sortNum = sortNum;
     }
 
+    @MetaFieldElement(displayName = "项目URL")
     public String getProjectUrl() {
         return projectUrl;
     }
