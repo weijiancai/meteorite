@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource;
 
+import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.ui.model.View;
 
 import java.util.List;
@@ -12,6 +13,14 @@ import java.util.List;
  */
 public abstract class VirtualResource {
     /**
+     * 获得资源ID，格式 dsName://path, dsName【数据源名称】 path 【资源相对路径】
+     *
+     * @return 返回资源ID
+     */
+    public String getId() {
+        return getDataSource().getName() + "://" + getPath();
+    }
+    /**
      * 获得资源的名称
      *
      * @return 返回资源的名称
@@ -23,6 +32,20 @@ public abstract class VirtualResource {
     public abstract String getUrl();
 
     public abstract ResourceType getResourceType();
+
+    /**
+     * 获得数据类型
+     *
+     * @return 获得数据类型
+     */
+    public abstract MetaDataType getDataType();
+
+    /**
+     * 获得数据源
+     *
+     * @return 返回数据源
+     */
+    public abstract DataSource getDataSource();
 
     /**
      * 获得资源的视图信息

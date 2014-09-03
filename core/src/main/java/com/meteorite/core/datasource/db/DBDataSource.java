@@ -10,6 +10,7 @@ import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
 import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.datasource.exception.NotFoundResourceException;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaDataType;
@@ -20,6 +21,7 @@ import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.rest.PathHandler;
 import com.meteorite.core.rest.Request;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IValue;
@@ -157,7 +159,7 @@ public class DBDataSource extends DataSource {
     @Override
     public VirtualResource getRootResource() throws Exception {
         if (rootResource == null) {
-            rootResource = new DBResource(getDbConnection().getSchema());
+            rootResource = new DBResource(this, getDbConnection().getSchema());
         }
         return rootResource;
     }
@@ -326,16 +328,54 @@ public class DBDataSource extends DataSource {
     }
 
     @Override
-    public VirtualResource findResourceByPath(String path) throws Exception {
-
-        String tableStart = "/table/";
-        if (path.startsWith(tableStart)) {
-            DBObject table = getDbConnection().getLoader().getTable(path.substring(tableStart.length()));
-            if (table != null) {
-                return new DBResource(table);
+    public VirtualResource findResourceByPath(String path) {
+        try {
+            String tableStart = "/table/";
+            if (path.startsWith(tableStart)) {
+                DBObject table = getDbConnection().getLoader().getTable(path.substring(tableStart.length()));
+                if (table != null) {
+                    return new DBResource(this, table);
+                }
             }
+        } catch (Exception e) {
+            throw new NotFoundResourceException(path);
         }
+
         return null;
+    }
+
+    @Override
+    public List<VirtualResource> findResourcesByPath(String path) {
+        List<VirtualResource> list = new ArrayList<VirtualResource>();
+
+        try {
+            if ("/tables".equals(path)) {
+                DBConnection conn = getDbConnection();
+                List<DBTable> tables = conn.getLoader().loadTables(conn.getSchema());
+                for (DBTable table : tables) {
+                    list.add(new DBResource(this, table));
+                }
+            } else if ("/views".equals(path)) {
+                DBConnection conn = getDbConnection();
+                List<DBView> views = conn.getLoader().loadViews(conn.getSchema());
+                for (DBView view : views) {
+                    list.add(new DBResource(this, view));
+                }
+            } else if (path.endsWith("/columns")) {
+                PathHandler handler = new PathHandler(path);
+                Map<String, String> map = handler.parseForDb();
+                String tableName = map.get("table");
+                DBConnection conn = getDbConnection();
+                List<DBView> views = conn.getLoader().loadColumns(conn.getSchema());
+                for (DBView view : views) {
+                    list.add(new DBResource(this, view));
+                }
+            }
+        } catch (Exception e) {
+            throw new NotFoundResourceException(path);
+        }
+
+        return list;
     }
 
     @Override

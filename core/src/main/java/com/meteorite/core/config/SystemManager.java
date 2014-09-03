@@ -68,7 +68,7 @@ public class SystemManager {
         // 初始化系统数据源
         DataSourceManager.initSysDataSource();
         // 加载系统数据源
-        DataSourceManager.getSysDataSource().load();
+//        DataSourceManager.getSysDataSource().load();
         // 检查数据库版本
         checkDbVersion();
         // 加载数据源

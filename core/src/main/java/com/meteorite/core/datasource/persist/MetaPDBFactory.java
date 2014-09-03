@@ -63,8 +63,8 @@ public class MetaPDBFactory {
                 map.put("is_valid", meta.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", meta.getSortNum());
-                if (meta.getDataSource() != null) {
-                    map.put("ds_id", meta.getDataSource().getId());
+                if (meta.getResource() != null) {
+                    map.put("rs_id", meta.getResource().getId());
                 }
 
                 result.put("mu_meta", map);

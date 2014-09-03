@@ -134,6 +134,11 @@ public class ClassPathDataSource extends DataSource {
     }
 
     @Override
+    public List<VirtualResource> findResourcesByPath(String path) {
+        return null;
+    }
+
+    @Override
     public String toString() {
         return loader.getBaseDir();
     }

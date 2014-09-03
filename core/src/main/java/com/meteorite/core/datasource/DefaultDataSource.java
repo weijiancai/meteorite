@@ -92,7 +92,12 @@ public class DefaultDataSource extends DataSource {
     }
 
     @Override
-    public VirtualResource findResourceByPath(String path) throws Exception {
+    public VirtualResource findResourceByPath(String path) {
+        return null;
+    }
+
+    @Override
+    public List<VirtualResource> findResourcesByPath(String path) {
         return null;
     }
 

@@ -98,6 +98,11 @@ public class FileDataSource extends DataSource {
     }
 
     @Override
+    public List<VirtualResource> findResourcesByPath(String path) {
+        return null;
+    }
+
+    @Override
     public VirtualResource get(Request request) {
         return null;
     }

@@ -44,6 +44,22 @@ public class DataSourceManager {
         return dataSourceMap.get(dataSourceId);
     }
 
+    /**
+     * 根据数据源名称，获得数据源信息
+     *
+     * @param dataSourceName 数据源名称
+     * @return 返回数据源
+     */
+    public static DataSource getDataSourceByName(String dataSourceName) {
+        for (DataSource dataSource : dataSources) {
+            if (dataSource.getName().equals(dataSourceName)) {
+                return dataSource;
+            }
+        }
+
+        return null;
+    }
+
 
     /**
      * 获得所有数据源

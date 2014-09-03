@@ -4,6 +4,7 @@ import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.VirtualResource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
@@ -89,10 +90,10 @@ public class MetaManager {
                 // 清空表mu_view_config, mu_view_layout, mu_view, mu_meta
                 template.clearTable("mu_meta_reference", "mu_view_config", "mu_view", "mu_meta");
                 DBDataSource dataSource = DataSourceManager.getSysDataSource();
-                DBConnection dbConn = dataSource.getDbConnection();
-                DBSchema schema = dbConn.getSchema();
+//                DBConnection dbConn = dataSource.getDbConnection();
+//                DBSchema schema = dbConn.getSchema();
 //                dbConn.getLoader().loadSchemas();
-                for (DBTable table : schema.getTables()) {
+                /*for (DBTable table : schema.getTables()) {
                     initMetaFromTable(template, table);
                     metaSortNum += 10;
                 }
@@ -100,7 +101,7 @@ public class MetaManager {
                 for (DBView view : schema.getViews()) {
                     initMetaFromTable(template, view);
                     metaSortNum += 10;
-                }
+                }*/
 
                 // 初始化元数据引用
                 /*for (DBConstraint constraint : schema.getConstraints()) {
@@ -123,6 +124,12 @@ public class MetaManager {
                         }
                     }
                 }*/
+
+                List<VirtualResource> tables = dataSource.findResourcesByPath("/tables");
+                for (VirtualResource table : tables) {
+                    initMetaFromResource(template, table);
+                    metaSortNum += 10;
+                }
 
                 // 创建元数据视图
                 for (Meta meta : metaMap.values()) {
@@ -391,6 +398,66 @@ public class MetaManager {
             field.setDisplayName(columnComment);
             field.setName(UString.columnNameToFieldName(column.getName()));
             field.setDescription(column.getComment());
+            if (column.getName().toLowerCase().startsWith("is_")) {
+                field.setDataType(MetaDataType.BOOLEAN);
+            } else {
+                field.setDataType(column.getDataType());
+            }
+//            field.setType(column.getDataType());
+            field.setValid(true);
+            field.setSortNum(fieldSortNum += 10);
+//            initDzCategory(field);
+            // 插入表sys_class_field
+            template.save(MetaPDBFactory.getMetaField(field));
+            fieldList.add(field);
+//            classFieldIdMap.put(field.getId(), field);
+            // 加入缓存
+            fieldIdMap.put(field.getId(), field);
+        }
+        meta.setFields(fieldList);
+
+        return meta;
+    }
+
+    public static Meta initMetaFromResource(JdbcTemplate template, VirtualResource table) throws Exception {
+        // 将表定义信息插入到元数据信息中
+        Meta meta = new Meta();
+        meta.setName(UString.tableNameToClassName(table.getName()));
+        String comment = table.getDisplayName();
+        if (UString.isNotEmpty(comment) && comment.length() > 100) {
+            meta.setDisplayName(table.getDisplayName().substring(0, 100));
+        } else {
+            meta.setDisplayName(comment);
+        }
+
+        meta.setDescription(comment);
+        meta.setValid(true);
+        meta.setInputDate(new Date());
+        meta.setSortNum(metaSortNum);
+        meta.setResource(table);
+
+        // 插入元数据信息
+        template.save(MetaPDBFactory.getMeta(meta));
+        metaMap.put(meta.getName(), meta);
+        metaIdMap.put(meta.getId(), meta);
+        tableMeta.put(table.getId(), meta);
+
+        List<MetaField> fieldList = new ArrayList<MetaField>();
+
+        // 将表列信息插入到类字段信息中
+        MetaField field;
+        int fieldSortNum = 0;
+        for (VirtualResource column : table.getChildren()) {
+            field = new MetaField();
+            field.setMeta(meta);
+//            field.setColumn(column);
+            String columnComment = column.getDisplayName();
+            if (UString.isEmpty(columnComment)) {
+                columnComment = column.getName().toLowerCase();
+            }
+            field.setDisplayName(columnComment);
+            field.setName(UString.columnNameToFieldName(column.getName()));
+            field.setDescription(column.getDisplayName());
             if (column.getName().toLowerCase().startsWith("is_")) {
                 field.setDataType(MetaDataType.BOOLEAN);
             } else {

@@ -296,5 +296,7 @@ public abstract class DataSource implements RestHandler {
      */
     public abstract void write(String id, OutputStream os) throws Exception;
 
-    public abstract VirtualResource findResourceByPath(String path) throws Exception;
+    public abstract VirtualResource findResourceByPath(String path);
+
+    public abstract List<VirtualResource> findResourcesByPath(String path);
 }

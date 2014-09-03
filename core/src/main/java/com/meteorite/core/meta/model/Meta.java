@@ -163,6 +163,14 @@ public class Meta {
         this.dataSource = dataSource;
     }
 
+    public VirtualResource getResource() {
+        return resource;
+    }
+
+    public void setResource(VirtualResource resource) {
+        this.resource = resource;
+    }
+
     @JSONField(serialize = false)
     public DBDataset getDbTable() {
         if (dbTable != null) {

@@ -14,7 +14,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class PathHandler {
-    private static List<String> DB_KEYS = Arrays.asList("schema", "table", "column");
+    private static List<String> DB_KEYS = Arrays.asList("schema", "table", "column", "columns");
     private String path;
 
     public PathHandler(String path) {
