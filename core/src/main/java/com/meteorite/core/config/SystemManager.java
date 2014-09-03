@@ -67,6 +67,8 @@ public class SystemManager {
     public void init() throws Exception {
         // 初始化系统数据源
         DataSourceManager.initSysDataSource();
+        // 加载系统数据源
+        DataSourceManager.getSysDataSource().load();
         // 检查数据库版本
         checkDbVersion();
         // 加载数据源
@@ -84,10 +86,6 @@ public class SystemManager {
             case DESKTOP: {
                 // 启动数据库
                 // HSqlDBServer.getInstance().start();
-//                DataSourceManager.getSysDataSource().load();
-
-
-
 
                 // 注册Action
                 // MUActionConfig.getInstance().addAction(new MUAction(MetaManager.getMeta("MobileNumber"), "downloadMobileNumber", "下载手机号", MobileNumberAction.class, "fetchMobileNumber"));

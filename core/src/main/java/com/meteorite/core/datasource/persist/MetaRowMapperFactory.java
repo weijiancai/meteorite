@@ -1,10 +1,9 @@
 package com.meteorite.core.datasource.persist;
 
-import com.meteorite.core.datasource.DataSource;
-import com.meteorite.core.datasource.DataSourceManager;
-import com.meteorite.core.datasource.DataSourceType;
-import com.meteorite.core.datasource.DefaultDataSource;
+import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.db.DBManager;
+import com.meteorite.core.datasource.db.DBResource;
+import com.meteorite.core.datasource.db.DBUtil;
 import com.meteorite.core.datasource.db.RowMapper;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
@@ -87,7 +86,15 @@ public class MetaRowMapperFactory {
                 field.setValid("T".equals(rs.getString("is_valid")));
                 field.setInputDate(rs.getDate("input_date"));
                 field.setSortNum(rs.getInt("sort_num"));
-                field.setColumn(DBManager.getCache().getColumn(rs.getString("db_column")));
+                String dbColumn = rs.getString("db_column");
+                String path = DBUtil.toColumnPath(dbColumn);
+                try {
+                    VirtualResource resource = DataSourceManager.getSysDataSource().findResourceByPath(path);
+
+                } catch (Exception e) {
+                    throw new RuntimeException("查找资源失败！");
+                }
+                field.setColumn(DBManager.getCache().getColumn(dbColumn));
 
                 return field;
             }

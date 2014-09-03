@@ -327,6 +327,7 @@ public class DBDataSource extends DataSource {
 
     @Override
     public VirtualResource findResourceByPath(String path) throws Exception {
+
         String tableStart = "/table/";
         if (path.startsWith(tableStart)) {
             DBObject table = getDbConnection().getLoader().getTable(path.substring(tableStart.length()));

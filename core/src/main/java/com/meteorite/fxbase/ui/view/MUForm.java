@@ -52,7 +52,7 @@ public class MUForm extends BorderPane {
     private List<MUTable> children = new ArrayList<MUTable>();
 
     private BooleanProperty isModified = new SimpleBooleanProperty();
-    private Map<String, IValue> modifiedValueMap;
+    private Map<String, IValue> modifiedValueMap = new HashMap<String, IValue>();
     private boolean isAdd;
 
     public MUForm(FormProperty property) {

@@ -3,6 +3,7 @@ package com.meteorite.core.meta.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.QueryBuilder;
+import com.meteorite.core.datasource.VirtualResource;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBDataset;
@@ -15,9 +16,12 @@ import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.model.View;
+import com.meteorite.core.util.FreeMarkerConfiguration;
+import com.meteorite.core.util.FreeMarkerTemplateUtils;
 import com.meteorite.core.util.UObject;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
+import freemarker.template.TemplateException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -27,6 +31,7 @@ import javafx.collections.ObservableList;
 
 import javax.xml.bind.annotation.*;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -53,6 +58,7 @@ public class Meta {
     private Set<Meta> children = new HashSet<Meta>();
     private DBDataset dbTable;
     private DataSource dataSource;
+    private VirtualResource resource;
 
     private ObjectProperty<ObservableList<DataMap>> dataList = new SimpleObjectProperty<ObservableList<DataMap>>();
     private IntegerProperty totalRows = new SimpleIntegerProperty(0); // 总行数
@@ -451,5 +457,15 @@ public class Meta {
 
     public void update(Map<String, IValue> modifiedValueMap) {
 
+    }
+
+    public String genJavaBeanCode() {
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("meta", this);
+            return FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.getInstance().getTemplate("JavaBean.ftl"), map);
+        } catch (Exception e) {
+            throw new RuntimeException("生成JavaBean代码失败！", e);
+        }
     }
 }

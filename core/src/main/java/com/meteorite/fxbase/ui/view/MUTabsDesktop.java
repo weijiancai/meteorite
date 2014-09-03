@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.dict.FormType;
+import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.ui.ViewManager;
@@ -18,14 +19,14 @@ import com.meteorite.fxbase.ui.*;
 import com.meteorite.fxbase.ui.component.search.MUSearchBox;
 import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.meta.AddMetaGuide;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.ToolBar;
-import javafx.scene.control.TreeItem;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -224,11 +225,16 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
                 // 底部数据库对象TabPane
                 MUTabPane dbObjTabPane = new MUTabPane();
                 dbObjTabPane.setSide(Side.BOTTOM);
+
                 Tab objDefTab = new Tab("对象定义");
                 objDefTab.setClosable(false);
+
                 Tab dataTab = new Tab("数据信息");
                 dataTab.setClosable(false);
-                dbObjTabPane.getTabs().addAll(objDefTab, dataTab);
+
+                Tab genCodeTab = getGenCodeTab(node);
+
+                dbObjTabPane.getTabs().addAll(objDefTab, dataTab, genCodeTab);
                 dbObjTabPane.getSelectionModel().select(dataTab);
                 dataTab.setContent(new MuCrud(view));
 
@@ -243,6 +249,35 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     public void hideSearchBox() {
         searchBox.reset();
         popup.hide();
+    }
+
+    private Tab getGenCodeTab(final INavTreeNode node) {
+        final Meta meta = node.getView().getMeta();
+
+        Tab tab = new Tab("生成代码");
+        tab.setClosable(false);
+
+        TabPane tabPane = new TabPane();
+
+        Tab javaBeanTab = new Tab("JavaBean");
+        final TextArea javaBeanTa = new TextArea();
+        javaBeanTab.setContent(javaBeanTa);
+
+        tabPane.getTabs().addAll(javaBeanTab);
+        tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if(newValue.intValue() == 0) {
+                    javaBeanTa.setText(meta.genJavaBeanCode());
+                }
+            }
+        });
+        tab.setContent(tabPane);
+
+        // 初始化生成JavaBean代码
+        javaBeanTa.setText(meta.genJavaBeanCode());
+
+        return tab;
     }
 
     @Override

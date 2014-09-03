@@ -11,6 +11,7 @@ import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,8 @@ public abstract class DataSource implements RestHandler {
     private int sortNum;
     private Date inputDate;
     private Map<String, String> properties;
+    // 资源缓存
+    private Map<String, VirtualResource> resourceCache = new HashMap<String, VirtualResource>();
 
     public void setId(String id) {
         this.id = id;

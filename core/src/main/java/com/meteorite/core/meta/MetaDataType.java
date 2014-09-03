@@ -104,4 +104,20 @@ public enum MetaDataType {
 
         return STRING;
     }
+
+    /**
+     * 将元数据数据类型转换为Java数据类型
+     *
+     * @return 返回Java数据类型
+     */
+    public String toJavaType() {
+        switch (this) {
+            case INTEGER : return "int";
+            case DOUBLE : return "double";
+            case NUMBER : return "float";
+            case DATE : return "Date";
+            case BOOLEAN : return "boolean";
+        }
+        return "String";
+    }
 }

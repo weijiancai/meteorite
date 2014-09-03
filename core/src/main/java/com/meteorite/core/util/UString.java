@@ -61,13 +61,13 @@ public class UString {
      */
     public static String tableNameToClassName(String tableName) {
         tableName = tableName.toLowerCase();
-        if (tableName.startsWith("sys_db_")) {
-            tableName = tableName.substring(7);
+        if (tableName.startsWith("mu_db_") || tableName.startsWith("mu_dz") || tableName.startsWith("mu_pm")) {
+            tableName = tableName.substring(6);
         }
         StringBuilder result = new StringBuilder();
         int i = 0;
         for (String str : tableName.split("_")) {
-            if (i++ == 0 && tableName.startsWith("sys_")) {
+            if (i++ == 0 && tableName.startsWith("mu_")) {
                 continue;
             }
 
