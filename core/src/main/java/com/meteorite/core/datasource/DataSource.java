@@ -5,6 +5,7 @@ import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.rest.Request;
 import com.meteorite.core.rest.RestHandler;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
@@ -299,4 +300,14 @@ public abstract class DataSource implements RestHandler {
     public abstract VirtualResource findResourceByPath(String path);
 
     public abstract List<VirtualResource> findResourcesByPath(String path);
+
+    @Override
+    public void exp(Request request) {
+
+    }
+
+    @Override
+    public void imp(Request request) {
+
+    }
 }

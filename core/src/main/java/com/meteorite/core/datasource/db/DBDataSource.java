@@ -365,13 +365,15 @@ public class DBDataSource extends DataSource {
                 PathHandler handler = new PathHandler(path);
                 Map<String, String> map = handler.parseForDb();
                 String tableName = map.get("table");
+                DBTable table = getDbConnection().getLoader().getTable(tableName);
                 DBConnection conn = getDbConnection();
-                List<DBView> views = conn.getLoader().loadColumns(conn.getSchema());
-                for (DBView view : views) {
-                    list.add(new DBResource(this, view));
+                List<DBColumn> columns = conn.getLoader().loadColumns(table);
+                for (DBColumn column : columns) {
+                    list.add(new DBResource(this, column));
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new NotFoundResourceException(path);
         }
 

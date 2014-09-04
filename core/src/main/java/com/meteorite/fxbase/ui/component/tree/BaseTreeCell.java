@@ -38,7 +38,7 @@ public class BaseTreeCell extends TreeCell<ITreeNode> {
     protected void updateItem(ITreeNode item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null) {
-            mainLabel.setText(item.toString());
+            mainLabel.setText(item.getName());
             if (item instanceof INavTreeNode) {
                 INavTreeNode navNode = (INavTreeNode) item;
 //                presentableLabel.setText(navNode.toString());

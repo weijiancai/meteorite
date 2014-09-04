@@ -508,6 +508,7 @@ public abstract class BaseDBLoader implements DBLoader {
                 table.setDataSource(dbConn.getDataSource());
                 table.setName(UObject.toString(rs.getString("TABLE_NAME")));
                 table.setComment(UObject.toString(rs.getString("REMARKS")));
+                table.setSchema(dbConn.getSchema());
 
                 return table;
             }

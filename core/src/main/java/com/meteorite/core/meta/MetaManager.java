@@ -447,7 +447,8 @@ public class MetaManager {
         // 将表列信息插入到类字段信息中
         MetaField field;
         int fieldSortNum = 0;
-        for (VirtualResource column : table.getChildren()) {
+        List<VirtualResource> columns = table.getDataSource().findResourcesByPath(String.format("/table/%s/columns", table.getName()));
+        for (VirtualResource column : columns) {
             field = new MetaField();
             field.setMeta(meta);
 //            field.setColumn(column);

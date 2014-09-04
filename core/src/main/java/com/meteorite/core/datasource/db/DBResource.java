@@ -44,11 +44,17 @@ public class DBResource extends VirtualResource {
 
     @Override
     public String getDisplayName() {
-        return dbObject.toString();
+        return dbObject.getComment();
     }
 
     @Override
     public String getPath() {
+        DBObjectType dbType = dbObject.getObjectType();
+        if (DBObjectType.SCHEMA == dbType) {
+            return "schema/" + getName();
+        } else if (DBObjectType.TABLE == dbType) {
+            return "table/" + getName();
+        }
         return dbObject.getFullName();
     }
 

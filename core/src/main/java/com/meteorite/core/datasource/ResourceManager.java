@@ -1,5 +1,7 @@
 package com.meteorite.core.datasource;
 
+import com.meteorite.core.util.UString;
+
 /**
  * 资源管理
  *
@@ -14,6 +16,10 @@ public class ResourceManager {
      * @return 返回资源信息
      */
     public static VirtualResource getResourceById(String rsId) {
+        if (UString.isEmpty(rsId)) {
+            return null;
+        }
+
         String[] strs = rsId.split("://");
         DataSource ds = DataSourceManager.getDataSourceByName(strs[0]);
 
