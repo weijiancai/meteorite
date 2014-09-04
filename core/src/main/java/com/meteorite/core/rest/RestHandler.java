@@ -16,4 +16,15 @@ public interface RestHandler {
     void put(Request request) throws Exception;
 
     void delete(Request request);
+
+
+    /**
+     * 导出资源
+     */
+    void exp(Request request);
+
+    /**
+     * 导入资源
+     */
+    void imp(Request request);
 }
