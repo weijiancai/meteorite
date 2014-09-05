@@ -570,4 +570,8 @@ public class SqlBuilder {
     public String getSql() {
         return sql;
     }
+
+    public void setQueryConditions(List<QueryCondition> queryConditions) {
+        this.conditionList = queryConditions;
+    }
 }

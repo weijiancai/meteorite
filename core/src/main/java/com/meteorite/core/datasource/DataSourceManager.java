@@ -7,9 +7,12 @@ import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.rest.Request;
+import com.meteorite.core.rest.Response;
 import org.apache.log4j.Logger;
 import static com.meteorite.core.config.SystemConfig.*;
 
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -165,5 +168,18 @@ public class DataSourceManager {
             }
         }
         return result;
+    }
+
+    /**
+     * 从源数据源导出数据到目标数据源
+     *
+     * @param source 源数据源
+     * @param target 目标数据源
+     * @param request 请求对象
+     */
+    public static void exp(DataSource source, DataSource target, Request request) throws Exception {
+        Response response = source.exp(request);
+        request.setListData(response.getListData());
+        target.imp(request);
     }
 }

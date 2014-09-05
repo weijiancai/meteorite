@@ -6,11 +6,13 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.rest.Request;
+import com.meteorite.core.rest.Response;
 import com.meteorite.core.rest.RestHandler;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -302,12 +304,12 @@ public abstract class DataSource implements RestHandler {
     public abstract List<VirtualResource> findResourcesByPath(String path);
 
     @Override
-    public void exp(Request request) {
-
+    public Response exp(Request request) throws Exception {
+        return null;
     }
 
     @Override
-    public void imp(Request request) {
+    public void imp(Request request) throws Exception {
 
     }
 }
