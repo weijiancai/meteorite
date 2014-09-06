@@ -19,13 +19,20 @@ public class QueryBuilder {
     private SqlBuilder sql;
     private Meta meta;
 
-    private QueryBuilder(Meta meta) {
-        this.meta = meta;
+    private QueryBuilder() {
         sql = SqlBuilder.create();
     }
 
     public static QueryBuilder create(Meta meta) {
-        return new QueryBuilder(meta);
+        QueryBuilder builder = new QueryBuilder();
+        builder.setMeta(meta);
+        return builder;
+    }
+
+    public static QueryBuilder create(String table, List<QueryCondition> conditions) {
+        QueryBuilder builder = new QueryBuilder();
+        builder.sql().from(table).setQueryConditions(conditions);
+        return builder;
     }
 
     public QueryBuilder add(String colName, QueryModel queryModel, Object value, MetaDataType dataType, boolean isAnd) {
@@ -50,5 +57,9 @@ public class QueryBuilder {
 
     public Meta getMeta() {
         return meta;
+    }
+
+    public void setMeta(Meta meta) {
+        this.meta = meta;
     }
 }

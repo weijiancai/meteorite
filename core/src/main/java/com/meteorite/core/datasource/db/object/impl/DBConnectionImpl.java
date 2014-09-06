@@ -48,7 +48,6 @@ public class DBConnectionImpl implements DBConnection {
         Connection conn = null;
         try {
             conn = getConnection();
-            conn.getSchema();
             DatabaseMetaData metaData = conn.getMetaData();
             String productName = metaData.getDatabaseProductName().toUpperCase();
             if (productName.contains("ORACLE")) {
@@ -63,7 +62,14 @@ public class DBConnectionImpl implements DBConnection {
 
             // 当前schema
             DBSchemaImpl schema = new DBSchemaImpl();
-            String schemaName = conn.getSchema();
+            String schemaName = null;
+            if(dbType == DatabaseType.SQLSERVER) {
+                // SqlServer getSchema() 会报错误 java.lang.AbstractMethodError: com.microsoft.sqlserver.jdbc.SQLServerConnection.getSchema()Ljava/lang/String
+                schemaName = conn.getCatalog();
+            } else {
+                schemaName = conn.getSchema();
+            }
+
             if (UString.isEmpty(schemaName)) {
                 schemaName = conn.getCatalog();
             }

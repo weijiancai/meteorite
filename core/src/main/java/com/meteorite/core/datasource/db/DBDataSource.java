@@ -23,6 +23,7 @@ import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.rest.PathHandler;
 import com.meteorite.core.rest.Request;
+import com.meteorite.core.rest.Response;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
@@ -490,5 +491,40 @@ public class DBDataSource extends DataSource {
     @Override
     public void delete(Request request) {
 
+    }
+
+    @Override
+    public Response exp(Request request) throws Exception {
+        Map<String, String> map = request.getPathHandler().parseForDb();
+        String tableName = map.get("table");
+        JdbcTemplate template = new JdbcTemplate(this);
+        QueryBuilder builder = QueryBuilder.create(tableName, request.getConditions());
+        builder.sql().build(getDatabaseType());
+        List<DataMap> listData = template.queryForList(builder, -1, 0);
+        Response response = new Response();
+        response.setListData(listData);
+        return response;
+    }
+
+    @Override
+    public void imp(Request request) throws Exception {
+        Map<String, String> map = request.getPathHandler().parseForDb();
+        String tableName = map.get("table");
+        JdbcTemplate template = new JdbcTemplate(this);
+        List<DataMap> listData = request.getListData();
+        for (DataMap dataMap : listData) {
+            Request.ExpRequest expRequest = request.getExpRequest();
+            String[] excludeColumns = expRequest.getExcludeColumns();
+            if (excludeColumns != null) {
+                for (String column : excludeColumns) {
+                    dataMap.remove(column);
+                }
+            }
+            for (Map.Entry<String, Object> entry : expRequest.getDefaultValues().entrySet()) {
+                dataMap.put(entry.getKey(), entry.getValue());
+            }
+            template.save(dataMap, tableName);
+        }
+        template.commit();
     }
 }

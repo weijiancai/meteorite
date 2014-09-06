@@ -479,15 +479,11 @@ public class SqlBuilder {
 
         String result = "";
 
-        if (UString.isNotEmpty(querySql)) { // 如果设置了查询Sql，则不在组装查询语句
-            result = querySql + " WHERE " + where;
-        } else {
-            if (isQuery) {
-                if (haveWith) {
-                    result = String.format(WITH_SELECT_WHERE_FORMAT, with, columns, table, where);
-                } else {
-                    result = String.format(SELECT_WHERE_FORMAT, columns, table, where);
-                }
+        if (isQuery) {
+            if (haveWith) {
+                result = String.format(WITH_SELECT_WHERE_FORMAT, with, columns, table, where);
+            } else {
+                result = String.format(SELECT_WHERE_FORMAT, columns, table, where);
             }
         }
 
@@ -506,18 +502,13 @@ public class SqlBuilder {
      * @return 返回总记录条数sql语句
      */
     public String getCountSql() {
-        if (UString.isNotEmpty(querySql)) { // 如果设置了查询Sql，则不在组装查询语句
-            return "SELECT count(1) " + querySql.substring(querySql.lastIndexOf(" FROM")) + " WHERE " + where;
-        } else {
-            if (isQuery) {
-                if (haveWith) {
-                    return String.format(WITH_SELECT_WHERE_FORMAT, with, "count(1)", table, where);
-                } else {
-                    return String.format(SELECT_WHERE_FORMAT, "count(1)", table, where);
-                }
+        if (isQuery) {
+            if (haveWith) {
+                return String.format(WITH_SELECT_WHERE_FORMAT, with, "count(1)", table, where);
+            } else {
+                return String.format(SELECT_WHERE_FORMAT, "count(1)", table, where);
             }
         }
-
         return "";
     }
 
@@ -587,5 +578,9 @@ public class SqlBuilder {
 
     public void setQuerySql(String querySql) {
         this.querySql = querySql;
+    }
+
+    public void setQueryConditions(List<QueryCondition> queryConditions) {
+        this.conditionList = queryConditions;
     }
 }
