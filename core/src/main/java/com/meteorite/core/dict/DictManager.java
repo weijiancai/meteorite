@@ -2,6 +2,7 @@ package com.meteorite.core.dict;
 
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.DataSourceType;
 import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
@@ -38,6 +39,7 @@ public class DictManager {
             addDict(EnumBoolean.class);
             addDict(PropertyType.class);
             addDict(EnumAlign.class);
+            addDict(DataSourceType.class);
 
             root.setId("ROOT");
             root.setName("数据字典");

@@ -191,7 +191,7 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
     public List<Condition> getConditions() {
         list.clear();
         if (UString.isNotEmpty(value())) {
-            list.add(new Condition(config.getColumnName(), config.getQueryModel(), value(), MetaDataType.STRING));
+            list.add(new Condition(config.getMetaField().getOriginalName(), config.getQueryModel(), value(), MetaDataType.STRING));
         }
 
         return list;

@@ -39,11 +39,10 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
 
     @Override
     public MetaDataType getDataType() {
+        if (dataType == null) {
+            dataType = MetaDataType.getDataType(getDbDataType());
+        }
         return dataType;
-    }
-
-    public void setDataType(MetaDataType dataType) {
-        this.dataType = dataType;
     }
 
     public boolean isPk() {

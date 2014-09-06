@@ -46,7 +46,7 @@ public class HyperlinkTableCell extends BaseTableCell {
                 int row = getTableRow().getIndex();
                 MetaField refField = prop.getMetaField().getRefField();
                 Meta refMeta = meta.getRefMeta(prop.getMetaField().getId());
-                QueryBuilder queryBuilder = QueryBuilder.create(refMeta).add(refField.getColumn().getName(), hyperlink.getText());
+                QueryBuilder queryBuilder = QueryBuilder.create(refMeta).add(refField.getOriginalName(), hyperlink.getText());
                 QueryResult<DataMap> queryResult = refMeta.query(queryBuilder);
 
                 FormProperty formProperty = new FormProperty(ViewManager.getViewByName(refMeta.getName() + "FormView"));

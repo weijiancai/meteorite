@@ -27,7 +27,6 @@ import static com.meteorite.core.ui.ViewManager.createViewConfig;
  */
 public class FormFieldProperty extends BaseProperty {
     private String name;
-    private String columnName;
     private String displayName;
     private QueryModel queryModel;
     private boolean isSingleLine;
@@ -49,11 +48,6 @@ public class FormFieldProperty extends BaseProperty {
 
         dataType = field.getDataType();
         name = getPropertyValue(FORM_FIELD.NAME);
-        if (field.getColumn() != null) {
-            columnName = field.getColumn().getName();
-        } else {
-            columnName = name;
-        }
         displayName = getPropertyValue(FORM_FIELD.DISPLAY_NAME);
         this.queryModel = QueryModel.convert(getPropertyValue(FORM_FIELD.QUERY_MODEL));
         isSingleLine = UString.toBoolean(getPropertyValue(FORM_FIELD.IS_SINGLE_LINE));
@@ -169,14 +163,6 @@ public class FormFieldProperty extends BaseProperty {
         this.sortNum = sortNum;
     }
 
-    public String getColumnName() {
-        return columnName;
-    }
-
-    public void setColumnName(String columnName) {
-        this.columnName = columnName;
-    }
-
     public FormProperty getFormProperty() {
         return formProperty;
     }
@@ -203,21 +189,24 @@ public class FormFieldProperty extends BaseProperty {
             dictId = "EnumBoolean";
         } else if (MetaDataType.DICT == field.getDataType()) {
             displayStyle = DisplayStyle.COMBO_BOX.name();
-        } else if (MetaDataType.DATE == field.getDataType() && FormType.QUERY == formType) {
-            width = "250";
+        } else if (MetaDataType.DATE == field.getDataType()) {
+            if(FormType.QUERY == formType) {
+                width = "250";
+            }
+            displayStyle = DisplayStyle.DATE.name();
         }
 
-        if (field.getColumn() != null) {
-            configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_REQUIRE), field, field.getColumn().isNullable() ? "false" : "true"));
-            // 显示风格
-            if (field.getColumn().getMaxLength() > 500) {
-                displayStyle = DisplayStyle.TEXT_AREA.name();
-                singleLine = "true";
-                height = "60";
-            }
-            if (field.getColumn().isPk() && field.getColumn().getMaxLength() == 32) {
-                defaultValue = "GUID()";
-            }
+        configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_REQUIRE), field, field.isRequire() ? "true" : "false"));
+        // 显示风格
+        if (field.getMaxLength() > 500) {
+            displayStyle = DisplayStyle.TEXT_AREA.name();
+            singleLine = "true";
+            height = "60";
+        } else if(field.getMaxLength() >= 200) {
+            singleLine = "true";
+        }
+        if (field.isPk() && field.getMaxLength() == 32) {
+            defaultValue = "GUID()";
         }
 
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_SINGLE_LINE), field, singleLine));

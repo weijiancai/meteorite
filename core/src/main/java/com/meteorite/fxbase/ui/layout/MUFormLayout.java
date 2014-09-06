@@ -149,32 +149,21 @@ public class MUFormLayout extends BorderPane {
             node = new MuComboBox(field);
         } else if (DisplayStyle.DATA_SOURCE == displayStyle) {
             node = new MuDataSource(field);
-        } else {
-            if (MetaDataType.DATE == field.getDataType()) {
-                /*if ("0".equals(field.getForm().getFormType())) {
-                    MuDateRange dateField = new MuDateRange();
-                    dateField.setPrefWidth(field.getWidth() + 0.0);
-                    node = dateField;
-                } else {
-                    VDateField dateField = new VDateField();
-                    dateField.setDateTextWidth(field.getWidth() + 0.0);
-                    node = dateField;
-                }*/
-                if (formConfig.getFormType() == FormType.QUERY) {
-                    node = new MuDateRange(field);
-                } else {
-                    node = new MuDate(field);
-                }
+        } else if (DisplayStyle.DATE == displayStyle) {
+            if (formConfig.getFormType() == FormType.QUERY) {
+                node = new MuDateRange(field);
             } else {
-                node = new MuTextField(field);
+                node = new MuDate(field);
             }
+        } else {
+            node = new MuTextField(field);
         }
 
         if (MetaDataType.INTEGER == field.getDataType() && formConfig.getFormType() == FormType.QUERY) {
             node = new MuIntRange(field);
         }
 
-        valueMap.put(field.getColumnName(), (IValue)node);
+        valueMap.put(field.getMetaField().getName(), (IValue)node);
         queryList.add((ICanQuery) node);
 
         return node;

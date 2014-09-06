@@ -58,12 +58,18 @@ public enum MetaDataType {
     /**
      * 11.
      */
-    BOOLEAN("是/否")
+    BOOLEAN("是/否"),
+    /**
+     * 二进制数据
+     */
+    BLOB("二进制")
     ;
 
-    private static String[] stringArray = {STRING.name(), "CHARACTER VARYING"};
-    private static String[] intArray = {INTEGER.name(), "BIGINT", "INTEGER", "SMALLINT"};
-    private static String[] dateArray = {DATE.name(), "TIMESTAMP", "DATE"};
+    private static String[] stringArray = {STRING.name(), "CHARACTER VARYING", "varchar", "text", "longtext", "mediumtext", "char"};
+    private static String[] intArray = {INTEGER.name(), "BIGINT", "INTEGER", "SMALLINT", "int", "tinyint"};
+    private static String[] dateArray = {DATE.name(), "TIMESTAMP", "DATE", "datetime", "time"};
+    private static String[] doubleArray = {DOUBLE.name(), "decimal", "double"};
+    private static String[] blobArray = {BLOB.name(), "longblob", "blob"};
 
     private String displayName;
 
@@ -80,7 +86,7 @@ public enum MetaDataType {
             return STRING;
         } else if (UString.inArray(intArray, dataTypeStr, true)) {
             return INTEGER;
-        } else if (DOUBLE.name().equalsIgnoreCase(dataTypeStr)) {
+        } else if (UString.inArray(doubleArray, dataTypeStr, true)) {
             return DOUBLE;
         } else if (NUMBER.name().equalsIgnoreCase(dataTypeStr)) {
             return NUMBER;
@@ -100,6 +106,8 @@ public enum MetaDataType {
             return BOOLEAN;
         } else if (DICT.name().equalsIgnoreCase(dataTypeStr)) {
             return DICT;
+        } else if (UString.inArray(blobArray, dataTypeStr, true)) {
+            return BLOB;
         }
 
         return STRING;

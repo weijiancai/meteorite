@@ -144,6 +144,14 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
         return constraints;
     }
 
+    @Override
+    public List<DBConstraint> getFkConstraints() {
+        if (constraints == null) {
+            constraints = loader.loadFkConstraints(this);
+        }
+        return constraints;
+    }
+
     public void setTables(List<DBTable> tables) {
         this.tables = tables;
         tableMap.clear();

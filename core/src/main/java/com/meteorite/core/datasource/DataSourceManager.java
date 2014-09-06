@@ -99,7 +99,7 @@ public class DataSourceManager {
      *
      * @return 返回系统数据源
      */
-    public static DBDataSource initSysDataSource() {
+    private static DBDataSource initSysDataSource() {
         // 从类路径下获得db.property配置信息
         ResourceItem dbProperty = ClassPathDataSource.getInstance().getResource("db.properties");
         Properties properties = new Properties();

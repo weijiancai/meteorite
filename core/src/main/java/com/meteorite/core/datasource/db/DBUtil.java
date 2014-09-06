@@ -5,6 +5,7 @@ import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.DataSourceType;
 import com.meteorite.core.datasource.db.object.DBConnection;
+import com.meteorite.core.util.UString;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -48,6 +49,9 @@ public class DBUtil {
      * @return 返回资源相对路径
      */
     public static String toColumnPath(String str) {
+        if (UString.isEmpty(str)) {
+            return "";
+        }
         String[] strs = str.split(".");
         if (strs.length != 2) {
             throw new RuntimeException("转换资源路径失败，格式：tableName.columnName");

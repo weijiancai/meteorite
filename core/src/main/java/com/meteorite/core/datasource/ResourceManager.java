@@ -22,7 +22,11 @@ public class ResourceManager {
 
         String[] strs = rsId.split("://");
         DataSource ds = DataSourceManager.getDataSourceByName(strs[0]);
+        String path = strs[1];
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
 
-        return ds.findResourceByPath(strs[1]);
+        return ds.findResourceByPath(path);
     }
 }

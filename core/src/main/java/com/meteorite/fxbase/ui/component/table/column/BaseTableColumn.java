@@ -44,12 +44,7 @@ public class BaseTableColumn extends TableColumn<DataMap, String> {
         this.setCellValueFactory(new Callback<CellDataFeatures<DataMap, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<DataMap, String> param) {
-                Object obj;
-                if (property.getDbColumn() != null) {
-                    obj = param.getValue().get(property.getDbColumn());
-                } else {
-                    obj = param.getValue().get(property.getName());
-                }
+                Object obj = param.getValue().get(property.getName());
                 if (obj instanceof Date) {
                     return new SimpleStringProperty(UDate.dateToString((Date)obj, "yyyy-MM-dd HH:mm:ss"));
                 }
@@ -101,8 +96,7 @@ public class BaseTableColumn extends TableColumn<DataMap, String> {
             return new DictTableCell(param, property);
         }
 
-        DBColumn dbColumn = property.getDbColumn();
-        if (dbColumn != null && dbColumn.isFk()) {
+        if (property.getMetaField().isFk()) {
             return new HyperlinkTableCell(param, property);
         }
 

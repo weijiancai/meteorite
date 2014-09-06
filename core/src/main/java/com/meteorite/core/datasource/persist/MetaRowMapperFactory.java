@@ -42,7 +42,7 @@ public class MetaRowMapperFactory {
                 dataSource.setPort(rs.getInt("port"));
                 dataSource.setUserName(rs.getString("user_name"));
                 dataSource.setPwd(rs.getString("pwd"));
-                dataSource.setType(DataSourceType.valueOf(rs.getString("type")));
+                dataSource.setType(DataSourceType.get(rs.getString("type")));
 
                 return dataSource;
             }
@@ -62,7 +62,7 @@ public class MetaRowMapperFactory {
                 meta.setValid("T".equals(rs.getString("is_valid")));
                 meta.setInputDate(rs.getDate("input_date"));
                 meta.setSortNum(rs.getInt("sort_num"));
-//                meta.setDataSource(DataSourceManager.getDataSource(rs.getString("ds_id")));
+                meta.setSqlText(rs.getString("sql_text"));
                 meta.setResource(ResourceManager.getResourceById(rs.getString("rs_id")));
 
                 return meta;
@@ -87,15 +87,12 @@ public class MetaRowMapperFactory {
                 field.setValid("T".equals(rs.getString("is_valid")));
                 field.setInputDate(rs.getDate("input_date"));
                 field.setSortNum(rs.getInt("sort_num"));
-                String dbColumn = rs.getString("db_column");
-                String path = DBUtil.toColumnPath(dbColumn);
-                try {
-                    VirtualResource resource = DataSourceManager.getSysDataSource().findResourceByPath(path);
 
-                } catch (Exception e) {
-                    throw new RuntimeException("查找资源失败！");
-                }
-                field.setColumn(DBManager.getCache().getColumn(dbColumn));
+                field.setOriginalName(rs.getString("original_name"));
+                field.setMaxLength(rs.getInt("max_length"));
+                field.setPk("T".equals(rs.getString("is_pk")));
+                field.setFk("T".equals(rs.getString("is_fk")));
+                field.setRequire("T".equals(rs.getString("is_require")));
 
                 return field;
             }

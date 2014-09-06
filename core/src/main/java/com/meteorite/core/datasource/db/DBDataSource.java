@@ -178,7 +178,7 @@ public class DBDataSource extends DataSource {
 
     @Override
     public void delete(Meta meta, String... keys) throws Exception {
-        DBDataset table = meta.getDbTable();
+        /*DBDataset table = meta.getDbTable();
         List<DBColumn> pkColumns = table.getPkColumns();
         if (pkColumns.size() == 0 || keys == null || keys.length == 0) {
             return;
@@ -195,7 +195,7 @@ public class DBDataSource extends DataSource {
             template.commit();
         } finally {
             template.close();
-        }
+        }*/
     }
 
     @Override
@@ -231,7 +231,7 @@ public class DBDataSource extends DataSource {
 
     @Override
     public QueryResult<DataMap> retrieve(QueryBuilder builder, int page, int rows) throws Exception {
-        Meta meta = builder.getMeta();
+        /*Meta meta = builder.getMeta();
         DBDataset table = builder.getMeta().getDbTable();
         if (table.getDataSource().getDatabaseType() == DatabaseType.SQLSERVER) {
             builder.sql().from(table.getSchema().getName() + ".dbo." + table.getName());
@@ -246,7 +246,7 @@ public class DBDataSource extends DataSource {
             String pkField = ref.getPkMetaField().getColumn().getName();
             String join = String.format("%s on %s=%s", pkTableName, fkTableName + "." + fkField, pkTableName + "." + pkField);
             builder.sql().join(join);
-        }
+        }*/
 
         QueryResult<DataMap> queryResult = new QueryResult<DataMap>();
         queryResult.setPageRows(rows);
@@ -279,7 +279,7 @@ public class DBDataSource extends DataSource {
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
                 Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
-                for (IValue value : valueMap.values()) {
+                /*for (IValue value : valueMap.values()) {
                     MetaField field = value.getMetaField();
                     String tableName = field.getColumn().getDataset().getName();
                     Map<String, Object> param;
@@ -290,7 +290,7 @@ public class DBDataSource extends DataSource {
                         map.put(tableName, param);
                     }
                     param.put(field.getColumn().getName(), value.value());
-                }
+                }*/
 
                 return map;
             }

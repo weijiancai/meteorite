@@ -35,6 +35,8 @@ public interface DBLoader {
 
     List<DBConstraint> loadConstraint(DBDataset table) throws Exception;
 
+    List<DBConstraint> loadFkConstraints(DBSchema schema);
+
     DBTable getTable(String tableName) throws Exception;
 
     DBColumn getColumn(String tableName, String columnName) throws Exception;

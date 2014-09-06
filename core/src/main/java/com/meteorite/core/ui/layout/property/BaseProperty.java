@@ -18,12 +18,12 @@ public class BaseProperty implements PropertyNames {
     private Map<String, ViewProperty> propMap;
     private Map<String, ViewProperty> propNameMap;
     private MetaField metaField;
-    private DBColumn dbColumn;
+//    private DBColumn dbColumn;
 
     public BaseProperty(MetaField field, Map<String, ViewProperty> propMap) {
         this.propMap = propMap;
         this.metaField = field;
-        this.dbColumn = field.getColumn();
+//        this.dbColumn = field.getColumn();
 
         propNameMap = new HashMap<String, ViewProperty>();
         for (ViewProperty prop : propMap.values()) {
@@ -36,12 +36,16 @@ public class BaseProperty implements PropertyNames {
     }
 
     public String getPropertyValue(String prop) {
-        return propMap.get(prop).getValue();
+        ViewProperty vp = propMap.get(prop);
+        if (vp == null) {
+            throw new RuntimeException("不存在属性：" + prop);
+        }
+        return vp.getValue();
     }
 
-    public DBColumn getDbColumn() {
+    /*public DBColumn getDbColumn() {
         return dbColumn;
-    }
+    }*/
 
     public MetaField getMetaField() {
         return metaField;

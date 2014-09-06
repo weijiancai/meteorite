@@ -71,4 +71,11 @@ public @interface MetaFieldElement {
      * @return 返回排序号
      */
     int sortNum() default 0;
+
+    /**
+     * 最大长度
+     *
+     * @return 返回最大长度
+     */
+    int maxLength() default 0;
 }

@@ -49,6 +49,7 @@ public class Meta {
     private String name;
     private String displayName;
     private String description;
+    private String sqlText;
     private boolean isValid;
     private int sortNum;
     private Date inputDate;
@@ -56,7 +57,6 @@ public class Meta {
     private List<MetaField> fields = new ArrayList<MetaField>();
     private List<MetaReference> references = new ArrayList<MetaReference>();
     private Set<Meta> children = new HashSet<Meta>();
-    private DBDataset dbTable;
     private DataSource dataSource;
     private VirtualResource resource;
 
@@ -115,6 +115,16 @@ public class Meta {
     }
 
     @XmlAttribute
+    @MetaFieldElement(displayName = "Sql语句", sortNum = 45)
+    public String getSqlText() {
+        return sqlText;
+    }
+
+    public void setSqlText(String sqlText) {
+        this.sqlText = sqlText;
+    }
+
+    @XmlAttribute
     @MetaFieldElement(name = "valid", displayName = "是否有效", dataType=MetaDataType.BOOLEAN, dictId = "EnumBoolean", sortNum = 50)
     public boolean isValid() {
         return isValid;
@@ -135,7 +145,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "录入时间", sortNum = 70)
+    @MetaFieldElement(displayName = "录入时间", sortNum = 70, dataType = MetaDataType.DATE)
     public Date getInputDate() {
         return inputDate;
     }
@@ -163,33 +173,14 @@ public class Meta {
         this.dataSource = dataSource;
     }
 
+    @XmlAttribute
+    @MetaFieldElement(displayName = "资源ID", sortNum = 80, maxLength = 300)
     public VirtualResource getResource() {
         return resource;
     }
 
     public void setResource(VirtualResource resource) {
         this.resource = resource;
-    }
-
-    @JSONField(serialize = false)
-    public DBDataset getDbTable() {
-        if (dbTable != null) {
-            return dbTable;
-        }
-        DBColumn column = null;
-        for (MetaField field : getFields()) {
-            column = field.getColumn();
-            if (column != null) {
-                break;
-            }
-        }
-        assert column != null;
-
-        return column.getDataset();
-    }
-
-    public void setDbTable(DBDataset dbTable) {
-        this.dbTable = dbTable;
     }
 
     public void setFieldValue(String fieldName, String value) {
@@ -220,16 +211,22 @@ public class Meta {
     public List<MetaField> getPkFields() {
         List<MetaField> result = new ArrayList<MetaField>();
         for (MetaField field : fields) {
-            if (field.getColumn().isPk()) {
+            if (field.isPk()) {
                 result.add(field);
             }
         }
         return result;
     }
 
-    public MetaField getFieldByDbColumn(DBColumn column) {
+    /**
+     * 根据原名称（例如数据库列名），获得元字段信息
+     *
+     * @param originalName 原名称（例如数据库列名）
+     * @return 返回元字段信息
+     */
+    public MetaField getFieldByOriginalName(String originalName) {
         for (MetaField field : fields) {
-            if (field.getColumn() == column) {
+            if (originalName.equals(field.getOriginalName())) {
                 return field;
             }
         }
@@ -300,7 +297,7 @@ public class Meta {
     }
 
     public QueryResult<DataMap> query(List<ICanQuery> queryList, int page, int rows) throws Exception {
-        QueryResult<DataMap> result = dataSource.retrieve(this, queryList, page, rows);
+        QueryResult<DataMap> result = resource.retrieve(this, queryList, page, rows);
         setDataList(result.getRows());
         setTotalRows(result.getTotal());
         setPageCount(result.getPageCount());
@@ -322,9 +319,9 @@ public class Meta {
         String[] values = new String[pkFields.size()];
         for (int i = 0; i < pkFields.size(); i++) {
             MetaField field = pkFields.get(i);
-            values[i] = rowData.getString(field.getColumn().getName());
+            values[i] = rowData.getString(field.getName());
         }
-        dataSource.delete(this, values);
+        resource.delete(this, values);
         dataList.get().remove(row);
     }
 
@@ -390,8 +387,9 @@ public class Meta {
         return id.hashCode();
     }
 
-    public QueryResult<DataMap> query(QueryBuilder queryBuilder) throws Exception {
-        QueryResult<DataMap> result = dataSource.retrieve(queryBuilder, -1, 0);
+    public QueryResult<DataMap> query(QueryBuilder builder) throws Exception {
+        builder.sql().setQuerySql(sqlText);
+        QueryResult<DataMap> result = resource.retrieve(builder, -1, 0);
         setDataList(result.getRows());
         setTotalRows(result.getTotal());
         setPageCount(result.getPageCount());
@@ -423,7 +421,7 @@ public class Meta {
     }
 
     public void save(Map<String, IValue> valueMap) throws Exception {
-        dataSource.save(valueMap);
+        resource.save(valueMap);
     }
     
     public void insertRow(DataMap dataMap) {
@@ -436,7 +434,7 @@ public class Meta {
                 @Override
                 public Map<String, Map<String, Object>> getPDBMap() {
                     Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
-                    map.put(getDbTable().getName(), dataMap);
+                    map.put(resource.getName(), dataMap);
                     return map;
                 }
             });
@@ -448,7 +446,7 @@ public class Meta {
 
     public MetaField getFieldByName(String fieldName) {
         for (MetaField field : fields) {
-            if (field.getName().equals(fieldName)) {
+            if (field.getName().equalsIgnoreCase(fieldName)) {
                 return field;
             }
         }
@@ -463,8 +461,20 @@ public class Meta {
         return actionList;
     }
 
-    public void update(Map<String, IValue> modifiedValueMap) {
+    public void update(Map<String, IValue> modifiedValueMap, DataMap rowData) throws Exception {
+        Map<String, Object> valueMap = new HashMap<String, Object>();
+        for (IValue value : modifiedValueMap.values()) {
+            valueMap.put(value.getMetaField().getOriginalName(), value.value());
+        }
 
+        Map<String, Object> conditionMap = new HashMap<String, Object>();
+        for (MetaField field : getFields()) {
+            if (field.isPk()) {
+                conditionMap.put(field.getOriginalName(), rowData.get(field.getName()));
+            }
+        }
+
+        resource.update(valueMap, conditionMap, resource.getName());
     }
 
     public String genJavaBeanCode() {

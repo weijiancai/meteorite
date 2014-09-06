@@ -445,7 +445,6 @@ public abstract class BaseDBLoader implements DBLoader {
             column.setDataset(table);
             column.setName(map.getString("COLUMN_NAME"));
             column.setComment(map.getString("COLUMN_COMMENT"));
-            column.setDataType(MetaDataType.getDataType(map.getString("DATA_TYPE_NAME")));
             column.setDbDataType(map.getString("DATA_TYPE_NAME"));
             column.setMaxLength(map.getInt("DATA_LENGTH"));
             column.setPk(map.getBoolean("IS_PRIMARY_KEY"));
@@ -477,24 +476,42 @@ public abstract class BaseDBLoader implements DBLoader {
         return result;
     }
 
-    public void loadFkConstraints(DBSchema schema) {
+    public List<DBConstraint> loadFkConstraints(DBSchema schema) {
+        List<DBConstraint> result = new ArrayList<DBConstraint>();
+
         List<DataMap> list = dbConn.getResultSet(String.format(getFKConstraintsColumnsSql(), schema.getName()));
         for (DataMap map : list) {
             String constraintName = map.getString("constraint_name");
-            String tableName = map.getString("table_name");
-            String colName = map.getString("column_name");
-            String fkTableName = map.getString("referenced_table_name");
-            String fkColName = map.getString("referenced_column_name");
-            DBTable table = schema.getTable(tableName);
-            DBColumnImpl column = (DBColumnImpl) table.getColumn(colName);
-            DBTable fkTable = schema.getTable(fkTableName);
-            DBColumnImpl fkColumn = (DBColumnImpl) fkTable.getColumn(fkColName);
-            fkColumn.setRefColumn(column);
-            DBConstraintImpl constraint = (DBConstraintImpl) schema.getConstraint(constraintName);
-            constraint.setPrimaryKeyTable(table);
-            constraint.setForeignKeyTable(fkTable);
-            constraint.getColumns().add(fkColumn);
+            String fkTableName = map.getString("table_name");
+            String fkColName = map.getString("column_name");
+            String pkTableName = map.getString("referenced_table_name");
+            String pkColName = map.getString("referenced_column_name");
+            DBTable table = schema.getTable(fkTableName);
+            DBConstraintImpl constraint;
+
+            if (table != null) {
+                DBColumnImpl column = (DBColumnImpl) table.getColumn(fkColName);
+                DBTable fkTable = schema.getTable(pkTableName);
+                DBColumnImpl fkColumn = (DBColumnImpl) fkTable.getColumn(pkColName);
+                fkColumn.setRefColumn(column);
+                constraint = (DBConstraintImpl) schema.getConstraint(constraintName);
+                constraint.setPrimaryKeyTable(table);
+                constraint.setForeignKeyTable(fkTable);
+                constraint.getColumns().add(fkColumn);
+            }
+
+
+            constraint = new DBConstraintImpl();
+            constraint.setName(constraintName);
+            constraint.setPkTableName(pkTableName);
+            constraint.setPkColumnName(pkColName);
+            constraint.setFkTableName(fkTableName);
+            constraint.setFkColumnName(fkColName);
+
+            result.add(constraint);
         }
+
+        return result;
     }
 
     @Override

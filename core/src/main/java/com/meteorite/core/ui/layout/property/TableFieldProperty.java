@@ -1,6 +1,5 @@
 package com.meteorite.core.ui.layout.property;
 
-import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.dict.EnumAlign;
@@ -191,14 +190,14 @@ public class TableFieldProperty extends BaseProperty {
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_DISPLAY), field, isDisplay ? "true" : "false"));
 
-        DBColumn column = field.getColumn();
-        int w = 80;
-        if (column != null) {
-            w = column.getMaxLength();
-            if ((column.isPk() || column.isFk()) && w == 32) {
-                w = 250;
-            }
+        int w = field.getMaxLength();
+        if(w <= 0) {
+            w = 80;
         }
+        if ((field.isPk() || field.isFk()) && w == 32) {
+            w = 250;
+        }
+
         if(w > 500) {
             w = 200;
         }

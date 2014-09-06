@@ -44,6 +44,8 @@ public interface DBSchema extends DBObject {
 
     List<DBConstraint> getConstraints();
 
+    List<DBConstraint> getFkConstraints();
+
     DBTable getTable(String name);
 
     DBView getView(String name);

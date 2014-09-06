@@ -1,9 +1,15 @@
 package com.meteorite.core.datasource;
 
+import com.meteorite.core.datasource.db.QueryResult;
+import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.ui.model.View;
+import com.meteorite.fxbase.ui.IValue;
+import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 虚拟资源
@@ -100,7 +106,71 @@ public abstract class VirtualResource {
 
     public abstract boolean isValid();
 
+    /**
+     * 获得资源的原始对象，有些对象会包装成资源对象，如DBObject，那么返回的原始对象，就是DBObject对象的子类，如DBTable
+     *
+     * @return 返回资源的原始对象
+     */
+    public abstract Object getOriginalObject();
+
     protected boolean nameEquals(String name) {
         return getName().equals(name);
     }
+
+    // ===================================== 数据内容处理 =====================================================
+
+    /**
+     * 检索数据
+     *
+     * @param meta 元数据
+     * @param queryList 查询条件列表
+     * @return 返回查询结果
+     */
+    public abstract QueryResult<DataMap> retrieve(Meta meta, List<ICanQuery> queryList, int page, int rows) throws Exception;
+
+    /**
+     * 检索数据
+     *
+     * @param queryBuilder 查询Builder
+     * @param page 第几页
+     * @param rows 每页行数
+     * @return 返回查询结果
+     * @throws Exception
+     */
+    public abstract QueryResult<DataMap> retrieve(QueryBuilder queryBuilder, int page, int rows) throws Exception;
+
+    /**
+     * 保存数据
+     *
+     * @param valueMap 值Map
+     * @throws Exception
+     */
+    public abstract void save(Map<String, IValue> valueMap) throws Exception;
+
+    /**
+     * 保存数据
+     *
+     * @param pdb 持久化对象信息
+     * @throws Exception
+     */
+    public abstract void save(IPDB pdb) throws Exception;
+
+    /**
+     * 删除数据
+     *
+     * @param meta 元数据
+     * @param keys 主键值
+     * @throws Exception
+     */
+    public abstract void delete(Meta meta, String... keys) throws Exception;
+
+    /**
+     * 更新数据
+     *
+     * @param valueMap 值Map
+     * @param conditionMap 条件Map
+     * @param tableName 表名
+     * @throws Exception
+     */
+    public abstract void update(Map<String, Object> valueMap, Map<String, Object> conditionMap, String tableName) throws Exception;
 }

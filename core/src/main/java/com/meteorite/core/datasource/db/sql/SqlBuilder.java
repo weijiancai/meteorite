@@ -36,6 +36,7 @@ public class SqlBuilder {
     private String where = " 1=1";
     private String with;
     private String group;
+    private String querySql; // 查询Sql
     private boolean haveWith;
     private boolean isQuery = true;
     private boolean isBracket = false;
@@ -478,11 +479,15 @@ public class SqlBuilder {
 
         String result = "";
 
-        if (isQuery) {
-            if (haveWith) {
-                result = String.format(WITH_SELECT_WHERE_FORMAT, with, columns, table, where);
-            } else {
-                result = String.format(SELECT_WHERE_FORMAT, columns, table, where);
+        if (UString.isNotEmpty(querySql)) { // 如果设置了查询Sql，则不在组装查询语句
+            result = querySql + " WHERE " + where;
+        } else {
+            if (isQuery) {
+                if (haveWith) {
+                    result = String.format(WITH_SELECT_WHERE_FORMAT, with, columns, table, where);
+                } else {
+                    result = String.format(SELECT_WHERE_FORMAT, columns, table, where);
+                }
             }
         }
 
@@ -501,13 +506,18 @@ public class SqlBuilder {
      * @return 返回总记录条数sql语句
      */
     public String getCountSql() {
-        if (isQuery) {
-            if (haveWith) {
-                return String.format(WITH_SELECT_WHERE_FORMAT, with, "count(1)", table, where);
-            } else {
-                return String.format(SELECT_WHERE_FORMAT, "count(1)", table, where);
+        if (UString.isNotEmpty(querySql)) { // 如果设置了查询Sql，则不在组装查询语句
+            return "SELECT count(1) " + querySql.substring(querySql.lastIndexOf(" FROM")) + " WHERE " + where;
+        } else {
+            if (isQuery) {
+                if (haveWith) {
+                    return String.format(WITH_SELECT_WHERE_FORMAT, with, "count(1)", table, where);
+                } else {
+                    return String.format(SELECT_WHERE_FORMAT, "count(1)", table, where);
+                }
             }
         }
+
         return "";
     }
 
@@ -569,5 +579,13 @@ public class SqlBuilder {
 
     public String getSql() {
         return sql;
+    }
+
+    public String getQuerySql() {
+        return querySql;
+    }
+
+    public void setQuerySql(String querySql) {
+        this.querySql = querySql;
     }
 }

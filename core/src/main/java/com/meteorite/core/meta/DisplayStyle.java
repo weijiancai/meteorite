@@ -33,7 +33,11 @@ public enum DisplayStyle {
     /**
      * 5. Boolean
      */
-    BOOLEAN("是/否")
+    BOOLEAN("是/否"),
+    /**
+     * 6. 日期
+     */
+    DATE("日期")
     ;
 
     private String displayName;
@@ -59,6 +63,8 @@ public enum DisplayStyle {
             return DATA_SOURCE;
         } else if (BOOLEAN.name().equalsIgnoreCase(styleStr)) {
             return BOOLEAN;
+        } else if (DATE.name().equalsIgnoreCase(styleStr)) {
+            return DATE;
         }
 
         return TEXT_FIELD;

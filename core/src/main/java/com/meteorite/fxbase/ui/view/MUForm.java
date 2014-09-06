@@ -95,7 +95,7 @@ public class MUForm extends BorderPane {
                     if(isAdd) {
                         formConfig.getMeta().save(layout.getValueMap());
                     } else {
-                        formConfig.getMeta().update(modifiedValueMap);
+                        formConfig.getMeta().update(modifiedValueMap, data);
                     }
                     isModified.set(false);
                 }
@@ -127,7 +127,7 @@ public class MUForm extends BorderPane {
                             QueryBuilder builder = QueryBuilder.create(meta);
                             for (MetaField field : meta.getFields()) {
                                 if(field.getRefField() != null && field.getRefField().getMeta().equals(mainMeta)) {
-                                    builder.add(field.getColumn().getName(), data.get(field.getRefField().getColumn()), count < 1);
+                                    builder.add(field.getOriginalName(), data.get(field.getRefField().getName()), count < 1);
                                     count++;
                                 }
                             }

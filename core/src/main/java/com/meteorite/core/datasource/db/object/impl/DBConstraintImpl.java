@@ -87,6 +87,9 @@ public class DBConstraintImpl extends DBObjectImpl implements DBConstraint {
 
     @Override
     public String getFullName() {
+        if (getSchema() == null) {
+            return getName();
+        }
         return getSchema().getFullName() + ".constraint." + getName();
     }
 

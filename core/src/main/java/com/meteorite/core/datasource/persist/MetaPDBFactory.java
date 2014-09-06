@@ -112,14 +112,15 @@ public class MetaPDBFactory {
                 map.put("display_name", field.getDisplayName());
                 map.put("data_type", field.getDataType().name());
                 map.put("description", field.getDescription());
+                map.put("dict_id", field.getDictId());
                 map.put("is_valid", field.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", field.getSortNum());
-                DBColumn column = field.getColumn();
-                if (column != null) {
-                    map.put("db_column", column.getDataset().getName() + "." + column.getName());
-                }
-                map.put("dict_id", field.getDictId());
+                map.put("original_name", field.getOriginalName());
+                map.put("max_length", field.getMaxLength());
+                map.put("is_pk", field.isPk() ? "T" : "F");
+                map.put("is_fk", field.isFk() ? "T" : "F");
+                map.put("is_require", field.isRequire() ? "T" : "F");
 
                 result.put("mu_meta_field", map);
 

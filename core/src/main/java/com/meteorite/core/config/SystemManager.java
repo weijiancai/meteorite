@@ -65,8 +65,6 @@ public class SystemManager {
      * 初始化系统
      */
     public void init() throws Exception {
-        // 初始化系统数据源
-        DataSourceManager.initSysDataSource();
         // 加载系统数据源
 //        DataSourceManager.getSysDataSource().load();
         // 检查数据库版本
