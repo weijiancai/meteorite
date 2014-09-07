@@ -2,6 +2,7 @@ package com.meteorite.core.web.rest;
 
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.util.UString;
+import com.meteorite.core.web.action.BaseAction;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -14,7 +15,7 @@ import java.io.IOException;
  * @author wei_jc
  * @since 1.0.0
  */
-public class DictRest extends BaseRest {
+public class DictRest extends BaseAction {
     private static final Logger log = Logger.getLogger(DictRest.class);
 
     @Override
@@ -30,10 +31,5 @@ public class DictRest extends BaseRest {
             String dictId = req.getRequestURI().substring(6);
             writeJsonObject(res, DictManager.getDict(dictId));
         }
-    }
-
-    @Override
-    protected void handle(HttpServletRequest req, HttpServletResponse res) {
-
     }
 }

@@ -93,7 +93,12 @@ public class MUForm extends BorderPane {
                 @Override
                 public void doHandler(ActionEvent event) throws Exception {
                     if(isAdd) {
-                        formConfig.getMeta().save(layout.getValueMap());
+                        Map<String, Object> map = new HashMap<String, Object>();
+                        for (IValue value : layout.getValueMap().values()) {
+                            MetaField field = value.getMetaField();
+                            map.put(field.getName(), value.value());
+                        }
+                        formConfig.getMeta().save(map);
                     } else {
                         formConfig.getMeta().update(modifiedValueMap, data);
                     }

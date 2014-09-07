@@ -145,7 +145,7 @@ public abstract class VirtualResource {
      * @param valueMap 值Map
      * @throws Exception
      */
-    public abstract void save(Map<String, IValue> valueMap) throws Exception;
+    public abstract void save(Map<String, Map<String, Object>> valueMap) throws Exception;
 
     /**
      * 保存数据

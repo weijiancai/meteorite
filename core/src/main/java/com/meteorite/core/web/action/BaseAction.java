@@ -1,20 +1,24 @@
-package com.meteorite.core.web.rest;
+package com.meteorite.core.web.action;
 
 import com.alibaba.fastjson.JSON;
+import com.meteorite.core.util.UFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Map;
 
 /**
- * Base Rest服务
+ * Base Action
  *
  * @author wei_jc
  * @since 1.0.0
  */
-public abstract class BaseRest extends HttpServlet {
+public abstract class BaseAction extends HttpServlet {
     public enum BrowserType {
         MSIE, FIREFOX, CHROME
     }
@@ -28,7 +32,6 @@ public abstract class BaseRest extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         String userAgent = req.getHeader("User-Agent");
         if (userAgent.contains("MSIE")) {
             browserType = BrowserType.MSIE;
@@ -40,12 +43,8 @@ public abstract class BaseRest extends HttpServlet {
         doPost(req, res);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        handle(req, res);
-
+    protected Map<String, Object> getData(HttpServletRequest req) throws IOException {
+        String jsonStr = UFile.readString(req.getInputStream(), "UTF-8");
+        return JSON.parseObject(jsonStr);
     }
-
-    protected abstract void handle(HttpServletRequest req, HttpServletResponse res);
 }

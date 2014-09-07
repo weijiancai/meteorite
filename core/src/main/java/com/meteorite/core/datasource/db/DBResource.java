@@ -232,26 +232,11 @@ public class DBResource extends VirtualResource {
     }
 
     @Override
-    public void save(final Map<String, IValue> valueMap) throws Exception {
+    public void save(final Map<String, Map<String, Object>> valueMap) throws Exception {
         IPDB pdb = new IPDB() {
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
-                Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
-                for (IValue value : valueMap.values()) {
-                    MetaField field = value.getMetaField();
-                    String originalName = field.getOriginalName();
-                    String tableName = originalName.substring(0, originalName.indexOf("."));
-                    Map<String, Object> param;
-                    if (map.containsKey(tableName)) {
-                        param = map.get(tableName);
-                    } else {
-                        param = new HashMap<String, Object>();
-                        map.put(tableName, param);
-                    }
-                    param.put(originalName, value.value());
-                }
-
-                return map;
+                return valueMap;
             }
         };
 

@@ -2,6 +2,7 @@ package com.meteorite.core.web.rest;
 
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.ui.config.LayoutConfig;
+import com.meteorite.core.web.action.BaseAction;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,13 +15,8 @@ import java.util.List;
  * @author wei_jc
  * @since 1.0.0
  */
-public class LayoutRest extends BaseRest {
+public class LayoutRest extends BaseAction {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
-    @Override
-    protected void handle(HttpServletRequest req, HttpServletResponse res) {
 
     }
 

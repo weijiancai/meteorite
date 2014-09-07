@@ -62,7 +62,11 @@ public enum MetaDataType {
     /**
      * 二进制数据
      */
-    BLOB("二进制")
+    BLOB("二进制"),
+    /**
+     * GUID
+     */
+    GUID("GUID")
     ;
 
     private static String[] stringArray = {STRING.name(), "CHARACTER VARYING", "varchar", "text", "longtext", "mediumtext", "char"};
@@ -108,6 +112,8 @@ public enum MetaDataType {
             return DICT;
         } else if (UString.inArray(blobArray, dataTypeStr, true)) {
             return BLOB;
+        } else if (GUID.name().equalsIgnoreCase(dataTypeStr)) {
+            return GUID;
         }
 
         return STRING;

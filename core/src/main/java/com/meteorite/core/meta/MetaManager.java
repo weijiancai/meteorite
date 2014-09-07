@@ -474,7 +474,12 @@ public class MetaManager {
             field.setDescription(resource.getDisplayName());
             if (resource.getName().toLowerCase().startsWith("is_")) {
                 field.setDataType(MetaDataType.BOOLEAN);
-            } else {
+                field.setDefaultValue("T");
+            } else if(column.isPk() && column.getMaxLength() == 32) {
+                field.setDataType(MetaDataType.GUID);
+                field.setDefaultValue("GUID()");
+            }
+            else {
                 field.setDataType(column.getDataType());
             }
             field.setPk(column.isPk());
@@ -483,11 +488,19 @@ public class MetaManager {
             field.setMaxLength(column.getMaxLength());
             field.setValid(true);
             field.setSortNum(fieldSortNum += 10);
-//            initDzCategory(field);
+
+            // 默认值
+            if ("isValid".equals(field.getName())) {
+                field.setDefaultValue("T");
+            } else if ("inputDate".equals(field.getName())) {
+                field.setDefaultValue("SYSDATE()");
+            } else if ("sortNum".equals(field.getName())) {
+                field.setDefaultValue("0");
+            }
+
             // 插入表sys_class_field
             template.save(MetaPDBFactory.getMetaField(field));
             fieldList.add(field);
-//            classFieldIdMap.put(field.getId(), field);
             // 加入缓存
             fieldIdMap.put(field.getId(), field);
 

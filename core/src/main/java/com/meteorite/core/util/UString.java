@@ -79,8 +79,14 @@ public class UString {
 
     public static String columnNameToFieldName(String columnName) {
         StringBuilder result = new StringBuilder();
+        int i = 0;
         for (String str : columnName.split("_")) {
-            result.append(firstCharToUpper(str.toLowerCase()));
+            if (i == 0) {
+                result.append(firstCharToLower(str.toLowerCase()));
+            } else {
+                result.append(firstCharToUpper(str.toLowerCase()));
+            }
+            i++;
         }
 
         return result.toString();

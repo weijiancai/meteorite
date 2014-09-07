@@ -14,7 +14,7 @@ public class SqlUtil {
      *
      * @return 返回sql语句
      */
-    public static String toLog(String sql, Object... paramQueue) {
+    public static String toLog(String sql, Object[] paramQueue) {
         if (UString.isEmpty(sql)) {
             return "";
         }

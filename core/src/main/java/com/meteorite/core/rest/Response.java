@@ -11,6 +11,8 @@ import java.util.List;
  * @since 1.0.0
  */
 public class Response {
+    private boolean isSuccess;
+    private String errorMsg;
     private List<DataMap> listData;
 
     public void setListData(List<DataMap> listData) {
@@ -19,5 +21,21 @@ public class Response {
 
     public List<DataMap> getListData() {
         return listData;
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(boolean isSuccess) {
+        this.isSuccess = isSuccess;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 }

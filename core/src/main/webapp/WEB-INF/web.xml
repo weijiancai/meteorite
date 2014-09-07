@@ -38,6 +38,11 @@
         <servlet-class>com.meteorite.core.web.action.SystemAction</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>LoginAction</servlet-name>
+        <servlet-class>com.meteorite.core.web.action.LoginAction</servlet-class>
+    </servlet>
+
     <!--<servlet>
         <servlet-name>RestServlet</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
@@ -73,6 +78,11 @@
     <servlet-mapping>
         <servlet-name>TreeRest</servlet-name>
         <url-pattern>/tree/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>LoginAction</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

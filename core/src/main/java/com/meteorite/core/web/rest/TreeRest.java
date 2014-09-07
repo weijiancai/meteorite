@@ -2,24 +2,21 @@ package com.meteorite.core.web.rest;
 
 import com.meteorite.core.config.PathManager;
 import com.meteorite.core.datasource.ftp.FtpDataSource;
-import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
+import com.meteorite.core.web.action.BaseAction;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.hsqldb.lib.StringInputStream;
 
-import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URLEncoder;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +26,21 @@ import java.util.Map;
  * @author wei_jc
  * @since 1.0.0
  */
-public class TreeRest extends BaseRest {
+public class TreeRest extends BaseAction {
     private static final Logger log = Logger.getLogger(TreeRest.class);
 
     @Override
-    protected void handle(HttpServletRequest req, HttpServletResponse res) {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        super.doPost(req, res);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+        handler(req, resp);
+    }
+
+    public void handler(HttpServletRequest req, HttpServletResponse res) {
         try {
             FtpDataSource ds = FtpDataSource.getInstance("115.29.163.55", "wei_jc", "wjcectong2013#");
             ds.load();

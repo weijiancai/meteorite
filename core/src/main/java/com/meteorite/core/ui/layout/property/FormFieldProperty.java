@@ -194,6 +194,8 @@ public class FormFieldProperty extends BaseProperty {
                 width = "250";
             }
             displayStyle = DisplayStyle.DATE.name();
+        } else if (MetaDataType.GUID == field.getDataType()) {
+            defaultValue = "GUID()";
         }
 
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_REQUIRE), field, field.isRequire() ? "true" : "false"));
@@ -204,9 +206,6 @@ public class FormFieldProperty extends BaseProperty {
             height = "60";
         } else if(field.getMaxLength() >= 200) {
             singleLine = "true";
-        }
-        if (field.isPk() && field.getMaxLength() == 32) {
-            defaultValue = "GUID()";
         }
 
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_SINGLE_LINE), field, singleLine));

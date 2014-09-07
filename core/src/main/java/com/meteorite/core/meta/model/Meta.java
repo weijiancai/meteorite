@@ -16,9 +16,7 @@ import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.model.View;
-import com.meteorite.core.util.FreeMarkerConfiguration;
-import com.meteorite.core.util.FreeMarkerTemplateUtils;
-import com.meteorite.core.util.UObject;
+import com.meteorite.core.util.*;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import freemarker.template.TemplateException;
@@ -57,6 +55,7 @@ public class Meta {
     private List<MetaField> fields = new ArrayList<MetaField>();
     private List<MetaReference> references = new ArrayList<MetaReference>();
     private Set<Meta> children = new HashSet<Meta>();
+    private Map<String, MetaField> fieldMap;
     private DataSource dataSource;
     private VirtualResource resource;
 
@@ -162,6 +161,10 @@ public class Meta {
 
     public void setFields(List<MetaField> fields) {
         this.fields = fields;
+        fieldMap = new HashMap<String, MetaField>();
+        for (MetaField field : fields) {
+            fieldMap.put(field.getName(), field);
+        }
     }
 
     @JSONField(serialize = false)
@@ -420,8 +423,43 @@ public class Meta {
         pw.close();
     }
 
-    public void save(Map<String, IValue> valueMap) throws Exception {
-        resource.save(valueMap);
+    public void save(Map<String, Object> valueMap) throws Exception {
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        for (String key : valueMap.keySet()) {
+            MetaField field = fieldMap.get(key);
+
+            if (field != null && UString.isNotEmpty(field.getOriginalName())) {
+                // 其他值
+                paramMap.put(field.getOriginalName(), valueMap.get(key));
+            }
+        }
+
+        // 设置默认值
+        for (MetaField field : getFields()) {
+            if(!valueMap.containsKey(field.getName())) {
+                String originalName = field.getOriginalName();
+                // 设置默认值
+                if (field.isPk() && !valueMap.containsKey(field.getName()) && field.getDataType() == MetaDataType.GUID) {
+                    paramMap.put(originalName, UUIDUtil.getUUID());
+                } else if (field.isRequire()) {
+                    String defaultValue = field.getDefaultValue();
+                    if (UString.isNotEmpty(defaultValue)) {
+                        if ("GUID()".equals(defaultValue)) {
+                            paramMap.put(originalName, UUIDUtil.getUUID());
+                        } else if ("SYSDATE()".equals(defaultValue)) {
+                            paramMap.put(originalName, new Date());
+                        } else {
+                            paramMap.put(originalName, defaultValue);
+                        }
+                    }
+                }
+            }
+        }
+
+        Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
+        map.put(resource.getName(), paramMap);
+
+        resource.save(map);
     }
     
     public void insertRow(DataMap dataMap) {
@@ -439,7 +477,6 @@ public class Meta {
                 }
             });
         }
-
 
         insertCache.clear();
     }

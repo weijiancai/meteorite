@@ -78,7 +78,7 @@ public class MetaRowMapperFactory {
 
                 field.setMeta(meta);
                 field.setId(rs.getString("id"));
-                field.setName(rs.getString("name").toLowerCase());
+                field.setName(rs.getString("name"));
                 field.setDisplayName(rs.getString("display_name"));
                 field.setDataType(MetaDataType.getDataType(rs.getString("data_type")));
                 field.setDefaultValue(rs.getString("default_value"));

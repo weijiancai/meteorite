@@ -114,6 +114,7 @@ public class MetaPDBFactory {
                 map.put("description", field.getDescription());
                 map.put("dict_id", field.getDictId());
                 map.put("is_valid", field.isValid() ? "T" : "F");
+                map.put("default_value", field.getDefaultValue());
                 map.put("input_date", new Date());
                 map.put("sort_num", field.getSortNum());
                 map.put("original_name", field.getOriginalName());
