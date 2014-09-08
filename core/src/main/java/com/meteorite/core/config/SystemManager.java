@@ -17,6 +17,7 @@ import com.meteorite.core.meta.action.MUActionConfig;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.parser.mobile.MobileNumberAction;
+import com.meteorite.core.project.ProjectManager;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.ui.layout.LayoutManager;
@@ -79,6 +80,8 @@ public class SystemManager {
         MetaManager.load();
         // 加载视图
         ViewManager.load();
+        // 加载项目
+        ProjectManager.load();
 
         switch (SystemConfig.SYSTEM_TYPE) {
             case DESKTOP: {

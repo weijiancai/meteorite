@@ -1,34 +1,11 @@
 package com.meteorite.core.project;
 
-import com.meteorite.core.config.SystemInfo;
-import com.meteorite.core.config.SystemManager;
-import com.meteorite.core.datasource.DataSourceManager;
-import com.meteorite.core.datasource.DataSourceType;
-import com.meteorite.core.datasource.VirtualResource;
-import com.meteorite.core.datasource.db.DBDataSource;
-import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
-import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
-import com.meteorite.core.meta.DisplayStyle;
-import com.meteorite.core.meta.MetaDataType;
-import com.meteorite.core.meta.annotation.MetaElement;
-import com.meteorite.core.meta.annotation.MetaFieldElement;
-import com.meteorite.core.meta.model.*;
-import com.meteorite.core.ui.ViewManager;
-import com.meteorite.core.ui.layout.property.TableFieldProperty;
-import com.meteorite.core.util.UFile;
-import com.meteorite.core.util.UIO;
-import com.meteorite.core.util.UString;
-import com.meteorite.core.util.jaxb.JAXBUtil;
 
-import java.io.File;
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.util.*;
-
-import static com.meteorite.core.config.SystemConfig.DIR_SYSTEM;
-import static com.meteorite.core.config.SystemConfig.FILE_NAME_META_FIELD_CONFIG;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 项目管理
@@ -39,6 +16,7 @@ import static com.meteorite.core.config.SystemConfig.FILE_NAME_META_FIELD_CONFIG
 public class ProjectManager {
     private static Map<String, ProjectDefine> projectNameMap = new HashMap<String, ProjectDefine>();
     private static Map<String, ProjectDefine> projectIdMap = new HashMap<String, ProjectDefine>();
+    private static Map<String, NavMenu> navMenuMap = new HashMap<String, NavMenu>();
 
 
     public static void load() throws Exception {
@@ -51,11 +29,23 @@ public class ProjectManager {
                 projectNameMap.put(project.getName(), project);
             }
 
-            // 查询元数据引用
+            // 查询导航菜单
             sql = "SELECT * FROM mu_nav_menu";
-            List<NavMenu> referenceList = template.query(sql, MetaRowMapperFactory.getNavMenu());
-            for (NavMenu reference : referenceList) {
+            List<NavMenu> navMenus = template.query(sql, MetaRowMapperFactory.getNavMenu());
+            for (NavMenu navMenu : navMenus) {
+                navMenuMap.put(navMenu.getId(), navMenu);
+                ProjectDefine project = projectIdMap.get(navMenu.getProjectId());
+                if (project != null) {
+                    project.getNavMenus().add(navMenu);
+                }
+            }
 
+            // 构造树形导航菜单
+            for (NavMenu navMenu : navMenuMap.values()) {
+                NavMenu parent = navMenuMap.get(navMenu.getPid());
+                if (parent != null) {
+                    parent.getChildren().add(navMenu);
+                }
             }
 
             template.commit();
@@ -64,4 +54,13 @@ public class ProjectManager {
         }
     }
 
+    /**
+     * 根据项目名称获得项目信息
+     *
+     * @param projectName 项目名称
+     * @return 返回项目信息
+     */
+    public static ProjectDefine getProjectByName(String projectName) {
+        return projectNameMap.get(projectName);
+    }
 }

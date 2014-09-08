@@ -1,5 +1,6 @@
 package com.meteorite.core.web.action;
 
+import com.meteorite.core.project.ProjectManager;
 import freemarker.ext.servlet.FreemarkerServlet;
 import freemarker.template.Template;
 import freemarker.template.TemplateModel;
@@ -16,7 +17,7 @@ import java.io.IOException;
 public class FreeMarkerAction extends FreemarkerServlet {
     @Override
     protected boolean preTemplateProcess(HttpServletRequest request, HttpServletResponse response, Template template, TemplateModel data) throws ServletException, IOException {
-
+        request.setAttribute("project", ProjectManager.getProjectByName("AirManager"));
         return true;
     }
 }

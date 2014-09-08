@@ -92,7 +92,7 @@
 
     <servlet>
         <servlet-name>freemarker</servlet-name>
-        <servlet-class>freemarker.ext.servlet.FreemarkerServlet</servlet-class>
+        <servlet-class>com.meteorite.core.web.action.FreeMarkerAction</servlet-class>
         <!-- FreemarkerServlet  设置: -->
         <init-param>
             <param-name>TemplatePath</param-name>

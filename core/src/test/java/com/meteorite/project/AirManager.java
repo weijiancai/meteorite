@@ -3,7 +3,6 @@ package com.meteorite.project;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.util.Cn2Spell;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +16,23 @@ public class AirManager {
     private static int level1SortNum = 0;
     private static int level2SortNum = 0;
 
-    public static void initNavMenu() throws Exception {
-        template = new JdbcTemplate();
+    private static final String PROJECT_NAME = "AirManager";
+
+    public static void initProject(JdbcTemplate template) throws Exception {
+        template.clearTable("mu_project_define");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", PROJECT_NAME);
+        params.put("name", PROJECT_NAME);
+        params.put("display_name", "航空货运系统");
+        params.put("input_date", new Date());
+        params.put("is_valid", "T");
+        params.put("sort_num", 10);
+        template.save(params, "mu_project_define");
+    }
+
+    public static void initNavMenu(JdbcTemplate template) throws Exception {
+        AirManager.template = template;
         template.clearTable("mu_nav_menu");
 
         String level1 = addNavMenu("nav_", "安全管理", "root", "1");
@@ -205,8 +219,6 @@ public class AirManager {
         addNavMenu(prefix, "个人选项", level1, "2");
         addNavMenu(prefix, "数据下载", level1, "2");
         addNavMenu(prefix, "报表配置", level1, "2");
-
-        template.commit();
     }
 
     private static String addNavMenu(String prefix, String displayName, String pid, String level) throws Exception {
@@ -220,6 +232,7 @@ public class AirManager {
         param.put("level", level);
         param.put("is_valid", "T");
         param.put("input_date", new Date());
+        param.put("project_id", PROJECT_NAME);
         int sortNum = "1".equals(level) ? (level1SortNum += 10) : (level2SortNum += 10);
         param.put("sort_num", sortNum);
         template.save(param, "mu_nav_menu");
@@ -228,6 +241,13 @@ public class AirManager {
     }
 
     public static void main(String[] args) throws Exception {
-        initNavMenu();
+        JdbcTemplate template = new JdbcTemplate();
+        try {
+            initProject(template);
+            initNavMenu(template);
+            template.commit();
+        } finally {
+            template.close();
+        }
     }
 }

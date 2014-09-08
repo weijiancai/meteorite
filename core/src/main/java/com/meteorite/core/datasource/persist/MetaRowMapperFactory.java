@@ -302,7 +302,9 @@ public class MetaRowMapperFactory {
                 nav.setIcon(rs.getString("icon"));
                 nav.setUrl(rs.getString("url"));
                 nav.setPid(rs.getString("pid"));
-//                nav.setValid("T".equals(rs.getString("is_valid")));
+                nav.setLevel(rs.getInt("level"));
+                nav.setProjectId(rs.getString("project_id"));
+                nav.setValid("T".equals(rs.getString("is_valid")));
                 nav.setInputDate(rs.getDate("input_date"));
                 nav.setSortNum(rs.getInt("sort_num"));
 

@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 项目定义
@@ -23,6 +25,8 @@ public class ProjectDefine {
     private Date inputDate;
     private boolean isValid;
     private int sortNum;
+
+    private List<NavMenu> navMenus;
 
     @MetaFieldElement(displayName = "项目ID")
     public String getId() {
@@ -105,6 +109,26 @@ public class ProjectDefine {
         this.projectUrl = projectUrl;
     }
 
+    public List<NavMenu> getNavMenus() {
+        if (navMenus == null) {
+            navMenus = new ArrayList<NavMenu>();
+        }
+        return navMenus;
+    }
+
+    public void setNavMenus(List<NavMenu> navMenus) {
+        this.navMenus = navMenus;
+    }
+
+    public List<NavMenu> getNavMenusByLevel(int level) {
+        List<NavMenu> result = new ArrayList<NavMenu>();
+        for (NavMenu navMenu : navMenus) {
+            if (navMenu.getLevel() == level) {
+                result.add(navMenu);
+            }
+        }
+        return result;
+    }
 
     @Override
     public String toString() {

@@ -1,6 +1,8 @@
 package com.meteorite.core.project;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 导航菜单
@@ -32,6 +34,8 @@ public class NavMenu {
     /** 录入时间 */
     private Date inputDate;
 
+    List<NavMenu> children;
+
     public String getId() {
         return id;
     }
@@ -39,6 +43,7 @@ public class NavMenu {
     public void setId(String id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -46,6 +51,7 @@ public class NavMenu {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getDisplayName() {
         return displayName;
     }
@@ -53,6 +59,7 @@ public class NavMenu {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
     public String getIcon() {
         return icon;
     }
@@ -60,6 +67,7 @@ public class NavMenu {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
     public String getUrl() {
         return url;
     }
@@ -67,6 +75,7 @@ public class NavMenu {
     public void setUrl(String url) {
         this.url = url;
     }
+
     public String getPid() {
         return pid;
     }
@@ -74,6 +83,7 @@ public class NavMenu {
     public void setPid(String pid) {
         this.pid = pid;
     }
+
     public int getLevel() {
         return level;
     }
@@ -81,6 +91,7 @@ public class NavMenu {
     public void setLevel(int level) {
         this.level = level;
     }
+
     public String getProjectId() {
         return projectId;
     }
@@ -88,13 +99,15 @@ public class NavMenu {
     public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
-    public boolean getIsValid() {
+
+    public boolean isValid() {
         return isValid;
     }
 
-    public void setIsValid(boolean isValid) {
+    public void setValid(boolean isValid) {
         this.isValid = isValid;
     }
+
     public int getSortNum() {
         return sortNum;
     }
@@ -102,11 +115,23 @@ public class NavMenu {
     public void setSortNum(int sortNum) {
         this.sortNum = sortNum;
     }
+
     public Date getInputDate() {
         return inputDate;
     }
 
     public void setInputDate(Date inputDate) {
         this.inputDate = inputDate;
+    }
+
+    public List<NavMenu> getChildren() {
+        if (children == null) {
+            children = new ArrayList<NavMenu>();
+        }
+        return children;
+    }
+
+    public void setChildren(List<NavMenu> children) {
+        this.children = children;
     }
 }
