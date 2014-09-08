@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/9/6 7:38:14                             */
+/* Created on:     2014/9/8 8:27:08                             */
 /*==============================================================*/
 
 
@@ -219,14 +219,14 @@ create table mu_meta_field
    name                 varchar(128) not null comment '字段名称',
    display_name         varchar(64) comment '显示名',
    data_type            varchar(64) not null comment '数据类型',
-   description          varchar(1024) comment '描述',
-   default_value        varchar(256) comment '默认值',
    dict_id              varchar(32) comment '数据字典',
    original_name        varchar(128) comment '原名称',
    max_length           int comment '最大长度',
    is_pk                char(1) not null comment '是否主键',
    is_fk                char(1) not null comment '是否外键',
    is_require           char(1) not null comment '是否必须',
+   description          varchar(1024) comment '描述',
+   default_value        varchar(256) comment '默认值',
    is_valid             char(1) not null comment '是否有效',
    sort_num             int not null comment '排序号',
    input_date           datetime not null comment '录入时间',
@@ -312,11 +312,12 @@ create table mu_nav_menu
 (
    id                   varchar(32) not null comment '菜单ID',
    name                 varchar(64) not null comment '菜单名称',
-   diaplay_name         varchar(128) not null comment '显示名',
+   display_name         varchar(128) not null comment '显示名',
    icon                 varchar(1024) comment '图标',
    url                  varchar(1024) comment 'URL',
    pid                  varchar(32) not null comment '父菜单ID',
    level                int not null comment '菜单级别',
+   project_id           varchar(32) not null comment '项目ID',
    is_valid             char(1) not null comment '是否有效',
    sort_num             int not null comment '排序号',
    input_date           datetime not null comment '录入时间',
@@ -453,6 +454,9 @@ alter table mu_meta_sql add constraint FK_meta_sql_metaId foreign key (meta_id)
 
 alter table mu_module add constraint FK_module_viewId foreign key (view_id)
       references mu_view (id) on delete restrict on update restrict;
+
+alter table mu_nav_menu add constraint FK_nav_menu_projectId foreign key (project_id)
+      references mu_project_define (id) on delete restrict on update restrict;
 
 alter table mu_view add constraint FK_view_metaId foreign key (meta_id)
       references mu_meta (id) on delete cascade on update cascade;

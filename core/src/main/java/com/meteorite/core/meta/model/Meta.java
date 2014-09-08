@@ -5,8 +5,6 @@ import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.VirtualResource;
 import com.meteorite.core.datasource.db.QueryResult;
-import com.meteorite.core.datasource.db.object.DBColumn;
-import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.exception.MessageException;
 import com.meteorite.core.meta.MetaDataType;
@@ -17,9 +15,10 @@ import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.*;
+import com.meteorite.core.util.ftl.FreeMarkerConfiguration;
+import com.meteorite.core.util.ftl.FreeMarkerTemplateUtils;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
-import freemarker.template.TemplateException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -29,7 +28,6 @@ import javafx.collections.ObservableList;
 
 import javax.xml.bind.annotation.*;
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -518,7 +516,7 @@ public class Meta {
         try {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("meta", this);
-            return FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.getInstance().getTemplate("JavaBean.ftl"), map);
+            return FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("JavaBean.ftl"), map);
         } catch (Exception e) {
             throw new RuntimeException("生成JavaBean代码失败！", e);
         }

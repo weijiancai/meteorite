@@ -6,6 +6,16 @@ public class ${meta.name} {
 </#list>
 
 <#list meta.fields as field>
+    <#assign isBoolean = field.dataType.name />
+    <#if isBoolean == "boolean">
+    public ${field.dataType.toJavaType()} get${field.name.substring(2)}() {
+        return ${field.name};
+    }
+
+    public void set${field.name.substring(2)} ${field.dataType.toJavaType()} ${field.name}) {
+        this.${field.name} = ${field.name};
+    }
+    <#else>
     public ${field.dataType.toJavaType()} get${field.name?cap_first}() {
         return ${field.name};
     }
@@ -13,5 +23,7 @@ public class ${meta.name} {
     public void set${field.name?cap_first}(${field.dataType.toJavaType()} ${field.name}) {
         this.${field.name} = ${field.name};
     }
+    </#if>
+
 </#list>
 }

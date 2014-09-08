@@ -51,10 +51,10 @@ public class MuDateRange extends BaseFormField implements IValue {
         List<Condition> list = new ArrayList<Condition>();
 
         if (UString.isNotEmpty(startField.value())) {
-            list.add(new Condition(config.getColumnName(), QueryModel.GREATER_EQUAL, startField.value(), MetaDataType.DATE));
+            list.add(new Condition(config.getMetaField().getOriginalName(), QueryModel.GREATER_EQUAL, startField.value(), MetaDataType.DATE));
         }
         if (UString.isNotEmpty(endField.value())) {
-            list.add(new Condition(config.getColumnName(), QueryModel.LESS_THAN, endField.value(), MetaDataType.DATE));
+            list.add(new Condition(config.getMetaField().getOriginalName(), QueryModel.LESS_THAN, endField.value(), MetaDataType.DATE));
         }
         return list;
     }

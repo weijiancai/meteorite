@@ -93,7 +93,6 @@ public class MetaField {
 
     public void setDictId(String dictId) {
         this.dictId = dictId;
-        this.dataType = MetaDataType.DICT;
     }
 
     @XmlAttribute

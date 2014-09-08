@@ -8,10 +8,10 @@ var Login = function () {
                 errorClass: 'help-inline', // default input error message class
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
-                    username: {
+                    name: {
                         required: true
                     },
-                    password: {
+                    pwd: {
                         required: true
                     },
                     remember: {
@@ -20,10 +20,10 @@ var Login = function () {
                 },
 
                 messages: {
-                    username: {
+                    name: {
                         required: "用户名不能为空"
                     },
-                    password: {
+                    pwd: {
                         required: "密码不能为空"
                     }
                 },
@@ -48,7 +48,7 @@ var Login = function () {
                 submitHandler: function (form) {
                     $.post("/login", $(form).serialize(), function(response) {
                         if(response.success) {
-                            window.location.href = "index.html";
+                            window.location.href = "index.ftl";
                         } else {
                             alert(response.errorMsg);
                         }
@@ -59,7 +59,13 @@ var Login = function () {
             $('.login-form input').keypress(function (e) {
                 if (e.which == 13) {
                     if ($('.login-form').validate().form()) {
-                        window.location.href = "index.html";
+                        $.post("/login", $(form).serialize(), function(response) {
+                            if(response.success) {
+                                window.location.href = "index.ftl";
+                            } else {
+                                alert(response.errorMsg);
+                            }
+                        });
                     }
                     return false;
                 }

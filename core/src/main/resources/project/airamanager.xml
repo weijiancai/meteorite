@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project name="airmanager">
+    <meta name="NavMenu">
+        <rows>
+            <!-- 一级菜单 -->
+            <row id="nav_aqgl" name="nav_aqgl" displayName="安全管理" icon="" url="" pid="root" level="1"/>
+            <row id="nav_jcsj" name="nav_jcsj" displayName="基础数据" icon="" url="" pid="root" level="1"/>
+            <row id="nav_xtgl" name="nav_xtgl" displayName="系统管理" icon="" url="" pid="root" level="1"/>
+            <row id="nav_gjcg" name="nav_gjcg" displayName="国际出港" icon="" url="" pid="root" level="1"/>
+            <row id="nav_gjjg" name="nav_gjjg" displayName="国际进港" icon="" url="" pid="root" level="1"/>
+            <row id="nav_gncg" name="nav_gncg" displayName="国内出港" icon="" url="" pid="root" level="1"/>
+            <row id="nav_gnjg" name="nav_gnjg" displayName="国内进港" icon="" url="" pid="root" level="1"/>
+            <row id="nav_jkqc" name="nav_jkqc" displayName="集控器材" icon="" url="" pid="root" level="1"/>
+            <row id="nav_sfyzd" name="nav_sfyzd" displayName="收费与账单" icon="" url="" pid="root" level="1"/>
+            <row id="nav_kpigl" name="nav_kpigl" displayName="KPI管理" icon="" url="" pid="root" level="1"/>
+            <row id="nav_bwjh" name="nav_bwjh" displayName="报文交换" icon="" url="" pid="root" level="1"/>
+            <row id="nav_sstj" name="nav_sstj" displayName="实时统计" icon="" url="" pid="root" level="1"/>
+            <row id="nav_gygj" name="nav_gygj" displayName="公用工具" icon="" url="" pid="root" level="1"/>
+
+            <!-- 二级菜单 -->
+            <!-- 安全管理 -->
+            <row id="aqgl_xtgw" name="aqgl_xtgw" displayName="系统岗位" icon="" url="" pid="nav_aqgl" level="2"/>
+            <row id="aqgl_zzjg" name="aqgl_zzjg" displayName="组织机构" icon="" url="" pid="nav_aqgl" level="2"/>
+            <row id="aqgl_xtyh" name="aqgl_xtyh" displayName="系统用户" icon="" url="" pid="nav_aqgl" level="2"/>
+            <row id="aqgl_dlxx" name="aqgl_dlxx" displayName="登陆信息" icon="" url="" pid="nav_aqgl" level="2"/>
+            <row id="aqgl_xxzpz" name="aqgl_xxzpz" displayName="消息组配置" icon="" url="" pid="nav_aqgl" level="2"/>
+            <!-- 基础数据 -->
+            <row id="jcsj_ycdm" name="jcsj_ycdm" displayName="异常代码" icon="" url="" pid="nav_jcsj" level="2"/>
+            <row id="jcsj_dl" name="jcsj_dl" displayName="代理" icon="" url="" pid="nav_jcsj" level="2"/>
+            <row id="jcsj_wpbm" name="jcsj_wpbm" displayName="物品编码" icon="" url="" pid="nav_jcsj" level="2"/>
+            <row id="jcsj_ckwz" name="jcsj_ckwz" displayName="仓库位置" icon="" url="" pid="nav_jcsj" level="2"/>
+            <row id="jcsj_uldxx" name="jcsj_uldxx" displayName="ULD信息" icon="" url="" pid="nav_jcsj" level="2"/>
+            <!-- 系统管理 -->
+            <row id="xtgl_yhgl" name="xtgl_yhgl" displayName="用户管理" icon="" url="" pid="nav_xtgl" level="2"/>
+            <row id="xtgl_hbgl" name="xtgl_hbgl" displayName="航班管理" icon="" url="" pid="nav_xtgl" level="2"/>
+            <row id="xtgl_czgl" name="xtgl_czgl" displayName="场站管理" icon="" url="" pid="nav_xtgl" level="2"/>
+            <row id="xtgl_bzcgl" name="xtgl_bzcgl" displayName="不正常管理" icon="" url="" pid="nav_xtgl" level="2"/>
+            <row id="xtgl_csdmgl" name="xtgl_csdmgl" displayName="城市代码管理" icon="" url="" pid="nav_xtgl" level="2"/>
+            <!-- 国际出港 -->
+            <row id="gjcg_rkdd" name="gjcg_rkdd" displayName="入库调度" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_sfcl" name="gjcg_sfcl" displayName="收费处理" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_tccl" name="gjcg_tccl" displayName="退仓处理" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_ahbsyrc" name="gjcg_ahbsyrc" displayName="按航班收运入仓" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_syrc" name="gjcg_syrc" displayName="收运入仓" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_yhsyrc" name="gjcg_yhsyrc" displayName="运单收运入仓" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_jyzd" name="gjcg_jyzd" displayName="简易制单" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_gjdd" name="gjcg_gjdd" displayName="国际代单" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_bgsq" name="gjcg_bgsq" displayName="变更申请" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_gjzszd" name="gjcg_gjzszd" displayName="国际正式制单" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_ydwj" name="gjcg_ydwj" displayName="运单文件" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_bxsl" name="gjcg_bxsl" displayName="板箱申领" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_lhby" name="gjcg_lhby" displayName="拉货补运" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_lcdj" name="gjcg_lcdj" displayName="冷藏登记" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_zzjs" name="gjcg_zzjs" displayName="中转接收" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_zljh" name="gjcg_zljh" displayName="载量计划" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_dlrcccx" name="gjcg_dlrcccx" displayName="代理人差错查询" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_hbwj" name="gjcg_hbwj" displayName="航班文件" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_hgbwgl" name="gjcg_hgbwgl" displayName="海关报文管理" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_zzhd" name="gjcg_zzhd" displayName="中转换单" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_fdzb" name="gjcg_fdzb" displayName="分单制表" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_fdpd" name="gjcg_fdpd" displayName="分单拼单" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_amscd" name="gjcg_amscd" displayName="AMS舱单" icon="" url="" pid="nav_gjcg" level="2"/>
+            <row id="gjcg_hgzc" name="gjcg_hgzc" displayName="海关账册" icon="" url="" pid="nav_gjcg" level="2"/>
+            <!-- 国际进港 -->
+            <row id="gjjg_hbwj" name="gjjg_hbwj" displayName="航班文件" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_fdlrlh" name="gjjg_fdlrlh" displayName="分单录入理货" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_zzzg" name="gjjg_zzzg" displayName="中转转港" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_lchwtj" name="gjjg_lchwtj" displayName="联程货物统计" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_hgbwgl" name="gjjg_hgbwgl" displayName="海关报文管理" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_hgzc" name="gjjg_hgzc" displayName="海关账册" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_jgydgjgl" name="gjjg_jgydgjgl" displayName="进港运单高级管理" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_qkcx" name="gjjg_qkcx" displayName="清库查询" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_thtz" name="gjjg_thtz" displayName="提货通知" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_td" name="gjjg_td" displayName="提单" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_thbd" name="gjjg_thbd" displayName="提货办单" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_jsx" name="gjjg_jsx" displayName="介绍信" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_thck" name="gjjg_thck" displayName="提货出库" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_ydzt" name="gjjg_ydzt" displayName="运单状态" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_ydrz" name="gjjg_ydrz" displayName="运单日志" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_bzc" name="gjjg_bzc" displayName="不正常" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_hbcx" name="gjjg_hbcx" displayName="航班查询" icon="" url="" pid="nav_gjjg" level="2"/>
+            <row id="gjjg_ckgl" name="gjjg_ckgl" displayName="仓库管理" icon="" url="" pid="nav_gjjg" level="2"/>
+            <!-- 国内出港 -->
+            <row id="gncg_sfcl" name="gncg_sfcl" displayName="收费处理" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_tccl" name="gncg_tccl" displayName="退仓处理" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_syrc" name="gncg_syrc" displayName="收运入仓" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_ydsyrc" name="gncg_ydsyrc" displayName="运单收运入仓" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_jyzd" name="gncg_jyzd" displayName="简易制单" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_gnzszd" name="gncg_gnzszd" displayName="国内正式制单" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_lhby" name="gncg_lhby" displayName="拉货补运" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_zzjs" name="gncg_zzjs" displayName="中转接收" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_sfzhd" name="gncg_sfzhd" displayName="始发站换单" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_cgydgjgl" name="gncg_cgydgjgl" displayName="出港运单高级管理" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_bxfb" name="gncg_bxfb" displayName="板箱复磅" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_dqjjqx" name="gncg_dqjjqx" displayName="地勤交接取消" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_hbypcz" name="gncg_hbypcz" displayName="航班预配操作" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_hbpz" name="gncg_hbpz" displayName="航班配载" icon="" url="" pid="nav_gncg" level="2"/>
+            <row id="gncg_lhcx" name="gncg_lhcx" displayName="拉货查询" icon="" url="" pid="nav_gncg" level="2"/>
+            <!-- 国内进港 -->
+            <row id="gnjg_hbwj" name="gnjg_hbwj" displayName="航班文件" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_zzzg" name="gnjg_zzzg" displayName="中转转港" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_lcdj" name="gnjg_lcdj" displayName="冷藏登记" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_lchwtj" name="gnjg_lchwtj" displayName="联程货物统计" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_jgydgjgl" name="gnjg_jgydgjgl" displayName="进港运单高级管理" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_zzhd" name="gnjg_zzhd" displayName="中转换单" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_hgzc" name="gnjg_hgzc" displayName="海关账册" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_qkcx" name="gnjg_qkcx" displayName="清库查询" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_thtz" name="gnjg_thtz" displayName="提货通知" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_thbd" name="gnjg_thbd" displayName="提货办单" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_jsx" name="gnjg_jsx" displayName="介绍信" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_bzcjfjl" name="gnjg_bzcjfjl" displayName="不正常交付记录" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_thck" name="gnjg_thck" displayName="提货出库" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_ydzt" name="gnjg_ydzt" displayName="运单状态" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_ydrz" name="gnjg_ydrz" displayName="运单日志" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_bzc" name="gnjg_bzc" displayName="不正常" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_ckgl" name="gnjg_ckgl" displayName="仓库管理" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_ydgdcx" name="gnjg_ydgdcx" displayName="运单归档查询" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_hbcx" name="gnjg_hbcx" displayName="航班查询" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_xjbd" name="gnjg_xjbd" displayName="卸机比对" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_hbzt" name="gnjg_hbzt" displayName="航班状态" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_jfywsjwh" name="gnjg_jfywsjwh" displayName="计费业务数据维护" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_fpcx" name="gnjg_fpcx" displayName="发票查询" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_sgtkfp" name="gnjg_sgtkfp" displayName="手工填开发票" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_gncgsqjf" name="gnjg_gncgsqjf" displayName="国内出港授权计费" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_gnjgsqjf" name="gnjg_gnjgsqjf" displayName="国内进港授权计费" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_gnjgfydy" name="gnjg_gnjgfydy" displayName="国内进港费用定义" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_gncgfydy" name="gnjg_gncgfydy" displayName="国内出港费用定义" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_gnjgyhbjsf" name="gnjg_gnjgyhbjsf" displayName="国内进港邮航包机收费" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_gncgyhbjsf" name="gnjg_gncgyhbjsf" displayName="国内出港邮航包机收费" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_gnjglssf" name="gnjg_gnjglssf" displayName="国内进港临时收费" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_gncglssf" name="gnjg_gncglssf" displayName="国内出港临时收费" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_pljs" name="gnjg_pljs" displayName="批量结算" icon="" url="" pid="nav_gnjg" level="2"/>
+            <row id="gnjg_bjpljs" name="gnjg_bjpljs" displayName="包机批量结算" icon="" url="" pid="nav_gnjg" level="2"/>
+            <!-- 集控器材 -->
+            <row id="jkqc_jpqd" name="jkqc_jpqd" displayName="机坪清点" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_kxfh" name="jkqc_kxfh" displayName="空箱返回" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_bpcrk" name="jkqc_bpcrk" displayName="备品出入库" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_bxsl" name="jkqc_bxsl" displayName="板箱申领" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_slpf" name="jkqc_slpf" displayName="申领配发" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_cgbx" name="jkqc_cgbx" displayName="出港板箱" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_shdj" name="jkqc_shdj" displayName="损坏登记" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_jcfh" name="jkqc_jcfh" displayName="借出返还" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_bfdj" name="jkqc_bfdj" displayName="报废登记" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_cccx" name="jkqc_cccx" displayName="存场查询" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_jccx" name="jkqc_jccx" displayName="借出查询" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_lscx" name="jkqc_lscx" displayName="历史查询" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_jcgltj" name="jkqc_jcgltj" displayName="进出港量统计" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_jpqd" name="jkqc_jpqd" displayName="航班ULD清单" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_jpqd" name="jkqc_jpqd" displayName="配发统计" icon="" url="" pid="nav_jkqc" level="2"/>
+            <row id="jkqc_jpqd" name="jkqc_jpqd" displayName="存场统计" icon="" url="" pid="nav_jkqc" level="2"/>
+            <!-- 收费与账单 -->
+            <row id="gncg_sfcl" name="gncg_sfcl" displayName="收费处理" icon="" url="" pid="nav_gncg" level="2"/>
+        </rows>
+    </meta>
+</project>

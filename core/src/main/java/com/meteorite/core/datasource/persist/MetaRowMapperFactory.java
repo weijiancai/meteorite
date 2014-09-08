@@ -12,6 +12,8 @@ import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaReference;
+import com.meteorite.core.project.NavMenu;
+import com.meteorite.core.project.ProjectDefine;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.LayoutType;
 import com.meteorite.core.ui.layout.PropertyType;
@@ -263,6 +265,48 @@ public class MetaRowMapperFactory {
                 property.setValue(rs.getString("value"));
 
                 return property;
+            }
+        };
+    }
+
+    public static RowMapper<ProjectDefine> getProjectDefine() {
+        return new RowMapper<ProjectDefine>() {
+            @Override
+            public ProjectDefine mapRow(ResultSet rs) throws SQLException {
+                ProjectDefine project = new ProjectDefine();
+
+                project.setId(rs.getString("id"));
+                project.setName(rs.getString("name"));
+                project.setDisplayName(rs.getString("display_name"));
+                project.setDescription(rs.getString("description"));
+                project.setPackageName(rs.getString("package_name"));
+                project.setProjectUrl(rs.getString("project_url"));
+                project.setValid("T".equals(rs.getString("is_valid")));
+                project.setInputDate(rs.getDate("input_date"));
+                project.setSortNum(rs.getInt("sort_num"));
+
+                return project;
+            }
+        };
+    }
+
+    public static RowMapper<NavMenu> getNavMenu() {
+        return new RowMapper<NavMenu>() {
+            @Override
+            public NavMenu mapRow(ResultSet rs) throws SQLException {
+                NavMenu nav = new NavMenu();
+
+                nav.setId(rs.getString("id"));
+                nav.setName(rs.getString("name"));
+                nav.setDisplayName(rs.getString("display_name"));
+                nav.setIcon(rs.getString("icon"));
+                nav.setUrl(rs.getString("url"));
+                nav.setPid(rs.getString("pid"));
+//                nav.setValid("T".equals(rs.getString("is_valid")));
+                nav.setInputDate(rs.getDate("input_date"));
+                nav.setSortNum(rs.getInt("sort_num"));
+
+                return nav;
             }
         };
     }

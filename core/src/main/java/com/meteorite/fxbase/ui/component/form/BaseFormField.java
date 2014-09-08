@@ -5,7 +5,9 @@ import com.meteorite.core.dict.QueryModel;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
+import com.meteorite.core.util.UDate;
 import com.meteorite.core.util.UString;
+import com.meteorite.core.util.UUIDUtil;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,6 +22,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -53,7 +56,19 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
         this.setSpacing(5);
         // 设置默认值
         String value = config.getValue();
-        if (!"GUID()".equals(value)) {
+        if ("GUID()".equals(value)) {
+            if(isAddQueryMode) {
+                this.setValue("");
+            } else {
+                this.setValue(UUIDUtil.getUUID());
+            }
+        } else if ("SYSDATE()".equals(value) && !isAddQueryMode) {
+            if (isAddQueryMode) {
+                this.setValue("");
+            } else {
+                this.setValue(UDate.dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            }
+        } else {
             this.setValue(config.getValue());
         }
 

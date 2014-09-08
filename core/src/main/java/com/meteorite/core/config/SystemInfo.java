@@ -23,6 +23,8 @@ public class SystemInfo extends AbstractXmlSerialization {
     private boolean isLayoutInit;
     /** 视图是否已初始化 */
     private boolean isViewInit = true;
+    /** 项目是否已初始化 */
+    private boolean isProjectInit;
 
     public boolean isDictInit() {
         return isDictInit;
@@ -56,6 +58,14 @@ public class SystemInfo extends AbstractXmlSerialization {
         this.isViewInit = isViewLoad;
     }
 
+    public boolean isProjectInit() {
+        return isProjectInit;
+    }
+
+    public void setProjectInit(boolean isProjectInit) {
+        this.isProjectInit = isProjectInit;
+    }
+
     @Override
     protected File getXmlFile() {
         return new File(SystemConfig.DIR_SYSTEM, FILE_NAME_SYSTEM_INFO);
@@ -66,5 +76,6 @@ public class SystemInfo extends AbstractXmlSerialization {
         isMetaInit = false;
         isLayoutInit = false;
         isViewInit = false;
+        isProjectInit = false;
     }
 }

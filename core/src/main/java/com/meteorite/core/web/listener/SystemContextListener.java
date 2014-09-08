@@ -4,6 +4,7 @@ import com.meteorite.core.config.PathManager;
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.config.SystemType;
+import com.meteorite.core.util.ftl.FreeMarkerConfiguration;
 import com.meteorite.core.util.HSqlDBServer;
 
 import javax.servlet.ServletContextEvent;
@@ -25,6 +26,8 @@ public class SystemContextListener implements ServletContextListener {
         PathManager.WEB_ROOT_DIR = new File(event.getServletContext().getRealPath("/"));
         // 初始化系统类型
         SystemConfig.SYSTEM_TYPE = SystemType.WEB;
+        // 设置Freemarker ServletContext
+        FreeMarkerConfiguration.setServletContext(event.getServletContext());
         try { // 初始化配置信息
             SystemManager.getInstance().init();
             //  启动数据库

@@ -47,10 +47,10 @@ public class MuIntRange extends BaseFormField {
         List<Condition> list = new ArrayList<Condition>();
 
         if (UString.isNotEmpty(startField.value())) {
-            list.add(new Condition(config.getColumnName(), QueryModel.GREATER_EQUAL, startField.value(), MetaDataType.INTEGER));
+            list.add(new Condition(config.getMetaField().getOriginalName(), QueryModel.GREATER_EQUAL, startField.value(), MetaDataType.INTEGER));
         }
         if (UString.isNotEmpty(endField.value())) {
-            list.add(new Condition(config.getColumnName(), QueryModel.LESS_THAN, endField.value(), MetaDataType.INTEGER));
+            list.add(new Condition(config.getMetaField().getOriginalName(), QueryModel.LESS_THAN, endField.value(), MetaDataType.INTEGER));
         }
         return list;
     }
