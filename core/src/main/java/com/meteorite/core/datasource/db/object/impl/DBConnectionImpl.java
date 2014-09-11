@@ -63,10 +63,16 @@ public class DBConnectionImpl implements DBConnection {
             // 当前schema
             DBSchemaImpl schema = new DBSchemaImpl();
             String schemaName = null;
-            if(dbType == DatabaseType.SQLSERVER) {
+            /*if(dbType == DatabaseType.SQLSERVER) {
                 // SqlServer getSchema() 会报错误 java.lang.AbstractMethodError: com.microsoft.sqlserver.jdbc.SQLServerConnection.getSchema()Ljava/lang/String
                 schemaName = conn.getCatalog();
             } else {
+                schemaName = conn.getSchema();
+            }*/
+            try {
+                schemaName = conn.getCatalog();
+            } catch (AbstractMethodError e) {
+                e.printStackTrace();
                 schemaName = conn.getSchema();
             }
 
@@ -106,11 +112,12 @@ public class DBConnectionImpl implements DBConnection {
         Connection conn;
         try {
             Class.forName(dataSource.getDriverClass());
-            if (dbType == DatabaseType.HSQLDB && UString.isNotEmpty(dataSource.getFilePath())) {
+            conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUsername(), dataSource.getPassword());
+            /*if (dbType == DatabaseType.HSQLDB && UString.isNotEmpty(dataSource.getFilePath())) {
                 conn = DriverManager.getConnection("jdbc:hsqldb:file:" + dataSource.getFilePath(), dataSource.getUsername(), dataSource.getPassword());
             } else {
                 conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUsername(), dataSource.getPassword());
-            }
+            }*/
             if (conn != null) {
                 isAvailable = true;
             }

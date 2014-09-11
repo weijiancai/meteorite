@@ -11,14 +11,26 @@ import com.meteorite.core.ui.model.View;
  * @since 1.0.0
  */
 public class BaseNavTreeNode extends BaseTreeNode implements INavTreeNode {
+    private View view;
+
+    public BaseNavTreeNode() {}
+
+    public BaseNavTreeNode(String displayName) {
+        super(displayName);
+    }
+
     @Override
     @JSONField(serialize = false)
     public View getView() {
-        return null;
+        return view;
     }
 
     @Override
     public String getPresentableText() {
         return null;
+    }
+
+    public void setView(View view) {
+        this.view = view;
     }
 }

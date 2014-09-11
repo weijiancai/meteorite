@@ -3,15 +3,19 @@ package com.meteorite.core.datasource;
 import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
+import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.rest.Request;
 import com.meteorite.core.rest.Response;
+import com.meteorite.core.util.UFile;
 import org.apache.log4j.Logger;
 import static com.meteorite.core.config.SystemConfig.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -105,6 +109,20 @@ public class DataSourceManager {
     private static DBDataSource initSysDataSource() {
         // 从类路径下获得db.property配置信息
         ResourceItem dbProperty = ClassPathDataSource.getInstance().getResource("db.properties");
+        if (dbProperty == null) { // 创建hsqldb进程数据库
+            File sysDbFile;
+            try {
+                sysDbFile = UFile.createFile(DIR_SYSTEM_HSQL_DB, SYSTEM_NAME);
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
+                throw new RuntimeException("创建系统数据源文件失败！");
+            }
+            DBDataSource dataSource = new DBDataSource(SYSTEM_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:file://" + sysDbFile.getAbsolutePath(), "sa", "", SystemConfig.SYS_DB_VERSION);
+            dataSource.setDatabaseType(DatabaseType.HSQLDB);
+
+            return dataSource;
+        }
+
         Properties properties = new Properties();
         try {
             properties.load(dbProperty.getInputStream());
@@ -120,10 +138,8 @@ public class DataSourceManager {
             return dataSource;
         } catch (Exception e) {
             log.error("获得db.property文件失败！", e);
+            throw new RuntimeException("获得db.property文件失败！");
         }
-
-
-        return null;
     }
 
     public static INavTreeNode getNavTree() throws Exception {

@@ -19,6 +19,12 @@ public class BaseTreeNode implements ITreeNode {
     private ITreeNode parent;
     private List<ITreeNode> children;
 
+    public BaseTreeNode() {}
+
+    public BaseTreeNode(String displayName) {
+        this.displayName = displayName;
+    }
+
     public void setId(String id) {
         this.id = id;
     }

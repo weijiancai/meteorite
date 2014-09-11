@@ -67,7 +67,7 @@ public class SystemManager {
      */
     public void init() throws Exception {
         // 加载系统数据源
-//        DataSourceManager.getSysDataSource().load();
+        DataSourceManager.getSysDataSource();
         // 检查数据库版本
         checkDbVersion();
         // 加载数据源
@@ -170,7 +170,9 @@ public class SystemManager {
                         dataSource.getDbConnection().execSqlScript(item.getContent(), "\\$\\$");
                     }
                 }
-                item = cpDataSource.getResource("db_upgrade/" + version + "/" + SYSTEM_NAME + "_" + dbType.getName().toLowerCase() + ".sql");
+                String path = "db_upgrade/" + version + "/" + SYSTEM_NAME + "_" + dbType.getName().toLowerCase() + ".sql";
+                log.info("升级脚本路径：" + path);
+                item = cpDataSource.getResource(path);
                 dataSource.getDbConnection().execSqlScript(item.getContent(), ";");
                 // 插入新的数据库版本
                 dataSource.save(new IPDB() {

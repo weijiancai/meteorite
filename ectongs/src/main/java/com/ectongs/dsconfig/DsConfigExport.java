@@ -47,6 +47,7 @@ public class DsConfigExport {
         Request.ExpRequest expRequest = request.getExpRequest();
         expRequest.setExcludeColumns(new String[]{"rightdestroy", "rightmodify", "rightadd", "rightquery", "rightdelete", "rightexport", "rightprint", "rightverify"});
         expRequest.addDefaultValue("ds_id", targetDsId);
+        expRequest.addDefaultValue("is_show_verify_bar", "F");
         DataSourceManager.exp(source, target, request);
     }
 
@@ -87,6 +88,7 @@ public class DsConfigExport {
         request.setConditions(conditions);
         Request.ExpRequest expRequest = request.getExpRequest();
         expRequest.addDefaultValue("ds_id", targetDsId);
+        expRequest.addDefaultValue("is_limit_range", "F");
         DataSourceManager.exp(source, target, request);
     }
 
