@@ -1,8 +1,8 @@
 package com.meteorite.core.rest;
 
 import com.meteorite.core.datasource.VirtualResource;
-
-import java.sql.SQLException;
+import com.meteorite.core.datasource.request.IRequest;
+import com.meteorite.core.datasource.request.IResponse;
 
 /**
  * Reset Handler
@@ -11,22 +11,22 @@ import java.sql.SQLException;
  * @since 1.0.0
  */
 public interface RestHandler {
-    VirtualResource get(Request request);
+    VirtualResource get(IRequest request);
 
-    void post(Request request);
+    void post(IRequest request);
 
-    void put(Request request) throws Exception;
+    void put(IRequest request) throws Exception;
 
-    void delete(Request request);
+    void delete(IRequest request);
 
 
     /**
      * 导出资源
      */
-    Response exp(Request request) throws Exception;
+    IResponse exp(IRequest request) throws Exception;
 
     /**
      * 导入资源
      */
-    void imp(Request request) throws Exception;
+    void imp(IRequest request) throws Exception;
 }

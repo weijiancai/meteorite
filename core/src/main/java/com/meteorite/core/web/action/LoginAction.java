@@ -5,11 +5,10 @@ import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
-import com.meteorite.core.rest.Response;
+import com.meteorite.core.datasource.request.BaseResponse;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class LoginAction extends BaseAction {
         String userName = req.getParameter("name");
         String pwd = req.getParameter("pwd");
 
-        Response response = new Response();
+        BaseResponse response = new BaseResponse();
         Meta meta = MetaManager.getMeta("User");
         QueryBuilder builder = QueryBuilder.create(meta);
         try {

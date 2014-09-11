@@ -3,7 +3,7 @@ package com.meteorite.core.web.rest;
 import com.meteorite.core.exception.MessageException;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
-import com.meteorite.core.rest.Response;
+import com.meteorite.core.datasource.request.BaseResponse;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.web.action.BaseAction;
 import org.apache.log4j.Logger;
@@ -58,7 +58,7 @@ public class MetaRest extends BaseAction {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Response response = new Response();
+        BaseResponse response = new BaseResponse();
         try {
             String uri = req.getRequestURI();
             String metaName = uri.substring("/meta/".length());

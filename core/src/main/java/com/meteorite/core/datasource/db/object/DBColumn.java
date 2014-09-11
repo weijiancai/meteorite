@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.db.object;
 
+import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.meta.MetaDataType;
 
 /**
@@ -24,6 +25,14 @@ public interface DBColumn extends DBObject {
      * @since 1.0.0
      */
     String getDbDataType();
+
+    /**
+     * 转换为其他数据库的数据类型
+     *
+     * @param type 数据库类型
+     * @return 返回其他数据库的数据类型
+     */
+    String getDbDataType(DatabaseType type);
 
     /**
      * 获得PRECISION

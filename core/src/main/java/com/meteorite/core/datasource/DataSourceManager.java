@@ -6,17 +6,16 @@ import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
+import com.meteorite.core.datasource.request.BaseRequest;
+import com.meteorite.core.datasource.request.IResponse;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
-import com.meteorite.core.rest.Request;
-import com.meteorite.core.rest.Response;
 import com.meteorite.core.util.UFile;
 import org.apache.log4j.Logger;
 import static com.meteorite.core.config.SystemConfig.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -193,9 +192,9 @@ public class DataSourceManager {
      * @param target 目标数据源
      * @param request 请求对象
      */
-    public static void exp(DataSource source, DataSource target, Request request) throws Exception {
-        Response response = source.exp(request);
-        request.setListData(response.getListData());
+    public static void exp(DataSource source, DataSource target, BaseRequest request) throws Exception {
+        IResponse response = source.exp(request);
+        request.setResponse(response);
         target.imp(request);
     }
 }

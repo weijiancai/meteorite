@@ -3,10 +3,11 @@ package com.meteorite.core.datasource.classpath;
 import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.persist.IPDB;
+import com.meteorite.core.datasource.request.BaseRequest;
+import com.meteorite.core.datasource.request.IRequest;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
-import com.meteorite.core.rest.Request;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import org.apache.log4j.Logger;
@@ -144,22 +145,22 @@ public class ClassPathDataSource extends DataSource {
     }
 
     @Override
-    public VirtualResource get(Request request) {
+    public VirtualResource get(IRequest request) {
         return null;
     }
 
     @Override
-    public void post(Request request) {
+    public void post(IRequest request) {
 
     }
 
     @Override
-    public void put(Request request) {
+    public void put(IRequest request) {
 
     }
 
     @Override
-    public void delete(Request request) {
+    public void delete(IRequest request) {
 
     }
 }

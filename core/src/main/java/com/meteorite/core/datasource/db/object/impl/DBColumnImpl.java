@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource.db.object.impl;
 
 import com.meteorite.core.datasource.db.DBIcons;
+import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.db.object.DBTable;
@@ -96,6 +97,27 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
     @Override
     public String getDbDataType() {
         return dbDataType;
+    }
+
+    @Override
+    public String getDbDataType(DatabaseType type) {
+        MetaDataType metaDataType = getDataType();
+        switch (metaDataType) {
+            case STRING: {
+                if (getMaxLength() > 0) {
+                    return getDbDataType() + "(" + getMaxLength() + ")";
+                } else {
+                    return getDbDataType();
+                }
+            }
+            case DATE: {
+                return "date";
+            }
+            case INTEGER: {
+                return "int";
+            }
+        }
+        return "";
     }
 
     public void setDbDataType(String dbDataType) {

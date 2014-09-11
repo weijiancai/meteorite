@@ -3,7 +3,7 @@ package com.ectongs.dsconfig;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.QueryCondition;
-import com.meteorite.core.rest.Request;
+import com.meteorite.core.datasource.request.ExpDataRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,105 +40,95 @@ public class DsConfigExport {
     }
     
     public void expDataStore() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_datastore");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_datastore");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.setExcludeColumns(new String[]{"rightdestroy", "rightmodify", "rightadd", "rightquery", "rightdelete", "rightexport", "rightprint", "rightverify"});
-        expRequest.addDefaultValue("ds_id", targetDsId);
-        expRequest.addDefaultValue("is_show_verify_bar", "F");
+        request.setExcludeColumns(new String[]{"rightdestroy", "rightmodify", "rightadd", "rightquery", "rightdelete", "rightexport", "rightprint", "rightverify"});
+        request.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("is_show_verify_bar", "F");
         DataSourceManager.exp(source, target, request);
     }
 
     public void expAnalyse() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_analyse");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_analyse");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("ds_id", targetDsId);
         DataSourceManager.exp(source, target, request);
     }
 
     public void expAnalyseItem() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_analyse_item");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_analyse_item");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("ds_id", targetDsId);
         DataSourceManager.exp(source, target, request);
     }
 
     public void expDsColumns() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_columns");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_columns");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("ds_id", targetDsId);
         DataSourceManager.exp(source, target, request);
     }
 
     public void expDsEditColumns() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_edit_columns");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_edit_columns");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.addDefaultValue("ds_id", targetDsId);
-        expRequest.addDefaultValue("is_limit_range", "F");
+        request.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("is_limit_range", "F");
         DataSourceManager.exp(source, target, request);
     }
 
     public void expDsEditDetail() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_edit_detail");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_edit_detail");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("ds_id", targetDsId);
         DataSourceManager.exp(source, target, request);
     }
 
     public void expDsListColumns() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_list_columns");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_list_columns");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("ds_id", targetDsId);
         DataSourceManager.exp(source, target, request);
     }
 
     public void expDsQueryColumns() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_query_columns");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_query_columns");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("ds_id", targetDsId);
         DataSourceManager.exp(source, target, request);
     }
 
     public void expDsRetrieveArgs() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_retrieve_args");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_retrieve_args");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("ds_id", targetDsId);
         DataSourceManager.exp(source, target, request);
     }
 
     public void expDsReport() throws Exception {
-        Request request = new Request("/table/bs_sys_ds_report");
+        ExpDataRequest request = new ExpDataRequest("/table/bs_sys_ds_report");
         List<QueryCondition> conditions = new ArrayList<QueryCondition>();
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
-        Request.ExpRequest expRequest = request.getExpRequest();
-        expRequest.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("ds_id", targetDsId);
         DataSourceManager.exp(source, target, request);
     }
 }

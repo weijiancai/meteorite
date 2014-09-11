@@ -7,23 +7,20 @@ import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBConnectionImpl;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
-import com.meteorite.core.datasource.db.object.DBDataset;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.exception.NotFoundResourceException;
 import com.meteorite.core.datasource.persist.IPDB;
+import com.meteorite.core.datasource.request.*;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.rest.PathHandler;
-import com.meteorite.core.rest.Request;
-import com.meteorite.core.rest.Response;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
@@ -33,7 +30,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.OutputStream;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -463,17 +459,17 @@ public class DBDataSource extends DataSource {
     }
 
     @Override
-    public VirtualResource get(Request request) {
+    public VirtualResource get(IRequest request) {
         return null;
     }
 
     @Override
-    public void post(Request request) {
+    public void post(IRequest request) {
 
     }
 
     @Override
-    public void put(Request request) throws Exception {
+    public void put(IRequest request) throws Exception {
         Map<String, String> keyMap = request.getPathHandler().parseForDb();
         Map<String, String> params = request.getParams();
         if (keyMap.containsKey("column")) { // 修改列
@@ -489,31 +485,38 @@ public class DBDataSource extends DataSource {
     }
 
     @Override
-    public void delete(Request request) {
+    public void delete(IRequest request) {
 
     }
 
     @Override
-    public Response exp(Request request) throws Exception {
+    public IResponse exp(IRequest request) throws Exception {
+        if(request instanceof ExpDbDdlRequest) {
+            ExpDbDdlRequest ddlReq = (ExpDbDdlRequest) request;
+
+            return expDdl(ddlReq);
+        }
         Map<String, String> map = request.getPathHandler().parseForDb();
         String tableName = map.get("table");
         JdbcTemplate template = new JdbcTemplate(this);
         QueryBuilder builder = QueryBuilder.create(tableName, request.getConditions());
         builder.sql().build(getDatabaseType());
         List<DataMap> listData = template.queryForList(builder, -1, 0);
-        Response response = new Response();
+        BaseResponse response = (BaseResponse) request.getResponse();
         response.setListData(listData);
         return response;
     }
 
     @Override
-    public void imp(Request request) throws Exception {
+    public void imp(IRequest request) throws Exception {
+        ExpDataRequest expRequest = (ExpDataRequest) request;
+
         Map<String, String> map = request.getPathHandler().parseForDb();
         String tableName = map.get("table");
         JdbcTemplate template = new JdbcTemplate(this);
-        List<DataMap> listData = request.getListData();
+        IResponse response = request.getResponse();
+        List<DataMap> listData = response.getListData();
         for (DataMap dataMap : listData) {
-            Request.ExpRequest expRequest = request.getExpRequest();
             String[] excludeColumns = expRequest.getExcludeColumns();
             if (excludeColumns != null) {
                 for (String column : excludeColumns) {
@@ -526,5 +529,49 @@ public class DBDataSource extends DataSource {
             template.save(dataMap, tableName);
         }
         template.commit();
+    }
+
+    public IResponse expDdl(ExpDbDdlRequest request) throws Exception {
+        BaseResponse response = new BaseResponse();
+        StringBuilder dropStr = new StringBuilder();
+        StringBuilder createTableStr = new StringBuilder();
+
+        DBSchema schema = getDbConnection().getSchema();
+        // 导出表
+        List<DBTable> tables = schema.getTables();
+        for (DBTable table : tables) {
+            StringBuilder commentStr = new StringBuilder();
+            StringBuilder pkStr = new StringBuilder();
+            switch (request.getExpDbType()) {
+                case HSQLDB: {
+                    dropStr.append(String.format("drop table if exists %s;\r\n", table.getName()));
+                    createTableStr.append(String.format("create table %s\r\n(\r\n", table.getName()));
+                    if (UString.isNotEmpty(table.getDisplayName())) {
+                        commentStr.append(String.format("comment on table %s is '%s';\r\n", table.getName(), table.getDisplayName()));
+                    }
+                    for (DBColumn column : table.getColumns()) {
+                        createTableStr.append(String.format("    %-32s %-15s %s,\r\n", column.getName(), column.getDbDataType(DatabaseType.HSQLDB), column.isNullable() ? "" : "not null"));
+                        if (UString.isNotEmpty(column.getDisplayName())) {
+                            commentStr.append(String.format("comment on column %s.%s is '%s';\r\n", table.getName(), column.getName(), column.getDisplayName()));
+                        }
+                        if (column.isPk()) {
+                            pkStr.append(column.getName()).append(",");
+                        }
+                    }
+                    if (pkStr.length() > 0) {
+                        if (pkStr.charAt(pkStr.length() - 1) == ',') {
+                            pkStr.deleteCharAt(pkStr.length() - 1);
+                        }
+                        createTableStr.append(String.format("    primary key (%s)\r\n", pkStr));
+                    }
+                    createTableStr.append(");\r\n").append(commentStr).append("\r\n");
+                }
+            }
+        }
+
+        System.out.println(dropStr);
+        System.out.println(createTableStr);
+
+        return response;
     }
 }
