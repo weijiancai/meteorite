@@ -249,6 +249,8 @@ public abstract class BaseDBLoader implements DBLoader {
                 index.setName(indexName);
                 index.setAsc(map.getBoolean("IS_ASC"));
                 index.setUnique(map.getBoolean("IS_UNIQUE"));
+                index.setTableName(map.getString("TABLE_NAME"));
+                index.getColumnNames().add(map.getString("COLUMN_NAME"));
                 index.setColumns(new ArrayList<DBColumn>());
 
                 DBTable table = schema.getTable(map.getString("TABLE_NAME"));

@@ -5,6 +5,7 @@ import com.meteorite.core.datasource.db.object.DBIndex;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.DBTable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +16,9 @@ import java.util.List;
 public class DBIndexImpl extends DBObjectImpl implements DBIndex {
     private boolean isUnique;
     private boolean isAsc;
+    private String tableName;
     private DBTable table;
+    private List<String> columnNames;
     private List<DBColumn> columns;
 
     public DBIndexImpl() {
@@ -48,6 +51,26 @@ public class DBIndexImpl extends DBObjectImpl implements DBIndex {
 
     public void setAsc(boolean isAsc) {
         this.isAsc = isAsc;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    @Override
+    public List<String> getColumnNames() {
+        if (columnNames == null) {
+            columnNames = new ArrayList<String>();
+        }
+        return columnNames;
+    }
+
+    public void setColumnNames(List<String> columnNames) {
+        this.columnNames = columnNames;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     public void setTable(DBTable table) {

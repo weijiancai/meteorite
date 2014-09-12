@@ -535,6 +535,8 @@ public class DBDataSource extends DataSource {
         BaseResponse response = new BaseResponse();
         StringBuilder dropStr = new StringBuilder();
         StringBuilder createTableStr = new StringBuilder();
+        StringBuilder constraintStr = new StringBuilder();
+        StringBuilder indexStr = new StringBuilder();
 
         DBSchema schema = getDbConnection().getSchema();
         // 导出表
@@ -569,8 +571,33 @@ public class DBDataSource extends DataSource {
             }
         }
 
+        // 外键约束
+        List<DBConstraint> constraints = schema.getFkConstraints();
+        for (DBConstraint constraint : constraints) {
+            constraintStr.append(String.format("alter table %s add constraint %s foreign key (%s)\r\n", constraint.getFkTableName(), constraint.getName(), constraint.getFkColumnName()));
+            constraintStr.append(String.format("    references %s (%s) on delete cascade on update cascade;\r\n\r\n", constraint.getPkTableName(), constraint.getPkColumnName()));
+        }
+
+        // 索引
+        List<DBIndex> indexes = schema.getIndexes();
+        for (DBIndex index : indexes) {
+            if(index.is)
+            indexStr.append(String.format("create %s index %s on %s\r\n(\r\n", index.isUnique() ? "unique" : "", index.getName(), index.getTableName()));
+            for (int i = 0; i < index.getColumnNames().size(); i++) {
+                String columnName = index.getColumnNames().get(i);
+                indexStr.append("    ").append(columnName);
+                if(i < index.getColumns().size() - 1) {
+                    indexStr.append(",");
+                }
+                indexStr.append("\r\n");
+            }
+            indexStr.append(");\r\n");
+        }
+
         System.out.println(dropStr);
         System.out.println(createTableStr);
+        System.out.println(constraintStr);
+        System.out.println(indexStr);
 
         return response;
     }

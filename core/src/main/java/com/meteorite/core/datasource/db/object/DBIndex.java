@@ -40,4 +40,18 @@ public interface DBIndex extends DBObject {
      * @since 1.0.0
      */
     List<DBColumn> getColumns();
+
+    /**
+     * 获得表名
+     *
+     * @return 返回表名
+     */
+    String getTableName();
+
+    /**
+     * 获得索引列名
+     *
+     * @return 返回索引列名
+     */
+    List<String> getColumnNames();
 }
