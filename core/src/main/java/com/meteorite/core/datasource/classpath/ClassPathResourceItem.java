@@ -6,6 +6,7 @@ import com.meteorite.core.util.UIO;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URI;
 
 /**
  * 类路径资源
@@ -16,6 +17,7 @@ import java.io.InputStream;
 public class ClassPathResourceItem extends ResourceItem {
     private String type;
     private String baseDir;
+    private URI uri;
 
     public ClassPathResourceItem(String type, String baseDir) {
         this.type = type;
@@ -38,5 +40,14 @@ public class ClassPathResourceItem extends ResourceItem {
     @Override
     public InputStream getInputStream() throws Exception {
         return UIO.getInputStream("/" + getId(), UIO.FROM.CP);
+    }
+
+    @Override
+    public URI getURI() throws Exception {
+        return uri;
+    }
+
+    public void setURI(URI uri) {
+        this.uri = uri;
     }
 }

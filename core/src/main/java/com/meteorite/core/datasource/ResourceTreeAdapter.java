@@ -1,6 +1,5 @@
 package com.meteorite.core.datasource;
 
-import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.ui.model.View;
 
@@ -11,7 +10,7 @@ import java.util.List;
  * @author wei_jc
  * @since 1.0.0
  */
-public class ResourceTreeAdapter implements INavTreeNode {
+public class ResourceTreeAdapter implements ITreeNode {
     private VirtualResource resource;
     private List<ITreeNode> children;
     private ResourceTreeAdapter parent;

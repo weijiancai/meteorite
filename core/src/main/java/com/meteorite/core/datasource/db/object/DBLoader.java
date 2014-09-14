@@ -1,5 +1,7 @@
 package com.meteorite.core.datasource.db.object;
 
+import com.meteorite.core.loader.ILoader;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
  * @author wei_jc
  * @version 0.0.1
  */
-public interface DBLoader {
+public interface DBLoader extends ILoader {
     void load() throws Exception;
 
     List<DBUser> loadUsers() throws Exception;

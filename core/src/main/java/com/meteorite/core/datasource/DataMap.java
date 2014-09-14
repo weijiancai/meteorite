@@ -7,6 +7,7 @@ import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UUIDUtil;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 数据库查询结果集,key会转换成小写
@@ -117,5 +118,12 @@ public class DataMap extends HashMap<String,Object> {
      */
     public boolean getBoolean(String key) {
         return UString.toBoolean(getString(key));
+    }
+
+    @Override
+    public void putAll(Map<? extends String, ?> map) {
+        for (Map.Entry<? extends String, ?> entry : map.entrySet()) {
+            this.put(entry.getKey(), entry.getValue());
+        }
     }
 }

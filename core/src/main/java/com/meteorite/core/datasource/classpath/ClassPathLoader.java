@@ -2,7 +2,8 @@ package com.meteorite.core.datasource.classpath;
 
 import com.meteorite.core.datasource.ResourceItem;
 import com.meteorite.core.loader.ILoader;
-import com.meteorite.core.model.impl.BaseNavTreeNode;
+import com.meteorite.core.model.impl.BaseTreeNode;
+import com.meteorite.core.observer.Observer;
 import com.meteorite.core.util.UString;
 import org.apache.log4j.Logger;
 
@@ -10,7 +11,9 @@ import java.io.File;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -24,7 +27,7 @@ public class ClassPathLoader implements ILoader {
     private static final Logger log = Logger.getLogger(ClassPathLoader.class);
     private static ClassPathLoader loader;
 
-    private BaseNavTreeNode navTree;
+    private BaseTreeNode navTree;
     private Map<String, ResourceItem> nodeMap;
     private String baseDir;
 
@@ -41,7 +44,7 @@ public class ClassPathLoader implements ILoader {
 
     @Override
     public void load() throws Exception {
-        navTree = new BaseNavTreeNode();
+        navTree = new BaseTreeNode();
         navTree.setId("/");
         navTree.setName("Root");
         navTree.setDisplayName("Root");
@@ -90,12 +93,12 @@ public class ClassPathLoader implements ILoader {
         // 第二次循环，设置父节点
         for (Map.Entry<String, ResourceItem> entry : nodeMap.entrySet()) {
             String name = entry.getKey();
-            BaseNavTreeNode node = entry.getValue();
+            BaseTreeNode node = entry.getValue();
             if (name.endsWith("/")) {
                 name = name.substring(0, name.length() - 1);
             }
 
-            BaseNavTreeNode parent = null;
+            BaseTreeNode parent = null;
             int idx = name.lastIndexOf("/");
             if (idx > 0) {
                 parent = nodeMap.get(name.substring(0, idx + 1));
@@ -125,6 +128,7 @@ public class ClassPathLoader implements ILoader {
             ClassPathResourceItem node = new ClassPathResourceItem("file", basePath);
             node.setName(file.getName());
             node.setDisplayName(node.getName());
+            node.setURI(file.toURI());
 
             // 如果是目录 则继续扫描
             if (file.isDirectory()) {
@@ -142,7 +146,7 @@ public class ClassPathLoader implements ILoader {
         }
     }
 
-    public BaseNavTreeNode getNavTree() {
+    public BaseTreeNode getNavTree() {
         return navTree;
     }
 
@@ -152,5 +156,20 @@ public class ClassPathLoader implements ILoader {
 
     public String getBaseDir() {
         return baseDir;
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObserver() {
+
     }
 }

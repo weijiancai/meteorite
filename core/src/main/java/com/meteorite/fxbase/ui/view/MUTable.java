@@ -53,7 +53,7 @@ public class MUTable extends BorderPane {
         // 创建表格列头信息
         createTableColumns();
         // 绑定数据
-//        this.itemsProperty().bind(meta.dataListProperty());
+//        table.itemsProperty().bind(view.getMeta().dataListProperty());
         this.setTop(toolBar);
         this.setCenter(table);
     }

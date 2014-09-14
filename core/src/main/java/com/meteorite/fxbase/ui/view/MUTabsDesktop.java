@@ -7,7 +7,6 @@ import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.dict.FormType;
 import com.meteorite.core.meta.model.Meta;
-import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
@@ -15,7 +14,8 @@ import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
-import com.meteorite.fxbase.ui.*;
+import com.meteorite.fxbase.ui.IDesktop;
+import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.search.MUSearchBox;
 import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.meta.AddMetaGuide;
@@ -23,7 +23,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -52,22 +51,25 @@ import java.util.Map;
 public class MUTabsDesktop extends BorderPane implements IDesktop {
     private ToolBar toolBar;
     private MUSearchBox searchBox;
-    private MUTree tree;
-    private MUTabPane tabPane;
-    private MUTabPane dbObjTabPane;
-    private Map<String, Tab> tabCache = new HashMap<String, Tab>();
-    private INavTreeNode navTree;
+    protected MUTree tree;
+    protected MUTabPane tabPane;
+    protected Map<String, Tab> tabCache = new HashMap<String, Tab>();
+    protected ITreeNode navTree;
+    protected Label messageLabel;
     private Popup popup = new Popup();
 
-    public MUTabsDesktop(INavTreeNode navTree) {
+    public MUTabsDesktop() {
+    }
+
+    public MUTabsDesktop(ITreeNode navTree) {
         this.navTree = navTree;
-        tree = new MUTree(navTree);
         /*TreeView<File> fileTree = new TreeView<>();
         fileTree.setRoot(new FileTreeItem(new File("/")));
         this.setRight(fileTree);*/
     }
 
     public void initUI() {
+        tree = new MUTree(navTree);
         toolBar = new ToolBar();
         searchBox = new MUSearchBox(this);
         tabPane = new MUTabPane();
@@ -120,8 +122,8 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
                         ds.setDatabaseType(DatabaseType.get(map.get("DatabaseType").value()));
                         ds.setDriverClass(map.get("DriverClass").value());
                         ds.setUrl(map.get("Url").value());
-                        ds.setUsername(map.get("Username").value());
-                        ds.setPassword(map.get("Password").value());
+                        ds.setUserName(map.get("Username").value());
+                        ds.setPwd(map.get("Password").value());
 
                         if (UString.isEmpty(name)) {
                             return null;
@@ -168,7 +170,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
             @Override
             public void doHandler(MouseEvent event) throws Exception {
                 if (event.getClickCount() == 2) {
-                    INavTreeNode node = (INavTreeNode) tree.getSelected();
+                    ITreeNode node = tree.getSelected();
                     openTab(node);
                 }
             }
@@ -203,9 +205,17 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
                 hideSearchBox();
             }
         });
+
+        // 创建底部
+        createBottom();
     }
 
-    public void openTab(INavTreeNode node) {
+    private void createBottom() {
+        messageLabel = new Label("无消息");
+        this.setBottom(messageLabel);
+    }
+
+    public void openTab(ITreeNode node) {
         if (node == null) {
             return;
         }
@@ -251,7 +261,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         popup.hide();
     }
 
-    private Tab getGenCodeTab(final INavTreeNode node) {
+    private Tab getGenCodeTab(final ITreeNode node) {
         final Meta meta = node.getView().getMeta();
 
         Tab tab = new Tab("生成代码");

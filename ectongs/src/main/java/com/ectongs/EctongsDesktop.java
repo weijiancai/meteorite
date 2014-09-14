@@ -1,24 +1,26 @@
 package com.ectongs;
 
-import com.meteorite.core.model.INavTreeNode;
-import com.meteorite.core.model.impl.BaseNavTreeNode;
+import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.model.impl.BaseTreeNode;
+import com.meteorite.core.observer.Observer;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.model.View;
-import com.meteorite.fxbase.MuEventHandler;
-import com.meteorite.fxbase.ui.IDesktop;
-import com.meteorite.fxbase.ui.view.MUTabPane;
-import com.meteorite.fxbase.ui.view.MUTree;
+import com.meteorite.core.util.UString;
+import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
+import com.meteorite.fxbase.ui.view.MUTabsDesktop;
 import com.meteorite.fxbase.ui.view.MuCrud;
-import javafx.geometry.Side;
-import javafx.scene.Parent;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.TreeItem;
+import org.apache.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 易诚通桌面
@@ -26,45 +28,88 @@ import java.util.Map;
  * @author wei_jc
  * @since 1.0.0
  */
-public class EctongsDesktop extends BorderPane implements IDesktop {
-    private MUTree tree;
-    private TabPane tabPane;
-    private Map<String, Tab> tabCache = new HashMap<String, Tab>();
+public class EctongsDesktop extends MUTabsDesktop {
+    private static final Logger log = Logger.getLogger(EctongsDesktop.class);
 
-    @Override
-    public void initUI() {
-        BaseTreeNode root = new BaseTreeNode("ROOT");
-        BaseNavTreeNode dataSource = new BaseNavTreeNode("数据源");
+
+    public EctongsDesktop() {
+        initNavTree();
+    }
+
+    public void initNavTree() {
+        navTree = new BaseTreeNode("ROOT");
+
+        final BaseTreeNode dataSource = new BaseTreeNode("数据源");
         dataSource.setView(ViewManager.getViewByName("DatasourceCrudView"));
-        root.getChildren().add(dataSource);
 
-        tree = new MUTree(root);
-        tabPane = new TabPane();
-
-        this.setLeft(tree);
-        this.setCenter(tabPane);
-
-        tree.setOnMouseClicked(new MuEventHandler<MouseEvent>() {
+        Service<List<BaseTreeNode>> service = new Service<List<BaseTreeNode>>() {
             @Override
-            public void doHandler(MouseEvent event) throws Exception {
-                if (event.getClickCount() == 2) {
-                    INavTreeNode node = (INavTreeNode) tree.getSelected();
-                    openTab(node);
-                }
+            protected Task<List<BaseTreeNode>> createTask() {
+                return new Task<List<BaseTreeNode>>() {
+                    @Override
+                    protected List<BaseTreeNode> call() throws Exception {
+                        List<BaseTreeNode> result = new ArrayList<BaseTreeNode>();
+                        for (final DataSource ds : DataSourceManager.getDataSources()) {
+                            ds.registerObserver(new Observer() {
+                                @Override
+                                public void update(String message) {
+                                    updateMessage(message);
+                                }
+                            });
+                            ds.load();
+                            BaseTreeNode dsNode = new BaseTreeNode(ds.getDisplayName());
+                            for (ITreeNode node : ds.getNavTree().getChildren()) {
+                                dsNode.getChildren().add(node);
+                            }
+                            result.add(dsNode);
+                        }
+                        return result;
+                    }
+                };
+            }
+        };
+        service.valueProperty().addListener(new ChangeListener<List<BaseTreeNode>>() {
+            @Override
+            public void changed(ObservableValue<? extends List<BaseTreeNode>> observable, List<BaseTreeNode> oldValue, List<BaseTreeNode> newValue) {
+                /*TreeItem<ITreeNode> dataSourceItem = tree.getTreeItem(dataSource);
+                for (BaseTreeNode node : newValue) {
+//                    dataSource.getChildren().add(node);
+//                    navTree.getChildren().add(node);
+//                    dataSourceItem.getChildren().add(new TreeItem<ITreeNode>(node));
+                    tree.buildTree(node, dataSourceItem);
+                }*/
+                dataSource.getChildren().addAll(newValue);
+                tree.buildTree(dataSource, tree.getRoot());
             }
         });
+        service.messageProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+            }
+        });
+        service.messageProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                messageLabel.setText(newValue);
+            }
+        });
+
+        navTree.getChildren().add(dataSource);
+//        tree.getRoot().getChildren().add(new MUTreeItem(tree, dataSource));
+
+        // 初始化界面
+        initUI();
+
+        tree.setShowRoot(true);
+//        tree.addTreeNode(dataSource);
+        tree.buildTree(navTree, tree.getRoot());
+
+        // 启动服务
+        service.start();
     }
 
-    @Override
-    public Parent getDesktop() {
-        return this;
-    }
-
-    @Override
-    public MUTree getNavTree() {
-        return tree;
-    }
-    public void openTab(INavTreeNode node) {
+    public void openTab(ITreeNode node) {
         if (node == null) {
             return;
         }
@@ -80,7 +125,11 @@ public class EctongsDesktop extends BorderPane implements IDesktop {
             if (tab == null) {
                 tab = new Tab(text);
                 tab.setId(node.getId());
-                tab.setText(node.getDisplayName());
+                String displayName = node.getDisplayName();
+                if (UString.isEmpty(displayName)) {
+                    displayName = node.getName();
+                }
+                tab.setText(displayName);
                 tab.setContent(new MuCrud(view));
 
                 tabPane.getTabs().add(tab);

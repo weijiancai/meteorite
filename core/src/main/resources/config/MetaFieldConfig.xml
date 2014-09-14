@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<config>
+    <row meta="Datasource" fieldName="type" dict="DataSourceType"/>
+</config>

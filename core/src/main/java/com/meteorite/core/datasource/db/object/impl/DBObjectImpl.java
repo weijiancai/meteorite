@@ -3,6 +3,7 @@ package com.meteorite.core.datasource.db.object.impl;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBObjCache;
+import com.meteorite.core.datasource.db.DBResource;
 import com.meteorite.core.datasource.db.object.DBLoader;
 import com.meteorite.core.datasource.db.object.DBObject;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
@@ -229,7 +230,7 @@ public class DBObjectImpl implements DBObject {
             if (view == null) {
                 JdbcTemplate template = new JdbcTemplate();
                 try {
-                    Meta meta = MetaManager.initMetaFromTable(template, (DBDataset) this);
+                    Meta meta = MetaManager.initMetaFromResource(template, new DBResource(this.dataSource, this));
                     // 创建视图
                     ViewManager.createViews(meta, template);
                     template.commit();

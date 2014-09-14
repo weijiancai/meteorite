@@ -25,6 +25,7 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     private List<DBProcedure> procedures;
     private List<DBFunction> functions;
     private List<DBConstraint> constraints;
+    private List<DBConstraint> fkConstraints;
     private Map<String, DBTable> tableMap = new HashMap<String, DBTable>();
     private Map<String, DBFunction> functionMap = new HashMap<String, DBFunction>();
     private Map<String, DBProcedure> procedureMap = new HashMap<String, DBProcedure>();
@@ -146,10 +147,10 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
 
     @Override
     public List<DBConstraint> getFkConstraints() {
-        if (constraints == null) {
-            constraints = loader.loadFkConstraints(this);
+        if (fkConstraints == null) {
+            fkConstraints = loader.loadFkConstraints(this);
         }
-        return constraints;
+        return fkConstraints;
     }
 
     public void setTables(List<DBTable> tables) {

@@ -2,7 +2,8 @@ package com.meteorite.core.datasource.ftp;
 
 import com.meteorite.core.loader.ILoader;
 import com.meteorite.core.model.ITreeNode;
-import com.meteorite.core.model.impl.BaseNavTreeNode;
+import com.meteorite.core.model.impl.BaseTreeNode;
+import com.meteorite.core.observer.Observer;
 import com.meteorite.core.util.UString;
 import org.apache.commons.net.ftp.*;
 import org.apache.log4j.Logger;
@@ -163,12 +164,12 @@ public class FtpLoader implements ILoader {
         return true;
     }
 
-    public BaseNavTreeNode getNavTree() {
+    public BaseTreeNode getNavTree() {
         return navTree;
     }
 
-    public BaseNavTreeNode getTreeNode(String path) {
-        BaseNavTreeNode node = nodeMap.get(path);
+    public BaseTreeNode getTreeNode(String path) {
+        BaseTreeNode node = nodeMap.get(path);
         if (node == null) {
 
         }
@@ -177,7 +178,7 @@ public class FtpLoader implements ILoader {
     }
 
     public List<ITreeNode> getChildren(String path) throws IOException {
-        BaseNavTreeNode parent = getTreeNode(path);
+        BaseTreeNode parent = getTreeNode(path);
         if (parent == null) {
             return new ArrayList<ITreeNode>();
         }
@@ -253,5 +254,20 @@ public class FtpLoader implements ILoader {
                 client.deleteFile(path + "/" + f.getName());
             }
         }
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObserver() {
+
     }
 }

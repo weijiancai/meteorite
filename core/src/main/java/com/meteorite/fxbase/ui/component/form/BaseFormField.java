@@ -33,13 +33,14 @@ import java.util.List;
 public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
     protected FormFieldProperty config;
     protected boolean isAddQueryMode;
+    protected boolean isQuery;
     private Hyperlink btnQueryModel;
-    private String oldValue;
     private List<Condition> list = new ArrayList<Condition>();
     private StringProperty value = new SimpleStringProperty();
 
     public BaseFormField(FormFieldProperty property) {
         this.config = property;
+        this.isQuery = (config.getFormProperty().getFormType() == FormType.QUERY);
         this.isAddQueryMode = (config.getFormProperty().getFormType() == FormType.QUERY);
     }
 
@@ -57,13 +58,13 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
         // 设置默认值
         String value = config.getValue();
         if ("GUID()".equals(value)) {
-            if(isAddQueryMode) {
+            if(isQuery) {
                 this.setValue("");
             } else {
                 this.setValue(UUIDUtil.getUUID());
             }
-        } else if ("SYSDATE()".equals(value) && !isAddQueryMode) {
-            if (isAddQueryMode) {
+        } else if ("SYSDATE()".equals(value)) {
+            if (isQuery) {
                 this.setValue("");
             } else {
                 this.setValue(UDate.dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));

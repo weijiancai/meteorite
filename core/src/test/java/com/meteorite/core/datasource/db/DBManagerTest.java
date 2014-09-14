@@ -2,16 +2,10 @@ package com.meteorite.core.datasource.db;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.meteorite.core.config.SystemConfig;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.object.DBSchema;
-import com.meteorite.core.datasource.db.object.impl.DBColumnImpl;
-import com.meteorite.core.datasource.db.object.impl.DBTableImpl;
-import com.meteorite.core.datasource.db.object.impl.DBViewImpl;
-import com.meteorite.core.datasource.db.util.JdbcTemplate;
-import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertNotNull;
@@ -51,8 +45,8 @@ public class DBManagerTest {
         ds.setDatabaseType(DatabaseType.MYSQL);
         ds.setDriverClass("com.mysql.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/");
-        ds.setUsername("root");
-        ds.setPassword("7758521");
+        ds.setUserName("root");
+        ds.setPwd("7758521");
 
         /*DBConnection conn = ds.getDbConnection();
         System.out.println(conn);

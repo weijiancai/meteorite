@@ -8,15 +8,16 @@ import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
 import com.meteorite.core.datasource.request.BaseRequest;
 import com.meteorite.core.datasource.request.IResponse;
-import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UFile;
 import org.apache.log4j.Logger;
-import static com.meteorite.core.config.SystemConfig.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
+import static com.meteorite.core.config.SystemConfig.DIR_SYSTEM_HSQL_DB;
+import static com.meteorite.core.config.SystemConfig.SYSTEM_NAME;
 
 /**
  * 数据源管理
@@ -83,7 +84,7 @@ public class DataSourceManager {
      * @return 返回系统数据源
      */
     public static DBDataSource getSysDataSource() {
-        DBDataSource dataSource = (DBDataSource) dataSourceMap.get(SYSTEM_NAME);
+        DBDataSource dataSource = (DBDataSource) dataSourceMap.get("MetaUI_DataSource");
         if (dataSource == null) {
            /* File sysDbFile = null;
             try {
@@ -106,42 +107,48 @@ public class DataSourceManager {
      * @return 返回系统数据源
      */
     private static DBDataSource initSysDataSource() {
+        DBDataSource dataSource;
         // 从类路径下获得db.property配置信息
         ResourceItem dbProperty = ClassPathDataSource.getInstance().getResource("db.properties");
         if (dbProperty == null) { // 创建hsqldb进程数据库
             File sysDbFile;
             try {
                 sysDbFile = UFile.createFile(DIR_SYSTEM_HSQL_DB, SYSTEM_NAME);
+                log.info("初始化系统数据源：" + sysDbFile.getAbsolutePath());
             } catch (IOException e) {
                 log.error(e.getMessage(), e);
                 throw new RuntimeException("创建系统数据源文件失败！");
             }
-            DBDataSource dataSource = new DBDataSource(SYSTEM_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:file://" + sysDbFile.getAbsolutePath(), "sa", "", SystemConfig.SYS_DB_VERSION);
+            dataSource = new DBDataSource(SYSTEM_NAME, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:file://" + sysDbFile.getAbsolutePath(), "sa", "", SystemConfig.SYS_DB_VERSION);
             dataSource.setDatabaseType(DatabaseType.HSQLDB);
+        } else {
+            Properties properties = new Properties();
+            try {
+                log.info("db.properties URI = " + dbProperty.getURI());
 
-            return dataSource;
+                properties.load(dbProperty.getInputStream());
+                String driverClass = properties.getProperty("driverClass");
+                String url = properties.getProperty("url");
+                String userName = properties.getProperty("userName");
+                String password = properties.getProperty("password");
+                log.info("初始化系统数据源：" + url);
+                dataSource = new DBDataSource(SYSTEM_NAME, driverClass, url, userName, password, SystemConfig.SYS_DB_VERSION);
+            } catch (Exception e) {
+                log.error("获得db.property文件失败！", e);
+                throw new RuntimeException("获得db.property文件失败！");
+            }
         }
 
-        Properties properties = new Properties();
-        try {
-            properties.load(dbProperty.getInputStream());
-            String driverClass = properties.getProperty("driverClass");
-            String url = properties.getProperty("url");
-            String userName = properties.getProperty("userName");
-            String password = properties.getProperty("password");
-            log.debug("初始化系统数据源：" + url);
-            DBDataSource dataSource = new DBDataSource(SYSTEM_NAME, driverClass, url, userName, password, SystemConfig.SYS_DB_VERSION);
-            dataSource.setId("MetaUI_DataSource");
-            dataSourceMap.put(dataSource.getId(), dataSource);
-            dataSources.add(dataSource);
-            return dataSource;
-        } catch (Exception e) {
-            log.error("获得db.property文件失败！", e);
-            throw new RuntimeException("获得db.property文件失败！");
-        }
+
+        dataSource.setId("MetaUI_DataSource");
+        dataSource.setDisplayName("系统数据源");
+        dataSources.add(dataSource);
+        dataSourceMap.put(dataSource.getId(), dataSource);
+
+        return dataSource;
     }
 
-    public static INavTreeNode getNavTree() throws Exception {
+    public static ITreeNode getNavTree() throws Exception {
         List<ITreeNode> children = new ArrayList<ITreeNode>();
         for (DataSource ds : getDataSources()) {
             if (ds instanceof ClassPathDataSource) {

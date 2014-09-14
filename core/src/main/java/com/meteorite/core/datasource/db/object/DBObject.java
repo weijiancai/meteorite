@@ -3,7 +3,6 @@ package com.meteorite.core.datasource.db.object;
 
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
-import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
  * @author weijiancai
  * @version 1.0.0
  */
-public interface DBObject extends INavTreeNode {
+public interface DBObject extends ITreeNode {
     /**
      * 获得数据源
      *

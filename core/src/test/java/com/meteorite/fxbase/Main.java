@@ -37,8 +37,8 @@ public class Main extends Application {
         ds.setDatabaseType(DatabaseType.MYSQL);
         ds.setDriverClass("com.mysql.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/");
-        ds.setUsername("root");
-        ds.setPassword("7758521");*/
+        ds.setUserName("root");
+        ds.setPwd("7758521");*/
 
 //        ClassPathDataSource ds = ClassPathDataSource.getInstance();
         try {

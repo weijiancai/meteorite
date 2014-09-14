@@ -3,11 +3,10 @@ package com.meteorite.core.datasource.classpath;
 import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.persist.IPDB;
-import com.meteorite.core.datasource.request.BaseRequest;
 import com.meteorite.core.datasource.request.IRequest;
 import com.meteorite.core.meta.model.Meta;
-import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.observer.Observer;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import org.apache.log4j.Logger;
@@ -77,12 +76,12 @@ public class ClassPathDataSource extends DataSource {
     }
 
     @Override
-    public INavTreeNode getNavTree() throws Exception {
+    public ITreeNode getNavTree() throws Exception {
         return loader.getNavTree();
     }
 
     @Override
-    public INavTreeNode getNavTree(String parent) throws Exception {
+    public ITreeNode getNavTree(String parent) throws Exception {
         return loader.getResource(parent);
     }
 
@@ -161,6 +160,21 @@ public class ClassPathDataSource extends DataSource {
 
     @Override
     public void delete(IRequest request) {
+
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObserver() {
 
     }
 }

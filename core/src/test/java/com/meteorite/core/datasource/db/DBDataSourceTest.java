@@ -20,6 +20,7 @@ public class DBDataSourceTest {
     public void testExpDdl() throws Exception {
         ExpDbDdlRequest request = new ExpDbDdlRequest();
         request.setExpDbType(DatabaseType.HSQLDB);
+        request.setSaveFilePath("D:\\workspace\\meteorite\\core\\src\\main\\resources\\db_upgrade\\1.0.0\\metaui_hsqldb.sql");
         DBDataSource dataSource = DataSourceManager.getSysDataSource();
         dataSource.expDdl(request);
     }

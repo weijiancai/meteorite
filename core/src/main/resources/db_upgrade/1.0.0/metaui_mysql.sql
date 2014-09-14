@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/9/8 8:27:08                             */
+/* Created on:     2014/9/14 9:46:36                            */
 /*==============================================================*/
 
 
@@ -10,13 +10,11 @@ drop table if exists mu_db_mobile_number;
 
 drop table if exists mu_db_version;
 
-drop index iux_name on mu_dz_category;
+drop index iux_dzCategory_name on mu_dz_category;
 
 drop table if exists mu_dz_category;
 
 drop table if exists mu_dz_code;
-
-drop index IUX_NAME on mu_layout;
 
 drop table if exists mu_layout;
 
@@ -60,6 +58,7 @@ create table mu_db_datasource
    display_name         varchar(128) comment '显示名',
    type                 varchar(32) not null comment '类型',
    description          varchar(1024) comment '描述',
+   url                  varchar(1024) comment 'URL',
    host                 varchar(64) comment '主机',
    port                 int comment '端口',
    user_name            varchar(64) comment '用户名',
@@ -120,9 +119,9 @@ create table mu_dz_category
 alter table mu_dz_category comment '字典类别';
 
 /*==============================================================*/
-/* Index: iux_name                                              */
+/* Index: iux_dzCategory_name                                   */
 /*==============================================================*/
-create unique index iux_name on mu_dz_category
+create unique index iux_dzCategory_name on mu_dz_category
 (
    name
 );
@@ -163,14 +162,6 @@ create table mu_layout
 );
 
 alter table mu_layout comment '布局管理器';
-
-/*==============================================================*/
-/* Index: IUX_NAME                                              */
-/*==============================================================*/
-create unique index IUX_NAME on mu_layout
-(
-   name
-);
 
 /*==============================================================*/
 /* Table: mu_layout_prop                                        */

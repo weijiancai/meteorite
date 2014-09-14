@@ -1,6 +1,5 @@
 package com.meteorite.fxbase.ui.component.tree;
 
-import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.view.MUTree;
@@ -38,9 +37,8 @@ public class MUTreeItem extends TreeItem<ITreeNode> {
     public MUTreeItem(MUTree tree, ITreeNode value) {
         super(value);
         this.tree = tree;
-        if(value instanceof INavTreeNode) {
-            INavTreeNode treeNode = (INavTreeNode) value;
-            String iconPath = treeNode.getIcon();
+        if(value != null) {
+            String iconPath = value.getIcon();
             if (UString.isNotEmpty(iconPath)) {
                 Node node = new ImageView(new Image(getClass().getResourceAsStream(iconPath)));
                 this.setGraphic(node);

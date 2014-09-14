@@ -18,9 +18,10 @@ import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.observer.Observer;
 import com.meteorite.core.rest.PathHandler;
+import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
@@ -42,7 +43,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 @XmlRootElement
-@XmlType(propOrder = {"databaseType", "driverClass", "url", "username", "password", "dbVersion", "filePath"})
+@XmlType(propOrder = {"databaseType", "driverClass", "url", "userName", "pwd", "dbVersion", "filePath"})
 @MetaElement(displayName = "数据库数据源")
 public class DBDataSource extends DataSource {
     private static final Logger log = Logger.getLogger(DBDataSource.class);
@@ -76,8 +77,8 @@ public class DBDataSource extends DataSource {
         initProperties();
         setDriverClass(driverClass);
         setUrl(url);
-        setUsername(username);
-        setPassword(password);
+        setUserName(username);
+        setPwd(password);
         setDbVersion(dbVersion);
     }
 
@@ -103,16 +104,18 @@ public class DBDataSource extends DataSource {
     }
 
     @MetaFieldElement(displayName = "用户名", sortNum = 20)
-    public String getUsername() {
+    @XmlAttribute
+    public String getUserName() {
         return properties.getFieldValue(USER_NAME);
     }
 
-    public void setUsername(String username) {
+    public void setUserName(String username) {
         properties.setFieldValue(USER_NAME, username);
     }
 
     @MetaFieldElement(displayName = "密码", dataType = MetaDataType.PASSWORD, sortNum = 30)
-    public String getPassword() {
+    @XmlAttribute
+    public String getPwd() {
         return properties.getFieldValue(PASSWORD);
     }
 
@@ -134,6 +137,7 @@ public class DBDataSource extends DataSource {
     }
 
     @MetaFieldElement(displayName = "数据库URL", sortNum = 60)
+    @XmlAttribute
     public String getUrl() {
         return properties.getFieldValue(URL);
     }
@@ -202,12 +206,12 @@ public class DBDataSource extends DataSource {
 
     @Override
     @JSONField(serialize = false)
-    public INavTreeNode getNavTree() throws Exception {
+    public ITreeNode getNavTree() throws Exception {
         return navTree;
     }
 
     @Override
-    public INavTreeNode getNavTree(String parent) throws Exception {
+    public ITreeNode getNavTree(String parent) throws Exception {
         return null;
     }
 
@@ -407,7 +411,7 @@ public class DBDataSource extends DataSource {
         properties.setFieldValue(URL, url);
     }
 
-    public void setPassword(String password) {
+    public void setPwd(String password) {
         properties.setFieldValue(PASSWORD, password);
     }
 
@@ -533,20 +537,25 @@ public class DBDataSource extends DataSource {
 
     public IResponse expDdl(ExpDbDdlRequest request) throws Exception {
         BaseResponse response = new BaseResponse();
-        StringBuilder dropStr = new StringBuilder();
+        StringBuilder dropTableStr = new StringBuilder();
         StringBuilder createTableStr = new StringBuilder();
         StringBuilder constraintStr = new StringBuilder();
-        StringBuilder indexStr = new StringBuilder();
+        StringBuilder createIndexStr = new StringBuilder();
+        StringBuilder dropIndexStr = new StringBuilder();
 
         DBSchema schema = getDbConnection().getSchema();
         // 导出表
         List<DBTable> tables = schema.getTables();
         for (DBTable table : tables) {
+            createTableStr.append("/*==============================================================*/\r\n");
+            createTableStr.append(String.format("/* Table: %s                                      */\r\n", table.getName()));
+            createTableStr.append("/*==============================================================*/\r\n");
+
             StringBuilder commentStr = new StringBuilder();
             StringBuilder pkStr = new StringBuilder();
             switch (request.getExpDbType()) {
                 case HSQLDB: {
-                    dropStr.append(String.format("drop table if exists %s;\r\n", table.getName()));
+                    dropTableStr.append(String.format("drop table if exists %s;\r\n", table.getName()));
                     createTableStr.append(String.format("create table %s\r\n(\r\n", table.getName()));
                     if (UString.isNotEmpty(table.getDisplayName())) {
                         commentStr.append(String.format("comment on table %s is '%s';\r\n", table.getName(), table.getDisplayName()));
@@ -581,24 +590,53 @@ public class DBDataSource extends DataSource {
         // 索引
         List<DBIndex> indexes = schema.getIndexes();
         for (DBIndex index : indexes) {
-            if(index.is)
-            indexStr.append(String.format("create %s index %s on %s\r\n(\r\n", index.isUnique() ? "unique" : "", index.getName(), index.getTableName()));
+            String indexName = index.getName();
+            if (indexName.equals("PRIMARY") || indexName.startsWith("FK_")) {
+                continue;
+            }
+            createIndexStr.append(String.format("create %s index %s on %s\r\n(\r\n", index.isUnique() ? "unique" : "", index.getName(), index.getTableName()));
             for (int i = 0; i < index.getColumnNames().size(); i++) {
                 String columnName = index.getColumnNames().get(i);
-                indexStr.append("    ").append(columnName);
-                if(i < index.getColumns().size() - 1) {
-                    indexStr.append(",");
+                createIndexStr.append("    ").append(columnName);
+                if (i < index.getColumnNames().size() - 1) {
+                    createIndexStr.append(",");
                 }
-                indexStr.append("\r\n");
+                createIndexStr.append("\r\n");
             }
-            indexStr.append(");\r\n");
+            createIndexStr.append(");\r\n");
+            dropIndexStr.append(String.format("drop index %s if exists;\r\n", index.getName()));
         }
 
-        System.out.println(dropStr);
+        /*System.out.println(dropTableStr);
+        System.out.println(dropIndexStr);
         System.out.println(createTableStr);
         System.out.println(constraintStr);
-        System.out.println(indexStr);
+        System.out.println(createIndexStr);*/
+        String resultSql = String.format("%s\r\n%s\r\n%s\r\n%s\r\n%s", dropTableStr, dropIndexStr, createTableStr, constraintStr, createIndexStr);
+        String savePath = request.getSaveFilePath();
+        if (UString.isNotEmpty(savePath)) {
+            UFile.write(resultSql, savePath);
+        }
 
         return response;
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        try {
+            getDbConnection().getLoader().registerObserver(observer);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+
+    }
+
+    @Override
+    public void notifyObserver() {
+
     }
 }

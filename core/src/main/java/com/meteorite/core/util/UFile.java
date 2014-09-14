@@ -1,12 +1,14 @@
 package com.meteorite.core.util;
 
 import com.meteorite.core.datasource.classpath.ClassPathDataSource;
-import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 /**
@@ -140,6 +142,40 @@ public class UFile {
         os.flush();
     }
 
+    /**
+     * 将文本字符串写入文件中
+     *
+     * @param text 文本字符串
+     * @param filePath 文件路径
+     */
+    public static void write(String text, String filePath) throws IOException {
+        write(text.getBytes(), new File(filePath));
+    }
+
+    /**
+     * 将URL中的内容写入文件中，文件名为url的后缀名
+     *
+     * @param url URL
+     * @param baseDir 基准目录
+     * @throws IOException
+     */
+    public static void write(URL url, File baseDir) throws IOException {
+        if (!baseDir.exists()) {
+            baseDir.mkdirs();
+        }
+        String fileName = UString.getLastName(url.getFile(), "/");
+        File file = new File(baseDir, fileName);
+        if (file.exists()) {
+            return;
+        }
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        InputStream is = httpConn.getInputStream();
+        FileOutputStream fos = new FileOutputStream(file);
+        write(is, fos);
+        fos.close();
+        is.close();
+    }
+
     public static File getClassPathDir() {
         URL url = UFile.class.getClassLoader().getResource("");
         if (url == null) {
@@ -158,27 +194,10 @@ public class UFile {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
-    public static void write(URL url, File baseDir) throws IOException {
-        if (!baseDir.exists()) {
-            baseDir.mkdirs();
-        }
-        String fileName = UString.getLastName(url.getFile(), "/");
-        File file = new File(baseDir, fileName);
-        if (file.exists()) {
-            return;
-        }
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        InputStream is = httpConn.getInputStream();
-        FileOutputStream fos = new FileOutputStream(file);
-        write(is, fos);
-        fos.close();
-        is.close();
-    }
-
     public static void copyTreeFromClassPath(String source, final File target) {
         ClassPathDataSource cp = ClassPathDataSource.getInstance();
         try {
-            INavTreeNode tree = cp.getNavTree(source);
+            ITreeNode tree = cp.getNavTree(source);
             iteratorTree(tree, new Callback<ITreeNode>() {
                 @Override
                 public void call(ITreeNode node, Object... obj) throws Exception {

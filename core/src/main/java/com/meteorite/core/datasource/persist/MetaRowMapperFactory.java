@@ -1,10 +1,7 @@
 package com.meteorite.core.datasource.persist;
 
 import com.meteorite.core.datasource.*;
-import com.meteorite.core.datasource.db.DBManager;
-import com.meteorite.core.datasource.db.DBResource;
-import com.meteorite.core.datasource.db.DBUtil;
-import com.meteorite.core.datasource.db.RowMapper;
+import com.meteorite.core.datasource.db.*;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.MetaDataType;
@@ -18,6 +15,7 @@ import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.LayoutType;
 import com.meteorite.core.ui.layout.PropertyType;
 import com.meteorite.core.ui.model.*;
+import com.meteorite.core.util.UString;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +29,21 @@ public class MetaRowMapperFactory {
         return new RowMapper<DataSource>() {
             @Override
             public DataSource mapRow(ResultSet rs) throws SQLException {
-                DataSource dataSource = new DefaultDataSource();
+                DataSource dataSource;
+                DataSourceType type = DataSourceType.get(rs.getString("type"));
+                String url = rs.getString("url");
+
+                if (DataSourceType.DATABASE == type) {
+                    DBDataSource dbDataSource = new DBDataSource();
+                    if (UString.isNotEmpty(url)) {
+                        if (url.startsWith("jdbc:mysql")) {
+                            dbDataSource.setDriverClass(JdbcDrivers.MYSQL);
+                        }
+                    }
+                    dataSource = dbDataSource;
+                } else {
+                    dataSource = new DefaultDataSource();
+                }
 
                 dataSource.setId(rs.getString("id"));
                 dataSource.setName(rs.getString("name"));
@@ -44,7 +56,8 @@ public class MetaRowMapperFactory {
                 dataSource.setPort(rs.getInt("port"));
                 dataSource.setUserName(rs.getString("user_name"));
                 dataSource.setPwd(rs.getString("pwd"));
-                dataSource.setType(DataSourceType.get(rs.getString("type")));
+                dataSource.setType(type);
+                dataSource.setUrl(url);
 
                 return dataSource;
             }

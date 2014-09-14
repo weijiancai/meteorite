@@ -3,7 +3,7 @@ package com.meteorite.fxbase.ui;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.ResourceTreeAdapter;
-import com.meteorite.core.model.INavTreeNode;
+import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.model.View;
@@ -99,7 +99,7 @@ public class FxDesktop extends BorderPane implements IDesktop {
         DataSource dataSource = DataSourceManager.getSysDataSource();
         MUTree nav = null;
         try {
-            INavTreeNode rootNode = new ResourceTreeAdapter(dataSource.getRootResource());
+            ITreeNode rootNode = new ResourceTreeAdapter(dataSource.getRootResource());
             nav = new MUTree(rootNode);
             nav.setShowRoot(true);
         } catch (Exception e) {

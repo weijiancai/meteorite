@@ -1,5 +1,7 @@
 package com.meteorite.core.model;
 
+import com.meteorite.core.ui.model.View;
+
 import java.util.List;
 
 /**
@@ -70,4 +72,8 @@ public interface ITreeNode {
      * @since 1.0.0
      */
     String getIcon();
+
+    View getView();
+
+    String getPresentableText();
 }

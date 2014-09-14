@@ -112,11 +112,11 @@ public class DBConnectionImpl implements DBConnection {
         Connection conn;
         try {
             Class.forName(dataSource.getDriverClass());
-            conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUsername(), dataSource.getPassword());
+            conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPwd());
             /*if (dbType == DatabaseType.HSQLDB && UString.isNotEmpty(dataSource.getFilePath())) {
-                conn = DriverManager.getConnection("jdbc:hsqldb:file:" + dataSource.getFilePath(), dataSource.getUsername(), dataSource.getPassword());
+                conn = DriverManager.getConnection("jdbc:hsqldb:file:" + dataSource.getFilePath(), dataSource.getUserName(), dataSource.getPwd());
             } else {
-                conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUsername(), dataSource.getPassword());
+                conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPwd());
             }*/
             if (conn != null) {
                 isAvailable = true;
@@ -219,12 +219,14 @@ public class DBConnectionImpl implements DBConnection {
                         loader.deleteIndex(tableName, indexName);
 
                         continue;
-                    } else if (temp.startsWith("drop table if exists ")) {
-                        String tableName = temp.substring("drop table if exists ".length());
-                        loader.dropTable(tableName);
-
-                        continue;
                     }
+                }
+
+                if (temp.startsWith("drop table if exists ")) {
+                    String tableName = temp.substring("drop table if exists ".length());
+                    loader.dropTable(tableName);
+
+                    continue;
                 }
                 log.info("SQL = " + sql);
                 Statement stmt = conn.createStatement();

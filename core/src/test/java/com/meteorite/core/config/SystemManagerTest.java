@@ -35,8 +35,8 @@ public class SystemManagerTest {
         assertThat(dataSource.getName(), equalTo("taobao"));
         assertThat(dataSource.getDriverClass(), equalTo("org.hsqldb.jdbcDriver"));
         assertThat(dataSource.getUrl(), equalTo("jdbc:hsqldb:hsql://localhost/taobao"));
-        assertThat(dataSource.getUsername(), equalTo("sa"));
-        assertThat(dataSource.getPassword(), equalTo(""));
+        assertThat(dataSource.getUserName(), equalTo("sa"));
+        assertThat(dataSource.getPwd(), equalTo(""));
         assertThat(dataSource.getDbVersion(), equalTo("1.0.0"));
         assertThat(dataSource.getDatabaseType(), equalTo(DatabaseType.UNKNOWN));
     }

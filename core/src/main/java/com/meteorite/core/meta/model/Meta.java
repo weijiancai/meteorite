@@ -421,7 +421,7 @@ public class Meta {
         pw.close();
     }
 
-    public void save(Map<String, Object> valueMap) throws Exception {
+    public DataMap save(Map<String, Object> valueMap) throws Exception {
         Map<String, Object> paramMap = new HashMap<String, Object>();
         for (String key : valueMap.keySet()) {
             MetaField field = fieldMap.get(key);
@@ -443,9 +443,13 @@ public class Meta {
                     String defaultValue = field.getDefaultValue();
                     if (UString.isNotEmpty(defaultValue)) {
                         if ("GUID()".equals(defaultValue)) {
-                            paramMap.put(originalName, UUIDUtil.getUUID());
+                            String guid = UUIDUtil.getUUID();
+                            paramMap.put(originalName, guid);
+                            valueMap.put(field.getName(), guid);
                         } else if ("SYSDATE()".equals(defaultValue)) {
-                            paramMap.put(originalName, new Date());
+                            Date date = new Date();
+                            paramMap.put(originalName, date);
+                            valueMap.put(field.getName(), date);
                         } else {
                             paramMap.put(originalName, defaultValue);
                         }
@@ -458,6 +462,11 @@ public class Meta {
         map.put(resource.getName(), paramMap);
 
         resource.save(map);
+        DataMap dataMap = new DataMap();
+        dataMap.putAll(valueMap);
+        getDataList().add(dataMap);
+
+        return dataMap;
     }
     
     public void insertRow(DataMap dataMap) {

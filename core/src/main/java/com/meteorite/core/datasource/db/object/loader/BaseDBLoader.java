@@ -9,8 +9,8 @@ import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.*;
 import com.meteorite.core.datasource.db.object.impl.*;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
-import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.observer.Observer;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 
@@ -26,9 +26,13 @@ import java.util.Map;
  */
 public abstract class BaseDBLoader implements DBLoader {
     protected DBConnectionImpl dbConn;
+    private boolean isLoaded;
+    private List<Observer> observers;
+    private String message;
 
     public BaseDBLoader(DBConnectionImpl conn) throws Exception {
         this.dbConn = conn;
+        observers = new ArrayList<Observer>();
     }
 
     // 获得User Sql语句
@@ -66,6 +70,9 @@ public abstract class BaseDBLoader implements DBLoader {
 
     @Override
     public void load() throws Exception {
+        if (isLoaded) {
+            return;
+        }
         if (!dbConn.isAvailable()) {
             return;
         }
@@ -95,6 +102,8 @@ public abstract class BaseDBLoader implements DBLoader {
         navTree.getChildren().addAll(list);
         dbConn.setSchemas(schemas);
         initCurrentSchema(schemas);
+
+        isLoaded = true;
     }
 
     private void initCurrentSchema(List<DBSchema> schemas) throws Exception {
@@ -125,6 +134,7 @@ public abstract class BaseDBLoader implements DBLoader {
             user.setObjectType(DBObjectType.USER);
 
             result.add(user);
+            notifyMessage(String.format("加载用户：" + user.getName()));
         }
 
         return result;
@@ -142,6 +152,7 @@ public abstract class BaseDBLoader implements DBLoader {
             privilege.setObjectType(DBObjectType.PRIVILEGE);
 
             result.add(privilege);
+            notifyMessage(String.format("加载授权：" + privilege.getName()));
         }
 
         return result;
@@ -152,13 +163,14 @@ public abstract class BaseDBLoader implements DBLoader {
         List<DBObject> result = new ArrayList<DBObject>();
         List<DataMap> list = dbConn.getResultSet(getCharsetsSql());
         for (DataMap map : list) {
-            DBObjectImpl privilege = new DBObjectImpl();
-            privilege.setParent(navTree);
-            privilege.setName(UObject.toString(map.get("CHARSET_NAME")));
-            privilege.setComment(UObject.toString(map.get("CHARSET_NAME")));
-            privilege.setObjectType(DBObjectType.CHARSET);
+            DBObjectImpl charset = new DBObjectImpl();
+            charset.setParent(navTree);
+            charset.setName(UObject.toString(map.get("CHARSET_NAME")));
+            charset.setComment(UObject.toString(map.get("CHARSET_NAME")));
+            charset.setObjectType(DBObjectType.CHARSET);
 
-            result.add(privilege);
+            result.add(charset);
+            notifyMessage(String.format("加载字符集：" + charset.getName()));
         }
 
         return result;
@@ -169,10 +181,16 @@ public abstract class BaseDBLoader implements DBLoader {
         List<DBSchema> result = new ArrayList<DBSchema>();
         List<DataMap> list = dbConn.getResultSet(getSchemaSql());
         for (DataMap map : list) {
+            String schemaName = map.getString("SCHEMA_NAME");
+            if (!dbConn.getSchema().getName().equals(schemaName)) {
+                continue;
+            }
+            notifyMessage(String.format("加载Schema：" + schemaName));
+
             DBSchemaImpl schema = new DBSchemaImpl();
             schema.setDataSource(dbConn.getDataSource());
             schema.setParent(navTree);
-            schema.setName(UObject.toString(map.get("SCHEMA_NAME")));
+            schema.setName(schemaName);
             schema.setComment(schema.getName());
             // 加载Table
             schema.setTables(loadTables(schema));
@@ -250,7 +268,6 @@ public abstract class BaseDBLoader implements DBLoader {
                 index.setAsc(map.getBoolean("IS_ASC"));
                 index.setUnique(map.getBoolean("IS_UNIQUE"));
                 index.setTableName(map.getString("TABLE_NAME"));
-                index.getColumnNames().add(map.getString("COLUMN_NAME"));
                 index.setColumns(new ArrayList<DBColumn>());
 
                 DBTable table = schema.getTable(map.getString("TABLE_NAME"));
@@ -260,12 +277,15 @@ public abstract class BaseDBLoader implements DBLoader {
                 }
 
                 indexMap.put(indexName, index);
+
+                result.add(index);
+                notifyMessage(String.format("加载Index：" + index.getName()));
             }
             if (index.getTable() != null) {
                 index.getColumns().add(index.getTable().getColumn(map.getString("COLUMN_NAME")));
             }
 
-            result.add(index);
+            index.getColumnNames().add(map.getString("COLUMN_NAME"));
         }
 
         return result;
@@ -289,6 +309,7 @@ public abstract class BaseDBLoader implements DBLoader {
             trigger.setTable(table);
 
             result.add(trigger);
+            notifyMessage(String.format("加载Trigger：" + trigger.getName()));
         }
 
         return result;
@@ -305,6 +326,7 @@ public abstract class BaseDBLoader implements DBLoader {
             procedure.setName(map.getString("PROCEDURE_NAME"));
 
             result.add(procedure);
+            notifyMessage(String.format("加载Procedure：" + procedure.getName()));
         }
 
         return result;
@@ -321,6 +343,7 @@ public abstract class BaseDBLoader implements DBLoader {
             function.setName(map.getString("FUNCTION_NAME"));
 
             result.add(function);
+            notifyMessage(String.format("加载Function：" + function.getName()));
         }
 
         return result;
@@ -389,21 +412,22 @@ public abstract class BaseDBLoader implements DBLoader {
             table.setName(UObject.toString(map.get("TABLE_NAME")));
             table.setComment(UObject.toString(map.get("TABLE_COMMENT")));
             // 加载列
-//            table.setColumns(loadColumns(table));
+            table.setColumns(loadColumns(table));
             // 加载约束
-//            table.setConstraints(loadConstraint(table));
+            table.setConstraints(loadConstraint(table));
             result.add(table);
 
             // 设置Table子节点
             List<ITreeNode> children = new ArrayList<ITreeNode>();
             // 列
-//            DBObjectList columns = new DBObjectList("Columns", DBIcons.DBO_COLUMNS, new ArrayList<ITreeNode>(table.getColumns()));
+            DBObjectList columns = new DBObjectList("Columns", DBIcons.DBO_COLUMNS, new ArrayList<ITreeNode>(table.getColumns()));
             // 约束
-//            DBObjectList constraints = new DBObjectList("Constraints", DBIcons.DBO_CONSTRAINTS, new ArrayList<ITreeNode>(table.getConstraints()));
+            DBObjectList constraints = new DBObjectList("Constraints", DBIcons.DBO_CONSTRAINTS, new ArrayList<ITreeNode>(table.getConstraints()));
 
-//            children.add(columns);
-//            children.add(constraints);
+            children.add(columns);
+            children.add(constraints);
             table.setChildren(children);
+            notifyMessage(String.format("加载Table：" + table.getName()));
         }
 
         return result;
@@ -432,6 +456,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
             children.add(columns);
             view.setChildren(children);
+            notifyMessage(String.format("加载View：" + view.getName()));
         }
         return result;
     }
@@ -474,6 +499,7 @@ public abstract class BaseDBLoader implements DBLoader {
             schema.addConstraints(constraint);
 
             result.add(constraint);
+            notifyMessage(String.format("加载Constraint：" + constraint.getName()));
         }
         return result;
     }
@@ -488,22 +514,22 @@ public abstract class BaseDBLoader implements DBLoader {
             String fkColName = map.getString("column_name");
             String pkTableName = map.getString("referenced_table_name");
             String pkColName = map.getString("referenced_column_name");
-            DBTable table = schema.getTable(fkTableName);
+            DBTable fkTable = schema.getTable(fkTableName);
             DBConstraintImpl constraint;
 
-            if (table != null) {
-                DBColumnImpl column = (DBColumnImpl) table.getColumn(fkColName);
-                DBTable fkTable = schema.getTable(pkTableName);
-                DBColumnImpl fkColumn = (DBColumnImpl) fkTable.getColumn(pkColName);
-                fkColumn.setRefColumn(column);
+            if (fkTable != null) {
+                DBColumnImpl fkColumn = (DBColumnImpl) fkTable.getColumn(fkColName);
+                DBTable pkTable = schema.getTable(pkTableName);
+                DBColumnImpl pkColumn = (DBColumnImpl) pkTable.getColumn(pkColName);
+                fkColumn.setRefColumn(pkColumn);
                 constraint = (DBConstraintImpl) schema.getConstraint(constraintName);
-                constraint.setPrimaryKeyTable(table);
+                constraint.setPrimaryKeyTable(pkTable);
                 constraint.setForeignKeyTable(fkTable);
                 constraint.getColumns().add(fkColumn);
+            } else {
+                constraint = new DBConstraintImpl();
             }
 
-
-            constraint = new DBConstraintImpl();
             constraint.setName(constraintName);
             constraint.setPkTableName(pkTableName);
             constraint.setPkColumnName(pkColName);
@@ -511,6 +537,7 @@ public abstract class BaseDBLoader implements DBLoader {
             constraint.setFkColumnName(fkColName);
 
             result.add(constraint);
+            notifyMessage(String.format("加载FKConstraint：" + constraint.getName()));
         }
 
         return result;
@@ -521,7 +548,7 @@ public abstract class BaseDBLoader implements DBLoader {
         Connection connection = dbConn.getConnection();
         try {
             DatabaseMetaData metaData = connection.getMetaData();
-            ResultSet rs = metaData.getTables(null, null, tableName, null);
+            ResultSet rs = metaData.getTables(null, null, tableName.toUpperCase(), null);
             if (rs.next()) {
                 DBTableImpl table = new DBTableImpl();
                 table.setDataSource(dbConn.getDataSource());
@@ -671,6 +698,28 @@ public abstract class BaseDBLoader implements DBLoader {
             template.update(sql);
         } finally {
             template.close();
+        }
+    }
+
+    private void notifyMessage(String message) {
+        this.message = message;
+        notifyObserver();
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObserver() {
+        for (Observer observer : observers) {
+            observer.update(message);
         }
     }
 }

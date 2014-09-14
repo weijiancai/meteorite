@@ -42,8 +42,8 @@ public class MUTree extends TreeView<ITreeNode> {
         return rootItem;
     }
 
-    private void buildTree(ITreeNode parentNode, TreeItem<ITreeNode> parentItem) {
-        List<? extends ITreeNode> children = parentNode.getChildren();
+    public void buildTree(ITreeNode treeNode, TreeItem<ITreeNode> parentItem) {
+        List<? extends ITreeNode> children = treeNode.getChildren();
         if (children != null && children.size() > 0) {
             for (ITreeNode node : children) {
                 TreeItem<ITreeNode> item = new TreeItem<ITreeNode>(node);
@@ -96,5 +96,9 @@ public class MUTree extends TreeView<ITreeNode> {
 
     public void putNodeItem(ITreeNode node, MUTreeItem item) {
         nodeItemMap.put(node, item);
+    }
+
+    public TreeItem<ITreeNode> getTreeItem(ITreeNode node) {
+        return nodeItemMap.get(node);
     }
 }

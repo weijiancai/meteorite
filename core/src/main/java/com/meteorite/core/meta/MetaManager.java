@@ -2,9 +2,8 @@ package com.meteorite.core.meta;
 
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
-import com.meteorite.core.datasource.DataSourceManager;
-import com.meteorite.core.datasource.DataSourceType;
-import com.meteorite.core.datasource.VirtualResource;
+import com.meteorite.core.datasource.*;
+import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
@@ -20,6 +19,7 @@ import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.UString;
+import com.meteorite.core.util.dom.DomUtil;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 
 import java.io.File;
@@ -42,6 +42,7 @@ public class MetaManager {
     private static Map<String, MetaField> fieldIdMap = new HashMap<String, MetaField>();
     private static Map<String, Meta> tableMeta = new HashMap<String, Meta>();
     private static List<MetaField> metaFieldList = new ArrayList<MetaField>();
+    private static Map<String, Map<String, String>> metaFieldConfigs = new HashMap<String, Map<String, String>>();
 
     static {
         try {
@@ -162,16 +163,26 @@ public class MetaManager {
     }
 
     /**
-     * 加载布局配置信息
+     * 加载元字段配置信息
      */
     private static void loadMetaFieldConfig() throws Exception {
-        File file = new File(DIR_SYSTEM, FILE_NAME_META_FIELD_CONFIG);
-
-        if(!file.exists()) {
-            metaFieldList = new ArrayList<MetaField>();
-        } else {
-            InputStream is = UIO.getInputStream(file.getAbsolutePath(), UIO.FROM.FS);
-            metaFieldList = JAXBUtil.unmarshalList(is, MetaField.class);
+        ClassPathDataSource cpDataSource = DataSourceManager.getClassPathDataSource();
+        ResourceItem configXml = cpDataSource.getResource("config/MetaFieldConfig.xml");
+        InputStream is = configXml.getInputStream();
+        List<DataMap> list = DomUtil.toListMap(is, "/config/row");
+        for (DataMap map : list) {
+            String metaName = map.getString("meta");
+            String fieldName = map.getString("fieldName");
+            String dictId = map.getString("dict");
+            String metaField = metaName + "_" + fieldName;
+            Map<String, String> fieldMap = metaFieldConfigs.get(metaField);
+            if (fieldMap == null) {
+                fieldMap = new HashMap<String, String>();
+                metaFieldConfigs.put(metaField, fieldMap);
+            }
+            if (UString.isNotEmpty(dictId)) {
+                fieldMap.put("dict", dictId);
+            }
         }
     }
 
@@ -474,7 +485,6 @@ public class MetaManager {
             field.setDescription(resource.getDisplayName());
             if (resource.getName().toLowerCase().startsWith("is_")) {
                 field.setDataType(MetaDataType.BOOLEAN);
-                field.setDefaultValue("T");
             } else if(column.isPk() && column.getMaxLength() == 32) {
                 field.setDataType(MetaDataType.GUID);
                 field.setDefaultValue("GUID()");
@@ -491,11 +501,21 @@ public class MetaManager {
 
             // 默认值
             if ("isValid".equals(field.getName())) {
-                field.setDefaultValue("T");
+//                field.setDefaultValue("T");
             } else if ("inputDate".equals(field.getName())) {
                 field.setDefaultValue("SYSDATE()");
             } else if ("sortNum".equals(field.getName())) {
-                field.setDefaultValue("0");
+//                field.setDefaultValue("0");
+            }
+
+            // 数据字典
+            Map<String, String> configMap = metaFieldConfigs.get(meta.getName() + "_" + field.getName());
+            if (configMap != null) {
+                String dict = configMap.get("dict");
+                if (UString.isNotEmpty(dict)) {
+                    field.setDictId(dict);
+                    field.setDataType(MetaDataType.DICT);
+                }
             }
 
             // 插入表sys_class_field

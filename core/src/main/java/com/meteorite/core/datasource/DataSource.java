@@ -5,8 +5,8 @@ import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.datasource.request.IRequest;
 import com.meteorite.core.datasource.request.IResponse;
 import com.meteorite.core.meta.model.Meta;
-import com.meteorite.core.model.INavTreeNode;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.observer.Subject;
 import com.meteorite.core.rest.RestHandler;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
@@ -23,12 +23,13 @@ import java.util.Map;
  * @author wei_jc
  * @since 1.0.0
  */
-public abstract class DataSource implements RestHandler {
+public abstract class DataSource implements RestHandler, Subject {
     private String id;
     private String name;
     private String displayName;
     private String description;
     private DataSourceType type;
+    private String url;
     private String host;
     private int port;
     private String userName;
@@ -58,6 +59,10 @@ public abstract class DataSource implements RestHandler {
 
     public void setType(DataSourceType type) {
         this.type = type;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public void setHost(String host) {
@@ -129,12 +134,21 @@ public abstract class DataSource implements RestHandler {
     }
 
     /**
-     * 返回数据源描述信息
+     * 获得数据源描述信息
      *
      * @return 返回数据源描述信息
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * 获得数据源URL
+     *
+     * @return 返回数据源URL
+     */
+    public String getUrl() {
+        return url;
     }
 
     /**
@@ -247,7 +261,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回导航树
      */
-    public abstract INavTreeNode getNavTree() throws Exception;
+    public abstract ITreeNode getNavTree() throws Exception;
 
     /**
      * 获得某个节点下的导航树
@@ -256,7 +270,7 @@ public abstract class DataSource implements RestHandler {
      * @return 返回导航树
      * @throws Exception
      */
-    public abstract INavTreeNode getNavTree(String parent) throws Exception;
+    public abstract ITreeNode getNavTree(String parent) throws Exception;
 
     /**
      * 获得某个节点下的孩子节点

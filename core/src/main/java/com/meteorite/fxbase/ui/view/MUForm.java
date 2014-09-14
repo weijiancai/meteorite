@@ -52,6 +52,7 @@ public class MUForm extends BorderPane {
     private BooleanProperty isModified = new SimpleBooleanProperty();
     private Map<String, IValue> modifiedValueMap = new HashMap<String, IValue>();
     private boolean isAdd;
+    private boolean isShowControlBar;
 
     public MUForm(FormProperty property) {
         this(property, null);
@@ -60,15 +61,21 @@ public class MUForm extends BorderPane {
     public MUForm(FormProperty property, MUTable table) {
         this.formConfig = property;
         this.table = table;
+        this.isShowControlBar = FormType.EDIT == formConfig.getFormType();
+        initUI();
+    }
+
+    public MUForm(FormProperty property, MUTable table, boolean isShowControlBar) {
+        this.isShowControlBar = isShowControlBar;
+        this.formConfig = property;
+        this.table = table;
         initUI();
     }
 
     private void initUI() {
         layout = new MUFormLayout(formConfig);
 
-        if (FormType.QUERY == formConfig.getFormType() || FormType.READONLY == formConfig.getFormType()) {
-            this.setCenter(layout);
-        } else if (FormType.EDIT == formConfig.getFormType()) {
+        if (isShowControlBar) {
             root = new BorderPane();
 
             ToolBar controlBar = new ToolBar();
@@ -90,17 +97,7 @@ public class MUForm extends BorderPane {
             btn_save.setOnAction(new MuEventHandler<ActionEvent>() {
                 @Override
                 public void doHandler(ActionEvent event) throws Exception {
-                    if(isAdd) {
-                        Map<String, Object> map = new HashMap<String, Object>();
-                        for (IValue value : layout.getValueMap().values()) {
-                            MetaField field = value.getMetaField();
-                            map.put(field.getName(), value.value());
-                        }
-                        formConfig.getMeta().save(map);
-                    } else {
-                        formConfig.getMeta().update(modifiedValueMap, data);
-                    }
-                    isModified.set(false);
+                    save();
                 }
             });
             controlBar.getItems().addAll(prevButton, nextButton, region, btn_save, btn_close);
@@ -163,6 +160,8 @@ public class MUForm extends BorderPane {
                 registerEvent();
             }
             this.setCenter(root);
+        } else {
+            this.setCenter(layout);
         }
 
         // 监听FormField状态变化
@@ -295,5 +294,27 @@ public class MUForm extends BorderPane {
         for (MUTable table : children) {
             table.getItems().clear();
         }
+    }
+
+    public void setAdd(boolean isAdd) {
+        this.isAdd = isAdd;
+    }
+
+    public void save() throws Exception {
+        if(isAdd) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            for (IValue value : layout.getValueMap().values()) {
+                MetaField field = value.getMetaField();
+                map.put(field.getName(), value.value());
+            }
+            DataMap dataMap = formConfig.getMeta().save(map);
+            if (table != null) {
+                table.getItems().add(dataMap);
+            }
+            isAdd = false;
+        } else {
+            formConfig.getMeta().update(modifiedValueMap, data);
+        }
+        isModified.set(false);
     }
 }

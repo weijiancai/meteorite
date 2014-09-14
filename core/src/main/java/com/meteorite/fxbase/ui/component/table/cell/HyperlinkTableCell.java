@@ -43,7 +43,6 @@ public class HyperlinkTableCell extends BaseTableCell {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 Meta meta = prop.getMetaField().getMeta();
-                int row = getTableRow().getIndex();
                 MetaField refField = prop.getMetaField().getRefField();
                 Meta refMeta = meta.getRefMeta(prop.getMetaField().getId());
                 QueryBuilder queryBuilder = QueryBuilder.create(refMeta).add(refField.getOriginalName(), hyperlink.getText());

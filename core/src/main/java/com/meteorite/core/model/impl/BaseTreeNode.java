@@ -1,6 +1,8 @@
 package com.meteorite.core.model.impl;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.ui.model.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ public class BaseTreeNode implements ITreeNode {
     private String name;
     private String displayName;
     private int sortNum;
+    private View view;
 
     private ITreeNode parent;
     private List<ITreeNode> children;
@@ -99,6 +102,21 @@ public class BaseTreeNode implements ITreeNode {
     @Override
     public String toString() {
         return displayName;
+    }
+
+    @Override
+    @JSONField(serialize = false)
+    public View getView() {
+        return view;
+    }
+
+    @Override
+    public String getPresentableText() {
+        return null;
+    }
+
+    public void setView(View view) {
+        this.view = view;
     }
 
     public void addChild(ITreeNode node) {
