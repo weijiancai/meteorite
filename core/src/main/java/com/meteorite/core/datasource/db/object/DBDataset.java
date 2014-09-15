@@ -40,6 +40,14 @@ public interface DBDataset extends DBObject {
     List<DBConstraint> getConstraints() throws Exception;
 
     /**
+     * 获得数据库表的外键约束信息
+     *
+     * @return 返回数据库表的外键约束信息
+     * @throws Exception
+     */
+    List<DBConstraint> getFkConstraints() throws Exception;
+
+    /**
      * 根据约束名，获得约束信息
      *
      * @param name 约束名

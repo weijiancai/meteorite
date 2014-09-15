@@ -21,6 +21,9 @@ import java.util.Map;
 public class MUTree extends TreeView<ITreeNode> {
     private Map<ITreeNode, TreeItem<ITreeNode>> nodeItemMap = new HashMap<ITreeNode, TreeItem<ITreeNode>>();
 
+    public MUTree() {
+    }
+
     public MUTree(ITreeNode root) {
         if (root != null) {
             MUTreeItem rootItem = new MUTreeItem(this, root);
@@ -35,7 +38,7 @@ public class MUTree extends TreeView<ITreeNode> {
             }
         });*/
         /*TreeItem<ITreeNode> rootItem = addTreeNode(root);*/
-        this.setShowRoot(false);
+//        this.setShowRoot(false);
     }
 
     public TreeItem<ITreeNode> addTreeNode(ITreeNode node) {

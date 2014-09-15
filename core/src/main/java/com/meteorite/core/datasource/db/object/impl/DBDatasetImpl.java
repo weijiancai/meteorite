@@ -18,6 +18,7 @@ import java.util.Map;
 public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
     private List<DBColumn> columns;
     private List<DBConstraint> constraints;
+    private List<DBConstraint> fkConstraints;
     private Map<String, DBColumn> columnMap = new HashMap<String, DBColumn>();
     private Map<String, DBConstraint> constraintMap = new HashMap<String, DBConstraint>();
 
@@ -42,6 +43,14 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
             constraints = getDataSource().getDbConnection().getLoader().loadConstraint(this);
         }
         return constraints;
+    }
+
+    @Override
+    public List<DBConstraint> getFkConstraints() throws Exception {
+        if (fkConstraints == null) {
+            fkConstraints = new ArrayList<DBConstraint>();
+        }
+        return fkConstraints;
     }
 
     @Override

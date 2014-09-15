@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.persist;
 
+import com.meteorite.core.config.ProfileSetting;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.dict.DictCategory;
@@ -41,6 +42,26 @@ public class MetaPDBFactory {
                 map.put("pwd", dataSource.getPwd());
 
                 result.put("mu_db_datasource", map);
+
+                return result;
+            }
+        };
+    }
+
+    public static IPDB getProfileSetting(final ProfileSetting setting) {
+        return new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("conf_section", setting.getConfSection());
+                map.put("conf_key", setting.getConfKey());
+                map.put("conf_value", setting.getConfValue());
+                map.put("sort_num", setting.getSortNum());
+                map.put("memo", setting.getMemo());
+
+                result.put("mu_profile_setting", map);
 
                 return result;
             }

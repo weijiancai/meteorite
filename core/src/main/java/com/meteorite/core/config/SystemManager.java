@@ -8,6 +8,7 @@ import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.IPDB;
+import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.meta.MetaManager;
@@ -34,6 +35,7 @@ public class SystemManager {
     private static SystemManager instance;
     private static SystemInfo sysInfo;
     private static Map<String, ProjectConfig> cache = new HashMap<String, ProjectConfig>();
+    private static Map<String, String> settingMap = new HashMap<String, String>();
     private LayoutConfig layoutConfig;
 
     static {
@@ -64,6 +66,8 @@ public class SystemManager {
         DataSourceManager.getSysDataSource();
         // 检查数据库版本
         checkDbVersion();
+        // 加载参数配置
+        loadProfileSetting();
         // 加载数据源
         loadDataSource();
         // 加载数据字典
@@ -141,6 +145,14 @@ public class SystemManager {
         List<DataSource> list = template.query("select * from mu_db_datasource", MetaRowMapperFactory.getDataSource());
         for (DataSource ds : list) {
             DataSourceManager.addDataSource(ds);
+        }
+    }
+
+    private void loadProfileSetting() throws Exception{
+        JdbcTemplate template = new JdbcTemplate();
+        List<ProfileSetting> settings = template.query("select * from mu_profile_setting", MetaRowMapperFactory.getProfileSetting());
+        for (ProfileSetting setting : settings) {
+            settingMap.put(setting.getConfSection() + "_" + setting.getConfKey(), setting.getConfValue());
         }
     }
 
@@ -248,5 +260,13 @@ public class SystemManager {
      */
     public static SystemInfo getSystemInfo() {
         return sysInfo;
+    }
+
+    public static void saveSetting(ProfileSetting setting) throws Exception {
+        JdbcTemplate.save(DataSourceManager.getSysDataSource(), MetaPDBFactory.getProfileSetting(setting));
+    }
+
+    public static String getSettingValue(String section, String key) {
+        return settingMap.get(section + "_" + key);
     }
 }

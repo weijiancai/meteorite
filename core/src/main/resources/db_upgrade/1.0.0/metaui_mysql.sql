@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/9/14 9:46:36                            */
+/* Created on:     2014/9/15 23:21:02                           */
 /*==============================================================*/
 
 
@@ -37,6 +37,8 @@ drop table if exists mu_module;
 drop table if exists mu_nav_menu;
 
 drop table if exists mu_pm_user;
+
+drop table if exists mu_profile_setting;
 
 drop table if exists mu_project_define;
 
@@ -334,6 +336,21 @@ create table mu_pm_user
 );
 
 alter table mu_pm_user comment '用户信息';
+
+/*==============================================================*/
+/* Table: mu_profile_setting                                    */
+/*==============================================================*/
+create table mu_profile_setting
+(
+   conf_section         varchar(64) not null comment '配置类型',
+   conf_key             varchar(64) not null comment '属性名',
+   conf_value           varchar(128) comment '属性值',
+   sort_num             int comment '排序号',
+   memo                 varchar(1024) comment '备注',
+   primary key (conf_section, conf_key)
+);
+
+alter table mu_profile_setting comment '参数配置';
 
 /*==============================================================*/
 /* Table: mu_project_define                                     */

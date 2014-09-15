@@ -12,6 +12,8 @@ import com.meteorite.core.meta.action.MUAction;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.observer.*;
+import com.meteorite.core.observer.Observer;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.*;
@@ -40,7 +42,7 @@ import java.util.*;
 @XmlRootElement
 @XmlType(propOrder = {"id", "name", "displayName", "valid", "sortNum", "inputDate", "description", "fields"})
 @MetaElement(displayName = "元数据")
-public class Meta {
+public class Meta implements Subject {
     private String id;
     private String name;
     private String displayName;
@@ -528,6 +530,25 @@ public class Meta {
             return FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("JavaBean.ftl"), map);
         } catch (Exception e) {
             throw new RuntimeException("生成JavaBean代码失败！", e);
+        }
+    }
+
+    private List<Observer> observers = new ArrayList<Observer>();
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObserver() {
+        for (Observer observer : observers) {
+            observer.update("");
         }
     }
 }

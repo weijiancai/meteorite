@@ -24,6 +24,7 @@ import com.meteorite.fxbase.ui.component.search.MUSearchBox;
 import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
 import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.meta.AddMetaGuide;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -42,10 +43,7 @@ import javafx.util.Callback;
 import org.controlsfx.control.MasterDetailPane;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Tabs 桌面
@@ -57,7 +55,6 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     private ToolBar toolBar;
     private MUSearchBox searchBox;
     protected MUTree tree;
-    protected MUTree dsTree; // 数据源Tree菜单
     protected MUTabPane tabPane;
     protected Map<String, Tab> tabCache = new HashMap<String, Tab>();
     protected ITreeNode navTree;
@@ -86,7 +83,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         final MasterDetailPane sp = new MasterDetailPane(Side.LEFT);
         sp.setDividerPosition(0.8);
         sp.setMasterNode(tabPane);
-        sp.setDetailNode(createLeft());
+        sp.setDetailNode(tree);
         this.setCenter(sp);
 
         Tab tab = new Tab("桌面");
@@ -216,15 +213,8 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         // 创建底部
         createBottom();
 
-        initDsTree();
+        initNavTree();
         initAfter();
-    }
-
-    private VBox createLeft() {
-        dsTree = new MUTree(null);
-        VBox box = new VBox();
-        box.getChildren().addAll(dsTree, tree);
-        return box;
     }
 
     @Override
@@ -232,11 +222,18 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
 
     }
 
-    private void initDsTree() {
+    private void initNavTree() {
+        navTree = new BaseTreeNode("ROOT");
+        final TreeItem<ITreeNode> navTreeItem = new TreeItem<ITreeNode>(navTree);
+        navTreeItem.setExpanded(true);
+
         final BaseTreeNode dataSource = new BaseTreeNode("数据源管理");
         dataSource.setView(ViewManager.getViewByName("DatasourceCrudView"));
-        dsTree.setRoot(new MUTreeItem(dsTree, dataSource));
-        dsTree.setShowRoot(true);
+        final TreeItem<ITreeNode> dataSourceItem = new TreeItem<ITreeNode>( dataSource);
+
+        tree.setRoot(navTreeItem);
+        tree.setShowRoot(false);
+        navTreeItem.getChildren().add(dataSourceItem);
 
         Service<List<BaseTreeNode>> service = new Service<List<BaseTreeNode>>() {
             @Override
@@ -268,9 +265,8 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
             @Override
             public void changed(ObservableValue<? extends List<BaseTreeNode>> observable, List<BaseTreeNode> oldValue, List<BaseTreeNode> newValue) {
                 for (BaseTreeNode node : newValue) {
-                    MUTreeItem item = new MUTreeItem(dsTree, node);
-                    dsTree.getRoot().getChildren().add(item);
-                    dsTree.buildTree(node, item);
+                    MUTreeItem item = new MUTreeItem(tree, node);
+                    dataSourceItem.getChildren().add(item);
                 }
             }
         });

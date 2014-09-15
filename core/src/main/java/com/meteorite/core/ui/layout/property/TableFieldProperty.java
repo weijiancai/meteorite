@@ -35,6 +35,8 @@ public class TableFieldProperty extends BaseProperty {
     private MetaDataType dataType;
     private IntegerProperty width = new SimpleIntegerProperty();
     private BooleanProperty isDisplay = new SimpleBooleanProperty(true);
+    private BooleanProperty isPk = new SimpleBooleanProperty(false);
+    private BooleanProperty isFk = new SimpleBooleanProperty(false);
     private DisplayStyle displayStyle;
     private DictCategory dict;
     private ObjectProperty<EnumAlign> align = new SimpleObjectProperty<EnumAlign>();
@@ -51,6 +53,8 @@ public class TableFieldProperty extends BaseProperty {
         this.dict = DictManager.getDict(getPropertyValue(TABLE_FIELD.DICT_ID));
         setAlign(EnumAlign.getAlign(getPropertyValue(TABLE_FIELD.ALIGN)));
         setSortNum(UNumber.toInt(getPropertyValue(TABLE_FIELD.SORT_NUM)));
+        setPk(field.isPk());
+        setFk(field.isFk());
 
         // 属性改变，保存到数据库
         widthProperty().addListener(new ChangeListener<Number>() {
@@ -164,6 +168,24 @@ public class TableFieldProperty extends BaseProperty {
         this.sortNum.set(sortNum);
     }
 
+    @MetaFieldElement(displayName = "是否主键", sortNum = 100, dataType = MetaDataType.BOOLEAN)
+    public boolean isPk() {
+        return isPk.get();
+    }
+
+    public void setPk(boolean isPk) {
+        this.isPk.set(isPk);
+    }
+
+    @MetaFieldElement(displayName = "是否外键", sortNum = 110, dataType = MetaDataType.BOOLEAN)
+    public boolean isFk() {
+        return isFk.get();
+    }
+
+    public void setFk(boolean isFk) {
+        this.isFk.set(isFk);
+    }
+
     public IntegerProperty widthProperty() {
         return width;
     }
@@ -180,6 +202,14 @@ public class TableFieldProperty extends BaseProperty {
         return isDisplay;
     }
 
+    public BooleanProperty pkProperty() {
+        return isPk;
+    }
+
+    public BooleanProperty fkProperty() {
+        return isFk;
+    }
+
     public IntegerProperty sortNumProperty() {
         return sortNum;
     }
@@ -189,6 +219,8 @@ public class TableFieldProperty extends BaseProperty {
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.NAME), field, field.getName()));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.DISPLAY_NAME), field, field.getDisplayName()));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_DISPLAY), field, isDisplay ? "true" : "false"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_PK), field, field.isPk() ? "true" : "false"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(TABLE_FIELD.IS_FK), field, field.isFk() ? "true" : "false"));
 
         int w = field.getMaxLength();
         if(w <= 0) {

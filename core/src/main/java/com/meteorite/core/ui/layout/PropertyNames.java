@@ -48,6 +48,8 @@ public interface PropertyNames {
         String ALIGN = "TABLE_FIELD.align";
         String DICT_ID = "TABLE_FIELD.dictId";
         String SORT_NUM = "TABLE_FIELD.sortNum";
+        String IS_PK = "TABLE_FIELD.isPk";
+        String IS_FK = "TABLE_FIELD.isFk";
     }
 
     interface CRUD {

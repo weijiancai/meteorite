@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource.persist;
 
+import com.meteorite.core.config.ProfileSetting;
 import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.db.*;
 import com.meteorite.core.dict.DictCategory;
@@ -60,6 +61,22 @@ public class MetaRowMapperFactory {
                 dataSource.setUrl(url);
 
                 return dataSource;
+            }
+        };
+    }
+
+    public static RowMapper<ProfileSetting> getProfileSetting() {
+        return new RowMapper<ProfileSetting>() {
+            @Override
+            public ProfileSetting mapRow(ResultSet rs) throws SQLException {
+                ProfileSetting setting = new ProfileSetting();
+                setting.setConfSection(rs.getString("conf_section"));
+                setting.setConfKey(rs.getString("conf_key"));
+                setting.setConfValue(rs.getString("conf_value"));
+                setting.setSortNum(rs.getInt("sort_num"));
+                setting.setMemo(rs.getString("memo"));
+
+                return setting;
             }
         };
     }

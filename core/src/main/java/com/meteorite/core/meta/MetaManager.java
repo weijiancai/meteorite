@@ -1,5 +1,6 @@
 package com.meteorite.core.meta;
 
+import com.meteorite.core.config.ProfileSetting;
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.*;
@@ -58,10 +59,12 @@ public class MetaManager {
     }
 
     public static void load() throws Exception {
-        SystemInfo sysInfo = SystemManager.getSystemInfo();
+        String confSection = "metaui";
+        String confKey = "layoutInit";
+        boolean isInit = UString.toBoolean(SystemManager.getSettingValue(confSection, confKey));
         JdbcTemplate template = new JdbcTemplate();
         try {
-            if (sysInfo.isMetaInit()) { // ClassDef 已经初始化
+            if (isInit) { // ClassDef 已经初始化
                 String sql = "SELECT * FROM mu_meta left join mu_meta_sql on (id=meta_id) order by sort_num";
                 List<Meta> metaList = template.query(sql, MetaRowMapperFactory.getMeta());
                 for (final Meta meta : metaList) {
@@ -143,8 +146,7 @@ public class MetaManager {
                     ViewManager.createViews(meta, template);
                 }
 
-                sysInfo.setMetaInit(true);
-                sysInfo.store();
+                SystemManager.saveSetting(new ProfileSetting(confSection, confKey, "T"));
             }
 
             addMeta(DBDataSource.class, template);

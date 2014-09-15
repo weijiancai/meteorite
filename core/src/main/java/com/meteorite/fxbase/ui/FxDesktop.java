@@ -109,6 +109,11 @@ public class FxDesktop extends BorderPane implements IDesktop {
     }
 
     @Override
+    public void initAfter() {
+
+    }
+
+    @Override
     public Parent getDesktop() {
         return this;
     }

@@ -9,6 +9,7 @@ import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.ui.layout.property.TableProperty;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.ui.model.ViewProperty;
+import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.component.table.cell.SortNumTableCell;
 import com.meteorite.fxbase.ui.component.table.column.BaseTableColumn;
@@ -107,7 +108,11 @@ public class MUTable extends BorderPane {
                 BorderPane root = new BorderPane();
                 root.setPrefSize(800, 400);
                 TabPane tabPane = new TabPane();
-                Tab main = new Tab(view.getMeta().getDisplayName());
+                String displayName = view.getMeta().getDisplayName();
+                if (UString.isEmpty(displayName)) {
+                    displayName = view.getMeta().getName();
+                }
+                Tab main = new Tab(displayName);
                 main.setClosable(false);
                 main.setContent(getColInfoTable(ViewManager.getViewByName("TableFieldPropertyTableView"), config.getFieldProperties()));
                 tabPane.getTabs().addAll(main);

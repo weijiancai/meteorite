@@ -1,6 +1,7 @@
 package com.meteorite.core.ui.layout;
 
 import com.meteorite.core.R;
+import com.meteorite.core.config.ProfileSetting;
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.db.DBManager;
@@ -43,10 +44,12 @@ public class LayoutManager {
     private static Layout root;
 
     public static void load() throws Exception {
-        SystemInfo sysInfo = SystemManager.getSystemInfo();
+        String confSection = "metaui";
+        String confKey = "layoutInit";
+        boolean isInit = UString.toBoolean(SystemManager.getSettingValue(confSection, confKey));
         JdbcTemplate template = new JdbcTemplate();
 
-        if (sysInfo.isLayoutInit()) {
+        if (isInit) {
             // 查询布局
             /*String sql = "SELECT * FROM sys_layout";
             List<Layout> layoutList = template.query(sql, MetaRowMapperFactory.getLayout());
@@ -102,8 +105,7 @@ public class LayoutManager {
                 propMap.put(property.getId(), property);
             }
 
-            sysInfo.setLayoutInit(true);
-            sysInfo.store();
+            SystemManager.saveSetting(new ProfileSetting(confSection, confKey, "T"));
         }
 
         template.commit();

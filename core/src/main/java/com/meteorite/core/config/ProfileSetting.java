@@ -1,0 +1,70 @@
+package com.meteorite.core.config;
+
+/**
+ * 参数配置
+ *
+ * @author wei_jc
+ * @since 1.0.0
+ */
+public class ProfileSetting {
+    /** 配置类型 */
+    private String confSection;
+    /** 属性名 */
+    private String confKey;
+    /** 属性值 */
+    private String confValue;
+    /** 排序号 */
+    private int sortNum;
+    /** 备注 */
+    private String memo;
+
+    public ProfileSetting() {
+    }
+
+    public ProfileSetting(String confSection, String confKey, String confValue) {
+        this.confSection = confSection;
+        this.confKey = confKey;
+        this.confValue = confValue;
+    }
+
+    public String getConfSection() {
+        return confSection;
+    }
+
+    public void setConfSection(String confSection) {
+        this.confSection = confSection;
+    }
+
+    public String getConfKey() {
+        return confKey;
+    }
+
+    public void setConfKey(String confKey) {
+        this.confKey = confKey;
+    }
+
+    public String getConfValue() {
+        return confValue;
+    }
+
+    public void setConfValue(String confValue) {
+        this.confValue = confValue;
+    }
+
+    public int getSortNum() {
+        return sortNum;
+    }
+
+    public void setSortNum(int sortNum) {
+        this.sortNum = sortNum;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+}

@@ -132,6 +132,9 @@ public class View {
     public void setViewProperties(List<ViewProperty> viewProperties) {
         this.viewProperties = viewProperties;
         for (ViewProperty property : viewProperties) {
+            if (property.getProperty() == null) {
+                continue;
+            }
             propMap.put(property.getProperty().getId(), property);
             MetaField field = property.getField();
             if (field != null) {

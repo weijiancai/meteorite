@@ -14,6 +14,7 @@ drop table if exists mu_meta_sql;
 drop table if exists mu_module;
 drop table if exists mu_nav_menu;
 drop table if exists mu_pm_user;
+drop table if exists mu_profile_setting;
 drop table if exists mu_project_define;
 drop table if exists mu_view;
 drop table if exists mu_view_config;
@@ -402,6 +403,25 @@ comment on column mu_pm_user.email is '邮箱';
 comment on column mu_pm_user.mobile_number is '手机号';
 comment on column mu_pm_user.is_valid is '是否有效';
 comment on column mu_pm_user.input_date is '录入时间';
+
+/*==============================================================*/
+/* Table: mu_profile_setting                                      */
+/*==============================================================*/
+create table mu_profile_setting
+(
+    conf_section                     varchar(64)     not null,
+    conf_key                         varchar(64)     not null,
+    conf_value                       varchar(128)    ,
+    sort_num                         int             ,
+    memo                             varchar(1024)   ,
+    primary key (conf_section,conf_key)
+);
+comment on table mu_profile_setting is '参数配置';
+comment on column mu_profile_setting.conf_section is '配置类型';
+comment on column mu_profile_setting.conf_key is '属性名';
+comment on column mu_profile_setting.conf_value is '属性值';
+comment on column mu_profile_setting.sort_num is '排序号';
+comment on column mu_profile_setting.memo is '备注';
 
 /*==============================================================*/
 /* Table: mu_project_define                                      */

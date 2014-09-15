@@ -62,6 +62,8 @@ public class LayoutProperties {
         list.add(new LayoutProperty(PropertyNames.TABLE_FIELD.SORT_NUM, "排序号", LayoutType.TABLE_FIELD, null, PropertyType.IP, 60));
         list.add(new LayoutProperty(PropertyNames.TABLE_FIELD.ALIGN, "对齐", LayoutType.TABLE_FIELD, null, PropertyType.IP, 70));
         list.add(new LayoutProperty(PropertyNames.TABLE_FIELD.DICT_ID, "数据字典", LayoutType.TABLE_FIELD, null, PropertyType.IP, 80));
+        list.add(new LayoutProperty(PropertyNames.TABLE_FIELD.IS_PK, "主键", LayoutType.TABLE_FIELD, "false", PropertyType.IP, 90));
+        list.add(new LayoutProperty(PropertyNames.TABLE_FIELD.IS_FK, "外键", LayoutType.TABLE_FIELD, "false", PropertyType.IP, 100));
         return list;
     }
 

@@ -1,5 +1,6 @@
 package com.meteorite.core.dict;
 
+import com.meteorite.core.config.ProfileSetting;
 import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.DataSourceType;
@@ -13,6 +14,7 @@ import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.ui.layout.PropertyType;
 import com.meteorite.core.util.UObject;
+import com.meteorite.core.util.UString;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -62,10 +64,12 @@ public class DictManager {
     }
 
     public static void load() throws Exception {
-        SystemInfo sysInfo = SystemManager.getSystemInfo();
+        String confSection = "metaui";
+        String confKey = "dictInit";
+        boolean isInit = UString.toBoolean(SystemManager.getSettingValue(confSection, confKey));
         JdbcTemplate template = new JdbcTemplate();
 
-        if (sysInfo.isDictInit()) {
+        if (isInit) {
             // 查询布局
             String sql = "SELECT * FROM mu_dz_category";
             List<DictCategory> categoryList = template.query(sql, MetaRowMapperFactory.getDictCategory());
@@ -93,8 +97,7 @@ public class DictManager {
                 }
             }
 
-            sysInfo.setDictInit(true);
-            sysInfo.store();
+            SystemManager.saveSetting(new ProfileSetting(confSection, confKey, "T"));
         }
 
         template.commit();
