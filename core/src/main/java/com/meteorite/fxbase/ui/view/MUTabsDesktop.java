@@ -2,12 +2,16 @@ package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.config.ProjectConfig;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.dict.FormType;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.model.impl.BaseTreeNode;
+import com.meteorite.core.observer.Observer;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.model.View;
@@ -17,11 +21,14 @@ import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IDesktop;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.search.MUSearchBox;
+import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
 import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.meta.AddMetaGuide;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.geometry.Side;
 import javafx.scene.Parent;
@@ -29,15 +36,13 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.*;
 import javafx.stage.Popup;
 import javafx.util.Callback;
 import org.controlsfx.control.MasterDetailPane;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +57,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     private ToolBar toolBar;
     private MUSearchBox searchBox;
     protected MUTree tree;
+    protected MUTree dsTree; // 数据源Tree菜单
     protected MUTabPane tabPane;
     protected Map<String, Tab> tabCache = new HashMap<String, Tab>();
     protected ITreeNode navTree;
@@ -59,6 +65,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     private Popup popup = new Popup();
 
     public MUTabsDesktop() {
+        this(null);
     }
 
     public MUTabsDesktop(ITreeNode navTree) {
@@ -66,10 +73,10 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         /*TreeView<File> fileTree = new TreeView<>();
         fileTree.setRoot(new FileTreeItem(new File("/")));
         this.setRight(fileTree);*/
+        tree = new MUTree(navTree);
     }
 
     public void initUI() {
-        tree = new MUTree(navTree);
         toolBar = new ToolBar();
         searchBox = new MUSearchBox(this);
         tabPane = new MUTabPane();
@@ -79,7 +86,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         final MasterDetailPane sp = new MasterDetailPane(Side.LEFT);
         sp.setDividerPosition(0.8);
         sp.setMasterNode(tabPane);
-        sp.setDetailNode(tree);
+        sp.setDetailNode(createLeft());
         this.setCenter(sp);
 
         Tab tab = new Tab("桌面");
@@ -208,6 +215,74 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
 
         // 创建底部
         createBottom();
+
+        initDsTree();
+        initAfter();
+    }
+
+    private VBox createLeft() {
+        dsTree = new MUTree(null);
+        VBox box = new VBox();
+        box.getChildren().addAll(dsTree, tree);
+        return box;
+    }
+
+    @Override
+    public void initAfter() {
+
+    }
+
+    private void initDsTree() {
+        final BaseTreeNode dataSource = new BaseTreeNode("数据源管理");
+        dataSource.setView(ViewManager.getViewByName("DatasourceCrudView"));
+        dsTree.setRoot(new MUTreeItem(dsTree, dataSource));
+        dsTree.setShowRoot(true);
+
+        Service<List<BaseTreeNode>> service = new Service<List<BaseTreeNode>>() {
+            @Override
+            protected Task<List<BaseTreeNode>> createTask() {
+                return new Task<List<BaseTreeNode>>() {
+                    @Override
+                    protected List<BaseTreeNode> call() throws Exception {
+                        List<BaseTreeNode> result = new ArrayList<BaseTreeNode>();
+                        for (final DataSource ds : DataSourceManager.getDataSources()) {
+                            ds.registerObserver(new Observer() {
+                                @Override
+                                public void update(String message) {
+                                    updateMessage(message);
+                                }
+                            });
+                            ds.load();
+                            BaseTreeNode dsNode = new BaseTreeNode(ds.getDisplayName());
+                            for (ITreeNode node : ds.getNavTree().getChildren()) {
+                                dsNode.getChildren().add(node);
+                            }
+                            result.add(dsNode);
+                        }
+                        return result;
+                    }
+                };
+            }
+        };
+        service.valueProperty().addListener(new ChangeListener<List<BaseTreeNode>>() {
+            @Override
+            public void changed(ObservableValue<? extends List<BaseTreeNode>> observable, List<BaseTreeNode> oldValue, List<BaseTreeNode> newValue) {
+                for (BaseTreeNode node : newValue) {
+                    MUTreeItem item = new MUTreeItem(dsTree, node);
+                    dsTree.getRoot().getChildren().add(item);
+                    dsTree.buildTree(node, item);
+                }
+            }
+        });
+        service.messageProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                messageLabel.setText(newValue);
+            }
+        });
+
+        // 启动服务
+        service.start();
     }
 
     private void createBottom() {

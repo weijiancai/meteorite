@@ -18,6 +18,11 @@ public interface IDesktop {
     void initUI();
 
     /**
+     * 初始化UI之后调用
+     */
+    void initAfter();
+
+    /**
      * 获得桌面UI控件
      *
      * @return 返回桌面

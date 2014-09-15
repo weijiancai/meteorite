@@ -22,7 +22,12 @@ public class MUTree extends TreeView<ITreeNode> {
     private Map<ITreeNode, TreeItem<ITreeNode>> nodeItemMap = new HashMap<ITreeNode, TreeItem<ITreeNode>>();
 
     public MUTree(ITreeNode root) {
-        MUTreeItem rootItem = new MUTreeItem(this, root);
+        if (root != null) {
+            MUTreeItem rootItem = new MUTreeItem(this, root);
+            rootItem.setExpanded(true);
+            this.setRoot(rootItem);
+        }
+
         /*this.setCellFactory(new Callback<TreeView<ITreeNode>, TreeCell<ITreeNode>>() {
             @Override
             public TreeCell<ITreeNode> call(TreeView<ITreeNode> param) {
@@ -30,8 +35,6 @@ public class MUTree extends TreeView<ITreeNode> {
             }
         });*/
         /*TreeItem<ITreeNode> rootItem = addTreeNode(root);*/
-        rootItem.setExpanded(true);
-        this.setRoot(rootItem);
         this.setShowRoot(false);
     }
 

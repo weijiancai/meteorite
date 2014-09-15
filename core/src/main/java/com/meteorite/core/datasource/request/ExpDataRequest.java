@@ -16,6 +16,7 @@ public class ExpDataRequest extends BaseRequest {
 
     private String[] excludeColumns;
     private Map<String, Object> defaultValues = new HashMap<String, Object>();
+    private Map<String, String> colMapping = new HashMap<String, String>();
 
     public String[] getExcludeColumns() {
         return excludeColumns;
@@ -35,5 +36,17 @@ public class ExpDataRequest extends BaseRequest {
 
     public void addDefaultValue(String key, String value) {
         defaultValues.put(key, value);
+    }
+
+    public Map<String, String> getColMapping() {
+        return colMapping;
+    }
+
+    public void setColMapping(Map<String, String> colMapping) {
+        this.colMapping = colMapping;
+    }
+
+    public void addColMapping(String sourceCol, String targetCol) {
+        colMapping.put(sourceCol, targetCol);
     }
 }

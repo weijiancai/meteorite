@@ -516,6 +516,7 @@ public class DBDataSource extends DataSource {
         ExpDataRequest expRequest = (ExpDataRequest) request;
 
         Map<String, String> map = request.getPathHandler().parseForDb();
+        Map<String, String> colMapping = expRequest.getColMapping();
         String tableName = map.get("table");
         JdbcTemplate template = new JdbcTemplate(this);
         IResponse response = request.getResponse();
@@ -528,7 +529,12 @@ public class DBDataSource extends DataSource {
                 }
             }
             for (Map.Entry<String, Object> entry : expRequest.getDefaultValues().entrySet()) {
-                dataMap.put(entry.getKey(), entry.getValue());
+                String key = colMapping.get(entry.getKey());
+                if (key == null) {
+                    dataMap.put(entry.getKey(), entry.getValue());
+                } else {
+                    dataMap.put(key, entry.getValue());
+                }
             }
             template.save(dataMap, tableName);
         }

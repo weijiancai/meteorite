@@ -98,9 +98,8 @@ public abstract class BaseApp extends Application {
                 }
             });
         } else {
-            if (facade.getDesktop() != null) {
-                desktop = facade.getDesktop();
-            } else {
+            desktop = facade.getDesktop();
+            if (desktop == null) {
                 desktop = new FxDesktop(stage);
             }
         }

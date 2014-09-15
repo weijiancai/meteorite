@@ -1,5 +1,6 @@
 package com.ectongs;
 
+import com.meteorite.core.ITree;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.model.ITreeNode;
@@ -10,6 +11,7 @@ import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
 import com.meteorite.fxbase.ui.view.MUTabsDesktop;
+import com.meteorite.fxbase.ui.view.MUTree;
 import com.meteorite.fxbase.ui.view.MuCrud;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -33,14 +35,24 @@ public class EctongsDesktop extends MUTabsDesktop {
 
 
     public EctongsDesktop() {
-        initNavTree();
+
     }
 
-    public void initNavTree() {
+    @Override
+    public void initAfter() {
+        super.initAfter();
+        tree.setShowRoot(true);
         navTree = new BaseTreeNode("ROOT");
+        final MUTreeItem navTreeItem = new MUTreeItem(tree, navTree);
 
         final BaseTreeNode dataSource = new BaseTreeNode("数据源");
         dataSource.setView(ViewManager.getViewByName("DatasourceCrudView"));
+        final MUTreeItem dataSourceItem = new MUTreeItem(tree, dataSource);
+
+        navTreeItem.getChildren().add(dataSourceItem);
+        tree.setRoot(navTreeItem);
+
+
 
         Service<List<BaseTreeNode>> service = new Service<List<BaseTreeNode>>() {
             @Override
@@ -71,21 +83,12 @@ public class EctongsDesktop extends MUTabsDesktop {
         service.valueProperty().addListener(new ChangeListener<List<BaseTreeNode>>() {
             @Override
             public void changed(ObservableValue<? extends List<BaseTreeNode>> observable, List<BaseTreeNode> oldValue, List<BaseTreeNode> newValue) {
-                /*TreeItem<ITreeNode> dataSourceItem = tree.getTreeItem(dataSource);
                 for (BaseTreeNode node : newValue) {
-//                    dataSource.getChildren().add(node);
-//                    navTree.getChildren().add(node);
-//                    dataSourceItem.getChildren().add(new TreeItem<ITreeNode>(node));
-                    tree.buildTree(node, dataSourceItem);
-                }*/
-                dataSource.getChildren().addAll(newValue);
-                tree.buildTree(dataSource, tree.getRoot());
-            }
-        });
-        service.messageProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-
+                    MUTreeItem item = new MUTreeItem(tree, node);
+                    navTreeItem.getChildren().add(item);
+                    tree.buildTree(node, item);
+                }
+                dataSourceItem.setExpanded(true);
             }
         });
         service.messageProperty().addListener(new ChangeListener<String>() {
@@ -96,15 +99,8 @@ public class EctongsDesktop extends MUTabsDesktop {
         });
 
         navTree.getChildren().add(dataSource);
-//        tree.getRoot().getChildren().add(new MUTreeItem(tree, dataSource));
 
-        // 初始化界面
-        initUI();
-
-        tree.setShowRoot(true);
-//        tree.addTreeNode(dataSource);
-        tree.buildTree(navTree, tree.getRoot());
-
+        navTreeItem.getChildren().add(new MUTreeItem(tree, new BaseTreeNode("Test")));
         // 启动服务
         service.start();
     }
