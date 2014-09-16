@@ -10,6 +10,6 @@ Class-Path: jersey-container-servlet-core-2.11.jar mysql-connector-jav
  javax.inject-1.jar aopalliance-repackaged-2.3.0-b05.jar freemarker-2.
  3.20.jar log4j-1.2.17.jar controlsfx-8.0.5.jar hk2-utils-2.3.0-b05.ja
  r javax.annotation-api-1.2.jar jersey-guava-2.11.jar osgi-resource-lo
- cator-1.0.1.jar hk2-locator-2.3.0-b05.jar
+ cator-1.0.1.jar hk2-locator-2.3.0-b05.jar xml-apis-1.0.b2.jar dom4j-1.6.1.jar jaxen-1.1.6.jar
 Main-Class: com.meteorite.fxbase.MetaUIApp
 

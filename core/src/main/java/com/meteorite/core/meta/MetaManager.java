@@ -60,7 +60,7 @@ public class MetaManager {
 
     public static void load() throws Exception {
         String confSection = "metaui";
-        String confKey = "layoutInit";
+        String confKey = "metaInit";
         boolean isInit = UString.toBoolean(SystemManager.getSettingValue(confSection, confKey));
         JdbcTemplate template = new JdbcTemplate();
         try {

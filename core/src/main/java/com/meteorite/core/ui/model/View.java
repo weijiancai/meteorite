@@ -5,6 +5,7 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
+import javafx.scene.Node;
 
 import java.util.*;
 
@@ -29,6 +30,7 @@ public class View {
     private Date inputDate;
     /** 排序号 */
     private int sortNum;
+    private Node node;
 
     /** 元字段属性Map */
     private Map<MetaField, Map<String, ViewProperty>> fieldPropMap = new HashMap<MetaField, Map<String, ViewProperty>>();
@@ -200,5 +202,13 @@ public class View {
         }
 
         return null;
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+    public void setNode(Node node) {
+        this.node = node;
     }
 }

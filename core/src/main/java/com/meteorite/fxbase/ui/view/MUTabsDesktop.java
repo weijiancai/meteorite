@@ -32,6 +32,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -297,29 +298,39 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         // 打开视图
         View view = node.getView();
         if (view != null) {
-            String text = node.getName();
+            String displayName = node.getDisplayName();
+            if (UString.isEmpty(displayName)) {
+                displayName = node.getName();
+            }
             Tab tab = tabCache.get(node.getId());
             if (tab == null) {
-                tab = new Tab(text);
+                tab = new Tab(displayName);
                 tab.setId(node.getId());
 
-                // 底部数据库对象TabPane
-                MUTabPane dbObjTabPane = new MUTabPane();
-                dbObjTabPane.setSide(Side.BOTTOM);
+                // 自定义视图
+                Node nodeView = view.getNode();
+                if (nodeView != null) {
+                    tab.setContent(nodeView);
+                } else {
+                    // 底部数据库对象TabPane
+                    MUTabPane dbObjTabPane = new MUTabPane();
+                    dbObjTabPane.setSide(Side.BOTTOM);
 
-                Tab objDefTab = new Tab("对象定义");
-                objDefTab.setClosable(false);
+                    Tab objDefTab = new Tab("对象定义");
+                    objDefTab.setClosable(false);
 
-                Tab dataTab = new Tab("数据信息");
-                dataTab.setClosable(false);
+                    Tab dataTab = new Tab("数据信息");
+                    dataTab.setClosable(false);
 
-                Tab genCodeTab = getGenCodeTab(node);
+                    Tab genCodeTab = getGenCodeTab(node);
 
-                dbObjTabPane.getTabs().addAll(objDefTab, dataTab, genCodeTab);
-                dbObjTabPane.getSelectionModel().select(dataTab);
-                dataTab.setContent(new MuCrud(view));
+                    dbObjTabPane.getTabs().addAll(objDefTab, dataTab, genCodeTab);
+                    dbObjTabPane.getSelectionModel().select(dataTab);
+                    dataTab.setContent(new MuCrud(view));
 
-                tab.setContent(dbObjTabPane);
+                    tab.setContent(dbObjTabPane);
+                }
+
                 tabPane.getTabs().add(tab);
                 tabCache.put(node.getId(), tab);
             }

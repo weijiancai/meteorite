@@ -1,5 +1,6 @@
 package com.ectongs;
 
+import com.ectongs.view.DsConfigView;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.model.ITreeNode;
@@ -33,6 +34,18 @@ public class EctongsDesktop extends MUTabsDesktop {
 
     public EctongsDesktop() {
 
+    }
+
+    @Override
+    public void initAfter() {
+        BaseTreeNode dsConfigTreeNode = new BaseTreeNode("DS配置");
+        dsConfigTreeNode.setId("DsConfigSetting");
+
+        View dsConfigView = new View();
+        dsConfigView.setNode(new DsConfigView());
+        dsConfigTreeNode.setView(dsConfigView);
+
+        tree.getRoot().getChildren().add(new MUTreeItem(tree, dsConfigTreeNode));
     }
 
     /*public void openTab(ITreeNode node) {
