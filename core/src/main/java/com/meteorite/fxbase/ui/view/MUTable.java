@@ -11,6 +11,7 @@ import com.meteorite.core.ui.model.View;
 import com.meteorite.core.ui.model.ViewProperty;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.MuEventHandler;
+import com.meteorite.fxbase.ui.component.form.MUListView;
 import com.meteorite.fxbase.ui.component.table.cell.SortNumTableCell;
 import com.meteorite.fxbase.ui.component.table.column.BaseTableColumn;
 import com.meteorite.fxbase.ui.event.DataChangeEvent;
@@ -38,6 +39,9 @@ public class MUTable extends BorderPane {
     private TableProperty config;
     private TableView<DataMap> table;
     private ToolBar toolBar;
+
+    public MUTable() {
+    }
 
     public MUTable(View view) {
         this.view = view;
@@ -138,7 +142,19 @@ public class MUTable extends BorderPane {
                 });
             }
         });
-        toolBar.getItems().addAll(btnCol);
+        toolBar.getItems().add(btnCol);
+
+        // 分组
+        Button btnGroup = new Button("分组");
+        btnGroup.setOnAction(new MuEventHandler<ActionEvent>() {
+            @Override
+            public void doHandler(ActionEvent event) throws Exception {
+                BorderPane borderPane = new BorderPane();
+                MUListView<TableFieldProperty> colNameList = new MUListView<TableFieldProperty>();
+
+            }
+        });
+        toolBar.getItems().add(btnGroup);
     }
 
 

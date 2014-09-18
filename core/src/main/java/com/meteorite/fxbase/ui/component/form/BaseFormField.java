@@ -104,6 +104,10 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
                     } else if (text.equals("*%")) {
                         setQueryModel("%*");
                     } else if (text.equals("%*")) {
+                        setQueryModel("null");
+                    } else if (text.equals("null")) {
+                        setQueryModel("not null");
+                    } else if (text.equals("not null")) {
                         setQueryModel("=");
                     }
                 }
@@ -173,6 +177,20 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
                     setQueryModel("%*");
                 }
             });
+            MenuItem nullItem = new MenuItem("null");
+            nullItem.setOnAction(new MuEventHandler<ActionEvent>() {
+                @Override
+                public void doHandler(ActionEvent event) throws Exception {
+                    setQueryModel("null");
+                }
+            });
+            MenuItem notNull = new MenuItem("not null");
+            notNull.setOnAction(new MuEventHandler<ActionEvent>() {
+                @Override
+                public void doHandler(ActionEvent event) throws Exception {
+                    setQueryModel("not null");
+                }
+            });
             ContextMenu contextMenu = new ContextMenu();
             contextMenu.getItems().addAll(equal, notEqual, greater, greaterEqual, less, lessEqual, like, leftLike, rightLike);
             btnQueryModel.setContextMenu(contextMenu);
@@ -200,6 +218,10 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
             config.setQueryModel(QueryModel.LEFT_LIKE);
         } else if (queryModel.equals("%*")) {
             config.setQueryModel(QueryModel.RIGHT_LIKE);
+        } else if (queryModel.equals("null")) {
+            config.setQueryModel(QueryModel.NULL);
+        } else if (queryModel.equals("not null")) {
+            config.setQueryModel(QueryModel.NOT_NULL);
         }
     }
 

@@ -63,12 +63,21 @@ public class ViewManager {
                 }*/
 
                 // 查询视图属性
-                sql = "SELECT * FROM mu_view_prop WHERE view_id=?";
+                /*sql = "SELECT * FROM mu_view_prop WHERE view_id=?";
                 List<ViewProperty> configList = template.query(sql, MetaRowMapperFactory.getViewProperty(view), view.getId());
                 view.setViewProperties(configList);
                 for (ViewProperty config : configList) {
                     propertyMap.put(config.getId(), config);
-                }
+                }*/
+            }
+
+            sql = "SELECT * FROM mu_view_prop";
+            List<ViewProperty> configList = template.query(sql, MetaRowMapperFactory.getViewProperty(null));
+            for (ViewProperty config : configList) {
+                View view = viewIdMap.get(config.getViewId());
+                view.addViewProperty(config);
+                config.setView(view);
+                propertyMap.put(config.getId(), config);
             }
         } else {
             // 暂时不需要初始化

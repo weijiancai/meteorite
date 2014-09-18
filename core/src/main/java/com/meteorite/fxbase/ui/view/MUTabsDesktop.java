@@ -236,6 +236,15 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         tree.setShowRoot(false);
         navTreeItem.getChildren().add(dataSourceItem);
 
+        BaseTreeNode dsConfigTreeNode = new BaseTreeNode("SQL控制台");
+        dsConfigTreeNode.setId("SqlConsoleView");
+
+        View dsConfigView = new View();
+//        dsConfigView.setNode(new DsConfigView());
+        dsConfigTreeNode.setView(dsConfigView);
+
+        tree.getRoot().getChildren().add(new MUTreeItem(tree, dsConfigTreeNode));
+
         Service<List<BaseTreeNode>> service = new Service<List<BaseTreeNode>>() {
             @Override
             protected Task<List<BaseTreeNode>> createTask() {

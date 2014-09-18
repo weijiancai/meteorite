@@ -128,26 +128,34 @@ public class View {
 
     @JSONField(serialize = false)
     public List<ViewProperty> getViewProperties() {
+        if (viewProperties == null) {
+            viewProperties = new ArrayList<ViewProperty>();
+        }
         return viewProperties;
     }
 
     public void setViewProperties(List<ViewProperty> viewProperties) {
-        this.viewProperties = viewProperties;
         for (ViewProperty property : viewProperties) {
-            if (property.getProperty() == null) {
-                continue;
+            addViewProperty(property);
+        }
+    }
+
+    public void addViewProperty(ViewProperty property) {
+        if (property.getProperty() == null) {
+            return;
+        }
+        propMap.put(property.getProperty().getId(), property);
+        MetaField field = property.getField();
+        if (field != null) {
+            Map<String, ViewProperty> propMap = fieldPropMap.get(field);
+            if (propMap == null) {
+                propMap = new HashMap<String, ViewProperty>();
+                fieldPropMap.put(field, propMap);
             }
             propMap.put(property.getProperty().getId(), property);
-            MetaField field = property.getField();
-            if (field != null) {
-                Map<String, ViewProperty> propMap = fieldPropMap.get(field);
-                if (propMap == null) {
-                    propMap = new HashMap<String, ViewProperty>();
-                    fieldPropMap.put(field, propMap);
-                }
-                propMap.put(property.getProperty().getId(), property);
-            }
         }
+
+        getViewProperties().add(property);
     }
 
     public ViewProperty getProperty(String propertyId) {

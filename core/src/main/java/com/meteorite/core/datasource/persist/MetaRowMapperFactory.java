@@ -39,6 +39,10 @@ public class MetaRowMapperFactory {
                     if (UString.isNotEmpty(url)) {
                         if (url.startsWith("jdbc:mysql")) {
                             dbDataSource.setDriverClass(JdbcDrivers.MYSQL);
+                        } else if (url.startsWith("jdbc:sqlserver")) {
+                            dbDataSource.setDriverClass(JdbcDrivers.SQL_SERVER);
+                        } else if (url.startsWith("jdbc:hsqldb")) {
+                            dbDataSource.setDriverClass(JdbcDrivers.HSQLDB);
                         }
                     }
                     dataSource = dbDataSource;
@@ -290,6 +294,7 @@ public class MetaRowMapperFactory {
 
                 property.setId(rs.getString("id"));
                 property.setView(view);
+                property.setViewId(rs.getString("view_id"));
                 property.setProperty(LayoutManager.getLayoutPropById(rs.getString("layout_prop_id")));
                 property.setField(MetaManager.getMetaField(rs.getString("meta_field_id")));
                 property.setValue(rs.getString("value"));

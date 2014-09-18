@@ -12,12 +12,11 @@ import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.util.Callback;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * JDBC模板
@@ -26,6 +25,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class JdbcTemplate {
+    private static final Logger log = Logger.getLogger(JdbcTemplate.class);
     private DBDataSource dataSource;
     private Connection conn;
 
@@ -218,7 +218,21 @@ public class JdbcTemplate {
         }
     }
 
-    public void save(Map<String, Object> params, String table)  throws Exception {
+    public void save(Map<String, Object> paramMap, String table)  throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
+            Object value = entry.getValue();
+            if (value == null) {
+                continue;
+            }
+            String key = entry.getKey();
+            // 去掉表名前缀
+            if (key.contains(".")) {
+                key = key.split("\\.")[1];
+            }
+            params.put(key, value);
+        }
+
         try {
             StringBuilder sql = new StringBuilder("INSERT INTO " + table + " (");
 
@@ -226,23 +240,24 @@ public class JdbcTemplate {
 
             String values = "";
             int i = 0;
-            for(String key : params.keySet()) {
+            for (String key : params.keySet()) {
                 sql.append(key);
                 values += "?";
-                if(++i < params.size()) {
+                if (++i < params.size()) {
                     sql.append(",");
                     values += ",";
                 }
                 keyList.add(key);
             }
             sql.append(") VALUES (").append(values).append(")");
+            // 打印输出sql语句
             String outSql = sql.toString();
             Object obj;
             for (String key : params.keySet()) {
                 obj = params.get(key);
                 outSql = outSql.replaceFirst("\\?", obj == null ? "' '" : "'" + obj.toString() + "'");
             }
-            System.out.println(outSql);
+            log.info(outSql);
             PreparedStatement pstmt = conn.prepareStatement(sql.toString());
             i = 1;
             for (String key : keyList) {
@@ -253,7 +268,7 @@ public class JdbcTemplate {
 
         } catch (Exception e) {
             e.printStackTrace();
-            if(null != conn) {
+            if (null != conn) {
                 try {
                     conn.rollback();
                 } catch (SQLException e1) {

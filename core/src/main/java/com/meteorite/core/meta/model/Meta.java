@@ -59,7 +59,7 @@ public class Meta implements Subject {
     private DataSource dataSource;
     private VirtualResource resource;
 
-    private ObjectProperty<ObservableList<DataMap>> dataList = new SimpleObjectProperty<ObservableList<DataMap>>();
+    private ObjectProperty<ObservableList<DataMap>> dataList = new SimpleObjectProperty<ObservableList<DataMap>>(FXCollections.observableList(new ArrayList<DataMap>()));
     private IntegerProperty totalRows = new SimpleIntegerProperty(0); // 总行数
     private IntegerProperty pageCount = new SimpleIntegerProperty(0); // 总页数
     private IntegerProperty pageRows = new SimpleIntegerProperty(15); // 每页行数

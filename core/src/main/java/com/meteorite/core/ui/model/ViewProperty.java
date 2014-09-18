@@ -17,6 +17,8 @@ public class ViewProperty {
     private String id;
     /** 属性值*/
     private String value;
+    /** 视图ID */
+    private String viewId;
 
     private View view;
     private MetaField field;
@@ -52,6 +54,14 @@ public class ViewProperty {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getViewId() {
+        return viewId;
+    }
+
+    public void setViewId(String viewId) {
+        this.viewId = viewId;
     }
 
     public MetaField getField() {

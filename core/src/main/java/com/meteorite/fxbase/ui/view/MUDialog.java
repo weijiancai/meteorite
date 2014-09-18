@@ -4,6 +4,7 @@ import com.meteorite.fxbase.BaseApp;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.util.Callback;
+import org.apache.log4j.Logger;
 import org.controlsfx.dialog.AbstractDialogAction;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
@@ -15,6 +16,7 @@ import org.controlsfx.dialog.Dialogs;
  * @since 1.0.0
  */
 public class MUDialog extends Dialog {
+    private static final Logger log = Logger.getLogger(MUDialog.class);
 
     public MUDialog(Object owner, String title) {
         super(owner, title);
@@ -60,7 +62,7 @@ public class MUDialog extends Dialog {
      * @param e 异常信息
      */
     public static void showExceptionDialog(Throwable e) {
-        e.printStackTrace();
+        log.error(e.getMessage(), e);
         Dialogs.create().title("异常信息").masthead(null).message(e.getMessage()).showException(e);
     }
 }

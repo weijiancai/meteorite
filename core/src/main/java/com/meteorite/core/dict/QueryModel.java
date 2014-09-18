@@ -44,7 +44,15 @@ public enum QueryModel {
     /**
      * 右Like like %a
      */
-    RIGHT_LIKE
+    RIGHT_LIKE,
+    /**
+     * NULL
+     */
+    NULL,
+    /**
+     * NOT NULL
+     */
+    NOT_NULL
     ;
 
     public static QueryModel convert(String queryModelStr) {

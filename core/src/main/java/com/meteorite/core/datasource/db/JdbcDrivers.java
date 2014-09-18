@@ -9,4 +9,5 @@ package com.meteorite.core.datasource.db;
 public interface JdbcDrivers {
     String SQL_SERVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     String MYSQL = "com.mysql.jdbc.Driver";
+    String HSQLDB = "org.hsqldb.jdbcDriver";
 }
