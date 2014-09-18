@@ -15,8 +15,9 @@ public class UNumber {
         }
     }
 
-    public static double toDouble(String str) {
+    public static double toDouble(Object obj) {
         try {
+            String str = UString.toString(obj);
             return UString.isEmpty(str) ? 0 : Double.parseDouble(str);
         } catch (NumberFormatException e) {
             return 0;
