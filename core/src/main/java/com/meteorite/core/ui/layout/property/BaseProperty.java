@@ -31,6 +31,9 @@ public class BaseProperty implements PropertyNames {
         }
     }
 
+    public BaseProperty() {
+    }
+
     public ViewProperty getProperty(String propId) {
         return propMap.get(propId);
     }

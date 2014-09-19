@@ -20,10 +20,15 @@ import java.util.*;
  * @since 1.0.0
  */
 public class TableProperty implements PropertyNames {
+    private View view;
     private List<TableFieldProperty> fieldProperties;
     private Map<MetaField, TableFieldProperty> fieldMap = new HashMap<MetaField, TableFieldProperty>();
 
+    public TableProperty() {
+    }
+
     public TableProperty(View view) {
+        this.view = view;
         fieldProperties = new ArrayList<TableFieldProperty>();
         for (MetaField field : view.getMetaFieldList()) {
             Map<String, ViewProperty> map = view.getMetaFieldConfig(field);
@@ -41,6 +46,9 @@ public class TableProperty implements PropertyNames {
     }
 
     public List<TableFieldProperty> getFieldProperties() {
+        if (fieldProperties == null) {
+            fieldProperties = new ArrayList<TableFieldProperty>();
+        }
         return fieldProperties;
     }
 
@@ -83,6 +91,10 @@ public class TableProperty implements PropertyNames {
         }
         view.setViewProperties(viewProperties);
 
+        return view;
+    }
+
+    public View getView() {
         return view;
     }
 }

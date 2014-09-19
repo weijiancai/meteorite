@@ -438,4 +438,14 @@ public class JdbcTemplate {
             template.close();
         }
     }
+
+    public static void delete(DBDataSource dataSource, Map<String, Object> params, String table) throws Exception {
+        JdbcTemplate template = new JdbcTemplate(dataSource);
+        try {
+            template.delete(params, table);
+            template.commit();
+        } finally {
+            template.close();
+        }
+    }
 }

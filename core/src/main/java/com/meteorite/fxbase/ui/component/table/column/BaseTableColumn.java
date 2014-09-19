@@ -96,7 +96,7 @@ public class BaseTableColumn extends TableColumn<DataMap, String> {
             return new DictTableCell(param, property);
         }
 
-        if (property.getMetaField().isFk()) {
+        if (property.getMetaField() != null && property.getMetaField().isFk()) {
             return new HyperlinkTableCell(param, property);
         }
 

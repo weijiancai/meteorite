@@ -42,6 +42,18 @@ public class TableFieldProperty extends BaseProperty {
     private ObjectProperty<EnumAlign> align = new SimpleObjectProperty<EnumAlign>();
     private IntegerProperty sortNum = new SimpleIntegerProperty(0);
 
+    public TableFieldProperty() {}
+
+    public TableFieldProperty(String name, String displayName, DictCategory dict, boolean isDisplay) {
+        setName(name);
+        setDisplayName(displayName);
+        setDict(dict);
+        setDisplay(isDisplay);
+        if (dict != null) {
+            setDisplayStyle(DisplayStyle.COMBO_BOX);
+        }
+    }
+
     public TableFieldProperty(MetaField field, Map<String, ViewProperty> propMap) {
         super(field, propMap);
         this.name = field.getName();

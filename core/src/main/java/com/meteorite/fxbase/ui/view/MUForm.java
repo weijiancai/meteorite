@@ -314,6 +314,9 @@ public class MUForm extends BorderPane {
             isAdd = false;
         } else {
             formConfig.getMeta().update(modifiedValueMap, data);
+            if (table != null) {
+                table.getSelectedItem().putAll(modifiedValueMap);
+            }
         }
         isModified.set(false);
     }

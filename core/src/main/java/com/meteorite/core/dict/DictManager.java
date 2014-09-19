@@ -15,6 +15,7 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.ui.layout.PropertyType;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
+import com.meteorite.core.util.group.GroupFunction;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
@@ -42,6 +43,7 @@ public class DictManager {
             addDict(PropertyType.class);
             addDict(EnumAlign.class);
             addDict(DataSourceType.class);
+            addDict(GroupFunction.class);
 
             root.setId("ROOT");
             root.setName("数据字典");

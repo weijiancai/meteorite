@@ -263,6 +263,10 @@ public class SystemManager {
     }
 
     public static void saveSetting(ProfileSetting setting) throws Exception {
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("conf_section", setting.getConfSection());
+        param.put("conf_key", setting.getConfKey());
+        JdbcTemplate.delete(DataSourceManager.getSysDataSource(), param, "mu_profile_setting");
         JdbcTemplate.save(DataSourceManager.getSysDataSource(), MetaPDBFactory.getProfileSetting(setting));
     }
 

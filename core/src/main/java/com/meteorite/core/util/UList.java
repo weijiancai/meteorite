@@ -20,11 +20,15 @@ public class UList {
      * @param model
      * @return
      */
-    public List<DataMap> group(List<DataMap> data, GroupModel model) {
+    public static List<DataMap> group(List<DataMap> data, GroupModel model) {
+        if (data == null || data.size() == 0) {
+            return new ArrayList<DataMap>();
+        }
+
         String[] groupCols = model.getGroupCols();
 
         Map<String, List<DataMap>> listMap = new HashMap<String, List<DataMap>>();
-        for(DataMap map : data) {
+        for (DataMap map : data) {
             String key = "";
             for (String groupCol : groupCols) {
                 key += String.valueOf(map.get(groupCol)) + "_";
@@ -53,7 +57,7 @@ public class UList {
             Map<String, Double> sumMap = new HashMap<String, Double>();
             for (DataMap dm : list) {
                 for (Map.Entry<String, GroupFunction> computeMapEntry : model.getComputeColMap().entrySet()) {
-                    if(GroupFunction.COUNT == computeMapEntry.getValue()) {
+                    if (GroupFunction.COUNT == computeMapEntry.getValue()) {
                         Set<String> set = countMap.get(computeMapEntry.getKey());
                         if (set == null) {
                             set = new HashSet<String>();
@@ -72,7 +76,7 @@ public class UList {
             }
 
             for (Map.Entry<String, GroupFunction> computeMapEntry : model.getComputeColMap().entrySet()) {
-                if(GroupFunction.COUNT == computeMapEntry.getValue()) {
+                if (GroupFunction.COUNT == computeMapEntry.getValue()) {
                     map.put(computeMapEntry.getKey(), countMap.get(computeMapEntry.getKey()));
                 } else if (GroupFunction.SUM == computeMapEntry.getValue()) {
                     map.put(computeMapEntry.getKey(), sumMap.get(computeMapEntry.getKey()));
