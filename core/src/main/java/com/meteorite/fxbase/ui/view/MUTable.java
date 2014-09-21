@@ -59,7 +59,7 @@ public class MUTable extends BorderPane {
         initUI(view);
     }
 
-    private void initUI(View view) {
+    public void initUI(View view) {
         // 表格属性
         config = new TableProperty(view);
         initUI();
@@ -268,6 +268,16 @@ public class MUTable extends BorderPane {
             }
         });
         toolBar.getItems().add(btnGroup);
+
+        Button btnAdd = new Button("增加");
+        btnAdd.setOnAction(new MuEventHandler<ActionEvent>() {
+            @Override
+            public void doHandler(ActionEvent event) throws Exception {
+//                MUForm form = new MUForm()
+            }
+        });
+        toolBar.getItems().add(btnAdd);
+
         this.setTop(toolBar);
     }
 

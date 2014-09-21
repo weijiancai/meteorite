@@ -9,6 +9,7 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.meta.model.MetaItem;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.project.NavMenu;
 import com.meteorite.core.project.ProjectDefine;
@@ -135,6 +136,29 @@ public class MetaRowMapperFactory {
         };
     }
 
+    public static RowMapper<MetaItem> getMetaItem() {
+        return new RowMapper<MetaItem>() {
+            @Override
+            public MetaItem mapRow(ResultSet rs) throws SQLException {
+                MetaItem field = new MetaItem();
+
+                field.setId(rs.getString("id"));
+                field.setName(rs.getString("name"));
+                field.setDisplayName(rs.getString("display_name"));
+                field.setDataType(MetaDataType.getDataType(rs.getString("data_type")));
+                field.setDescription(rs.getString("description"));
+                field.setCategory(rs.getString("category"));
+                field.setValid("T".equals(rs.getString("is_valid")));
+                field.setInputDate(rs.getDate("input_date"));
+                field.setSortNum(rs.getInt("sort_num"));
+
+                field.setMaxLength(rs.getInt("max_length"));
+
+                return field;
+            }
+        };
+    }
+
     public static RowMapper<MetaReference> getMetaReference() {
         return new RowMapper<MetaReference>() {
             @Override
@@ -204,6 +228,7 @@ public class MetaRowMapperFactory {
                 category.setName(rs.getString("name"));
                 category.setSystem("T".equals(rs.getString("is_system")));
                 category.setDescription(rs.getString("description"));
+                category.setPid(rs.getString("pid"));
                 category.setValid("T".equals(rs.getString("is_valid")));
                 category.setInputDate(rs.getDate("input_date"));
                 category.setSortNum(rs.getInt("sort_num"));

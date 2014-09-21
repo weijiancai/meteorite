@@ -7,6 +7,7 @@ drop table if exists mu_layout;
 drop table if exists mu_layout_prop;
 drop table if exists mu_meta;
 drop table if exists mu_meta_field;
+drop table if exists mu_meta_item;
 drop table if exists mu_meta_obj;
 drop table if exists mu_meta_obj_value;
 drop table if exists mu_meta_reference;
@@ -229,6 +230,7 @@ create table mu_meta_field
 (
     id                               varchar(32)     not null,
     meta_id                          varchar(32)     not null,
+    meta_item_id                     varchar(32)     ,
     name                             varchar(128)    not null,
     display_name                     varchar(64)     ,
     data_type                        varchar(64)     not null,
@@ -248,6 +250,7 @@ create table mu_meta_field
 comment on table mu_meta_field is '元字段信息';
 comment on column mu_meta_field.id is '元数据字段ID';
 comment on column mu_meta_field.meta_id is '元数据ID';
+comment on column mu_meta_field.meta_item_id is '数据项ID';
 comment on column mu_meta_field.name is '字段名称';
 comment on column mu_meta_field.display_name is '显示名';
 comment on column mu_meta_field.data_type is '数据类型';
@@ -262,6 +265,35 @@ comment on column mu_meta_field.default_value is '默认值';
 comment on column mu_meta_field.is_valid is '是否有效';
 comment on column mu_meta_field.sort_num is '排序号';
 comment on column mu_meta_field.input_date is '录入时间';
+
+/*==============================================================*/
+/* Table: mu_meta_item                                      */
+/*==============================================================*/
+create table mu_meta_item
+(
+    id                               varchar(32)     not null,
+    name                             varchar(128)    not null,
+    display_name                     varchar(64)     not null,
+    data_type                        varchar(64)     not null,
+    category                         varchar(32)     ,
+    max_length                       int             ,
+    description                      varchar(1024)   ,
+    is_valid                         char(1)         not null,
+    sort_num                         int             not null,
+    input_date                       date            not null,
+    primary key (id)
+);
+comment on table mu_meta_item is '元数据项';
+comment on column mu_meta_item.id is '数据项ID';
+comment on column mu_meta_item.name is '名称';
+comment on column mu_meta_item.display_name is '显示名';
+comment on column mu_meta_item.data_type is '数据类型';
+comment on column mu_meta_item.category is '分类';
+comment on column mu_meta_item.max_length is '最大长度';
+comment on column mu_meta_item.description is '描述';
+comment on column mu_meta_item.is_valid is '是否有效';
+comment on column mu_meta_item.sort_num is '排序号';
+comment on column mu_meta_item.input_date is '录入时间';
 
 /*==============================================================*/
 /* Table: mu_meta_obj                                      */
@@ -520,6 +552,9 @@ alter table mu_layout_prop add constraint FK_layout_prop_layoutId foreign key (l
 
 alter table mu_meta_field add constraint FK_meta_field_metaId foreign key (meta_id)
     references mu_meta (id) on delete cascade on update cascade;
+
+alter table mu_meta_field add constraint FK_metaField_metaItem foreign key (meta_item_id)
+    references mu_meta_item (id) on delete cascade on update cascade;
 
 alter table mu_meta_obj add constraint FK_meta_obj_metaId foreign key (meta_id)
     references mu_meta (id) on delete cascade on update cascade;

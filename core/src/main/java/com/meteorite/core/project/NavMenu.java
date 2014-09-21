@@ -1,8 +1,6 @@
 package com.meteorite.core.project;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 导航菜单
@@ -128,6 +126,13 @@ public class NavMenu {
         if (children == null) {
             children = new ArrayList<NavMenu>();
         }
+        // 排序
+        Collections.sort(children, new Comparator<NavMenu>() {
+            @Override
+            public int compare(NavMenu o1, NavMenu o2) {
+                return o1.sortNum - o2.sortNum;
+            }
+        });
         return children;
     }
 

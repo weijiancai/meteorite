@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/9/15 23:21:02                           */
+/* Created on:     2014/9/20 20:55:41                           */
 /*==============================================================*/
 
 
@@ -23,6 +23,8 @@ drop table if exists mu_layout_prop;
 drop table if exists mu_meta;
 
 drop table if exists mu_meta_field;
+
+drop table if exists mu_meta_item;
 
 drop table if exists mu_meta_obj;
 
@@ -111,6 +113,7 @@ create table mu_dz_category
    id                   varchar(32) not null comment '类别ID',
    name                 varchar(64) not null comment '类别名称',
    description          varchar(1024) comment '描述',
+   pid                  varchar(32) comment '父类别ID',
    is_system            char(1) not null comment '是否系统内置',
    is_valid             char(1) not null comment '是否有效',
    sort_num             int not null comment '排序号',
@@ -209,6 +212,7 @@ create table mu_meta_field
 (
    id                   varchar(32) not null comment '元数据字段ID',
    meta_id              varchar(32) not null comment '元数据ID',
+   meta_item_id         varchar(32) comment '数据项ID',
    name                 varchar(128) not null comment '字段名称',
    display_name         varchar(64) comment '显示名',
    data_type            varchar(64) not null comment '数据类型',
@@ -227,6 +231,26 @@ create table mu_meta_field
 );
 
 alter table mu_meta_field comment '元字段信息';
+
+/*==============================================================*/
+/* Table: mu_meta_item                                          */
+/*==============================================================*/
+create table mu_meta_item
+(
+   id                   varchar(32) not null comment '数据项ID',
+   name                 varchar(128) not null comment '名称',
+   display_name         varchar(64) not null comment '显示名',
+   data_type            varchar(64) not null comment '数据类型',
+   category             varchar(32) comment '分类',
+   max_length           int comment '最大长度',
+   description          varchar(1024) comment '描述',
+   is_valid             char(1) not null comment '是否有效',
+   sort_num             int not null comment '排序号',
+   input_date           datetime not null comment '录入时间',
+   primary key (id)
+);
+
+alter table mu_meta_item comment '元数据项';
 
 /*==============================================================*/
 /* Table: mu_meta_obj                                           */
@@ -432,6 +456,9 @@ alter table mu_dz_code add constraint FK_code_categoryId foreign key (category_i
 
 alter table mu_layout_prop add constraint FK_layout_prop_layoutId foreign key (layout_id)
       references mu_layout (id) on delete cascade on update cascade;
+
+alter table mu_meta_field add constraint FK_metaField_metaItem foreign key (meta_item_id)
+      references mu_meta_item (id) on delete restrict on update restrict;
 
 alter table mu_meta_field add constraint FK_meta_field_metaId foreign key (meta_id)
       references mu_meta (id) on delete cascade on update cascade;

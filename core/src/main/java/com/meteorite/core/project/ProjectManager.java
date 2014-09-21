@@ -18,11 +18,10 @@ public class ProjectManager {
     private static Map<String, ProjectDefine> projectIdMap = new HashMap<String, ProjectDefine>();
     private static Map<String, NavMenu> navMenuMap = new HashMap<String, NavMenu>();
 
-
     public static void load() throws Exception {
         JdbcTemplate template = new JdbcTemplate();
         try {
-            String sql = "SELECT * FROM mu_project_define";
+            String sql = "SELECT * FROM mu_project_define order by sort_num";
             List<ProjectDefine> projects = template.query(sql, MetaRowMapperFactory.getProjectDefine());
             for (final ProjectDefine project : projects) {
                 projectIdMap.put(project.getId(), project);
@@ -30,7 +29,7 @@ public class ProjectManager {
             }
 
             // 查询导航菜单
-            sql = "SELECT * FROM mu_nav_menu";
+            sql = "SELECT * FROM mu_nav_menu order by level,sort_num";
             List<NavMenu> navMenus = template.query(sql, MetaRowMapperFactory.getNavMenu());
             for (NavMenu navMenu : navMenus) {
                 navMenuMap.put(navMenu.getId(), navMenu);

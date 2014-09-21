@@ -219,4 +219,10 @@ public class View {
     public void setNode(Node node) {
         this.node = node;
     }
+
+    public static View createNodeView(Node node) {
+        View view = new View();
+        view.setNode(node);
+        return view;
+    }
 }

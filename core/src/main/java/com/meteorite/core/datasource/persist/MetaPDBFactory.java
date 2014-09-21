@@ -7,8 +7,10 @@ import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
+import com.meteorite.core.meta.model.MetaItem;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.ui.model.*;
+import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UUIDUtil;
 
 import java.util.Date;
@@ -151,6 +153,37 @@ public class MetaPDBFactory {
         };
     }
 
+    public static IPDB getMetaItem(final MetaItem item) {
+        return new IPDB() {
+
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                if (item.getId() == null) {
+                    item.setId(UUIDUtil.getUUID());
+                }
+
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("id", item.getId());
+                map.put("name", item.getName());
+                map.put("display_name", item.getDisplayName());
+                map.put("data_type", item.getDataType().name());
+                map.put("description", item.getDescription());
+                map.put("category", item.getCategory());
+                map.put("is_valid", item.isValid() ? "T" : "F");
+                map.put("input_date", new Date());
+                map.put("sort_num", item.getSortNum());
+                map.put("max_length", item.getMaxLength());
+
+
+                result.put("mu_meta_item", map);
+
+                return result;
+            }
+        };
+    }
+
     public static IPDB getDictCategory(final DictCategory category) {
         return new IPDB() {
             @Override
@@ -161,6 +194,7 @@ public class MetaPDBFactory {
                 map.put("id", category.getId());
                 map.put("name", category.getName());
                 map.put("description", category.getDescription());
+                map.put("pid", category.getPid());
                 map.put("is_system", category.isSystem() ? "T" : "F");
                 map.put("is_valid", category.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
@@ -177,12 +211,16 @@ public class MetaPDBFactory {
         return new IPDB() {
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
-                code.setId(UUIDUtil.getUUID());
+                if (UString.isEmpty(code.getId())) {
+                    code.setId(UUIDUtil.getUUID());
+                }
 
                 Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("category_id", code.getCategory().getId());
+                if (code.getCategory() != null) {
+                    map.put("category_id", code.getCategory().getId());
+                }
                 map.put("id", code.getId());
                 map.put("name", code.getName());
                 map.put("display_name", code.getDisplayName());

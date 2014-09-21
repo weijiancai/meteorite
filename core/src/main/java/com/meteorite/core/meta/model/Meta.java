@@ -455,6 +455,8 @@ public class Meta implements Subject {
                         } else {
                             paramMap.put(originalName, defaultValue);
                         }
+                    } else if (MetaDataType.BOOLEAN == field.getDataType()) {
+                        paramMap.put(originalName, "T");
                     }
                 }
             }

@@ -24,6 +24,8 @@ import com.meteorite.fxbase.ui.component.search.MUSearchBox;
 import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
 import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.meta.AddMetaGuide;
+import com.meteorite.fxbase.ui.win.MUDictWin;
+import com.meteorite.fxbase.ui.win.MUMetaWin;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -229,11 +231,24 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         navTreeItem.setExpanded(true);
 
         final BaseTreeNode dataSource = new BaseTreeNode("数据源管理");
+        dataSource.setId("DataSource");
         dataSource.setView(ViewManager.getViewByName("DatasourceCrudView"));
         final TreeItem<ITreeNode> dataSourceItem = new TreeItem<ITreeNode>( dataSource);
 
+        BaseTreeNode dictNode = new BaseTreeNode("数据字典");
+        dictNode.setId("Dict");
+        dictNode.setView(View.createNodeView(new MUDictWin()));
+        TreeItem<ITreeNode> dictItem = new TreeItem<ITreeNode>( dictNode);
+
+        BaseTreeNode metaNode = new BaseTreeNode("元数据");
+        metaNode.setId("Meta");
+        metaNode.setView(View.createNodeView(new MUMetaWin()));
+        TreeItem<ITreeNode> metaItem = new TreeItem<ITreeNode>( metaNode);
+
         tree.setRoot(navTreeItem);
         tree.setShowRoot(false);
+        navTreeItem.getChildren().add(dictItem);
+        navTreeItem.getChildren().add(metaItem);
         navTreeItem.getChildren().add(dataSourceItem);
 
         BaseTreeNode dsConfigTreeNode = new BaseTreeNode("SQL控制台");

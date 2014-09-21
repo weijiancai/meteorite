@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,11 +20,14 @@ public class DictCategory implements Serializable {
     private String id;
     private String name;
     private String description;
+    private String pid;
     private boolean isValid;
     private boolean isSystem;
     private int sortNum;
     private Date inputDate;
 
+    private DictCategory parent;
+    private List<DictCategory> children;
     private List<DictCode> codeList;
 
     @XmlAttribute
@@ -50,6 +54,14 @@ public class DictCategory implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPid() {
+        return pid;
+    }
+
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
     @XmlAttribute
@@ -86,6 +98,26 @@ public class DictCategory implements Serializable {
 
     public void setInputDate(Date inputDate) {
         this.inputDate = inputDate;
+    }
+
+    public DictCategory getParent() {
+        return parent;
+    }
+
+    public void setParent(DictCategory parent) {
+        this.parent = parent;
+        this.pid = parent.getPid();
+    }
+
+    public List<DictCategory> getChildren() {
+        if (children == null) {
+            children = new ArrayList<DictCategory>();
+        }
+        return children;
+    }
+
+    public void setChildren(List<DictCategory> children) {
+        this.children = children;
     }
 
     @XmlElementWrapper(name = "codes")

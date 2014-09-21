@@ -88,4 +88,14 @@ public class UList {
 
         return result;
     }
+
+    /**
+     * 判读集合是否为空
+     *
+     * @param collection 集合
+     * @return 如果为空 返回true
+     */
+    public static boolean isEmpty(Collection collection) {
+        return collection == null || collection.size() == 0;
+    }
 }

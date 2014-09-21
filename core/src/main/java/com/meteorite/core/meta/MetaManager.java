@@ -138,9 +138,6 @@ public class MetaManager {
                     fkMeta.getReferences().add(metaRef);
                 }
 
-                // 初始化系统默认配置信息
-                loadDefaultConfig();
-
                 // 创建元数据视图
                 for (Meta meta : metaMap.values()) {
                     ViewManager.createViews(meta, template);
@@ -159,17 +156,15 @@ public class MetaManager {
         }
     }
 
-    private static void loadDefaultConfig() {
-        Meta dataSourceMeta = metaMap.get("Datasource");
-        dataSourceMeta.getFieldByName("type").setDictId(DataSourceType.class.getSimpleName());
-    }
-
     /**
      * 加载元字段配置信息
      */
     private static void loadMetaFieldConfig() throws Exception {
         ClassPathDataSource cpDataSource = DataSourceManager.getClassPathDataSource();
         ResourceItem configXml = cpDataSource.getResource("config/MetaFieldConfig.xml");
+        if (configXml == null) {
+            return;
+        }
         InputStream is = configXml.getInputStream();
         List<DataMap> list = DomUtil.toListMap(is, "/config/row");
         for (DataMap map : list) {
@@ -510,6 +505,7 @@ public class MetaManager {
 //                field.setDefaultValue("0");
             }
 
+            // 初始化系统默认配置信息
             // 数据字典
             Map<String, String> configMap = metaFieldConfigs.get(meta.getName() + "_" + field.getName());
             if (configMap != null) {

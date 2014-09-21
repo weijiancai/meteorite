@@ -6,6 +6,7 @@ import com.meteorite.core.facade.IFacade;
 import com.meteorite.core.facade.impl.BaseFacade;
 import com.meteorite.fxbase.ui.FxDesktop;
 import com.meteorite.fxbase.ui.IDesktop;
+import com.meteorite.fxbase.ui.view.MUTabsDesktop;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 
@@ -34,7 +35,7 @@ public class MetaUIApp extends BaseApp {
 
             @Override
             public IDesktop getDesktop() throws Exception {
-                return new FxDesktop(null);
+                return new MUTabsDesktop();
             }
         };
     }

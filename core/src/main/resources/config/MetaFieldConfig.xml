@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <config>
     <row meta="Datasource" fieldName="type" dict="DataSourceType"/>
+    <row meta="MetaItem" fieldName="dataType" dict="MetaDataType"/>
+    <row meta="MetaItem" fieldName="category" dict="MetaItemCategory"/>
+    <row meta="MetaField" fieldName="dataType" dict="MetaDataType"/>
+    <row meta="MetaField" fieldName="dict_id" dict="ROOT"/>
 </config>

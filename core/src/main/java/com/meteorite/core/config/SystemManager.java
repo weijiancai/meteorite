@@ -165,6 +165,9 @@ public class SystemManager {
         // 获得升级目录下升级脚本
         ClassPathDataSource cpDataSource = DataSourceManager.getClassPathDataSource();
         ResourceItem dbUpgrade = cpDataSource.getResource("db_upgrade/");
+        if (dbUpgrade == null) {
+            return;
+        }
         for (ITreeNode node : dbUpgrade.getChildren()) {
             final String version = node.getName();
             if(maxVersion.compareTo(version) < 0 && node.getChildren().size() > 0) {

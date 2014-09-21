@@ -1,10 +1,8 @@
 package com.meteorite.core.dict;
 
 import com.meteorite.core.config.ProfileSetting;
-import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.DataSourceType;
-import com.meteorite.core.datasource.db.DBManager;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaPDBFactory;
@@ -12,13 +10,13 @@ import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
 import com.meteorite.core.dict.annotation.DictElement;
 import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.meta.MetaItemCategory;
 import com.meteorite.core.ui.layout.PropertyType;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.group.GroupFunction;
 
 import java.lang.reflect.Method;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,9 +31,17 @@ import java.util.Map;
 public class DictManager {
     private static Map<String, DictCategory> categoryMap = new HashMap<String, DictCategory>();
     private static DictCategory root = new DictCategory();
+    private static DictCategory system = new DictCategory();
 
     static {
         try {
+            root.setId("ROOT");
+            root.setName("数据字典");
+            root.getChildren().add(system);
+
+            system.setId("System_Category");
+            system.setName("系统字典");
+
             addDict(DatabaseType.class);
             addDict(MetaDataType.class);
             addDict(DisplayStyle.class);
@@ -44,9 +50,8 @@ public class DictManager {
             addDict(EnumAlign.class);
             addDict(DataSourceType.class);
             addDict(GroupFunction.class);
+            addDict(MetaItemCategory.class);
 
-            root.setId("ROOT");
-            root.setName("数据字典");
             List<DictCode> codeList = new ArrayList<DictCode>();
             for (DictCategory category : categoryMap.values()) {
                 DictCode code = new DictCode();
@@ -72,12 +77,12 @@ public class DictManager {
         JdbcTemplate template = new JdbcTemplate();
 
         if (isInit) {
-            // 查询布局
+            // 查询字典分类
             String sql = "SELECT * FROM mu_dz_category";
             List<DictCategory> categoryList = template.query(sql, MetaRowMapperFactory.getDictCategory());
             for (DictCategory category : categoryList) {
                 categoryMap.put(category.getId(), category);
-                // 查询布局属性
+                // 查询字典代码
                 sql = "SELECT * FROM mu_dz_code WHERE category_id=?";
                 List<DictCode> codeList = template.query(sql, MetaRowMapperFactory.getDictCode(category), category.getId());
                 category.setCodeList(codeList);
@@ -88,7 +93,7 @@ public class DictManager {
 
             // 保存字典分类到数据库
             for (DictCategory category : getDictList()) {
-                if ("ROOT".equals(category.getId())) {
+                if ("ROOT".equals(category.getId()) || category.isSystem()) {
                     continue;
                 }
                 categoryMap.put(category.getId(), category);
@@ -104,6 +109,14 @@ public class DictManager {
 
         template.commit();
         template.close();
+
+        // 构造树形字典分类
+        for (DictCategory category : categoryMap.values()) {
+            DictCategory parent = categoryMap.get(category.getPid());
+            if (parent != null) {
+                parent.getChildren().add(category);
+            }
+        }
     }
 
     /**
@@ -151,6 +164,8 @@ public class DictManager {
             category.setCodeList(codeList);
 
             categoryMap.put(category.getId(), category);
+            // 添加到系统字典
+            system.getChildren().add(category);
         }
     }
 
