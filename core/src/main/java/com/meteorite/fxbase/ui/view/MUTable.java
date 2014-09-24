@@ -367,6 +367,10 @@ public class MUTable extends BorderPane {
         this.isShowToolBar = isShowToolBar;
     }
 
+    public ToolBar getToolBar() {
+        return toolBar;
+    }
+
     class TableColumnChangeListener implements ListChangeListener<TableColumn<DataMap, ?>> {
 
         @Override

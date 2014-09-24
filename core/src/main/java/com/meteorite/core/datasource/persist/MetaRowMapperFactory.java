@@ -100,7 +100,9 @@ public class MetaRowMapperFactory {
                 meta.setInputDate(rs.getDate("input_date"));
                 meta.setSortNum(rs.getInt("sort_num"));
                 meta.setSqlText(rs.getString("sql_text"));
-                meta.setResource(ResourceManager.getResourceById(rs.getString("rs_id")));
+                String rsId = rs.getString("rs_id");
+                meta.setRsId(rsId);
+                meta.setResource(ResourceManager.getResourceById(rsId));
 
                 return meta;
             }

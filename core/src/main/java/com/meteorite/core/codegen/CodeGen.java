@@ -3,6 +3,7 @@ package com.meteorite.core.codegen;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.project.ProjectDefine;
 import com.meteorite.core.util.UFile;
+import com.meteorite.core.util.UString;
 import com.meteorite.core.util.ftl.FreeMarkerConfiguration;
 import com.meteorite.core.util.ftl.FreeMarkerTemplateUtils;
 import freemarker.template.TemplateException;
@@ -54,5 +55,11 @@ public class CodeGen {
         // 生成Service接口实现类
         str = FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("ServiceImpl.ftl"), map);
         UFile.write(str, new File(baseDir, "service/impl/" + meta.getName() + "ServiceImpl.java").getAbsolutePath());
+        // 生成Controller类
+        str = FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("Controller.ftl"), map);
+        UFile.write(str, new File(baseDir, "controller/" + meta.getName() + "Controller.java").getAbsolutePath());
+        // 生成jsp list页面
+        str = FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("pageList.ftl"), map);
+        UFile.write(str, new File(basePageDir, UString.firstCharToLower(meta.getName()) + "/" + UString.firstCharToLower(meta.getName()) + "List.jsp").getAbsolutePath());
     }
 }

@@ -5,6 +5,7 @@ package ${project.packageName}.controller;
 import ${project.packageName}.entity.${meta.name};
 import ${project.packageName}.service.${meta.name}Service;
 import net.sf.json.JSONObject;
+import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,40 +21,27 @@ import java.util.Map;
  * @since 1.0.0
  */
 @Controller
-@RequestMapping(value = "/${meta.name}")
+@RequestMapping(value = "/${meta.name?uncap_first}")
 public class ${meta.name}Controller {
     @Autowired
     private ${meta.name}Service ${meta.name?uncap_first}Service;
 
-    @RequestMapping(value = "/save")
+    @RequestMapping(value = "/add")
     @ResponseBody
-    public void save(${meta.name} vo) throws Exception {
-        ${meta.name?uncap_first}Service.save(vo);
+    public void add(${meta.name} vo) throws Exception {
+        ${meta.name?uncap_first}Service.add(vo);
     }
 
     @RequestMapping(value = "/update")
     @ResponseBody
-    public void save(${meta.name} vo) throws Exception {
+    public void update(${meta.name} vo) throws Exception {
         ${meta.name?uncap_first}Service.update(vo);
     }
 
-    @RequestMapping(value = "list")
-    @ResponseBody
-    public void list(HttpServletResponse response) throws Exception {
-        Map<String, Object> result = new HashMap<String, Object>();
-        List<ForumPost> list = forumPostService.listAll();
-        result.put("total", list.size());
-        result.put("rows", list);
-
-        response.setContentType("application/json;charset=UTF-8");
-        JSONObject json = JSONObject.fromObject(result);
-        response.getWriter().write(json.toString());
-    }
-
-    @RequestMapping(value = "/look")
-    public String look(HttpServletRequest request, int postId) throws Exception {
-        ForumPost result = forumPostService.getForumPost(postId);
-        request.setAttribute("forumPost", result);
-        return "forum_post_look";
+    @RequestMapping(value = "/list")
+    public String list(HttpServletRequest req) throws Exception {
+        List<${meta.name}> list = ${meta.name?uncap_first}Service.listAll();
+        req.setAttribute("list", list);
+        return "${meta.name?uncap_first}/${meta.name?uncap_first}List";
     }
 }

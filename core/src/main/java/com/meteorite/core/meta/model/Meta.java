@@ -48,6 +48,7 @@ public class Meta implements Subject {
     private String displayName;
     private String description;
     private String sqlText;
+    private String rsId;
     private boolean isValid;
     private int sortNum;
     private Date inputDate;
@@ -121,6 +122,14 @@ public class Meta implements Subject {
 
     public void setSqlText(String sqlText) {
         this.sqlText = sqlText;
+    }
+
+    public String getRsId() {
+        return rsId;
+    }
+
+    public void setRsId(String rsId) {
+        this.rsId = rsId;
     }
 
     @XmlAttribute

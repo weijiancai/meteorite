@@ -9,6 +9,7 @@ import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.CrudProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
+import com.meteorite.core.ui.layout.property.TableProperty;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UUIDUtil;
@@ -31,7 +32,9 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * MetaUI CRUD视图
@@ -42,7 +45,6 @@ import java.util.List;
 public class MuCrud extends StackPane {
     public static final String TOTAL_FORMAT = "总共%s条";
     private CrudProperty crudProperty;
-    private BorderPane root;
     private MUTable table;
     private MUForm queryForm;
     private MUForm editForm;
@@ -50,22 +52,49 @@ public class MuCrud extends StackPane {
     private Hyperlink totalLink;
     private TextField pageRowsTF;
 
+    private Map<String, Button> tableButton = new HashMap<String, Button>();
+
     public MuCrud(View view) {
-        this.crudProperty = new CrudProperty(view);
-        initUI();
+        initUI(view);
     }
 
-    private void initUI() {
-        root = new BorderPane();
+    public MuCrud() {
+    }
+
+    public void initUI(View view) {
+        this.crudProperty = new CrudProperty(view);
+        FormProperty queryForm = new FormProperty(crudProperty.getQueryView());
+        FormProperty editForm = new FormProperty(crudProperty.getFormView());
+
+        initUI(queryForm, editForm, null);
+    }
+
+    public void initUI(FormProperty queryFormProperty, FormProperty editFormProperty, TableProperty tableProperty) {
+        this.queryForm = new MUForm(queryFormProperty);
+        this.table = new MUTable();
+        if (tableProperty == null && crudProperty != null) {
+            this.table.initUI(crudProperty.getTableView());
+        } else {
+            this.table.initUI(tableProperty);
+        }
+        this.editForm = new MUForm(editFormProperty, table);
+
+        editForm.setVisible(false);
+        BorderPane root = new BorderPane();
         root.setTop(createTop());
         root.setCenter(createCenter());
         root.setBottom(createBottom());
-
-        editForm = new MUForm(new FormProperty(crudProperty.getFormView()), table);
-        editForm.setVisible(false);
         root.visibleProperty().bind(editForm.visibleProperty().not());
 
         this.getChildren().addAll(root, editForm);
+
+        // 注册按钮
+        for (MUTable table : editForm.getChildrenTables()) {
+            Button button = tableButton.get(table.getConfig().getMeta().getName());
+            if (button != null) {
+                table.getToolBar().getItems().add(button);
+            }
+        }
     }
 
     private Node createTop() {
@@ -111,7 +140,7 @@ public class MuCrud extends StackPane {
                     table.getItems().clear();
                 }
                 // 查询数据
-                Meta meta = crudProperty.getQueryView().getMeta();
+                Meta meta = queryForm.getFormConfig().getMeta();
                 QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), 0, UNumber.toInt(pageRowsTF.getText()));
                 table.getItems().addAll(queryResult.getRows());
                 pagination.setPageCount(meta.getPageCount());
@@ -123,7 +152,7 @@ public class MuCrud extends StackPane {
         delBtn.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
-                Meta meta = crudProperty.getTableView().getMeta();
+                Meta meta = table.getConfig().getMeta();
                 int selected = table.getSelectionModel().getSelectedIndex();
                 meta.delete(selected);
                 table.getItems().remove(selected);
@@ -176,28 +205,28 @@ public class MuCrud extends StackPane {
             }
         });
 
-        queryForm = new MUForm(new FormProperty(crudProperty.getQueryView()));
         box.getChildren().add(queryForm);
 
         // Actions
-        for (final MUAction action : crudProperty.getMeta().getActionList()) {
-            Button button = new Button(action.getDisplayName());
-            button.setOnAction(new MuEventHandler<ActionEvent>() {
-                @Override
-                public void doHandler(ActionEvent event) throws Exception {
-                    Class<?> clazz = action.getActionClass();
-                    Method method = clazz.getMethod(action.getMethodName());
-                    method.invoke(clazz.newInstance());
-                }
-            });
-            toolBar.getItems().add(button);
+        if (crudProperty != null) {
+            for (final MUAction action : crudProperty.getMeta().getActionList()) {
+                Button button = new Button(action.getDisplayName());
+                button.setOnAction(new MuEventHandler<ActionEvent>() {
+                    @Override
+                    public void doHandler(ActionEvent event) throws Exception {
+                        Class<?> clazz = action.getActionClass();
+                        Method method = clazz.getMethod(action.getMethodName());
+                        method.invoke(clazz.newInstance());
+                    }
+                });
+                toolBar.getItems().add(button);
+            }
         }
 
         return box;
     }
 
     private Node createCenter() {
-        table = new MUTable(crudProperty.getTableView());
         table.getSourceTable().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -218,7 +247,7 @@ public class MuCrud extends StackPane {
         pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                Meta meta = crudProperty.getQueryView().getMeta();
+                Meta meta = table.getConfig().getMeta();
                 try {
                     QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), newValue.intValue(), 15);
                     table.getItems().clear();
@@ -248,5 +277,13 @@ public class MuCrud extends StackPane {
         }
         editForm.setVisible(true);
 //        MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
+    }
+
+    public MUTable getTable() {
+        return table;
+    }
+
+    public void addTableButton(String metaName, Button button) {
+        tableButton.put(metaName, button);
     }
 }

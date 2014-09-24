@@ -77,7 +77,7 @@ public class MUFormLayout extends BorderPane {
 
             formField = getFormField(field);
             // 查询表单，TextArea不显示
-            if (FormType.QUERY == formConfig.getFormType() && (formField instanceof MuTextArea || field.getMetaField().getMaxLength() > 200)) {
+            if (FormType.QUERY == formConfig.getFormType() && (formField instanceof MuTextArea || field.getMaxLength() > 200)) {
                 continue;
             }
 
@@ -163,7 +163,7 @@ public class MUFormLayout extends BorderPane {
             node = new MuIntRange(field);
         }
 
-        valueMap.put(field.getMetaField().getName(), (IValue)node);
+        valueMap.put(field.getName(), (IValue)node);
         queryList.add((ICanQuery) node);
 
         return node;

@@ -54,6 +54,29 @@ public class TableFieldProperty extends BaseProperty {
         }
     }
 
+    public TableFieldProperty(String name, String displayName) {
+        this(name, displayName, 80);
+    }
+
+    public TableFieldProperty(String name, String displayName, int width) {
+        this(name, displayName, width, null);
+    }
+
+    public TableFieldProperty(String name, String displayName, int width, DictCategory dict) {
+        this(name, displayName, width, dict, EnumAlign.LEFT);
+    }
+
+    public TableFieldProperty(String name, String displayName, int width, DictCategory dict, EnumAlign align) {
+        setName(name);
+        setDisplayName(displayName);
+        setWidth(width);
+        this.dict = dict;
+        if (dict != null) {
+            this.displayStyle = DisplayStyle.COMBO_BOX;
+        }
+        setAlign(align);
+    }
+
     public TableFieldProperty(MetaField field, Map<String, ViewProperty> propMap) {
         super(field, propMap);
         this.name = field.getName();

@@ -320,4 +320,12 @@ public class MUForm extends BorderPane {
         }
         isModified.set(false);
     }
+
+    public FormProperty getFormConfig() {
+        return formConfig;
+    }
+
+    public List<MUTable> getChildrenTables() {
+        return children;
+    }
 }

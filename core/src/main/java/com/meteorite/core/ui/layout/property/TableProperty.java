@@ -23,12 +23,14 @@ public class TableProperty implements PropertyNames {
     private View view;
     private List<TableFieldProperty> fieldProperties;
     private Map<MetaField, TableFieldProperty> fieldMap = new HashMap<MetaField, TableFieldProperty>();
+    private Meta meta;
 
     public TableProperty() {
     }
 
     public TableProperty(View view) {
         this.view = view;
+        this.meta = view.getMeta();
         fieldProperties = new ArrayList<TableFieldProperty>();
         for (MetaField field : view.getMetaFieldList()) {
             Map<String, ViewProperty> map = view.getMetaFieldConfig(field);
@@ -50,6 +52,10 @@ public class TableProperty implements PropertyNames {
             fieldProperties = new ArrayList<TableFieldProperty>();
         }
         return fieldProperties;
+    }
+
+    public void setFieldProperties(List<TableFieldProperty> fieldProperties) {
+        this.fieldProperties = fieldProperties;
     }
 
     public void setPropertyValue(MetaField field, String propName, String propValue) {
@@ -96,5 +102,13 @@ public class TableProperty implements PropertyNames {
 
     public View getView() {
         return view;
+    }
+
+    public Meta getMeta() {
+        return meta;
+    }
+
+    public void setMeta(Meta meta) {
+        this.meta = meta;
     }
 }

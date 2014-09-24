@@ -195,6 +195,9 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
             contextMenu.getItems().addAll(equal, notEqual, greater, greaterEqual, less, lessEqual, like, leftLike, rightLike);
             btnQueryModel.setContextMenu(contextMenu);
             this.getChildren().add(btnQueryModel);
+
+            // 设置查询模式
+            setQueryModel(config.getQueryModel().toSqlModel());
         }
     }
 

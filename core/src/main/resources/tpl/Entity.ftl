@@ -1,5 +1,11 @@
+<#-- @ftlvariable name="packageName" type="java.lang.String" -->
+<#-- @ftlvariable name="project" type="com.meteorite.core.project.ProjectDefine" -->
 <#-- @ftlvariable name="meta" type="com.meteorite.core.meta.model.Meta" -->
 <#assign objectEqual = "com.meteorite.core.util.ftl.FtlObjectEqualMethod"?new()>
+package ${project.packageName}.${packageName};
+
+import java.util.Date;
+
 public class ${meta.name} {
 <#list meta.fields as field>
     /** ${field.displayName} */

@@ -3,6 +3,7 @@ package com.ectongs;
 import com.ectongs.view.DsConfigView;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.observer.Observer;
@@ -77,4 +78,13 @@ public class EctongsDesktop extends MUTabsDesktop {
             tabPane.getSelectionModel().select(tab);
         }
     }*/
+
+    @Override
+    protected List<Tab> getGenCodeTabs(Meta meta) {
+        List<Tab> result =  super.getGenCodeTabs(meta);
+
+        //
+
+        return result;
+    }
 }

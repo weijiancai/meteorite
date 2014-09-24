@@ -1,5 +1,6 @@
 package com.meteorite.core.dict;
 
+import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 
 /**
@@ -60,5 +61,43 @@ public enum QueryModel {
             return EQUAL;
         }
         return QueryModel.valueOf(queryModelStr);
+    }
+
+    public String toSqlModel() {
+        switch (this) {
+            case EQUAL: {
+                return " = ";
+            }
+            case NOT_EQUAL: {
+                return " != ";
+            }
+            case LESS_THAN: {
+                return " < ";
+            }
+            case LESS_EQUAL: {
+                return " <= ";
+            }
+            case GREATER_THAN: {
+                return " > ";
+            }
+            case GREATER_EQUAL: {
+                return " >= ";
+            }
+            case LIKE: {
+                return "%%";
+            }
+            case LEFT_LIKE: {
+                return "*%";
+            }
+            case RIGHT_LIKE: {
+                return "%*";
+            }
+            case NULL:
+                return "null";
+            case NOT_NULL:
+                return "not null";
+        }
+
+        return "=";
     }
 }

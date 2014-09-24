@@ -122,7 +122,7 @@ public class ProjectDefine {
 
     public List<NavMenu> getNavMenusByLevel(int level) {
         List<NavMenu> result = new ArrayList<NavMenu>();
-        for (NavMenu navMenu : navMenus) {
+        for (NavMenu navMenu : getNavMenus()) {
             if (navMenu.getLevel() == level) {
                 result.add(navMenu);
             }
