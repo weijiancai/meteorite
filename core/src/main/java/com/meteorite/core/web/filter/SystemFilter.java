@@ -1,5 +1,6 @@
 package com.meteorite.core.web.filter;
 
+import com.meteorite.core.util.UHttp;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -16,7 +17,9 @@ public class SystemFilter implements javax.servlet.Filter {
     }
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
-        log.debug("Request URL: " + ((HttpServletRequest)req).getRequestURL());
+        HttpServletRequest httpReq = ((HttpServletRequest)req);
+        String ipAddr = UHttp.getIpAddr(httpReq);
+        log.debug("Request URL: " + ipAddr + " == " + httpReq.getRequestURL());
         req.setCharacterEncoding("UTF-8");
 //        resp.setCharacterEncoding("UTF-8");
         chain.doFilter(req, resp);

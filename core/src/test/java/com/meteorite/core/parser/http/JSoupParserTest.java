@@ -1,6 +1,7 @@
 package com.meteorite.core.parser.http;
 
 import org.jsoup.Connection;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -51,6 +52,24 @@ public class JSoupParserTest {
                     "values ('%s','%s','%s',%d,'T',convert(datetime,'2013-09-11 16:11:17'),'28CAFCFFEEF54F54A4F8B5598571F5F5',null);", cat.id, cat.name, cat.pid, cat.sortNum);
             System.out.println(sql);
         }
+    }
+
+    @Test
+    public void test() throws IOException {
+        String url = "http://www.fentouwang.com/vote/poll.php?action=choose&id=4&choose_value=4057&handlekey=polljs&inajax=1&ajaxtarget=pollmsg_4057";
+        url = "http://localhost:8080/tpl/metronic/index.ftl";
+        url = "http://192.168.0.103/1.php";
+        /*Connection conn = Jsoup.connect(url);
+        Document doc = conn.get();
+        System.out.println(conn.execute().cookies());
+        System.out.println(doc.html());*/
+        JSoupParser parser = new JSoupParser(url);
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("x-forwarded-for", "195.253.88.123");
+        Map<String, String> cookies = new HashMap<String, String>();
+        cookies.put("5QzN_2132_lastact", "1411653613%09misc.php%09so");
+        Document doc = parser.parse(null, headers, cookies);
+        System.out.println(doc.html());
     }
 
     class BookCat {
