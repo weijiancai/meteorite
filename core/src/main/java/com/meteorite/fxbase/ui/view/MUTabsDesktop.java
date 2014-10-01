@@ -368,30 +368,25 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     }
 
     private Tab getGenCodeTab(final ITreeNode node) {
-        final Meta meta = node.getView().getMeta();
+        Meta meta = node.getView().getMeta();
 
         Tab tab = new Tab("生成代码");
         tab.setClosable(false);
 
         TabPane tabPane = new TabPane();
 
-        Tab javaBeanTab = new Tab("JavaBean");
-        final TextArea javaBeanTa = new TextArea();
-        javaBeanTab.setContent(javaBeanTa);
-
-        tabPane.getTabs().addAll(javaBeanTab);
-        tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+        for (Tab aTab : getGenCodeTabs(meta)) {
+            tabPane.getTabs().addAll(aTab);
+        }
+        /*tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 if(newValue.intValue() == 0) {
                     javaBeanTa.setText(meta.genJavaBeanCode());
                 }
             }
-        });
+        });*/
         tab.setContent(tabPane);
-
-        // 初始化生成JavaBean代码
-        javaBeanTa.setText(meta.genJavaBeanCode());
 
         return tab;
     }
@@ -404,5 +399,18 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     @Override
     public MUTree getNavTree() {
         return tree;
+    }
+
+    protected List<Tab> getGenCodeTabs(Meta meta) {
+        // 生成JavaBean代码
+        Tab javaBeanTab = new Tab("JavaBean");
+        final TextArea javaBeanTa = new TextArea();
+        javaBeanTab.setContent(javaBeanTa);
+        javaBeanTa.setText(meta.genJavaBeanCode());
+
+        List<Tab> result = new ArrayList<Tab>();
+        result.add(javaBeanTab);
+
+        return result;
     }
 }

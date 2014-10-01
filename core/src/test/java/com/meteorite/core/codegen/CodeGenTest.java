@@ -19,6 +19,7 @@ public class CodeGenTest {
         Meta meta = MetaManager.getMeta("CmsDbNews");
         meta.setName("News");
         CodeGen codeGen = new CodeGen("D:\\workspace_other\\wlb\\src\\com\\wlb");
+        codeGen.setBasePageDir("D:\\workspace_other\\wlb\\WebContent\\WEB-INF\\html");
         ProjectDefine project = ProjectManager.getProjectByName(ProjectDefineInit.PROJECT_NAME);
         codeGen.genSpringCode(project, meta);
     }

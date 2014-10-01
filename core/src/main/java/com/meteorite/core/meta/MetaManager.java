@@ -1,7 +1,6 @@
 package com.meteorite.core.meta;
 
 import com.meteorite.core.config.ProfileSetting;
-import com.meteorite.core.config.SystemInfo;
 import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.classpath.ClassPathDataSource;
@@ -10,7 +9,6 @@ import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
-import com.meteorite.core.dict.EnumBoolean;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.*;
@@ -18,12 +16,10 @@ import com.meteorite.core.project.ProjectDefine;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.util.UFile;
-import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.dom.DomUtil;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 
-import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -41,7 +37,7 @@ public class MetaManager {
     private static Map<String, Meta> metaMap = new HashMap<String, Meta>();
     private static Map<String, Meta> metaIdMap = new HashMap<String, Meta>();
     private static Map<String, MetaField> fieldIdMap = new HashMap<String, MetaField>();
-    private static Map<String, Meta> tableMeta = new HashMap<String, Meta>();
+    private static Map<String, Meta> rsIdMap = new HashMap<String, Meta>();
     private static List<MetaField> metaFieldList = new ArrayList<MetaField>();
     private static Map<String, Map<String, String>> metaFieldConfigs = new HashMap<String, Map<String, String>>();
 
@@ -70,6 +66,7 @@ public class MetaManager {
                 for (final Meta meta : metaList) {
                     metaMap.put(meta.getName(), meta);
                     metaIdMap.put(meta.getId(), meta);
+                    rsIdMap.put(meta.getRsId(), meta);
                     // 查询元数据字段
                     sql = "SELECT * FROM mu_meta_field WHERE meta_id=? order by sort_num";
                     List<MetaField> fieldList = template.query(sql, MetaRowMapperFactory.getMetaField(meta), meta.getId());
@@ -123,10 +120,10 @@ public class MetaManager {
                 // 初始化元数据引用
                 for (DBConstraint constraint : schema.getFkConstraints()) {
                     MetaReference metaRef = new MetaReference();
-                    Meta pkMeta = tableMeta.get(dataSource.getName() + "://table/" + constraint.getPkTableName());
+                    Meta pkMeta = rsIdMap.get(dataSource.getName() + "://table/" + constraint.getPkTableName());
                     metaRef.setPkMeta(pkMeta);
                     metaRef.setPkMetaField(pkMeta.getFieldByOriginalName(constraint.getPkTableName() + "." + constraint.getPkColumnName()));
-                    Meta fkMeta = tableMeta.get(dataSource.getName() + "://table/" + constraint.getFkTableName());
+                    Meta fkMeta = rsIdMap.get(dataSource.getName() + "://table/" + constraint.getFkTableName());
                     metaRef.setFkMeta(fkMeta);
                     metaRef.setFkMetaField(fkMeta.getFieldByOriginalName(constraint.getFkTableName() + "." + constraint.getFkColumnName()));
 
@@ -240,6 +237,17 @@ public class MetaManager {
      */
     public static Meta getMetaById(String metaId) {
         return metaIdMap.get(metaId);
+    }
+
+    /**
+     * 根据资源ID，获得元数据信息
+     *
+     * @param rsId 资源ID
+     * @return 返回元数据信息
+     * @since 1.0.0
+     */
+    public static Meta getMetaByRsId(String rsId) {
+        return rsIdMap.get(rsId);
     }
 
     /**
@@ -398,7 +406,7 @@ public class MetaManager {
         template.save(MetaPDBFactory.getMeta(meta));
         metaMap.put(meta.getName(), meta);
         metaIdMap.put(meta.getId(), meta);
-        tableMeta.put(table.getFullName(), meta);
+        rsIdMap.put(table.getFullName(), meta);
 
         List<MetaField> fieldList = new ArrayList<MetaField>();
 
@@ -458,7 +466,7 @@ public class MetaManager {
         template.save(MetaPDBFactory.getMeta(meta));
         metaMap.put(meta.getName(), meta);
         metaIdMap.put(meta.getId(), meta);
-        tableMeta.put(table.getId(), meta);
+        rsIdMap.put(table.getId(), meta);
 
         List<MetaField> fieldList = new ArrayList<MetaField>();
 

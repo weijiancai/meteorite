@@ -6,26 +6,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="${project.packageName}.dao.${meta.name}Dao">
-    <select id="find" resultClass="${meta.name}">
+    <select id="find" resultType="${project.packageName}.entity.${meta.name}">
         SELECT * FROM ${meta.resource.name}
-        <dynamic prepend="WHERE ">
+        <where>
         <#list meta.fields as field>
-            <isNotEmpty property="${field.name}">
-                ${field.originalName} = #${field.name}#
-            </isNotEmpty>
+            <if test="${field.name} != null">
+                and ${field.originalName} = #${field.name}#
+            </if>
         </#list>
-        </dynamic>
+        </where>
     </select>
 
-    <select id="findById" resultClass="${project.packageName}.entity.${meta.name}">
+    <select id="findById" resultType="${project.packageName}.entity.${meta.name}">
         SELECT * FROM ${meta.resource.name}
-        <dynamic prepend="WHERE ">
+        <where>
         <#list meta.pkFields as field>
-            <isNotEmpty property="${field.name}">
-            ${field.originalName} = #${field.name}#
-            </isNotEmpty>
+            <if test="${field.name} != null">
+                and ${field.originalName} = #${field.name}#
+            </if>
         </#list>
-        </dynamic>
+        </where>
+    </select>
+
+    <select id="listAll" resultType="${project.packageName}.entity.${meta.name}">
+        SELECT * FROM ${meta.resource.name}
     </select>
 
     <update id="update" parameterType="${project.packageName}.entity.${meta.name}">
@@ -34,46 +38,40 @@
         <#list meta.fields as field>
             <#if !field.pk>
                 <if test="${field.name} != null">
-                    ${field.name} = ${"#"}{${field.name}},
+                    ${field.name} = ${"#"}{${field.name}}<#if field_index < meta.fields?size - 1>,</#if>
                 </if>
             </#if>
         </#list>
         </set>
-        <dynamic prepend="WHERE ">
+        <where>
         <#list meta.pkFields as field>
-            <isNotEmpty property="${field.name}">
-            ${field.originalName} = #${field.name}#
-            </isNotEmpty>
+            <if test="${field.name} != null">
+                and ${field.originalName} = #${field.name}#
+            </if>
         </#list>
-        </dynamic>
+        </where>
     </update>
 
     <insert id="add" parameterType="${project.packageName}.entity.${meta.name}">
         insert into ${meta.resource.name}(
         <#list meta.fields as field>
-            ${field.originalName}
-            <#if field_index < meta.fields?size - 1>
-                ,
-            </#if>
+            ${field.originalName}<#if field_index < meta.fields?size - 1>,</#if>
         </#list>
         ) values(
         <#list meta.fields as field>
-            ${"#"}{${field.name}}
-            <#if field_index < meta.fields?size - 1>
-                ,
-            </#if>
+            ${"#"}{${field.name}}<#if field_index < meta.fields?size - 1>,</#if>
         </#list>
         )
     </insert>
 
     <delete id="delete" parameterType="java.lang.String">
         delete from ${meta.resource.name}
-        <dynamic prepend="WHERE ">
+        <where>
         <#list meta.pkFields as field>
-            <isNotEmpty property="${field.name}">
-            ${field.originalName} = #${field.name}#
-            </isNotEmpty>
+            <if test="${field.name} != null">
+                and ${field.originalName} = #${field.name}#
+            </if>
         </#list>
-        </dynamic>
+        </where>
     </delete>
 </mapper>

@@ -22,15 +22,18 @@ public class FormProperty implements PropertyNames {
     private String name;
     private String displayName;
     private FormType formType;
-    private int colCount;
-    private int colWidth;
-    private int labelGap;
-    private int fieldGap;
-    private int hgap;
-    private int vgap;
+    private int colCount = 3;
+    private int colWidth = 180;
+    private int labelGap = 5;
+    private int fieldGap = 15;
+    private int hgap = 3;
+    private int vgap = 5;
     private Meta meta;
 
     private List<FormFieldProperty> formFields = new ArrayList<FormFieldProperty>();
+
+    public FormProperty() {
+    }
 
     public FormProperty(ViewLayout layout) {
         name = layout.getConfigValue(FORM.NAME);
@@ -148,8 +151,19 @@ public class FormProperty implements PropertyNames {
         return meta;
     }
 
+    public void setMeta(Meta meta) {
+        this.meta = meta;
+    }
+
     public List<FormFieldProperty> getFormFields() {
         return formFields;
+    }
+
+    public void setFormFields(List<FormFieldProperty> formFields) {
+        this.formFields = formFields;
+        for (FormFieldProperty property : formFields) {
+            property.setFormProperty(this);
+        }
     }
 
     public static View createFormView(Meta meta, boolean isQuery) {

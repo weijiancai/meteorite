@@ -28,12 +28,13 @@ import static com.meteorite.core.ui.ViewManager.createViewConfig;
 public class FormFieldProperty extends BaseProperty {
     private String name;
     private String displayName;
-    private QueryModel queryModel;
+    private QueryModel queryModel = QueryModel.EQUAL;
     private boolean isSingleLine;
-    private boolean isDisplay;
+    private boolean isDisplay = true;
     private boolean isRequire;
-    private int width;
+    private int width = 180;
     private int height;
+    private int maxLength;
     private DisplayStyle displayStyle;
     private DictCategory dict;
     private MetaDataType dataType;
@@ -42,12 +43,16 @@ public class FormFieldProperty extends BaseProperty {
 
     private FormProperty formProperty;
 
+    public FormFieldProperty() {
+    }
+
     public FormFieldProperty(FormProperty formProperty, MetaField field, Map<String, ViewProperty> propMap) {
         super(field, propMap);
         this.formProperty = formProperty;
 
         dataType = field.getDataType();
-        name = getPropertyValue(FORM_FIELD.NAME);
+        name = field.getName();
+        maxLength = field.getMaxLength();
         displayName = getPropertyValue(FORM_FIELD.DISPLAY_NAME);
         this.queryModel = QueryModel.convert(getPropertyValue(FORM_FIELD.QUERY_MODEL));
         isSingleLine = UString.toBoolean(getPropertyValue(FORM_FIELD.IS_SINGLE_LINE));
@@ -59,6 +64,17 @@ public class FormFieldProperty extends BaseProperty {
         dict = DictManager.getDict(getPropertyValue(FORM_FIELD.DICT_ID));
         value = getPropertyValue(FORM_FIELD.VALUE);
         sortNum = UNumber.toInt(getPropertyValue(FORM_FIELD.SORT_NUM));
+    }
+
+    public FormFieldProperty(String name, String displayName, int sortNum) {
+        this(name, displayName, QueryModel.EQUAL, sortNum);
+    }
+
+    public FormFieldProperty(String name, String displayName, QueryModel queryModel, int sortNum) {
+        this.name = name;
+        this.displayName = displayName;
+        this.queryModel = queryModel;
+        this.sortNum = sortNum;
     }
 
     public String getName() {
@@ -82,6 +98,7 @@ public class FormFieldProperty extends BaseProperty {
 
     public void setQueryModel(QueryModel queryModel) {
         this.queryModel = queryModel;
+        width = 250;
     }
     public boolean isSingleLine() {
         return isSingleLine;
@@ -121,6 +138,14 @@ public class FormFieldProperty extends BaseProperty {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.maxLength = maxLength;
     }
 
     public DisplayStyle getDisplayStyle() {

@@ -121,6 +121,9 @@ public class UFile {
      * @param target 目标文件
      */
     public static void write(byte[] bytes, File target) throws IOException {
+        if (!target.getParentFile().exists()) {
+            target.getParentFile().mkdirs();
+        }
         BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(target));
         os.write(bytes, 0, bytes.length);
         os.flush();
