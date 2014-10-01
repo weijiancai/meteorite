@@ -68,7 +68,8 @@ public class FetchWebSiteTest {
 
     @Test
     public void testFetchImages() throws IOException {
-        String baseUrl = "http://www.7-zhou.com/qizhoujkys/yangsheng_1.html?ext=MjQz3NCwzMjIzLHNpbmthLDI4ODAsMzg0NiwzODQ2LA==";
+//        String baseUrl = "http://www.7-zhou.com/qizhoujkys/yangsheng_1.html?ext=MjQz3NCwzMjIzLHNpbmthLDI4ODAsMzg0NiwzODQ2LA==";
+        String baseUrl = "http://www.9lmm.com:1111/index.htm";
         File dir = new File("D:\\fetch\\fit120");
         FetchWebSite fetchWebSite = new FetchWebSite(dir);
         fetchWebSite.fetchImages(baseUrl);

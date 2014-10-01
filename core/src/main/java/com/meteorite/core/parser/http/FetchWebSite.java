@@ -298,36 +298,39 @@ public class FetchWebSite {
         }
 
         final File imagesDir = new File(baseDir, "images");
-        Document doc = Jsoup.connect(url).timeout(50000).get();
+        try {
+            Document doc = Jsoup.connect(url).timeout(50000).get();
+            Elements links = doc.select("a[href]");
+            Elements media = doc.select("[src]");
 
-        Elements links = doc.select("a[href]");
-        Elements media = doc.select("[src]");
-
-        for (Element src : media) {
-            final String href = src.attr("abs:src");
-            if (href.contains(".html") || href.contains(".php") || href.endsWith("/") || href.endsWith(".js")) {
-                continue;
-            }
-            System.out.println(href);
-            /*new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        UFile.write(new URL(href), imagesDir);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            for (Element src : media) {
+                final String href = src.attr("abs:src");
+                if (href.contains(".html") || href.contains(".php") || href.endsWith("/") || href.endsWith(".js") || href.contains(".js?")) {
+                    continue;
                 }
-            }).start();*/
-            UFile.write(new URL(href), imagesDir);
-        }
-
-        for (Element link : links) {
-            String href = link.attr("abs:href");
-            if (!urlSet.contains(href)) {
-                urlSet.add(href);
-                fetchImages(href);
+                System.out.println(href);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            UFile.write(new URL(href), imagesDir);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+//                UFile.write(new URL(href), imagesDir);
             }
+
+            for (Element link : links) {
+                String href = link.attr("abs:href");
+                if (!urlSet.contains(href)) {
+                    urlSet.add(href);
+                    fetchImages(href);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 }
