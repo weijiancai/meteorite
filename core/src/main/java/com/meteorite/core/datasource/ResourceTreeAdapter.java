@@ -35,6 +35,11 @@ public class ResourceTreeAdapter implements ITreeNode {
     }
 
     @Override
+    public boolean isVirtual() {
+        return false;
+    }
+
+    @Override
     public String getId() {
         return resource.getPath();
     }

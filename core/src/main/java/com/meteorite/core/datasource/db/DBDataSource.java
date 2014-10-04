@@ -626,23 +626,4 @@ public class DBDataSource extends DataSource {
 
         return response;
     }
-
-    @Override
-    public void registerObserver(Observer observer) {
-        try {
-            getDbConnection().getLoader().registerObserver(observer);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-
-    }
-
-    @Override
-    public void notifyObserver() {
-
-    }
 }

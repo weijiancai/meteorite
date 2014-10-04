@@ -36,11 +36,15 @@ public class ${meta.name}ServiceImpl implements ${meta.name}Service {
         return ${meta.name?uncap_first}Dao.findById(id);
     }
 
-    public List<${meta.name}> find(${meta.name} vo) throws Exception {
-        return ${meta.name?uncap_first}Dao.find(vo);
+    public List<${meta.name}> find(${meta.name} vo, int page, int pageSize) throws Exception {
+        return ${meta.name?uncap_first}Dao.find(vo, page, pageSize);
     }
 
-    public List<${meta.name}> listAll() throws Exception {
-        return ${meta.name?uncap_first}Dao.listAll();
+    public List<${meta.name}> listAll(int page, int pageSize) throws Exception {
+        return ${meta.name?uncap_first}Dao.listAll(page, pageSize);
+    }
+
+    public int count() throws Exception {
+        return ${meta.name?uncap_first}Dao.count();
     }
 }

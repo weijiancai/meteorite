@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="page" type="int" -->
 <#-- @ftlvariable name="project" type="com.meteorite.core.project.ProjectDefine" -->
 <#-- @ftlvariable name="meta" type="com.meteorite.core.meta.model.Meta" -->
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -15,6 +16,7 @@
             </if>
         </#list>
         </where>
+        limit ${"#"}{page, jdbcType=INTEGER} , ${"#"}{pageSize, jdbcType=INTEGER}
     </select>
 
     <select id="findById" resultType="${project.packageName}.entity.${meta.name}">
@@ -29,7 +31,7 @@
     </select>
 
     <select id="listAll" resultType="${project.packageName}.entity.${meta.name}">
-        SELECT * FROM ${meta.resource.name}
+        SELECT * FROM ${meta.resource.name} limit ${"#"}{page, jdbcType=INTEGER} , ${"#"}{pageSize, jdbcType=INTEGER}
     </select>
 
     <update id="update" parameterType="${project.packageName}.entity.${meta.name}">
@@ -74,4 +76,8 @@
         </#list>
         </where>
     </delete>
+
+    <select id="count" resultType="int">
+        SELECT count(1) FROM ${meta.resource.name}
+    </select>
 </mapper>

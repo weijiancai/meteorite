@@ -89,12 +89,12 @@ public class MuCrud extends StackPane {
         this.getChildren().addAll(root, editForm);
 
         // 注册按钮
-        for (MUTable table : editForm.getChildrenTables()) {
+        /*for (MUTable table : editForm.getChildrenTables()) {
             Button button = tableButton.get(table.getConfig().getMeta().getName());
             if (button != null) {
                 table.getToolBar().getItems().add(button);
             }
-        }
+        }*/
     }
 
     private Node createTop() {
@@ -188,7 +188,7 @@ public class MuCrud extends StackPane {
                     }
                 }
 
-                final MUForm form = new MUForm(formProperty, table, false);
+                final MUForm form = new MUForm(formProperty, table);
                 form.setAdd(true);
                 form.setValues(result);
                 MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "复制", form, new Callback<Void, Void>() {
@@ -269,7 +269,7 @@ public class MuCrud extends StackPane {
     }
 
     private void openFormWin(DataMap result) {
-        editForm.reset();
+//        editForm.reset();
         if (result == null) { // 新增
             editForm.add();
         } else { // 查看

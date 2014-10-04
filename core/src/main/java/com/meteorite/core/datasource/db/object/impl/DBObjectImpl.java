@@ -132,6 +132,11 @@ public class DBObjectImpl implements DBObject {
     }
 
     @Override
+    public boolean isVirtual() {
+        return false;
+    }
+
+    @Override
     public String getId() {
         return getFullName();
     }

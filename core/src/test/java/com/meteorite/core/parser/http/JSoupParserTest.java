@@ -1,5 +1,6 @@
 package com.meteorite.core.parser.http;
 
+import com.meteorite.core.util.UFile;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,8 +8,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +73,30 @@ public class JSoupParserTest {
         cookies.put("5QzN_2132_lastact", "1411653613%09misc.php%09so");
         Document doc = parser.parse(null, headers, cookies);
         System.out.println(doc.html());
+    }
+
+    @Test
+    public void setRegist() throws IOException {
+        /*String registUrl = "http://www.songyuan163.com/Registr.html";
+        Connection conn = Jsoup.connect(registUrl);
+        conn.get();
+        Map<String, String> cookies = conn.response().cookies();
+        System.out.println(cookies);
+        String pic = "http://www.songyuan163.com/index/verify.html";
+        UFile.write(new URL(pic), new File("d:/songyuan"));*/
+        String url = "http://www.songyuan163.com/registr/adddata.html";
+        Map<String, String> cookies = new HashMap<String, String>();
+        cookies.put("PHPSESSID", "24b4cbe9abd1b0e5d5ee1a51974f6149");
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("uid", "wei_jc2");
+        data.put("pwd", "12345678");
+        data.put("tel", "13252515009");
+        data.put("email", "weijiancai@126.com");
+        data.put("__hash__", "b209f84da4f28bbc679b9a75ff6f78da_9848e55bc847049875624bea11e2a2ef");
+        data.put("pwd", "12345678");
+        Document doc = Jsoup.connect(url).data(data).cookies(cookies).post();
+        System.out.println(doc.html());
+        UFile.write(doc.html(), "D:/songyuan/1.html");
     }
 
     class BookCat {

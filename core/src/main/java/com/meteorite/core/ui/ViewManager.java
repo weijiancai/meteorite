@@ -205,4 +205,15 @@ public class ViewManager {
     public static View getViewByName(String viewName) {
         return viewNameMap.get(viewName);
     }
+
+    /**
+     * 根据元数据，获得表单视图信息
+     *
+     * @param meta 元数据
+     * @return 返回视图信息
+     * @since 1.0.0
+     */
+    public static View getFormView(Meta meta) {
+        return getViewByName(meta.getName() + "FormView");
+    }
 }

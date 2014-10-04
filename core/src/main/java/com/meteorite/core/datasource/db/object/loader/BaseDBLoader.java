@@ -9,6 +9,7 @@ import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.*;
 import com.meteorite.core.datasource.db.object.impl.*;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.datasource.eventdata.LoaderEventData;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.observer.Observer;
 import com.meteorite.core.util.UObject;
@@ -703,23 +704,6 @@ public abstract class BaseDBLoader implements DBLoader {
 
     private void notifyMessage(String message) {
         this.message = message;
-        notifyObserver();
-    }
-
-    @Override
-    public void registerObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObserver() {
-        for (Observer observer : observers) {
-            observer.update(message);
-        }
+        dbConn.getDataSource().getLoaderSubject().notifyObserver(new LoaderEventData(message));
     }
 }

@@ -38,8 +38,9 @@ public class MUFormLayout extends BorderPane {
     }
 
     private void initUI() {
-        this.setTop(createTop());
+//        this.setTop(createTop());
         this.setCenter(createCenter());
+        this.setStyle("-fx-padding: 10");
     }
 
     public HBox createTop() {

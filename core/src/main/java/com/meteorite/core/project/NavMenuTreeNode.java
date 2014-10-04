@@ -1,4 +1,4 @@
-package com.meteorite.core.dict;
+package com.meteorite.core.project;
 
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.ui.model.View;
@@ -7,31 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 数据字典Tree
+ * 导航菜单树形节点
  *
  * @author wei_jc
  * @since 1.0.0
  */
-public class DictTreeNode implements ITreeNode {
-    private DictCategory category;
+public class NavMenuTreeNode implements ITreeNode {
+    private NavMenu navMenu;
     private List<ITreeNode> children;
 
-    public DictTreeNode(DictCategory category) {
-        this.category = category;
+    public NavMenuTreeNode(NavMenu navMenu) {
+        this.navMenu = navMenu;
         children = new ArrayList<ITreeNode>();
-        for (DictCategory cat : category.getChildren()) {
-            children.add(new DictTreeNode(cat));
+        for (NavMenu menu : navMenu.getChildren()) {
+            children.add(new NavMenuTreeNode(menu));
         }
     }
 
     @Override
     public String getId() {
-        return category.getId();
+        return navMenu.getId();
     }
 
     @Override
     public String getPid() {
-        return category.getPid();
+        return navMenu.getPid();
     }
 
     @Override
@@ -51,17 +51,17 @@ public class DictTreeNode implements ITreeNode {
 
     @Override
     public String getName() {
-        return category.getId();
+        return navMenu.getName();
     }
 
     @Override
     public String getDisplayName() {
-        return category.getName();
+        return navMenu.getDisplayName();
     }
 
     @Override
     public int getSortNum() {
-        return 0;
+        return navMenu.getSortNum();
     }
 
     @Override
@@ -81,11 +81,11 @@ public class DictTreeNode implements ITreeNode {
 
     @Override
     public boolean isVirtual() {
-        return "ROOT".equals(getId()) || "System_Category".equals(getId());
+        return "root".equalsIgnoreCase(getId());
     }
 
     @Override
     public String toString() {
-        return category.getName();
+        return navMenu.getDisplayName();
     }
 }

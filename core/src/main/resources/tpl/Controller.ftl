@@ -4,11 +4,12 @@ package ${project.packageName}.controller;
 
 import ${project.packageName}.entity.${meta.name};
 import ${project.packageName}.service.${meta.name}Service;
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.wlb.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,10 +39,41 @@ public class ${meta.name}Controller {
         ${meta.name?uncap_first}Service.update(vo);
     }
 
-    @RequestMapping(value = "/list")
-    public String list(HttpServletRequest req) throws Exception {
-        List<${meta.name}> list = ${meta.name?uncap_first}Service.listAll();
-        req.setAttribute("list", list);
+    @RequestMapping(value = "/goList")
+    public String goList(HttpServletRequest req) throws Exception {
+        <#--String pageStr = req.getParameter("page");
+        String pageSizeStr = req.getParameter("pageSize");
+        int page;
+        int pageSize;
+        try {
+            page = Integer.parseInt(pageStr);
+            if (page <= 0) {
+                page = 1;
+            }
+        } catch (Exception e) {
+            page = 1;
+        }
+        try {
+            pageSize = Integer.parseInt(pageSizeStr);
+        } catch (Exception e) {
+            pageSize = 15;
+        }-->
+
         return "${meta.name?uncap_first}/${meta.name?uncap_first}List";
+    }
+
+    @RequestMapping(value = "/list")
+    @ResponseBody
+    public void list(HttpServletResponse response, ${meta.name} vo, int start, int length) throws Exception {
+        Map<String, Object> result = new HashMap<String, Object>();
+        int count = ${meta.name?uncap_first}Service.count();
+        List<${meta.name}> list = ${meta.name?uncap_first}Service.listAll(start, length);
+        result.put("draw", 1);
+        result.put("recordsTotal", count);
+        result.put("recordsFiltered", count);
+        result.put("data", list);
+
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(JSONObject.toJSONString(result));
     }
 }

@@ -76,4 +76,20 @@ public interface ITreeNode {
     View getView();
 
     String getPresentableText();
+
+    /**
+     * 获得此节点的所有数据
+     *
+     * @return 返回此节点的所有数据
+     * @since 1.0.0
+     */
+//    DataMap getData();
+
+    /**
+     * 是否虚拟的树形节点，如果是虚拟的，则不会处理相关的事件，例如根据树形节点检索数据。
+     *
+     * @return 如果是虚拟节点，返回true，否则false。
+     * @since 1.0.0
+     */
+    boolean isVirtual();
 }

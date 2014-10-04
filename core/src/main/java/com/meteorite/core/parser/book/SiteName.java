@@ -9,7 +9,7 @@ import com.meteorite.core.util.UString;
  * @since 0.0.1
  */
 public enum SiteName {
-	JING_DONG, DANG_DANG, DOU_BAN, AMAZON, PUB_BEI_DA, OPEN_BOOK_DATA;
+	JING_DONG, DANG_DANG, DOU_BAN, AMAZON, PUB_BEI_DA, OPEN_BOOK_DATA, BOOKUU;
 	
 	public static SiteName[] toArray(String siteNameStr) {
 		if(!UString.isEmpty(siteNameStr)) {

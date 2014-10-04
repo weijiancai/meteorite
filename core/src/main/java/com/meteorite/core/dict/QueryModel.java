@@ -1,6 +1,5 @@
 package com.meteorite.core.dict;
 
-import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 
 /**

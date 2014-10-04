@@ -3,6 +3,7 @@ package com.meteorite.core.project;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class ProjectManager {
     private static Map<String, ProjectDefine> projectNameMap = new HashMap<String, ProjectDefine>();
     private static Map<String, ProjectDefine> projectIdMap = new HashMap<String, ProjectDefine>();
     private static Map<String, NavMenu> navMenuMap = new HashMap<String, NavMenu>();
+    private static List<ProjectDefine> projects = new ArrayList<ProjectDefine>();
 
     public static void load() throws Exception {
         JdbcTemplate template = new JdbcTemplate();
@@ -24,8 +26,7 @@ public class ProjectManager {
             String sql = "SELECT * FROM mu_project_define order by sort_num";
             List<ProjectDefine> projects = template.query(sql, MetaRowMapperFactory.getProjectDefine());
             for (final ProjectDefine project : projects) {
-                projectIdMap.put(project.getId(), project);
-                projectNameMap.put(project.getName(), project);
+                putCache(project);
             }
 
             // 查询导航菜单
@@ -41,9 +42,14 @@ public class ProjectManager {
 
             // 构造树形导航菜单
             for (NavMenu navMenu : navMenuMap.values()) {
-                NavMenu parent = navMenuMap.get(navMenu.getPid());
+                String pid = navMenu.getPid();
+                NavMenu parent = navMenuMap.get(pid);
                 if (parent != null) {
                     parent.getChildren().add(navMenu);
+                }
+                // 添加到根节点下
+                if (pid != null && pid.equalsIgnoreCase("root")) {
+                    projectIdMap.get(navMenu.getProjectId()).getRootNavMenu().getChildren().add(navMenu);
                 }
             }
 
@@ -51,6 +57,17 @@ public class ProjectManager {
         } finally {
             template.close();
         }
+    }
+
+    private static void putCache(ProjectDefine project) {
+        projectIdMap.put(project.getId(), project);
+        projectNameMap.put(project.getName(), project);
+        projects.add(project);
+        NavMenu root = new NavMenu();
+        root.setId("root");
+        root.setName("root");
+        root.setDisplayName("导航菜单");
+        project.setRootNavMenu(root);
     }
 
     /**
@@ -61,5 +78,19 @@ public class ProjectManager {
      */
     public static ProjectDefine getProjectByName(String projectName) {
         return projectNameMap.get(projectName);
+    }
+
+    /**
+     * 根据项目ID获得项目信息
+     *
+     * @param projectId 项目ID
+     * @return 返回项目信息
+     */
+    public static ProjectDefine getProjectById(String projectId) {
+        return projectIdMap.get(projectId);
+    }
+
+    public static List<ProjectDefine> getProjects() {
+        return projects;
     }
 }

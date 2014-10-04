@@ -19,7 +19,9 @@ public interface ${meta.name}Service {
 
     ${meta.name} findById(String id) throws Exception;
 
-    List<${meta.name}> find(${meta.name} vo) throws Exception;
+    List<${meta.name}> find(${meta.name} vo, int page, int pageSize) throws Exception;
 
-    List<${meta.name}> listAll() throws Exception;
+    List<${meta.name}> listAll(int page, int pageSize) throws Exception;
+
+    int count() throws Exception;
 }

@@ -1,22 +1,17 @@
 package com.meteorite.fxbase.ui.win;
 
-import com.meteorite.core.datasource.DataMap;
-import com.meteorite.core.datasource.QueryBuilder;
-import com.meteorite.core.datasource.db.QueryResult;
+import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.dict.DictTreeNode;
 import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.ITreeNode;
-import com.meteorite.core.ui.ViewManager;
-import com.meteorite.fxbase.MuEventHandler;
-import com.meteorite.fxbase.ui.view.MUTable;
-import com.meteorite.fxbase.ui.view.MUTree;
-import javafx.geometry.Side;
-import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import org.controlsfx.control.MasterDetailPane;
+import com.meteorite.core.model.impl.BaseTreeNode;
+import com.meteorite.core.util.UString;
+import com.meteorite.fxbase.ui.IValue;
+import javafx.scene.control.TreeItem;
+
+import java.util.Map;
 
 /**
  * 数据字典窗口
@@ -24,46 +19,50 @@ import org.controlsfx.control.MasterDetailPane;
  * @author wei_jc
  * @since 1.0.0
  */
-public class MUDictWin extends BorderPane {
-    private MUTable table;
-    private Meta dzCodeMeta;
+public class MUDictWin extends MUTreeTableWin {
 
     public MUDictWin() {
         initUI();
+        setSelectItem(1);
     }
 
-    private void initUI() {
-        dzCodeMeta = MetaManager.getMeta("Code");
-
-        MasterDetailPane sp = new MasterDetailPane(Side.LEFT);
-        sp.setDividerPosition(0.2);
-        sp.setMasterNode(createCenter());
-        sp.setDetailNode(createLeft());
-
-        this.setCenter(sp);
+    @Override
+    public ITreeNode getRootTreeNode() {
+        return new DictTreeNode(DictManager.getRoot());
     }
 
-    private MUTree createLeft() {
-        final MUTree tree = new MUTree(new DictTreeNode(DictManager.getRoot()));
-        tree.setOnMouseClicked(new MuEventHandler<MouseEvent>() {
-            @Override
-            public void doHandler(MouseEvent event) throws Exception {
-                if (event.getClickCount() == 2) {
-                    ITreeNode node = tree.getSelected();
-                    String id = node.getId();
-                    QueryBuilder builder = QueryBuilder.create(dzCodeMeta);
-                    builder.add("category_id", id);
-                    QueryResult<DataMap> queryResult = dzCodeMeta.query(builder);
-                    table.getItems().addAll(queryResult.getRows());
-                }
-            }
-        });
-        return tree;
+    @Override
+    public Meta getMainMeta() {
+        return MetaManager.getMeta("Category");
     }
 
-    private Node createCenter() {
-        table = new MUTable();
-        table.initUI(ViewManager.getViewByName("CodeTableView"));
-        return table;
+    @Override
+    public Meta getItemMeta() {
+        return MetaManager.getMeta("Code");
+    }
+
+    @Override
+    public String getParentIdColName() {
+        return "pid";
+    }
+
+    @Override
+    public String getItemFkColName() {
+        return "categoryId";
+    }
+
+    @Override
+    public String getItemFkDbName() {
+        return "category_id";
+    }
+
+    @Override
+    public TreeItem<ITreeNode> createNewTreeNode(Map<String, IValue> valueMap) {
+        DictCategory category = new DictCategory();
+        category.setId(valueMap.get("id").value());
+        category.setName(valueMap.get("name").value());
+        category.setSystem(UString.toBoolean(valueMap.get("isSystem").value()));
+        DictTreeNode node = new DictTreeNode(category);
+        return new TreeItem<ITreeNode>(node);
     }
 }

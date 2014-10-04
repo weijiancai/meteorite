@@ -1,6 +1,8 @@
 package com.meteorite.core.ui.layout.property;
 
 import com.meteorite.core.dict.FormType;
+import com.meteorite.core.meta.DisplayStyle;
+import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.*;
@@ -198,5 +200,84 @@ public class FormProperty implements PropertyNames {
         view.setViewProperties(viewProperties);
 
         return view;
+    }
+
+    public String toHtml(boolean isTable) {
+        StringBuilder sb = new StringBuilder();
+
+        int rowIdx = 0;
+        int colIdx = 0;
+
+        String wrapperTag = "table";
+        String rowTag = "tr";
+        String colTag = "td";
+        if (!isTable) {
+            wrapperTag = "ul";
+            rowTag = "li";
+            colTag = "span";
+        }
+
+        sb.append(String.format("<%s class=\"mu-form\"><%s>", wrapperTag, rowTag));
+        for (FormFieldProperty field : getFormFields()) {
+            if (!field.isDisplay()) {
+                continue;
+            }
+
+            if (field.isSingleLine()) {
+                rowIdx++;
+                sb.append(String.format("</%s><%1$s>", rowTag));
+                sb.append(String.format("<%s class=\"field_label\"><label class=\"control-label\">%s</label></%1$s>", colTag, field.getDisplayName()));
+                sb.append(String.format("<%s  class=\"field_input\" colspan=\"%d\">", colTag, getColCount() * 2 - 1)).append(getInputControl(field, true)).append(String.format("</%s>", colTag));
+                sb.append(String.format("</%s><%1$s>", rowTag));
+                colIdx = 0;
+                rowIdx++;
+                continue;
+            }
+
+            sb.append(String.format("<%s class=\"field_label\"><label class=\"control-label\">%s</label></%1$s>", colTag, field.getDisplayName()));
+            sb.append(String.format("<%s class=\"field_input\">", colTag)).append(getInputControl(field, false)).append(String.format("</%s>", colTag));
+
+            if (getColCount() == 1) {
+                colIdx = 0;
+                rowIdx++;
+                sb.append(String.format("</%s><%1$s>", rowTag));
+            } else {
+                if (colIdx == getColCount() - 1) {
+                    colIdx = 0;
+                    rowIdx++;
+                    sb.append(String.format("</%s><%1$s>", rowTag));
+                } else {
+                    colIdx++;
+                }
+            }
+        }
+
+        sb.append(String.format("</%s></%s>", rowTag, wrapperTag));
+        return sb.toString().replace("<tr></tr>", "");
+    }
+
+    public String getInputControl(FormFieldProperty field, boolean isSingleLine) {
+        StringBuilder sb = new StringBuilder();
+
+        String colName = field.getName();
+        if (field.getDisplayStyle() == DisplayStyle.COMBO_BOX) {
+            sb.append(String.format("<select name=\"%s\" style=\"width:150px;\"></select>",
+                    colName));
+        } else if(field.getDisplayStyle() == DisplayStyle.DATE) {
+            if (field.getFormProperty().getFormType() == FormType.QUERY) {
+                sb.append("<div class=\"controls\">\n" +
+                        "    <div class=\"form-date-range btn\"><i class=\"icon-calendar\"></i>&nbsp;<span></span><b class=\"caret\"></b></div>\n" +
+                        "</div>");
+            }
+        }
+        else {
+            if (isSingleLine) {
+                sb.append(String.format("<input type=\"text\" name=\"%s\" class=\"m-wrap\" style=\"width:100%%;\">", colName));
+            } else {
+                sb.append(String.format("<input name=\"%s\"  type=\"text\" class=\"m-wrap\">", colName));
+            }
+        }
+
+        return sb.toString();
     }
 }

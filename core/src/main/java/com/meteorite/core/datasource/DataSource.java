@@ -1,11 +1,13 @@
 package com.meteorite.core.datasource;
 
 import com.meteorite.core.datasource.db.QueryResult;
+import com.meteorite.core.datasource.eventdata.LoaderEventData;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.datasource.request.IRequest;
 import com.meteorite.core.datasource.request.IResponse;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.observer.BaseSubject;
 import com.meteorite.core.observer.Subject;
 import com.meteorite.core.rest.RestHandler;
 import com.meteorite.fxbase.ui.IValue;
@@ -23,7 +25,7 @@ import java.util.Map;
  * @author wei_jc
  * @since 1.0.0
  */
-public abstract class DataSource implements RestHandler, Subject {
+public abstract class DataSource implements RestHandler {
     private String id;
     private String name;
     private String displayName;
@@ -40,6 +42,8 @@ public abstract class DataSource implements RestHandler, Subject {
     private Map<String, String> properties;
     // 资源缓存
     private Map<String, VirtualResource> resourceCache = new HashMap<String, VirtualResource>();
+    //
+    private Subject<LoaderEventData> loaderSubject = new BaseSubject<LoaderEventData>();
 
     public void setId(String id) {
         this.id = id;
@@ -324,5 +328,9 @@ public abstract class DataSource implements RestHandler, Subject {
     @Override
     public void imp(IRequest request) throws Exception {
 
+    }
+
+    public Subject<LoaderEventData> getLoaderSubject() {
+        return loaderSubject;
     }
 }

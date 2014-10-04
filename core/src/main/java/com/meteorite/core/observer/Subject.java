@@ -6,10 +6,10 @@ package com.meteorite.core.observer;
  * @author wei_jc
  * @since 1.0.0
  */
-public interface Subject {
-    void registerObserver(Observer observer);
+public interface Subject<D extends EventData> {
+    void registerObserver(Observer<D> observer);
 
-    void removeObserver(Observer observer);
+    void removeObserver(Observer<D> observer);
 
-    void notifyObserver();
+    void notifyObserver(D data);
 }

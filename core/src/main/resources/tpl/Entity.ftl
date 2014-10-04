@@ -5,6 +5,7 @@
 package ${project.packageName}.${packageName};
 
 import java.util.Date;
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class ${meta.name} {
 <#list meta.fields as field>
@@ -22,6 +23,7 @@ public class ${meta.name} {
         this.${field.name} = ${field.name};
     }
     <#else>
+    @JSONField(name = "${field.name}")
     public ${field.dataType.toJavaType()} get${field.name?cap_first}() {
         return ${field.name};
     }

@@ -15,4 +15,11 @@ public interface IProductParser {
      * @return 返回商品信息列表， 此List不为null
      */
     List<IWebProduct> parse();
+
+    /*String getName(Element element);
+
+    Elements search(String url);
+
+    String getSearchUrl();*/
+
 }

@@ -16,6 +16,7 @@ public class BaseTreeNode implements ITreeNode {
     private String pid;
     private String name;
     private String displayName;
+    private String presentableText;
     private int sortNum;
     private View view;
 
@@ -42,6 +43,10 @@ public class BaseTreeNode implements ITreeNode {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public void setPresentableText(String presentableText) {
+        this.presentableText = presentableText;
     }
 
     public void setParent(ITreeNode parent) {
@@ -112,7 +117,12 @@ public class BaseTreeNode implements ITreeNode {
 
     @Override
     public String getPresentableText() {
-        return null;
+        return presentableText;
+    }
+
+    @Override
+    public boolean isVirtual() {
+        return false;
     }
 
     public void setView(View view) {

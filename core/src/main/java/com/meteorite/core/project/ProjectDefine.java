@@ -27,6 +27,7 @@ public class ProjectDefine {
     private int sortNum;
 
     private List<NavMenu> navMenus;
+    private NavMenu rootNavMenu;
 
     @MetaFieldElement(displayName = "项目ID")
     public String getId() {
@@ -128,6 +129,14 @@ public class ProjectDefine {
             }
         }
         return result;
+    }
+
+    public NavMenu getRootNavMenu() {
+        return rootNavMenu;
+    }
+
+    public void setRootNavMenu(NavMenu rootNavMenu) {
+        this.rootNavMenu = rootNavMenu;
     }
 
     @Override

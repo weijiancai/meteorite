@@ -2,6 +2,7 @@ package com.meteorite.core.codegen;
 
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.project.ProjectDefine;
+import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.ftl.FreeMarkerConfiguration;
@@ -35,13 +36,14 @@ public class CodeGen {
         this.basePageDir = basePageDir;
     }
 
-    public void genSpringCode(ProjectDefine project, Meta meta) throws IOException, TemplateException {
+    public void genSpringCode(ProjectDefine project, Meta meta, String prefix) throws IOException, TemplateException {
         // 生成实体
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("project", project);
         map.put("meta", meta);
         map.put("packageName", "entity");
-        String str = FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("JavaBean.ftl"), map);
+        map.put("queryForm", ViewManager.getViewByName(prefix + meta.getName() + "QueryView").getQueryForm().toHtml(true));
+        String str = FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("Entity.ftl"), map);
         UFile.write(str, new File(baseDir, "entity/" + meta.getName() + ".java").getAbsolutePath());
         // 生成Dao接口
         str = FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("DaoInterface.ftl"), map);

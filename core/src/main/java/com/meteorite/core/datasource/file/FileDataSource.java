@@ -121,19 +121,4 @@ public class FileDataSource extends DataSource {
     public void delete(IRequest request) {
 
     }
-
-    @Override
-    public void registerObserver(Observer observer) {
-
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-
-    }
-
-    @Override
-    public void notifyObserver() {
-
-    }
 }

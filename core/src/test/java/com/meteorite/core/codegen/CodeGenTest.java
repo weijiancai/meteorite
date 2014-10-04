@@ -16,11 +16,25 @@ public class CodeGenTest {
     public void testGenSpringCode() throws Exception {
         SystemManager.getInstance().init();
 
-        Meta meta = MetaManager.getMeta("CmsDbNews");
+        /*Meta meta = MetaManager.getMeta("CmsDbNews");
         meta.setName("News");
         CodeGen codeGen = new CodeGen("D:\\workspace_other\\wlb\\src\\com\\wlb");
         codeGen.setBasePageDir("D:\\workspace_other\\wlb\\WebContent\\WEB-INF\\html");
         ProjectDefine project = ProjectManager.getProjectByName(ProjectDefineInit.PROJECT_NAME);
-        codeGen.genSpringCode(project, meta);
+        codeGen.genSpringCode(project, meta, "CmsDb");*/
+
+        /*Meta meta = MetaManager.getMeta("BsDzCodeClass");
+        meta.setName("CodeClass");
+        CodeGen codeGen = new CodeGen("D:\\workspace_other\\wlb\\src\\com\\wlb");
+        codeGen.setBasePageDir("D:\\workspace_other\\wlb\\WebContent\\WEB-INF\\html");
+        ProjectDefine project = ProjectManager.getProjectByName(ProjectDefineInit.PROJECT_NAME);
+        codeGen.genSpringCode(project, meta, "BsDz");*/
+
+        Meta meta = MetaManager.getMeta("BsDzCodeGlobal");
+        meta.setName("CodeGlobal");
+        CodeGen codeGen = new CodeGen("D:\\workspace_other\\wlb\\src\\com\\wlb");
+        codeGen.setBasePageDir("D:\\workspace_other\\wlb\\WebContent\\WEB-INF\\html");
+        ProjectDefine project = ProjectManager.getProjectByName(ProjectDefineInit.PROJECT_NAME);
+        codeGen.genSpringCode(project, meta, "BsDz");
     }
 }

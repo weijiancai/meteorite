@@ -7,6 +7,7 @@ import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
+import com.meteorite.core.datasource.eventdata.LoaderEventData;
 import com.meteorite.core.dict.FormType;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.ITreeNode;
@@ -26,6 +27,7 @@ import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.meta.AddMetaGuide;
 import com.meteorite.fxbase.ui.win.MUDictWin;
 import com.meteorite.fxbase.ui.win.MUMetaWin;
+import com.meteorite.fxbase.ui.win.MUProjectWin;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -229,26 +231,36 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         navTree = new BaseTreeNode("ROOT");
         final TreeItem<ITreeNode> navTreeItem = new TreeItem<ITreeNode>(navTree);
         navTreeItem.setExpanded(true);
-
+        // 数据源管理
         final BaseTreeNode dataSource = new BaseTreeNode("数据源管理");
         dataSource.setId("DataSource");
         dataSource.setView(ViewManager.getViewByName("DatasourceCrudView"));
-        final TreeItem<ITreeNode> dataSourceItem = new TreeItem<ITreeNode>( dataSource);
-
+        final TreeItem<ITreeNode> dataSourceItem = new TreeItem<ITreeNode>(dataSource);
+        // 数据字典
         BaseTreeNode dictNode = new BaseTreeNode("数据字典");
         dictNode.setId("Dict");
         dictNode.setView(View.createNodeView(new MUDictWin()));
-        TreeItem<ITreeNode> dictItem = new TreeItem<ITreeNode>( dictNode);
-
+        TreeItem<ITreeNode> dictItem = new TreeItem<ITreeNode>(dictNode);
+        // 元数据
         BaseTreeNode metaNode = new BaseTreeNode("元数据");
         metaNode.setId("Meta");
         metaNode.setView(View.createNodeView(new MUMetaWin()));
-        TreeItem<ITreeNode> metaItem = new TreeItem<ITreeNode>( metaNode);
+        TreeItem<ITreeNode> metaItem = new TreeItem<ITreeNode>(metaNode);
+        // 项目管理
+        /*BaseTreeNode projectNode = new BaseTreeNode("项目管理");
+        projectNode.setId("Project");
+        MUProjectWin projectWin = new MUProjectWin();
+        projectNode.setView(View.createNodeView(projectWin));
+        TreeItem<ITreeNode> projectItem = new TreeItem<ITreeNode>(projectNode);
+        projectItem.getChildren().add(projectWin.getProjectTree());*/
+        MUProjectWin projectWin = new MUProjectWin();
+        TreeItem<ITreeNode> projectItem = projectWin.getProjectTree();
 
         tree.setRoot(navTreeItem);
         tree.setShowRoot(false);
         navTreeItem.getChildren().add(dictItem);
         navTreeItem.getChildren().add(metaItem);
+        navTreeItem.getChildren().add(projectItem);
         navTreeItem.getChildren().add(dataSourceItem);
 
         BaseTreeNode dsConfigTreeNode = new BaseTreeNode("SQL控制台");
@@ -268,10 +280,10 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
                     protected List<BaseTreeNode> call() throws Exception {
                         List<BaseTreeNode> result = new ArrayList<BaseTreeNode>();
                         for (final DataSource ds : DataSourceManager.getDataSources()) {
-                            ds.registerObserver(new Observer() {
+                            ds.getLoaderSubject().registerObserver(new Observer<LoaderEventData>() {
                                 @Override
-                                public void update(String message) {
-                                    updateMessage(message);
+                                public void update(LoaderEventData data) {
+                                    updateMessage(data.getMessage());
                                 }
                             });
                             ds.load();
@@ -322,7 +334,10 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         // 打开视图
         View view = node.getView();
         if (view != null) {
-            String displayName = node.getDisplayName();
+            String displayName = node.getPresentableText();
+            if (UString.isEmpty(displayName)) {
+                displayName = node.getDisplayName();
+            }
             if (UString.isEmpty(displayName)) {
                 displayName = node.getName();
             }
@@ -350,7 +365,9 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
 
                     dbObjTabPane.getTabs().addAll(objDefTab, dataTab, genCodeTab);
                     dbObjTabPane.getSelectionModel().select(dataTab);
-                    dataTab.setContent(new MuCrud(view));
+                    MUTable table = new MUTable();
+                    table.initUI(view.getMeta());
+                    dataTab.setContent(table);
 
                     tab.setContent(dbObjTabPane);
                 }

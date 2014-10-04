@@ -3,6 +3,7 @@
 package ${project.packageName}.dao;
 
 import ${project.packageName}.entity.${meta.name};
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,7 +20,9 @@ public interface ${meta.name}Dao {
 
     ${meta.name} findById(String id) throws Exception;
 
-    List<${meta.name}> find(${meta.name} vo) throws Exception;
+    List<${meta.name}> find(${meta.name} vo, @Param("page")int page, @Param("pageSize")int pageSize) throws Exception;
 
-    List<${meta.name}> listAll() throws Exception;
+    List<${meta.name}> listAll(@Param("page")int page, @Param("pageSize")int pageSize) throws Exception;
+
+    int count() throws Exception;
 }

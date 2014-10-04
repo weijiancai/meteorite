@@ -1,6 +1,7 @@
 package com.meteorite.core.meta.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.VirtualResource;
@@ -11,12 +12,11 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.action.MUAction;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
-import com.meteorite.core.datasource.DataMap;
-import com.meteorite.core.observer.*;
-import com.meteorite.core.observer.Observer;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.model.View;
-import com.meteorite.core.util.*;
+import com.meteorite.core.util.UObject;
+import com.meteorite.core.util.UString;
+import com.meteorite.core.util.UUIDUtil;
 import com.meteorite.core.util.ftl.FreeMarkerConfiguration;
 import com.meteorite.core.util.ftl.FreeMarkerTemplateUtils;
 import com.meteorite.fxbase.ui.IValue;
@@ -42,7 +42,7 @@ import java.util.*;
 @XmlRootElement
 @XmlType(propOrder = {"id", "name", "displayName", "valid", "sortNum", "inputDate", "description", "fields"})
 @MetaElement(displayName = "元数据")
-public class Meta implements Subject {
+public class Meta {
     private String id;
     private String name;
     private String displayName;
@@ -408,6 +408,23 @@ public class Meta implements Subject {
         return result;
     }
 
+    public DataMap queryByPK(String... pkValues) throws Exception {
+        QueryBuilder builder = QueryBuilder.create(this);
+        builder.sql().setQuerySql(sqlText);
+        int i = 0;
+        for (MetaField field : getPkFields()) {
+            builder.add(field.getOriginalName(), pkValues[i++]);
+        }
+        QueryResult<DataMap> result = resource.retrieve(builder, -1, 0);
+        if (result.getTotal() == 0) {
+            throw new RuntimeException(String.format("没有此主键值【%s】", pkValues));
+        }
+        if (result.getTotal() > 1) {
+            throw new RuntimeException(String.format("根据主键检索，检索出多条数据！"));
+        }
+        return result.getRows().get(0);
+    }
+
     public void toTxtFile(File file, DataMap param) throws Exception {
         query(QueryBuilder.create(this));
         List<DataMap> dataList = getDataList();
@@ -541,25 +558,6 @@ public class Meta implements Subject {
             return FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("JavaBean.ftl"), map);
         } catch (Exception e) {
             throw new RuntimeException("生成JavaBean代码失败！", e);
-        }
-    }
-
-    private List<Observer> observers = new ArrayList<Observer>();
-
-    @Override
-    public void registerObserver(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void notifyObserver() {
-        for (Observer observer : observers) {
-            observer.update("");
         }
     }
 }
