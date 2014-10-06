@@ -1,7 +1,7 @@
 package com.meteorite.core.dict;
 
 import com.meteorite.core.model.ITreeNode;
-import com.meteorite.core.ui.model.View;
+import com.meteorite.core.model.impl.BaseTreeNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +12,18 @@ import java.util.List;
  * @author wei_jc
  * @since 1.0.0
  */
-public class DictTreeNode implements ITreeNode {
+public class DictTreeNode extends BaseTreeNode {
     private DictCategory category;
-    private List<ITreeNode> children;
 
     public DictTreeNode(DictCategory category) {
         this.category = category;
-        children = new ArrayList<ITreeNode>();
+        List<ITreeNode> children = new ArrayList<ITreeNode>();
         for (DictCategory cat : category.getChildren()) {
-            children.add(new DictTreeNode(cat));
+            DictTreeNode node = new DictTreeNode(cat);
+            node.setParent(this);
+            children.add(node);
         }
+        setChildren(children);
     }
 
     @Override
@@ -32,21 +34,6 @@ public class DictTreeNode implements ITreeNode {
     @Override
     public String getPid() {
         return category.getPid();
-    }
-
-    @Override
-    public ITreeNode getParent() {
-        return null;
-    }
-
-    @Override
-    public void setParent(ITreeNode parent) {
-
-    }
-
-    @Override
-    public List<ITreeNode> getChildren() {
-        return children;
     }
 
     @Override
@@ -61,22 +48,7 @@ public class DictTreeNode implements ITreeNode {
 
     @Override
     public int getSortNum() {
-        return 0;
-    }
-
-    @Override
-    public String getIcon() {
-        return null;
-    }
-
-    @Override
-    public View getView() {
-        return null;
-    }
-
-    @Override
-    public String getPresentableText() {
-        return null;
+        return category.getSortNum();
     }
 
     @Override

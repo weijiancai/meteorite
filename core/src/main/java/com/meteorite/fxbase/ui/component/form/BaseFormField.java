@@ -10,6 +10,7 @@ import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UUIDUtil;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
+import com.meteorite.fxbase.ui.event.FormFieldClickEvent;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
@@ -71,6 +73,17 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
             }
         } else {
             this.setValue(config.getValue());
+        }
+
+        for (Node node : getControls()) {
+            node.setOnMouseClicked(new MuEventHandler<MouseEvent>() {
+                @Override
+                public void doHandler(MouseEvent event) throws Exception {
+                    if (event.getClickCount() == 1) {
+                        fireEvent(new FormFieldClickEvent((BaseFormField.this)));
+                    }
+                }
+            });
         }
 
         initAfter();

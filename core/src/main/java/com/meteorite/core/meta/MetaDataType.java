@@ -66,14 +66,19 @@ public enum MetaDataType {
     /**
      * GUID
      */
-    GUID("GUID")
+    GUID("GUID"),
+    /**
+     * 大文本
+     */
+    TEXT("大文本")
     ;
 
-    private static String[] stringArray = {STRING.name(), "CHARACTER VARYING", "varchar", "text", "longtext", "mediumtext", "char"};
+    private static String[] stringArray = {STRING.name(), "CHARACTER VARYING", "varchar", "mediumtext", "char"};
     private static String[] intArray = {INTEGER.name(), "BIGINT", "INTEGER", "SMALLINT", "int", "tinyint"};
     private static String[] dateArray = {DATE.name(), "TIMESTAMP", "DATE", "datetime", "time"};
     private static String[] doubleArray = {DOUBLE.name(), "decimal", "double"};
     private static String[] blobArray = {BLOB.name(), "longblob", "blob"};
+    private static String[] textArray = {BLOB.name(), "text", "longtext"};
 
     private String displayName;
 
@@ -114,6 +119,8 @@ public enum MetaDataType {
             return BLOB;
         } else if (GUID.name().equalsIgnoreCase(dataTypeStr)) {
             return GUID;
+        } else if (UString.inArray(textArray, dataTypeStr, true)) {
+            return TEXT;
         }
 
         return STRING;

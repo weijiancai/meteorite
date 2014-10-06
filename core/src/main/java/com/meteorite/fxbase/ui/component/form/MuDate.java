@@ -3,11 +3,14 @@ package com.meteorite.fxbase.ui.component.form;
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.util.UDate;
 import com.meteorite.core.util.UString;
+import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
+import com.meteorite.fxbase.ui.event.FormFieldClickEvent;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.DatePicker;
+import javafx.scene.input.MouseEvent;
 import javafx.util.StringConverter;
 
 import java.time.LocalDate;
@@ -52,6 +55,14 @@ public class MuDate extends BaseFormField implements IValue {
             @Override
             public void changed(ObservableValue<? extends LocalDate> observable, LocalDate oldValue, LocalDate newValue) {
                 valueProperty().set(UDate.dateToString(newValue));
+            }
+        });
+        datePicker.getEditor().setOnMouseClicked(new MuEventHandler<MouseEvent>() {
+            @Override
+            public void doHandler(MouseEvent event) throws Exception {
+                if (event.getClickCount() == 1) {
+                    fireEvent(new FormFieldClickEvent((MuDate.this)));
+                }
             }
         });
     }

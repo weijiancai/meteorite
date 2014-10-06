@@ -1,6 +1,7 @@
 package com.meteorite.core.util.ftl;
 
 import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.StringTemplateLoader;
 import freemarker.cache.WebappTemplateLoader;
 import freemarker.template.Configuration;
 

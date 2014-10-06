@@ -7,6 +7,7 @@ import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.*;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -31,14 +32,25 @@ public class MUFormLayout extends BorderPane {
     private FormProperty formConfig;
     private Map<String, IValue> valueMap = new HashMap<String, IValue>();
     private List<ICanQuery> queryList = new ArrayList<ICanQuery>();
+    private boolean onlyShowHidden;
 
     public MUFormLayout(FormProperty property) {
         this.formConfig = property;
         initUI();
     }
 
+    public MUFormLayout() {
+    }
+
     private void initUI() {
 //        this.setTop(createTop());
+        this.setCenter(createCenter());
+        this.setStyle("-fx-padding: 10");
+    }
+
+    public void initUI(FormProperty property, boolean onlyShowHidden) {
+        this.formConfig = property;
+        this.onlyShowHidden = onlyShowHidden;
         this.setCenter(createCenter());
         this.setStyle("-fx-padding: 10");
     }
@@ -62,6 +74,7 @@ public class MUFormLayout extends BorderPane {
 //        gridPane.setGridLinesVisible(true);
         gridPane.setHgap(formConfig.getHgap());
         gridPane.setVgap(formConfig.getVgap());
+        gridPane.setAlignment(Pos.TOP_LEFT);
 
 //        Label label;
         TextFlow textFlow;
@@ -72,7 +85,11 @@ public class MUFormLayout extends BorderPane {
         int idxCol = 0;
 
         for (FormFieldProperty field : formConfig.getFormFields()) {
-            if (!field.isDisplay()) { // 不显示
+            if (onlyShowHidden) { // 只显示隐藏的
+                if (field.isDisplay()) {
+                    continue;
+                }
+            } else if (!field.isDisplay()) { // 不显示
                 continue;
             }
 

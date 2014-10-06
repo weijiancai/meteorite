@@ -1,5 +1,6 @@
 package com.meteorite.fxbase.ui.component.guide;
 
+import com.meteorite.fxbase.ui.ICanInput;
 import javafx.scene.Node;
 
 /**
@@ -41,4 +42,6 @@ public abstract class GuideModel {
 
     public abstract void doOpen();
     public abstract void doNext();
+
+    public abstract ICanInput getInputControl();
 }

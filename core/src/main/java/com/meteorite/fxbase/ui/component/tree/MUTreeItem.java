@@ -43,6 +43,17 @@ public class MUTreeItem extends TreeItem<ITreeNode> {
                 Node node = new ImageView(new Image(getClass().getResourceAsStream(iconPath)));
                 this.setGraphic(node);
             }
+
+            /*if (value.getChildren().size() == 0 && value instanceof BaseTreeNode) {
+                BaseTreeNode node = (BaseTreeNode) value;
+                node.childrenProperty().get().addListener(new ListChangeListener<ITreeNode>() {
+                    @Override
+                    public void onChanged(Change<? extends ITreeNode> c) {
+                        getChildren().setAll(buildChildren(MUTreeItem.this));
+                        setExpanded(true);
+                    }
+                });
+            }*/
         }
 
         tree.putNodeItem(value, this);

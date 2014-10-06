@@ -1,10 +1,7 @@
 package com.meteorite.core.datasource;
 
 import com.meteorite.core.datasource.db.object.DBColumn;
-import com.meteorite.core.util.UNumber;
-import com.meteorite.core.util.UObject;
-import com.meteorite.core.util.UString;
-import com.meteorite.core.util.UUIDUtil;
+import com.meteorite.core.util.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -125,5 +122,9 @@ public class DataMap extends HashMap<String,Object> {
         for (Map.Entry<? extends String, ?> entry : map.entrySet()) {
             this.put(entry.getKey(), entry.getValue());
         }
+    }
+
+    public <T> T toClass(Class<T> clazz) {
+        return UClass.convert(clazz, this);
     }
 }

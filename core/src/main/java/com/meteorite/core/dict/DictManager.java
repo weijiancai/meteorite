@@ -15,6 +15,7 @@ import com.meteorite.core.ui.layout.PropertyType;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.group.GroupFunction;
+import org.apache.log4j.Logger;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class DictManager {
+    private static final Logger log = Logger.getLogger(DictManager.class);
     private static Map<String, DictCategory> categoryMap = new HashMap<String, DictCategory>();
     private static DictCategory root = new DictCategory();
     private static DictCategory system = new DictCategory();
@@ -51,6 +53,7 @@ public class DictManager {
             addDict(DataSourceType.class);
             addDict(GroupFunction.class);
             addDict(MetaItemCategory.class);
+            addDict(QueryModel.class);
 
             List<DictCode> codeList = new ArrayList<DictCode>();
             for (DictCategory category : categoryMap.values()) {
@@ -77,6 +80,7 @@ public class DictManager {
         JdbcTemplate template = new JdbcTemplate();
 
         if (isInit) {
+            log.info("加载数据字典......");
             // 查询字典分类
             String sql = "SELECT * FROM mu_dz_category";
             List<DictCategory> categoryList = template.query(sql, MetaRowMapperFactory.getDictCategory());
@@ -88,12 +92,13 @@ public class DictManager {
                 category.setCodeList(codeList);
             }
         } else { // 初始化数据字典
+            log.info("初始化数据字典......");
             // 清空表
             template.clearTable("mu_dz_category");
 
             // 保存字典分类到数据库
             for (DictCategory category : getDictList()) {
-                if ("ROOT".equals(category.getId()) || category.isSystem()) {
+                if ("ROOT".equals(category.getId())) {
                     continue;
                 }
                 categoryMap.put(category.getId(), category);

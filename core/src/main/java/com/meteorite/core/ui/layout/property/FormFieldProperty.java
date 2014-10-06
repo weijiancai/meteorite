@@ -221,11 +221,14 @@ public class FormFieldProperty extends BaseProperty {
             displayStyle = DisplayStyle.DATE.name();
         } else if (MetaDataType.GUID == field.getDataType()) {
             defaultValue = "GUID()";
+        } else if (MetaDataType.TEXT == field.getDataType()) {
+            displayStyle = DisplayStyle.TEXT_AREA.name();
+            height = "500";
         }
 
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.IS_REQUIRE), field, field.isRequire() ? "true" : "false"));
         // 显示风格
-        if (field.getMaxLength() > 500) {
+        if (field.getMaxLength() > 500 && field.getDataType() != MetaDataType.TEXT) {
             displayStyle = DisplayStyle.TEXT_AREA.name();
             singleLine = "true";
             height = "60";

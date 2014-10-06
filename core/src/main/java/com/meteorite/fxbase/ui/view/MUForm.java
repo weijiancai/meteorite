@@ -18,6 +18,7 @@ import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.BaseFormField;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
+import com.meteorite.fxbase.ui.design.MUFormDesigner;
 import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.event.data.DataStatusEventData;
 import com.meteorite.fxbase.ui.layout.MUFormLayout;
@@ -28,8 +29,10 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.util.Callback;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -51,20 +54,27 @@ public class MUForm extends BorderPane {
     private Map<String, IValue> modifiedValueMap = new HashMap<String, IValue>();
     private boolean isAdd;
 
+    private boolean onlyShowHidden;
+    private boolean isDesignMode;
+
     private Subject<DataStatusEventData> dataStatusSubject = new BaseSubject<DataStatusEventData>();
+
+    public MUForm() {
+    }
 
     public MUForm(FormProperty property) {
         this(property, null);
     }
 
     public MUForm(FormProperty property, MUTable table) {
-        this.formConfig = property;
         this.table = table;
-        initUI();
+        initUI(property);
     }
 
-    private void initUI() {
-        layout = new MUFormLayout(formConfig);
+    public void initUI(final FormProperty formConfig) {
+        this.formConfig = formConfig;
+        layout = new MUFormLayout();
+        layout.initUI(formConfig, onlyShowHidden);
         this.setCenter(layout);
 
         // 监听FormField状态变化
@@ -78,6 +88,36 @@ public class MUForm extends BorderPane {
                         modifiedValueMap.put(entry.getKey(), value);
                     }
                     fireEvent(new FormFieldValueEvent((BaseFormField) value, oldValue, newValue));
+                }
+            });
+        }
+
+        if (!isDesignMode) {
+            MenuItem designMenu = new MenuItem("设计视图");
+            designMenu.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    MUFormDesigner designer = new MUFormDesigner(MUForm.this);
+                    MUDialog.showCustomDialog(null, "设计视图", designer, new Callback<Void, Void>() {
+                        @Override
+                        public Void call(Void param) {
+                            initUI(formConfig);
+                            return null;
+                        }
+                    });
+                }
+            });
+            final ContextMenu contextMenu = new ContextMenu();
+            contextMenu.getItems().addAll(designMenu);
+
+            this.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (event.getButton() == MouseButton.SECONDARY) { // 非设计视图，弹出右键菜单
+                        contextMenu.show(MUForm.this, event.getScreenX(), event.getScreenY());
+                    } else {
+                        contextMenu.hide();
+                    }
                 }
             });
         }
@@ -158,10 +198,6 @@ public class MUForm extends BorderPane {
                 map.put(field.getName(), value.value());
             }
             data = formConfig.getMeta().save(map);
-            /*DataMap dataMap = formConfig.getMeta().save(map);
-            if (table != null) {
-                table.getItems().add(dataMap);
-            }*/
             isAdd = false;
             dataStatusSubject.notifyObserver(new DataStatusEventData(EnumDataStatus.ADD_AFTER, this));
         } else {
@@ -199,5 +235,19 @@ public class MUForm extends BorderPane {
 
     public DataMap getNewRowData() {
         return newRowData;
+    }
+
+    public void reset() {
+        for (Map.Entry<String, IValue> entry : layout.getValueMap().entrySet()) {
+            entry.getValue().setValue("");
+        }
+    }
+
+    public void setOnlyShowHidden(boolean onlyShowHidden) {
+        this.onlyShowHidden = onlyShowHidden;
+    }
+
+    public void setDesignMode(boolean isDesignMode) {
+        this.isDesignMode = isDesignMode;
     }
 }

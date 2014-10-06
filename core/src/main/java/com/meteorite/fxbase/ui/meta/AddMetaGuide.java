@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.DBTable;
+import com.meteorite.fxbase.ui.ICanInput;
 import com.meteorite.fxbase.ui.component.form.MUCheckListView;
 import com.meteorite.fxbase.ui.component.form.MUListView;
 import com.meteorite.fxbase.ui.component.guide.BaseGuide;
@@ -80,6 +81,11 @@ public class AddMetaGuide extends BaseGuide {
         public void doNext() {
             getGuide().getDataMap().put("dbds", dbListView.getSelectionModel().getSelectedItem());
         }
+
+        @Override
+        public ICanInput getInputControl() {
+            return null;
+        }
     }
 
     class TableSelectModel extends GuideModel {
@@ -113,6 +119,11 @@ public class AddMetaGuide extends BaseGuide {
 
         @Override
         public void doNext() {
+        }
+
+        @Override
+        public ICanInput getInputControl() {
+            return null;
         }
     }
 }

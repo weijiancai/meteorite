@@ -1,6 +1,5 @@
 package com.meteorite.core.ui.layout.property;
 
-import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.PropertyNames;
 import com.meteorite.core.ui.model.ViewProperty;

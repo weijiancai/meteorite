@@ -59,12 +59,11 @@ public class MUNavMenuWin extends MUTreeTableWin {
     }
 
     @Override
-    public TreeItem<ITreeNode> createNewTreeNode(Map<String, IValue> valueMap) {
+    public ITreeNode createNewTreeNode(Map<String, IValue> valueMap) {
         NavMenu menu = new NavMenu();
         menu.setId(valueMap.get("id").value());
         menu.setName(valueMap.get("name").value());
         menu.setDisplayName(valueMap.get("displayName").value());
-        NavMenuTreeNode node = new NavMenuTreeNode(menu);
-        return new TreeItem<ITreeNode>(node);
+        return new NavMenuTreeNode(menu);
     }
 }

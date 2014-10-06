@@ -280,4 +280,13 @@ public class FormProperty implements PropertyNames {
 
         return sb.toString();
     }
+
+    public FormFieldProperty getFormField(String name) {
+        for (FormFieldProperty fieldProperty : formFields) {
+            if (fieldProperty.getName().equals(name)) {
+                return fieldProperty;
+            }
+        }
+        return null;
+    }
 }

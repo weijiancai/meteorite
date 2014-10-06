@@ -28,6 +28,7 @@ import com.meteorite.core.util.group.GroupModel;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.component.form.MUListView;
+import com.meteorite.fxbase.ui.component.table.TableExportGuide;
 import com.meteorite.fxbase.ui.component.table.cell.SortNumTableCell;
 import com.meteorite.fxbase.ui.component.table.column.BaseTableColumn;
 import com.meteorite.fxbase.ui.event.DataChangeEvent;
@@ -44,10 +45,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Callback;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * MetaUI Table
@@ -78,7 +76,7 @@ public class MUTable extends StackPane {
     private TabPane formTabPane;
     private Button prevButton;
     private Button nextButton;
-    private List<MUTable> children = new ArrayList<MUTable>();
+    private Set<MUTable> children = new HashSet<MUTable>();
     private Map<String, Button> tableButtonMap = new HashMap<String, Button>();
 
     private Subject<DataStatusEventData> dataStatusSubject = new BaseSubject<DataStatusEventData>();
@@ -88,6 +86,10 @@ public class MUTable extends StackPane {
 
     public MUTable(View view) {
         initUI(view);
+    }
+
+    public MUTable(Meta meta) {
+        initUI(meta);
     }
 
     public void initUI(View view) {
@@ -325,7 +327,9 @@ public class MUTable extends StackPane {
         final Meta mainMeta = config.getMeta();
         for (final Meta meta : mainMeta.getChildren()) {
             Tab tab = new Tab(meta.getDisplayName());
-            final MUTable table = new MUTable(ViewManager.getViewByName(meta.getName() + "TableView"));
+            final MUTable table = new MUTable();
+            table.setShowQueryForm(false);
+            table.initUI(meta);
             children.add(table);
             BorderPane pane = new BorderPane();
             pane.setCenter(table);
@@ -410,6 +414,10 @@ public class MUTable extends StackPane {
         formPane.setVisible(true);
         tablePane.setVisible(false);
 //        MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
+    }
+
+    public void setMultiSelect(boolean isMulti) {
+        table.getSelectionModel().setSelectionMode(isMulti ? SelectionMode.MULTIPLE : SelectionMode.SINGLE);
     }
 
     public TableProperty getConfig() {
@@ -715,8 +723,8 @@ public class MUTable extends StackPane {
     class TableExportEventHandler extends MuEventHandler<ActionEvent> {
         @Override
         public void doHandler(ActionEvent event) throws Exception {
-            /*TableExportGuide guide = new TableExportGuide(table);
-            MUDialog.showCustomDialog(null, "导出数据向导", guide, null);*/
+            TableExportGuide guide = new TableExportGuide(MUTable.this);
+            MUDialog.showCustomDialog(null, "导出数据向导", guide, null);
         }
     }
 

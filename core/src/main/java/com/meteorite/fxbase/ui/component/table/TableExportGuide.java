@@ -2,6 +2,7 @@ package com.meteorite.fxbase.ui.component.table;
 
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
+import com.meteorite.fxbase.ui.ICanInput;
 import com.meteorite.fxbase.ui.ValueConverter;
 import com.meteorite.fxbase.ui.component.form.MUCheckListView;
 import com.meteorite.fxbase.ui.component.form.MUListView;
@@ -104,14 +105,21 @@ public class TableExportGuide extends BaseGuide {
         public void doNext() {
 
         }
+
+        @Override
+        public ICanInput getInputControl() {
+            return listView;
+        }
     }
 
     class FileTypeModel extends GuideModel {
+        private MUListView<String> listView1;
+
         public FileTypeModel(String title, BaseGuide guide) {
             this.setTitle(title);
             this.setGuide(guide);
 
-            MUListView<String> listView1 = new MUListView<String>();
+            listView1 = new MUListView<String>();
             listView1.setName("fileType");
             listView1.getItems().add("文本文件");
             this.setContent(listView1);
@@ -130,6 +138,11 @@ public class TableExportGuide extends BaseGuide {
         @Override
         public void doNext() {
 
+        }
+
+        @Override
+        public ICanInput getInputControl() {
+            return listView1;
         }
     }
 }

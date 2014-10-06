@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * MetaUI Tree
@@ -79,12 +80,12 @@ public class MUTree extends TreeView<ITreeNode> {
     }
 
     public void expandTo(ITreeNode node) {
-        /*Stack<ITreeNode> stack = new Stack<>();
+        Stack<ITreeNode> stack = new Stack<ITreeNode>();
         ITreeNode child = node;
         ITreeNode parent;
-        while ((parent = node.getParent()) != null) {
+        while ((parent = child.getParent()) != null) {
             stack.add(parent);
-            node = parent;
+            child = parent;
         }
 
         while (!stack.isEmpty()) {
@@ -93,15 +94,19 @@ public class MUTree extends TreeView<ITreeNode> {
             if (item != null && !item.isExpanded()) {
                 item.setExpanded(true);
             }
-        }*/
+        }
 
         this.getSelectionModel().select(nodeItemMap.get(node));
-        /*int row = this.getRow(nodeItemMap.get(node));
-        this.scrollTo(row);*/
+        int row = this.getRow(nodeItemMap.get(node));
+        this.scrollTo(row);
     }
 
     public void putNodeItem(ITreeNode node, MUTreeItem item) {
         nodeItemMap.put(node, item);
+    }
+
+    public Map<ITreeNode, TreeItem<ITreeNode>> getNodeItemMap() {
+        return nodeItemMap;
     }
 
     public TreeItem<ITreeNode> getTreeItem(ITreeNode node) {

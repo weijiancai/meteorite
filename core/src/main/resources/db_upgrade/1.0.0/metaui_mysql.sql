@@ -1,8 +1,10 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/9/20 20:55:41                           */
+/* Created on:     2014/10/5 0:09:36                            */
 /*==============================================================*/
 
+
+drop table if exists mu_code_tpl;
 
 drop table if exists mu_db_datasource;
 
@@ -51,6 +53,27 @@ drop index idx_view_config_prop on mu_view_config;
 drop table if exists mu_view_config;
 
 drop table if exists mu_view_prop;
+
+/*==============================================================*/
+/* Table: mu_code_tpl                                           */
+/*==============================================================*/
+create table mu_code_tpl
+(
+   id                   varchar(32) not null comment '模板ID',
+   name                 varchar(64) not null comment '模板名称',
+   display_name         varchar(128) not null comment '显示名',
+   description          varchar(1024) comment '描述',
+   project_id           varchar(32) not null comment '项目ID',
+   file_name            varchar(128) not null comment '文件名',
+   file_path            varchar(256) comment '文件路径',
+   tpl_content          text not null comment '模板内容',
+   is_valid             char(1) not null comment '是否有效',
+   sort_num             int not null comment '排序号',
+   input_date           datetime not null comment '录入时间',
+   primary key (id)
+);
+
+alter table mu_code_tpl comment '代码模板';
 
 /*==============================================================*/
 /* Table: mu_db_datasource                                      */
@@ -450,6 +473,9 @@ create table mu_view_prop
 );
 
 alter table mu_view_prop comment '视图属性';
+
+alter table mu_code_tpl add constraint FK_code_tpl_projectId foreign key (project_id)
+      references mu_project_define (id) on delete cascade on update cascade;
 
 alter table mu_dz_code add constraint FK_code_categoryId foreign key (category_id)
       references mu_dz_category (id) on delete cascade on update cascade;

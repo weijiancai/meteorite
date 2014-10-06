@@ -249,15 +249,21 @@ public class JdbcTemplate {
                 }
                 keyList.add(key);
             }
-            sql.append(") VALUES (").append(values).append(")");
+            sql.append(") VALUES (");
             // 打印输出sql语句
             String outSql = sql.toString();
+            sql.append(values).append(")");
+
             Object obj;
+            i = 0;
             for (String key : params.keySet()) {
                 obj = params.get(key);
-                outSql = outSql.replaceFirst("\\?", obj == null ? "' '" : "'" + obj.toString() + "'");
+                outSql += (obj == null ? "' '" : "'" + obj.toString() + "'");
+                if (i++ < params.size() - 1) {
+                    outSql += ",";
+                }
             }
-            log.info(outSql);
+            log.info(outSql + ")");
             PreparedStatement pstmt = conn.prepareStatement(sql.toString());
             i = 1;
             for (String key : keyList) {

@@ -19,8 +19,6 @@ import javafx.scene.layout.BorderPane;
  * @since 1.0.0
  */
 public class MUProjectWin extends BorderPane {
-    private MuCrud projectCrud;
-    private Button btnDesign;
     private TreeItem<ITreeNode> projectTree;
 
     public MUProjectWin() {
@@ -41,16 +39,24 @@ public class MUProjectWin extends BorderPane {
         projectTree = new TreeItem<ITreeNode>(projectNode);
 
         for (ProjectDefine project : ProjectManager.getProjects()) {
-            TreeItem<ITreeNode> node = new TreeItem<ITreeNode>(new BaseTreeNode(project.getDisplayName()));
-            BaseTreeNode navTree = new BaseTreeNode("导航菜单");
-            navTree.setId(project.getName() + "_navMenu");
-            navTree.setPresentableText(project.getDisplayName() + " - 导航菜单");
-            View view = new View();
-            view.setNode(new MUNavMenuWin(project));
-            navTree.setView(view);
-            TreeItem<ITreeNode> navTreeNode = new TreeItem<ITreeNode>(navTree);
-            node.getChildren().add(navTreeNode);
-            projectTree.getChildren().add(node);
+            TreeItem<ITreeNode> projectItem = new TreeItem<ITreeNode>(new BaseTreeNode(project.getDisplayName()));
+            // 导航菜单
+            BaseTreeNode navMenu = new BaseTreeNode("导航菜单");
+            navMenu.setId(project.getName() + "_navMenu");
+            navMenu.setPresentableText(project.getDisplayName() + " - 导航菜单");
+            navMenu.setView(View.createNodeView(new MUNavMenuWin(project)));
+            TreeItem<ITreeNode> navMenuItem = new TreeItem<ITreeNode>(navMenu);
+
+            // 代码模板
+            BaseTreeNode codeTpl = new BaseTreeNode("代码模板");
+            codeTpl.setId(project.getName() + "_codeTpl");
+            codeTpl.setPresentableText(project.getDisplayName() + " - 代码模板");
+            codeTpl.setView(View.createNodeView(new MUCodeTplWin(project)));
+            TreeItem<ITreeNode> codeTplItem = new TreeItem<ITreeNode>(codeTpl);
+
+            projectItem.getChildren().add(navMenuItem);
+            projectItem.getChildren().add(codeTplItem);
+            projectTree.getChildren().add(projectItem);
         }
     }
 

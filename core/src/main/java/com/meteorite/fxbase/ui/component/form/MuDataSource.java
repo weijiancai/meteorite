@@ -31,7 +31,7 @@ import javafx.scene.layout.Priority;
  * @author wei_jc
  * @since 1.0.0
  */
-public class MuDataSource extends HBox {
+public class MuDataSource extends BaseFormField {
     private TextField textField;
     private Button settingButton;
     private Button testButton;
@@ -68,6 +68,21 @@ public class MuDataSource extends HBox {
         /*if(fieldConfig.getFormConfig().getColCount() == 1) {
             this.setMaxWidth(fieldConfig.getFormConfig().getColWidth());
         }*/
+    }
+
+    @Override
+    protected void initPrep() {
+
+    }
+
+    @Override
+    protected Node[] getControls() {
+        return new Node[0];
+    }
+
+    @Override
+    public String value() {
+        return null;
     }
 
     public class SettingAction implements EventHandler<ActionEvent> {

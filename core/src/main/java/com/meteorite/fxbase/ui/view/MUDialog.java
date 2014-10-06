@@ -5,9 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.util.Callback;
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.AbstractDialogAction;
+import org.controlsfx.control.ButtonBar;
 import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.DialogAction;
 import org.controlsfx.dialog.Dialogs;
+
+import java.util.function.Consumer;
 
 /**
  * JavaFx 对话框
@@ -35,15 +38,15 @@ public class MUDialog extends Dialog {
         }
         final MUDialog dialog = new MUDialog(owner, title);
         dialog.setContent(content);
-        dialog.getActions().add(new AbstractDialogAction("确定", ActionTrait.CLOSING, ActionTrait.CANCEL) {
+        dialog.getActions().add(new DialogAction("确定", ButtonBar.ButtonType.CANCEL_CLOSE, new Consumer<ActionEvent>() {
             @Override
-            public void execute(ActionEvent event) {
+            public void accept(ActionEvent actionEvent) {
                 if (callback != null) {
                     callback.call(null);
                 }
                 dialog.hide();
             }
-        });
+        }));
         dialog.show();
     }
 

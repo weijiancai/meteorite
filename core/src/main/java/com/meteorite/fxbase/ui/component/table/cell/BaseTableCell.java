@@ -11,6 +11,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 
@@ -52,6 +53,9 @@ public class BaseTableCell extends TableCell<DataMap, String> {
                 }
             }
         });
+        this.setTextOverrun(OverrunStyle.ELLIPSIS);
+        this.setPrefHeight(25);
+        this.setMaxHeight(30);
     }
 
     public BaseTableCell() {

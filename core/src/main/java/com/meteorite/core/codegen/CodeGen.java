@@ -2,16 +2,20 @@ package com.meteorite.core.codegen;
 
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.project.ProjectDefine;
+import com.meteorite.core.project.tpl.CodeTpl;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.ftl.FreeMarkerConfiguration;
 import com.meteorite.core.util.ftl.FreeMarkerTemplateUtils;
+import freemarker.cache.StringTemplateLoader;
+import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,13 +27,44 @@ import java.util.Map;
 public class CodeGen {
     private String baseDir;
     private String basePageDir;
+    private ProjectDefine project;
+    private List<CodeTpl> codeTpls;
+    private Meta meta;
+    private Map<String, Object> map = new HashMap<String, Object>();
 
     public CodeGen(String baseDir) {
             this.baseDir = baseDir;
     }
 
-    public String getBasePageDir() {
-        return basePageDir;
+    public CodeGen(ProjectDefine project, CodeTpl tpl, Meta meta) {
+
+    }
+
+    public CodeGen(ProjectDefine project, List<CodeTpl> codeTpls, Meta meta) {
+        this.project = project;
+        this.codeTpls = codeTpls;
+        this.meta = meta;
+
+        map.put("project", project);
+        map.put("meta", meta);
+        map.put("queryForm", ViewManager.getViewByName(meta.getName() + "QueryView").getQueryForm().toHtml(true));
+    }
+
+    public void gen() {
+        try {
+            StringTemplateLoader loader = new StringTemplateLoader();
+            Configuration config = new Configuration();
+            config.setTemplateLoader(loader);
+
+            for (CodeTpl tpl : codeTpls) {
+                loader.putTemplate(tpl.getName(), tpl.getTplContent());
+                String str = FreeMarkerTemplateUtils.processTemplateIntoString(config.getTemplate(tpl.getName()), map);
+                String fileName = tpl.getFileName().replace("${meta.name}", meta.getName());
+                UFile.write(str, new File(tpl.getFilePath(), fileName).getAbsolutePath());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("生成代码失败！", e);
+        }
     }
 
     public void setBasePageDir(String basePageDir) {

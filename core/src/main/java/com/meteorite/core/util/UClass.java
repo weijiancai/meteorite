@@ -1,5 +1,8 @@
 package com.meteorite.core.util;
 
+import com.meteorite.core.datasource.DataMap;
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -8,9 +11,7 @@ import java.lang.reflect.Method;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -21,6 +22,8 @@ import java.util.jar.JarFile;
  * @version 1.0.0
  */
 public class UClass {
+    private static final Logger log = Logger.getLogger(UClass.class);
+
     /**
      * 判定指定的 Class 对象是否表示一个基本类型。
      * 有九种预定义的 Class 对象，表示八个基本类型和 void。这些类对象由 Java 虚拟机创建，与其表示的基本类型同名，即 boolean、byte、char、short、int、long、float 和 double。
@@ -199,6 +202,82 @@ public class UClass {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    /**
+     * 获取类类型的所有Field包括父类中的Field
+     *
+     * @param clazz 类类型
+     * @return 返回类类型的所有Field包括父类中的Field
+     */
+    public static Field[] getAllFields(Class clazz) {
+        if (!clazz.getName().startsWith("com.fly")) {
+            return new Field[0];
+        }
+        Map<String, Field> map = new HashMap<String, Field>();
+        for (Field field : clazz.getDeclaredFields()) {
+            map.put(field.getName(), field);
+        }
+        while (clazz.getSuperclass() != null) {
+            clazz = clazz.getSuperclass();
+            if (clazz == Object.class) {
+                break;
+            }
+
+            for (Field field : clazz.getDeclaredFields()) {
+                if (!map.containsKey(field.getName())) {
+                    map.put(field.getName(), field);
+                }
+            }
+        }
+        return map.values().toArray(new Field[map.size()]);
+    }
+
+    /**
+     * 将DataMap转换为类实例对象
+     *
+     * @param clazz 类
+     * @param data DataMap
+     * @return 返回类实例对象
+     */
+    public static <T> T convert(Class<T> clazz, DataMap data) {
+        T t;
+        try {
+            t = clazz.newInstance();
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (method.getName().startsWith("set")) {
+                    String fieldName = method.getName().substring(3);
+                    Object value = data.get(fieldName);
+                    if (method.getParameterCount() == 1 && method.getParameterTypes()[0] == boolean.class) {
+                        fieldName = "is" + fieldName;
+                        value = UString.toBoolean(String.valueOf(data.get(fieldName)));
+                    }
+
+                    if (value != null) {
+                        log.debug(method.getName() + " = " + value);
+                        method.invoke(t, value);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(String.format("将DataMap转换为%s失败！", clazz.getName()), e);
+        }
+
+        return t;
+    }
+
+    /**
+     * 根据类字段名，获得setter方法名
+     *
+     * @param fieldName 类字段名
+     * @return 返回setter方法名
+     */
+    public static String getSetMethodName(String fieldName) {
+        if (fieldName.startsWith("is")) {
+            return "set" + fieldName.substring(2);
+        } else {
+            return "set" + UString.firstCharToUpper(fieldName);
         }
     }
 }

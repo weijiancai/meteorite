@@ -9,6 +9,7 @@ import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.eventdata.LoaderEventData;
 import com.meteorite.core.dict.FormType;
+import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.model.impl.BaseTreeNode;
@@ -28,6 +29,7 @@ import com.meteorite.fxbase.ui.meta.AddMetaGuide;
 import com.meteorite.fxbase.ui.win.MUDictWin;
 import com.meteorite.fxbase.ui.win.MUMetaWin;
 import com.meteorite.fxbase.ui.win.MUProjectWin;
+import com.meteorite.fxbase.ui.win.MUViewWin;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -234,7 +236,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         // 数据源管理
         final BaseTreeNode dataSource = new BaseTreeNode("数据源管理");
         dataSource.setId("DataSource");
-        dataSource.setView(ViewManager.getViewByName("DatasourceCrudView"));
+        dataSource.setView(View.createNodeView(new MUTable(MetaManager.getMeta("Datasource"))));
         final TreeItem<ITreeNode> dataSourceItem = new TreeItem<ITreeNode>(dataSource);
         // 数据字典
         BaseTreeNode dictNode = new BaseTreeNode("数据字典");
@@ -246,22 +248,28 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         metaNode.setId("Meta");
         metaNode.setView(View.createNodeView(new MUMetaWin()));
         TreeItem<ITreeNode> metaItem = new TreeItem<ITreeNode>(metaNode);
+        // 视图管理
+        BaseTreeNode viewNode = new BaseTreeNode("视图管理");
+        viewNode.setId("ViewManager");
+        viewNode.setView(View.createNodeView(new MUViewWin()));
+        TreeItem<ITreeNode> viewItem = new TreeItem<ITreeNode>(viewNode);
         // 项目管理
-        /*BaseTreeNode projectNode = new BaseTreeNode("项目管理");
-        projectNode.setId("Project");
-        MUProjectWin projectWin = new MUProjectWin();
-        projectNode.setView(View.createNodeView(projectWin));
-        TreeItem<ITreeNode> projectItem = new TreeItem<ITreeNode>(projectNode);
-        projectItem.getChildren().add(projectWin.getProjectTree());*/
         MUProjectWin projectWin = new MUProjectWin();
         TreeItem<ITreeNode> projectItem = projectWin.getProjectTree();
+        // 参数配置
+        final BaseTreeNode profileSetting = new BaseTreeNode("参数配置");
+        profileSetting.setId("ProfileSetting");
+        profileSetting.setView(View.createNodeView(new MUTable(MetaManager.getMeta("ProfileSetting"))));
+        final TreeItem<ITreeNode> ProfileSettingItem = new TreeItem<ITreeNode>(profileSetting);
 
         tree.setRoot(navTreeItem);
         tree.setShowRoot(false);
         navTreeItem.getChildren().add(dictItem);
         navTreeItem.getChildren().add(metaItem);
+        navTreeItem.getChildren().add(viewItem);
         navTreeItem.getChildren().add(projectItem);
         navTreeItem.getChildren().add(dataSourceItem);
+        navTreeItem.getChildren().add(ProfileSettingItem);
 
         BaseTreeNode dsConfigTreeNode = new BaseTreeNode("SQL控制台");
         dsConfigTreeNode.setId("SqlConsoleView");

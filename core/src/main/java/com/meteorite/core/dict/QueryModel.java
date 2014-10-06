@@ -1,5 +1,6 @@
 package com.meteorite.core.dict;
 
+import com.meteorite.core.dict.annotation.DictElement;
 import com.meteorite.core.util.UString;
 
 /**
@@ -8,52 +9,63 @@ import com.meteorite.core.util.UString;
  * @author wei_jc
  * @since 1.0.0
  */
+@DictElement(categoryName = "查询模式")
 public enum QueryModel {
     /**
      * 等于 =
      */
-    EQUAL,
+    EQUAL("等于"),
     /**
      * 不等于 !=
      */
-    NOT_EQUAL,
+    NOT_EQUAL("不等于"),
     /**
      * 小于 <
      */
-    LESS_THAN,
+    LESS_THAN("小于"),
     /**
      * 小于等于 <=
      */
-    LESS_EQUAL,
+    LESS_EQUAL("小于等于"),
     /**
      * 大于 >
      */
-    GREATER_THAN,
+    GREATER_THAN("大于"),
     /**
      * 大于等于 >=
      */
-    GREATER_EQUAL,
+    GREATER_EQUAL("大于等于"),
     /**
      * 全Like like
      */
-    LIKE,
+    LIKE("包含"),
     /**
      * 左Like like a%
      */
-    LEFT_LIKE,
+    LEFT_LIKE("左Like"),
     /**
      * 右Like like %a
      */
-    RIGHT_LIKE,
+    RIGHT_LIKE("右Like"),
     /**
      * NULL
      */
-    NULL,
+    NULL("NULL值"),
     /**
      * NOT NULL
      */
-    NOT_NULL
+    NOT_NULL("非NULL值")
     ;
+
+    private String displayName;
+
+    private QueryModel(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 
     public static QueryModel convert(String queryModelStr) {
         if (UString.isEmpty(queryModelStr)) {

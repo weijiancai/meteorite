@@ -22,7 +22,7 @@ public class SqlConsoleView extends BorderPane {
 
     private void initUI() {
         sqlTA = new TextArea();
-        table = new MUTable(null);
+        table = new MUTable();
 
         final MasterDetailPane sp = new MasterDetailPane(Side.LEFT);
         sp.setDividerPosition(0.8);

@@ -6,9 +6,11 @@ import com.meteorite.core.meta.DisplayStyle;
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.BaseApp;
+import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.FxLookDictPane;
 import com.meteorite.fxbase.ui.config.FxFormFieldConfig;
+import com.meteorite.fxbase.ui.event.FormFieldClickEvent;
 import com.meteorite.fxbase.ui.event.FxLayoutEvent;
 import com.meteorite.fxbase.ui.view.FxFormField;
 import com.meteorite.fxbase.ui.view.MUDialog;
@@ -21,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 
@@ -66,6 +69,14 @@ public class MuComboBox extends BaseFormField implements IValue {
                     }
                 };
                 return cell;
+            }
+        });
+        comboBox.setOnMouseClicked(new MuEventHandler<MouseEvent>() {
+            @Override
+            public void doHandler(MouseEvent event) throws Exception {
+                if (event.getClickCount() == 1) {
+                    fireEvent(new FormFieldClickEvent((MuComboBox.this)));
+                }
             }
         });
         if (category != null) {

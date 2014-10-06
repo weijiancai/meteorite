@@ -425,6 +425,16 @@ public class Meta {
         return result.getRows().get(0);
     }
 
+    public void deleteByPK(String... pkValues) throws Exception {
+        QueryBuilder builder = QueryBuilder.create(this);
+        builder.sql().setQuerySql(sqlText);
+        int i = 0;
+        for (MetaField field : getPkFields()) {
+            builder.add(field.getOriginalName(), pkValues[i++]);
+        }
+        resource.delete(this, pkValues);
+    }
+
     public void toTxtFile(File file, DataMap param) throws Exception {
         query(QueryBuilder.create(this));
         List<DataMap> dataList = getDataList();

@@ -17,6 +17,7 @@ import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.IValue;
+import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
 import com.meteorite.fxbase.ui.event.data.DataStatusEventData;
 import com.meteorite.fxbase.ui.view.MUDialog;
 import com.meteorite.fxbase.ui.view.MUForm;
@@ -134,13 +135,41 @@ public abstract class MUTreeTableWin extends BorderPane {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 mainForm.save();
+                BaseTreeNode parent = (BaseTreeNode) tree.getSelected();
+                ITreeNode child = createNewTreeNode(mainForm.getValueMap());
+                child.setParent(parent);
+                if (parent.getChildren().size() == 0) {
+                    parent.getChildren().add(child);
+//                    tree.setRoot(new MUTreeItem(tree, getRootTreeNode()));
+                    tree.buildTree(parent.getParent(), tree.getTreeItem(parent));
+                    tree.expandTo(child);
+                } else {
+                    tree.getTreeItem(parent).getChildren().add(new MUTreeItem(tree, child));
+                }
+            }
+        });
+        // 删除按钮
+        Button btnDel = new Button("删除");
+        btnDel.setOnAction(new MuEventHandler<ActionEvent>() {
+            @Override
+            public void doHandler(ActionEvent event) throws Exception {
                 ITreeNode node = tree.getSelected();
-                TreeItem<ITreeNode> parent = tree.getTreeItem(node);
-                parent.getChildren().add(createNewTreeNode(mainForm.getValueMap()));
+                if (node == null) {
+                    MUDialog.showInformation("请选择要删除的节点！");
+                    return;
+                }
+                mainMeta.deleteByPK(node.getId());
+                if (tree.getSelectionModel() != null) {
+                    TreeItem<ITreeNode> item = tree.getSelectionModel().getSelectedItem();
+                    if (item.getParent() != null) {
+                        item.getParent().getChildren().remove(item);
+                    }
+                }
+                mainForm.reset();
             }
         });
         btnSave.disableProperty().bind(mainForm.isModifiedProperty().not());
-        hBox.getChildren().addAll(btnAdd, btnSave);
+        hBox.getChildren().addAll(btnAdd, btnSave, btnDel);
         VBox box = new VBox();
         box.getChildren().addAll(mainForm, hBox);
         mainTab.setContent(box);
@@ -188,5 +217,5 @@ public abstract class MUTreeTableWin extends BorderPane {
 
     public abstract String getItemFkDbName();
 
-    public abstract TreeItem<ITreeNode> createNewTreeNode(Map<String, IValue> valueMap);
+    public abstract ITreeNode createNewTreeNode(Map<String, IValue> valueMap);
 }

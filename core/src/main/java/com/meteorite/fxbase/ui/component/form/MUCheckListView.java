@@ -49,7 +49,7 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
         enableAll.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
-                listView.getCheckModel().selectAll();
+                listView.getCheckModel().checkAll();
             }
         });
         Button disableAll = new Button("取消所有");
@@ -57,7 +57,7 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 for (int i = 0; i < data.size(); i++) {
-                    listView.getCheckModel().clearSelection(i);
+                    listView.getCheckModel().clearCheck(i);
                 }
             }
         });
@@ -66,17 +66,21 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
     }
 
     public void selectAll() {
-        listView.getCheckModel().selectAll();
+        listView.getCheckModel().checkAll();
     }
 
-    public MultipleSelectionModel getSelectionModel() {
-        return listView.getCheckModel();
+    public MultipleSelectionModel<T> getSelectionModel() {
+        return listView.getSelectionModel();
     }
 
     public void setItems(List<T> list) {
         this.data = list;
         listView.getItems().clear();
         listView.getItems().addAll(list);
+    }
+
+    public CheckListView<T> getListView() {
+        return listView;
     }
 
     // ======================== ICanInput ================================
@@ -90,7 +94,7 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
 
     @Override
     public T getInputValue() {
-        return listView.getCheckModel().getSelectedItem();
+        return listView.getSelectionModel().getSelectedItem();
     }
 
     @Override
@@ -102,13 +106,13 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
     public String getValueString() {
         if (convert != null) {
             List<String> list = new ArrayList<String>();
-            for (T t : listView.getCheckModel().getSelectedItems()) {
+            for (T t : listView.getSelectionModel().getSelectedItems()) {
                 list.add(convert.toString(t));
             }
             return UString.convert(list);
         }
 
-        return UString.convert(listView.getCheckModel().getSelectedItems());
+        return UString.convert(listView.getSelectionModel().getSelectedItems());
     }
 
     public void setName(String name) {
