@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class DictCategory implements Serializable {
         this.name = name;
     }
 
+    @XmlAttribute
     public String getDescription() {
         return description;
     }
@@ -56,6 +58,7 @@ public class DictCategory implements Serializable {
         this.description = description;
     }
 
+    @XmlAttribute
     public String getPid() {
         return pid;
     }
@@ -100,6 +103,7 @@ public class DictCategory implements Serializable {
         this.inputDate = inputDate;
     }
 
+    @Transient
     public DictCategory getParent() {
         return parent;
     }

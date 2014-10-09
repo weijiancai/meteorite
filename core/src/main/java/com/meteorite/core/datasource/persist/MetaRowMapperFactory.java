@@ -13,6 +13,7 @@ import com.meteorite.core.meta.model.MetaItem;
 import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.project.NavMenu;
 import com.meteorite.core.project.ProjectDefine;
+import com.meteorite.core.project.tpl.CodeTpl;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.layout.LayoutType;
 import com.meteorite.core.ui.layout.PropertyType;
@@ -371,6 +372,29 @@ public class MetaRowMapperFactory {
                 nav.setSortNum(rs.getInt("sort_num"));
 
                 return nav;
+            }
+        };
+    }
+
+    public static RowMapper<CodeTpl> getCodeTpl() {
+        return new RowMapper<CodeTpl>() {
+            @Override
+            public CodeTpl mapRow(ResultSet rs) throws SQLException {
+                CodeTpl codeTpl = new CodeTpl();
+
+                codeTpl.setId(rs.getString("id"));
+                codeTpl.setName(rs.getString("name"));
+                codeTpl.setDisplayName(rs.getString("display_name"));
+                codeTpl.setDescription(rs.getString("description"));
+                codeTpl.setProjectId(rs.getString("project_id"));
+                codeTpl.setFileName(rs.getString("file_name"));
+                codeTpl.setFilePath(rs.getString("file_path"));
+                codeTpl.setTplContent(rs.getString("tpl_content"));
+                codeTpl.setValid("T".equals(rs.getString("is_valid")));
+                codeTpl.setSortNum(rs.getInt("sort_num"));
+                codeTpl.setInputDate(rs.getDate("input_date"));
+
+                return codeTpl;
             }
         };
     }

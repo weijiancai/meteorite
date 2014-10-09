@@ -3,7 +3,11 @@ package com.meteorite.core.project;
 import com.alibaba.fastjson.JSON;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
+import com.meteorite.core.project.tpl.CodeTpl;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,8 +31,10 @@ public class ProjectDefine {
     private int sortNum;
 
     private List<NavMenu> navMenus;
+    private List<CodeTpl> codeTpls;
     private NavMenu rootNavMenu;
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "项目ID")
     public String getId() {
         return id;
@@ -38,6 +44,7 @@ public class ProjectDefine {
         this.id = id;
     }
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "项目名称")
     public String getName() {
         return name;
@@ -47,6 +54,7 @@ public class ProjectDefine {
         this.name = name;
     }
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "显示名")
     public String getDisplayName() {
         return displayName;
@@ -56,6 +64,7 @@ public class ProjectDefine {
         this.displayName = displayName;
     }
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "项目描述")
     public String getDescription() {
         return description;
@@ -65,6 +74,7 @@ public class ProjectDefine {
         this.description = description;
     }
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "包名")
     public String getPackageName() {
         return packageName;
@@ -74,6 +84,7 @@ public class ProjectDefine {
         this.packageName = packageName;
     }
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "录入时间")
     public Date getInputDate() {
         return inputDate;
@@ -83,6 +94,7 @@ public class ProjectDefine {
         this.inputDate = inputDate;
     }
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "是否有效")
     public boolean isValid() {
         return isValid;
@@ -92,6 +104,7 @@ public class ProjectDefine {
         isValid = valid;
     }
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "排序号")
     public int getSortNum() {
         return sortNum;
@@ -101,6 +114,7 @@ public class ProjectDefine {
         this.sortNum = sortNum;
     }
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "项目URL")
     public String getProjectUrl() {
         return projectUrl;
@@ -110,6 +124,8 @@ public class ProjectDefine {
         this.projectUrl = projectUrl;
     }
 
+    @XmlElementWrapper(name = "NavMenus")
+    @XmlElement(name = "NavMenu")
     public List<NavMenu> getNavMenus() {
         if (navMenus == null) {
             navMenus = new ArrayList<NavMenu>();
@@ -137,6 +153,19 @@ public class ProjectDefine {
 
     public void setRootNavMenu(NavMenu rootNavMenu) {
         this.rootNavMenu = rootNavMenu;
+    }
+
+    @XmlElementWrapper(name = "CodeTpls")
+    @XmlElement(name = "CodeTpl")
+    public List<CodeTpl> getCodeTpls() {
+        if (codeTpls == null) {
+            codeTpls = new ArrayList<CodeTpl>();
+        }
+        return codeTpls;
+    }
+
+    public void setCodeTpls(List<CodeTpl> codeTpls) {
+        this.codeTpls = codeTpls;
     }
 
     @Override

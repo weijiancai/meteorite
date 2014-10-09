@@ -17,6 +17,7 @@ public class PathManager {
     private static final String SYSTEM_FOLDER = "system";
     private static final String LOG_FOLDER = "log";
     private static final String TEMP_FOLDER = "temp";
+    private static final String BACKUP_FOLDER = "backup";
 
     public static String USER_HOME = System.getProperty("user.home");
     public static String USER_DIR = System.getProperty("user.dir");
@@ -27,6 +28,7 @@ public class PathManager {
     private static File systemPath;
     private static File logPath;
     private static File tempPath;
+    private static File backupPath;
 
     /**
      * 获得系统主目录(.metaui)，桌面系统在user.home系统属性目录下，WEB系统在部署的web项目根目录下
@@ -121,6 +123,24 @@ public class PathManager {
             tempPath.mkdir();
         }
         return tempPath;
+    }
+
+    /**
+     * 获得backup目录（.metaui\backup\）
+     *
+     * @return 返回temp目录
+     */
+    public static File getBackupPath() {
+        if (backupPath != null) {
+            return backupPath;
+        }
+
+        backupPath = new File(getHomePath(), BACKUP_FOLDER);
+        if (!backupPath.exists()) {
+            log.debug("创建temp目录：" + homePath.getAbsolutePath());
+            backupPath.mkdir();
+        }
+        return backupPath;
     }
 
     /**

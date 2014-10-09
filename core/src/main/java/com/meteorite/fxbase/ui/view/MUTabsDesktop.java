@@ -429,12 +429,18 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     protected List<Tab> getGenCodeTabs(Meta meta) {
         // 生成JavaBean代码
         Tab javaBeanTab = new Tab("JavaBean");
-        final TextArea javaBeanTa = new TextArea();
+        TextArea javaBeanTa = new TextArea();
         javaBeanTab.setContent(javaBeanTa);
         javaBeanTa.setText(meta.genJavaBeanCode());
+        // 生成RowMapper代码
+        Tab rowMapperTab = new Tab("RowMapper");
+        TextArea rowMapperTa = new TextArea();
+        rowMapperTab.setContent(rowMapperTa);
+        rowMapperTa.setText(meta.genRowMapperCode());
 
         List<Tab> result = new ArrayList<Tab>();
         result.add(javaBeanTab);
+        result.add(rowMapperTab);
 
         return result;
     }

@@ -51,6 +51,7 @@ public class DictCode implements Serializable {
         this.displayName = displayName;
     }
 
+    @XmlAttribute
     public String getDescription() {
         return description;
     }

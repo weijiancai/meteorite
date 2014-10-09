@@ -2,6 +2,7 @@ package com.meteorite.core.project;
 
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
+import com.meteorite.core.project.tpl.CodeTpl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +51,16 @@ public class ProjectManager {
                 // 添加到根节点下
                 if (pid != null && pid.equalsIgnoreCase("root")) {
                     projectIdMap.get(navMenu.getProjectId()).getRootNavMenu().getChildren().add(navMenu);
+                }
+            }
+
+            // 查询代码模板
+            sql = "SELECT * FROM mu_code_tpl order by sort_num";
+            List<CodeTpl> tplList = template.query(sql, MetaRowMapperFactory.getCodeTpl());
+            for (CodeTpl tpl : tplList) {
+                ProjectDefine project = projectIdMap.get(tpl.getProjectId());
+                if (project != null) {
+                    project.getCodeTpls().add(tpl);
                 }
             }
 

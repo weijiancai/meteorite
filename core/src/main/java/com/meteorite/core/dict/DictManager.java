@@ -204,6 +204,21 @@ public class DictManager {
     }
 
     /**
+     * 获得用户数据字典列表
+     *
+     * @return 返回用户数据字典列表，不包括系统字典
+     */
+    public static List<DictCategory> getUserDictList() {
+        List<DictCategory> result = new ArrayList<DictCategory>();
+        for (DictCategory category : categoryMap.values()) {
+            if (!category.isSystem()) {
+                result.add(category);
+            }
+        }
+        return result;
+    }
+
+    /**
      * 获得数据字典的根节点
      *
      * @return 返回数据字典的根节点

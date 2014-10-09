@@ -124,6 +124,8 @@ public class Meta {
         this.sqlText = sqlText;
     }
 
+    @XmlAttribute
+    @MetaFieldElement(displayName = "", sortNum = 45)
     public String getRsId() {
         return rsId;
     }
@@ -568,6 +570,16 @@ public class Meta {
             return FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("JavaBean.ftl"), map);
         } catch (Exception e) {
             throw new RuntimeException("生成JavaBean代码失败！", e);
+        }
+    }
+
+    public String genRowMapperCode() {
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("meta", this);
+            return FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("rowMapper.ftl"), map);
+        } catch (Exception e) {
+            throw new RuntimeException("生成RowMapper代码失败！", e);
         }
     }
 }
