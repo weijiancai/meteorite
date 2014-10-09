@@ -158,9 +158,14 @@ public abstract class MUTreeTableWin extends BorderPane {
                     MUDialog.showInformation("请选择要删除的节点！");
                     return;
                 }
-                mainMeta.deleteByPK(node.getId());
+
                 if (tree.getSelectionModel() != null) {
                     TreeItem<ITreeNode> item = tree.getSelectionModel().getSelectedItem();
+                    if (item.getChildren().size() > 0) {
+                        MUDialog.showInformation("该节点下有子节点不能删除！");
+                        return;
+                    }
+                    mainMeta.deleteByPK(node.getId());
                     if (item.getParent() != null) {
                         item.getParent().getChildren().remove(item);
                     }

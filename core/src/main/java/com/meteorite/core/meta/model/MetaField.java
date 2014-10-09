@@ -225,6 +225,7 @@ public class MetaField {
         this.meta = meta;
     }
 
+    @XmlTransient
     public MetaField getRefField() {
         return refField;
     }

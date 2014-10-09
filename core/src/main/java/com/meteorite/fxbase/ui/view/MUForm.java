@@ -46,7 +46,6 @@ import java.util.*;
 public class MUForm extends BorderPane {
     private FormProperty formConfig;
     private MUFormLayout layout;
-    private MUTable table;
     private DataMap data;
     private DataMap newRowData;
 
@@ -63,11 +62,6 @@ public class MUForm extends BorderPane {
     }
 
     public MUForm(FormProperty property) {
-        this(property, null);
-    }
-
-    public MUForm(FormProperty property, MUTable table) {
-        this.table = table;
         initUI(property);
     }
 
@@ -202,9 +196,7 @@ public class MUForm extends BorderPane {
             dataStatusSubject.notifyObserver(new DataStatusEventData(EnumDataStatus.ADD_AFTER, this));
         } else {
             formConfig.getMeta().update(modifiedValueMap, data);
-            if (table != null) {
-                table.getSelectedItem().putAll(modifiedValueMap);
-            }
+            dataStatusSubject.notifyObserver(new DataStatusEventData(EnumDataStatus.UPDATE_END, this));
         }
         isModified.set(false);
     }

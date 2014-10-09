@@ -1,5 +1,7 @@
 package com.meteorite.core.project.tpl;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.Date;
 
 /**
@@ -32,6 +34,7 @@ public class CodeTpl {
     /** 录入时间 */
     private Date inputDate;
 
+    @XmlAttribute
     public String getId() {
         return id;
     }
@@ -40,6 +43,7 @@ public class CodeTpl {
         this.id = id;
     }
 
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -48,6 +52,7 @@ public class CodeTpl {
         this.name = name;
     }
 
+    @XmlAttribute
     public String getDisplayName() {
         return displayName;
     }
@@ -56,6 +61,7 @@ public class CodeTpl {
         this.displayName = displayName;
     }
 
+    @XmlAttribute
     public String getDescription() {
         return description;
     }
@@ -64,6 +70,7 @@ public class CodeTpl {
         this.description = description;
     }
 
+    @XmlAttribute
     public String getProjectId() {
         return projectId;
     }
@@ -72,6 +79,7 @@ public class CodeTpl {
         this.projectId = projectId;
     }
 
+    @XmlAttribute
     public String getFileName() {
         return fileName;
     }
@@ -80,6 +88,7 @@ public class CodeTpl {
         this.fileName = fileName;
     }
 
+    @XmlAttribute
     public String getFilePath() {
         return filePath;
     }
@@ -88,6 +97,7 @@ public class CodeTpl {
         this.filePath = filePath;
     }
 
+    @XmlElement
     public String getTplContent() {
         return tplContent;
     }
@@ -96,6 +106,7 @@ public class CodeTpl {
         this.tplContent = tplContent;
     }
 
+    @XmlAttribute
     public boolean isValid() {
         return isValid;
     }
@@ -104,6 +115,7 @@ public class CodeTpl {
         this.isValid = isValid;
     }
 
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -112,6 +124,7 @@ public class CodeTpl {
         this.sortNum = sortNum;
     }
 
+    @XmlAttribute
     public Date getInputDate() {
         return inputDate;
     }

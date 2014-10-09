@@ -2,6 +2,8 @@ package com.meteorite.core.meta.model;
 
 import com.meteorite.core.meta.MetaDataType;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 /**
@@ -10,6 +12,7 @@ import java.util.Date;
  * @author wei_jc
  * @since 1.0.0
  */
+@XmlRootElement
 public class MetaItem {
     /** 数据项ID */
     private String id;
@@ -39,6 +42,7 @@ public class MetaItem {
         this.displayName = displayName;
     }
 
+    @XmlAttribute
     public String getId() {
         return id;
     }
@@ -47,6 +51,7 @@ public class MetaItem {
         this.id = id;
     }
 
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -55,6 +60,7 @@ public class MetaItem {
         this.name = name;
     }
 
+    @XmlAttribute
     public String getDisplayName() {
         return displayName;
     }
@@ -63,6 +69,7 @@ public class MetaItem {
         this.displayName = displayName;
     }
 
+    @XmlAttribute
     public MetaDataType getDataType() {
         return dataType;
     }
@@ -71,6 +78,7 @@ public class MetaItem {
         this.dataType = dataType;
     }
 
+    @XmlAttribute
     public String getCategory() {
         return category;
     }
@@ -79,6 +87,7 @@ public class MetaItem {
         this.category = category;
     }
 
+    @XmlAttribute
     public int getMaxLength() {
         return maxLength;
     }
@@ -87,6 +96,7 @@ public class MetaItem {
         this.maxLength = maxLength;
     }
 
+    @XmlAttribute
     public String getDescription() {
         return description;
     }
@@ -95,6 +105,7 @@ public class MetaItem {
         this.description = description;
     }
 
+    @XmlAttribute
     public boolean isValid() {
         return isValid;
     }
@@ -103,6 +114,7 @@ public class MetaItem {
         this.isValid = isValid;
     }
 
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -111,6 +123,7 @@ public class MetaItem {
         this.sortNum = sortNum;
     }
 
+    @XmlAttribute
     public Date getInputDate() {
         return inputDate;
     }

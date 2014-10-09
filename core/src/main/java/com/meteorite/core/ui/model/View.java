@@ -8,6 +8,10 @@ import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
 import javafx.scene.Node;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.*;
 
 /**
@@ -16,6 +20,7 @@ import java.util.*;
  * @author wei_jc
  * @since  1.0.0
  */
+@XmlRootElement
 public class View {
     /** 视图ID */
     private String id;
@@ -43,6 +48,7 @@ public class View {
     private Map<String, ViewProperty> propMap = new HashMap<String, ViewProperty>();
     private Meta meta;
 
+    @XmlAttribute
     public String getId() {
         return id;
     }
@@ -51,6 +57,7 @@ public class View {
         this.id = id;
     }
 
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -59,6 +66,7 @@ public class View {
         this.name = name;
     }
 
+    @XmlAttribute
     public String getDisplayName() {
         return displayName;
     }
@@ -67,6 +75,7 @@ public class View {
         this.displayName = displayName;
     }
 
+    @XmlAttribute
     public String getDescription() {
         return description;
     }
@@ -75,6 +84,7 @@ public class View {
         this.description = description;
     }
 
+    @XmlAttribute
     public boolean isValid() {
         return isValid;
     }
@@ -83,6 +93,7 @@ public class View {
         this.isValid = isValid;
     }
 
+    @XmlAttribute
     public Date getInputDate() {
         return inputDate;
     }
@@ -91,6 +102,7 @@ public class View {
         this.inputDate = inputDate;
     }
 
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -99,6 +111,7 @@ public class View {
         this.sortNum = sortNum;
     }
 
+    @XmlTransient
     @JSONField(serialize = false)
     public List<ViewLayout> getLayoutList() {
         if (layoutList == null) {
@@ -111,6 +124,7 @@ public class View {
         this.layoutList = layoutList;
     }
 
+    @XmlTransient
     @JSONField(serialize = false)
     public List<ViewConfig> getConfigs() {
         if (configs == null) {
@@ -127,6 +141,7 @@ public class View {
         getConfigs().add(config);
     }
 
+    @XmlElement(name = "ViewProperty")
     @JSONField(serialize = false)
     public List<ViewProperty> getViewProperties() {
         if (viewProperties == null) {
@@ -185,11 +200,13 @@ public class View {
         return fieldPropMap.get(field);
     }
 
+    @XmlTransient
     @JSONField(serialize = false)
     public List<MetaField> getMetaFieldList() {
         return new ArrayList<MetaField>(fieldPropMap.keySet());
     }
 
+    @XmlTransient
     @JSONField(serialize = false)
     public Meta getMeta() {
         return meta;
@@ -213,6 +230,7 @@ public class View {
         return null;
     }
 
+    @XmlTransient
     public Node getNode() {
         return node;
     }
@@ -227,6 +245,7 @@ public class View {
         return view;
     }
 
+    @XmlTransient
     public FormProperty getQueryForm() {
         return new FormProperty(this);
     }

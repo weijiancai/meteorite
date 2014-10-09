@@ -2,7 +2,6 @@ package com.meteorite.fxbase.ui.component.form;
 
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.fxbase.ui.IValue;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;

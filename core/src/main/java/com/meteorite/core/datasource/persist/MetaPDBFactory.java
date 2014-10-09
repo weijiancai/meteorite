@@ -26,7 +26,9 @@ public class MetaPDBFactory {
         return new IPDB() {
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
-                dataSource.setId(UUIDUtil.getUUID());
+                if (UString.isEmpty(dataSource.getId())) {
+                    dataSource.setId(UUIDUtil.getUUID());
+                }
 
                 Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 
@@ -74,7 +76,9 @@ public class MetaPDBFactory {
         return new IPDB() {
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
-                meta.setId(UUIDUtil.getUUID());
+                if (UString.isEmpty(meta.getId())) {
+                    meta.setId(UUIDUtil.getUUID());
+                }
 
                 Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 
@@ -101,7 +105,9 @@ public class MetaPDBFactory {
         return new IPDB() {
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
-                metaRef.setId(UUIDUtil.getUUID());
+                if (UString.isEmpty(metaRef.getId())) {
+                    metaRef.setId(UUIDUtil.getUUID());
+                }
 
                 Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 
@@ -124,7 +130,9 @@ public class MetaPDBFactory {
 
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
-                field.setId(UUIDUtil.getUUID());
+                if (UString.isEmpty(field.getId())) {
+                    field.setId(UUIDUtil.getUUID());
+                }
 
                 Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 
@@ -158,7 +166,7 @@ public class MetaPDBFactory {
 
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
-                if (item.getId() == null) {
+                if (UString.isEmpty(item.getId())) {
                     item.setId(UUIDUtil.getUUID());
                 }
 
@@ -220,6 +228,8 @@ public class MetaPDBFactory {
                 Map<String, Object> map = new HashMap<String, Object>();
                 if (code.getCategory() != null) {
                     map.put("category_id", code.getCategory().getId());
+                } else {
+                    map.put("category_id", code.getCategoryId());
                 }
                 map.put("id", code.getId());
                 map.put("name", code.getName());

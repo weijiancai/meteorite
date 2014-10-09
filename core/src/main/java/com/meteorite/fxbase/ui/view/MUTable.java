@@ -112,7 +112,7 @@ public class MUTable extends StackPane {
         CrudProperty crudConfig = new CrudProperty(crudView);
         if (crudView != null) {
             queryForm = new MUForm(new FormProperty(crudConfig.getQueryView()));
-            editForm = new MUForm(new FormProperty(crudConfig.getFormView()), this);
+            editForm = new MUForm(new FormProperty(crudConfig.getFormView()));
             editForm.setDataStatusSubject(dataStatusSubject);
             config = new TableProperty(crudConfig.getTableView());
         }
@@ -168,6 +168,8 @@ public class MUTable extends StackPane {
                 public void update(DataStatusEventData data) {
                     if (data.getDataStatus() == EnumDataStatus.ADD_AFTER) { // 新增后在Table中新增一行
                         table.getItems().add(data.getForm().getData());
+                    } else if (data.getDataStatus() == EnumDataStatus.UPDATE_END) { // 更新之后,更新行数据
+                        getSelectedItem().putAll(data.getForm().getData());
                     }
                 }
             });

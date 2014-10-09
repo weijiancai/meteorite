@@ -12,4 +12,9 @@ public class BackupManagerTest {
         SystemManager.getInstance().init();
         BackupManager.getInstance().backup();
     }
+
+    @Test
+    public void testRestore() throws Exception {
+        BackupManager.getInstance().restore();
+    }
 }

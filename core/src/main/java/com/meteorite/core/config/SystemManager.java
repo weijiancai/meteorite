@@ -36,6 +36,7 @@ public class SystemManager {
     private static SystemInfo sysInfo;
     private static Map<String, ProjectConfig> cache = new HashMap<String, ProjectConfig>();
     private static Map<String, String> settingMap = new HashMap<String, String>();
+    private static List<ProfileSetting> settingList = new ArrayList<ProfileSetting>();
     private LayoutConfig layoutConfig;
 
     static {
@@ -150,8 +151,8 @@ public class SystemManager {
 
     private void loadProfileSetting() throws Exception{
         JdbcTemplate template = new JdbcTemplate();
-        List<ProfileSetting> settings = template.query("select * from mu_profile_setting", MetaRowMapperFactory.getProfileSetting());
-        for (ProfileSetting setting : settings) {
+        settingList = template.query("select * from mu_profile_setting", MetaRowMapperFactory.getProfileSetting());
+        for (ProfileSetting setting : settingList) {
             settingMap.put(setting.getConfSection() + "_" + setting.getConfKey(), setting.getConfValue());
         }
     }
@@ -275,5 +276,15 @@ public class SystemManager {
 
     public static String getSettingValue(String section, String key) {
         return settingMap.get(section + "_" + key);
+    }
+
+    /**
+     * 获得系统配置信息
+     *
+     * @return 返回系统配置信息列表
+     * @since 1.0.0
+     */
+    public static List<ProfileSetting> getSettingList() {
+        return settingList;
     }
 }

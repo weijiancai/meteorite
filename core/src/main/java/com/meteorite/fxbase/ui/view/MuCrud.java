@@ -77,7 +77,7 @@ public class MuCrud extends StackPane {
         } else {
             this.table.initUI(tableProperty);
         }
-        this.editForm = new MUForm(editFormProperty, table);
+        this.editForm = new MUForm(editFormProperty);
 
         editForm.setVisible(false);
         BorderPane root = new BorderPane();
@@ -188,7 +188,7 @@ public class MuCrud extends StackPane {
                     }
                 }
 
-                final MUForm form = new MUForm(formProperty, table);
+                final MUForm form = new MUForm(formProperty);
                 form.setAdd(true);
                 form.setValues(result);
                 MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "复制", form, new Callback<Void, Void>() {

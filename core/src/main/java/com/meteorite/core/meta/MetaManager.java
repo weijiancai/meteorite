@@ -6,6 +6,7 @@ import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.object.*;
+import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
@@ -40,14 +41,10 @@ public class MetaManager {
     private static Map<String, Meta> rsIdMap = new HashMap<String, Meta>();
     private static List<MetaField> metaFieldList = new ArrayList<MetaField>();
     private static Map<String, Map<String, String>> metaFieldConfigs = new HashMap<String, Map<String, String>>();
+    private static List<MetaReference> referenceList;
 
     static {
         try {
-//            addMeta(ProjectConfig.class, null);
-//            addMeta(DBDataSource.class, null);
-//            addMeta(Meta.class);
-//            addMeta(MetaField.class);
-
             loadMetaFieldConfig();
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,7 +76,7 @@ public class MetaManager {
 
                 // 查询元数据引用
                 sql = "SELECT * FROM mu_meta_reference";
-                List<MetaReference> referenceList = template.query(sql, MetaRowMapperFactory.getMetaReference());
+                referenceList = template.query(sql, MetaRowMapperFactory.getMetaReference());
                 for (MetaReference reference : referenceList) {
                     reference.getPkMeta().getChildren().add(reference.getFkMeta());
                     reference.getFkMetaField().setRefField(reference.getPkMetaField());
@@ -94,16 +91,6 @@ public class MetaManager {
                 DBDataSource dataSource = DataSourceManager.getSysDataSource();
                 DBConnection dbConn = dataSource.getDbConnection();
                 DBSchema schema = dbConn.getSchema();
-//                dbConn.getLoader().loadSchemas();
-                /*for (DBTable table : schema.getTables()) {
-                    initMetaFromTable(template, table);
-                    metaSortNum += 10;
-                }
-
-                for (DBView view : schema.getViews()) {
-                    initMetaFromTable(template, view);
-                    metaSortNum += 10;
-                }*/
 
                 List<VirtualResource> tables = dataSource.findResourcesByPath("/tables");
                 for (VirtualResource table : tables) {
@@ -372,10 +359,6 @@ public class MetaManager {
     }
 
     public static List<MetaField> getMetaFieldList() {
-        /*List<MetaField> result = new ArrayList<>();
-        for(Meta meta : metaMap.values()) {
-            result.addAll(meta.getFields());
-        }*/
         return metaFieldList;
     }
 
@@ -385,70 +368,32 @@ public class MetaManager {
 
     private static int metaSortNum = 10;
 
-    public static Meta initMetaFromTable(JdbcTemplate template, DBDataset table) throws Exception {
-        // 将表定义信息插入到元数据信息中
-        Meta meta = new Meta();
-        meta.setName(UString.tableNameToClassName(table.getName()));
-        String comment = table.getComment();
-        if (UString.isNotEmpty(comment) && comment.length() > 100) {
-            meta.setDisplayName(table.getComment().substring(0, 100));
-        } else {
-            meta.setDisplayName(comment);
-        }
-
-        meta.setDescription(comment);
-        meta.setValid(true);
-        meta.setInputDate(new Date());
-        meta.setSortNum(metaSortNum);
-        meta.setDataSource(table.getSchema().getDataSource());
-
-        // 插入元数据信息
-        template.save(MetaPDBFactory.getMeta(meta));
-        metaMap.put(meta.getName(), meta);
-        metaIdMap.put(meta.getId(), meta);
-        rsIdMap.put(table.getFullName(), meta);
-
-        List<MetaField> fieldList = new ArrayList<MetaField>();
-
-        // 将表列信息插入到类字段信息中
-        MetaField field;
-        int fieldSortNum = 0;
-        for (DBColumn column : table.getColumns()) {
-            field = new MetaField();
-            field.setMeta(meta);
-//            field.setColumn(column);
-            String columnComment = column.getComment();
-            if (UString.isEmpty(columnComment)) {
-                columnComment = column.getName().toLowerCase();
-            }
-            field.setDisplayName(columnComment);
-            field.setName(UString.columnNameToFieldName(column.getName()));
-            field.setDescription(column.getComment());
-            if (column.getName().toLowerCase().startsWith("is_")) {
-                field.setDataType(MetaDataType.BOOLEAN);
-            } else {
-                field.setDataType(column.getDataType());
-            }
-//            field.setType(column.getDataType());
-            field.setValid(true);
-            field.setSortNum(fieldSortNum += 10);
-//            initDzCategory(field);
-            // 插入表sys_class_field
-            template.save(MetaPDBFactory.getMetaField(field));
-            fieldList.add(field);
-//            classFieldIdMap.put(field.getId(), field);
-            // 加入缓存
-            fieldIdMap.put(field.getId(), field);
-        }
-        meta.setFields(fieldList);
-
-        return meta;
+    public static Meta initMetaFromResource(JdbcTemplate template, VirtualResource table) throws Exception {
+        return initMetaFromResource(template, table, null);
     }
 
-    public static Meta initMetaFromResource(JdbcTemplate template, VirtualResource table) throws Exception {
+    /**
+     * 从资源中创建元数据
+     *
+     * @param template
+     * @param table
+     * @param prefixes 前缀名，以逗号分隔，生成元数据名称时，会去掉前缀
+     * @return
+     * @throws Exception
+     */
+    public static Meta initMetaFromResource(JdbcTemplate template, VirtualResource table, String prefixes) throws Exception {
         // 将表定义信息插入到元数据信息中
         Meta meta = new Meta();
-        meta.setName(UString.tableNameToClassName(table.getName()));
+        String tableName = table.getName();
+        if (UString.isNotEmpty(prefixes)) {
+            for (String prefix : prefixes.split(",")) {
+                if (tableName.startsWith(prefix)) {
+                    tableName = tableName.substring(prefix.length());
+                    break;
+                }
+            }
+        }
+        meta.setName(UString.tableNameToClassName(tableName));
         String comment = table.getDisplayName();
         if (UString.isNotEmpty(comment) && comment.length() > 100) {
             meta.setDisplayName(table.getDisplayName().substring(0, 100));
@@ -547,5 +492,33 @@ public class MetaManager {
         meta.setSqlText(sqlText);
 
         return meta;
+    }
+
+    /**
+     * 获得元数据项列表
+     *
+     * @return 返回元数据项列表
+     * @throws Exception
+     */
+    public static List<MetaItem> getMetaItemList() throws Exception {
+        JdbcTemplate template = new JdbcTemplate();
+        String sql = "SELECT * FROM mu_meta_item";
+        List<MetaItem> result = new ArrayList<MetaItem>();
+        try {
+            result = template.query(sql, MetaRowMapperFactory.getMetaItem());
+        } finally {
+            template.close();
+        }
+
+        return result;
+    }
+
+    /**
+     * 获得元数据引用列表
+     *
+     * @return 返回元数据引用列表
+     */
+    public static List<MetaReference> getMetaReferenceList() {
+        return referenceList;
     }
 }

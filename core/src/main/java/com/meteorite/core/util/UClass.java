@@ -249,9 +249,13 @@ public class UClass {
                 if (method.getName().startsWith("set")) {
                     String fieldName = method.getName().substring(3);
                     Object value = data.get(fieldName);
-                    if (method.getParameterCount() == 1 && method.getParameterTypes()[0] == boolean.class) {
-                        fieldName = "is" + fieldName;
-                        value = UString.toBoolean(String.valueOf(data.get(fieldName)));
+                    if (method.getParameterCount() == 1) {
+                        if (method.getParameterTypes()[0] == boolean.class) {
+                            fieldName = "is" + fieldName;
+                            value = UString.toBoolean(String.valueOf(data.get(fieldName)));
+                        } else if (method.getParameterTypes()[0] == Date.class && value instanceof String) {
+                            value = UDate.toDate(UString.toString(value));
+                        }
                     }
 
                     if (value != null) {

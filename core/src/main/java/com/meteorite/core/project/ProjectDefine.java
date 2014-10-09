@@ -8,6 +8,7 @@ import com.meteorite.core.project.tpl.CodeTpl;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -124,8 +125,7 @@ public class ProjectDefine {
         this.projectUrl = projectUrl;
     }
 
-    @XmlElementWrapper(name = "NavMenus")
-    @XmlElement(name = "NavMenu")
+    @XmlTransient
     public List<NavMenu> getNavMenus() {
         if (navMenus == null) {
             navMenus = new ArrayList<NavMenu>();
@@ -147,6 +147,7 @@ public class ProjectDefine {
         return result;
     }
 
+    @XmlElement(name = "NavMenu")
     public NavMenu getRootNavMenu() {
         return rootNavMenu;
     }

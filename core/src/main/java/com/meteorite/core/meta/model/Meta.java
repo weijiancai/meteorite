@@ -105,6 +105,7 @@ public class Meta {
         this.displayName = displayName;
     }
 
+    @XmlAttribute
     @MetaFieldElement(displayName = "描述", sortNum = 40)
     public String getDescription() {
         return description;
@@ -125,7 +126,7 @@ public class Meta {
     }
 
     @XmlAttribute
-    @MetaFieldElement(displayName = "", sortNum = 45)
+    @MetaFieldElement(displayName = "资源ID", sortNum = 80, maxLength = 300)
     public String getRsId() {
         return rsId;
     }
@@ -165,7 +166,6 @@ public class Meta {
     }
 
     @XmlElement(name = "MetaField")
-    @XmlElementWrapper(name = "fields")
     public List<MetaField> getFields() {
         return fields;
     }
@@ -178,6 +178,7 @@ public class Meta {
         }
     }
 
+    @XmlTransient
     @JSONField(serialize = false)
     public DataSource getDataSource() {
         return dataSource;
@@ -187,8 +188,7 @@ public class Meta {
         this.dataSource = dataSource;
     }
 
-    @XmlAttribute
-    @MetaFieldElement(displayName = "资源ID", sortNum = 80, maxLength = 300)
+    @XmlTransient
     public VirtualResource getResource() {
         return resource;
     }
@@ -253,6 +253,7 @@ public class Meta {
         return dataList;
     }
 
+    @XmlTransient
     public List<DataMap> getDataList() {
         return dataList.get();
     }
@@ -266,6 +267,7 @@ public class Meta {
         return totalRows;
     }
 
+    @XmlTransient
     public int getTotalRows() {
         return totalRows.get();
     }
@@ -274,6 +276,7 @@ public class Meta {
         this.totalRows.set(totalRows);
     }
 
+    @XmlTransient
     public int getPageCount() {
         return pageCount.get();
     }
@@ -287,6 +290,7 @@ public class Meta {
         this.pageCount.set(pageCount);
     }
 
+    @XmlTransient
     public int getPageRows() {
         return pageRows.get();
     }
@@ -355,16 +359,19 @@ public class Meta {
         return null;
     }
 
+    @XmlTransient
     @JSONField(serialize = false)
     public View getFormView() {
         return ViewManager.getViewByName(getName() + "FormView");
     }
 
+    @XmlTransient
     @JSONField(serialize = false)
     public View getTableView() {
         return ViewManager.getViewByName(getName() + "TableView");
     }
 
+    @XmlTransient
     @JSONField(serialize = false)
     public List<MetaReference> getReferences() {
         if (references == null) {
@@ -377,6 +384,7 @@ public class Meta {
         this.references = references;
     }
 
+    @XmlTransient
     @JSONField(serialize = false)
     public Set<Meta> getChildren() {
         return children;
@@ -419,7 +427,7 @@ public class Meta {
         }
         QueryResult<DataMap> result = resource.retrieve(builder, -1, 0);
         if (result.getTotal() == 0) {
-            throw new RuntimeException(String.format("没有此主键值【%s】", pkValues));
+            throw new RuntimeException(String.format("没有此主键值【%s】", pkValues.clone()));
         }
         if (result.getTotal() > 1) {
             throw new RuntimeException(String.format("根据主键检索，检索出多条数据！"));
@@ -561,6 +569,10 @@ public class Meta {
         }
 
         resource.update(valueMap, conditionMap, resource.getName());
+        // 更新之后，更新原始DataMap值
+        for (IValue value : modifiedValueMap.values()) {
+            rowData.put(value.getName(), value.value());
+        }
     }
 
     public String genJavaBeanCode() {

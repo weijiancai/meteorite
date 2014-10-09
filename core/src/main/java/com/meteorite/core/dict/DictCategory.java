@@ -113,6 +113,7 @@ public class DictCategory implements Serializable {
         this.pid = parent.getPid();
     }
 
+    @XmlElement(name = "DictCategory")
     public List<DictCategory> getChildren() {
         if (children == null) {
             children = new ArrayList<DictCategory>();
@@ -124,14 +125,19 @@ public class DictCategory implements Serializable {
         this.children = children;
     }
 
-    @XmlElementWrapper(name = "codes")
     @XmlElement(name = "DictCode")
     public List<DictCode> getCodeList() {
+        if (codeList == null) {
+            codeList = new ArrayList<DictCode>();
+        }
         return codeList;
     }
 
     public void setCodeList(List<DictCode> codeList) {
         this.codeList = codeList;
+        for (DictCode code : codeList) {
+            code.setCategory(this);
+        }
     }
 
     public String getCodeName(String codeValue) {

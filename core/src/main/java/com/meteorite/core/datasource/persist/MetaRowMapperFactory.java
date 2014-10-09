@@ -154,7 +154,6 @@ public class MetaRowMapperFactory {
                 field.setValid("T".equals(rs.getString("is_valid")));
                 field.setInputDate(rs.getDate("input_date"));
                 field.setSortNum(rs.getInt("sort_num"));
-
                 field.setMaxLength(rs.getInt("max_length"));
 
                 return field;
@@ -169,6 +168,10 @@ public class MetaRowMapperFactory {
                 MetaReference metaRef = new MetaReference();
 
                 metaRef.setId(rs.getString("id"));
+                metaRef.setPkMetaId(rs.getString("pk_meta_id"));
+                metaRef.setPkMetaFieldId(rs.getString("pk_meta_field_id"));
+                metaRef.setFkMetaId(rs.getString("fk_meta_id"));
+                metaRef.setFkMetaFieldId(rs.getString("fk_meta_field_id"));
                 metaRef.setPkMeta(MetaManager.getMetaById(rs.getString("pk_meta_id")));
                 metaRef.setPkMetaField(MetaManager.getMetaField(rs.getString("pk_meta_field_id")));
                 metaRef.setFkMeta(MetaManager.getMetaById(rs.getString("fk_meta_id")));
@@ -251,6 +254,7 @@ public class MetaRowMapperFactory {
                 code.setId(rs.getString("id"));
                 code.setName(rs.getString("name"));
                 code.setDisplayName(rs.getString("display_name"));
+                code.setCategoryId(rs.getString("category_id"));
                 code.setDescription(rs.getString("description"));
                 code.setValid("T".equals(rs.getString("is_valid")));
                 code.setInputDate(rs.getDate("input_date"));

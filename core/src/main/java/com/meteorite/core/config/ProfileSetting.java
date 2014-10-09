@@ -1,11 +1,15 @@
 package com.meteorite.core.config;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 参数配置
  *
  * @author wei_jc
  * @since 1.0.0
  */
+@XmlRootElement
 public class ProfileSetting {
     /** 配置类型 */
     private String confSection;
@@ -27,6 +31,7 @@ public class ProfileSetting {
         this.confValue = confValue;
     }
 
+    @XmlAttribute
     public String getConfSection() {
         return confSection;
     }
@@ -35,6 +40,7 @@ public class ProfileSetting {
         this.confSection = confSection;
     }
 
+    @XmlAttribute
     public String getConfKey() {
         return confKey;
     }
@@ -43,6 +49,7 @@ public class ProfileSetting {
         this.confKey = confKey;
     }
 
+    @XmlAttribute
     public String getConfValue() {
         return confValue;
     }
@@ -51,6 +58,7 @@ public class ProfileSetting {
         this.confValue = confValue;
     }
 
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -59,6 +67,7 @@ public class ProfileSetting {
         this.sortNum = sortNum;
     }
 
+    @XmlAttribute
     public String getMemo() {
         return memo;
     }

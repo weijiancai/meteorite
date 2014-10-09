@@ -11,10 +11,8 @@ import com.meteorite.fxbase.ui.view.MUDialog;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -92,6 +90,9 @@ public class MetaCreateGuide extends BaseGuide {
             dsChoice.setPrefWidth(150);
             dsChoice.getItems().addAll(DataSourceManager.getDataSources());
             dsHbox.getChildren().addAll(new Label("数据源"), dsChoice);
+            // 前缀
+            TextField prefixTF = new TextField();
+            dsHbox.getChildren().addAll(new Label("前缀"), prefixTF);
             // 表、视图
             tableList = new MUCheckListView<VirtualResource>();
             tableList.setName("tables");

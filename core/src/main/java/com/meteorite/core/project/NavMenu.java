@@ -1,5 +1,7 @@
 package com.meteorite.core.project;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.*;
 
 /**
@@ -32,8 +34,9 @@ public class NavMenu {
     /** 录入时间 */
     private Date inputDate;
 
-    List<NavMenu> children;
+    private List<NavMenu> children;
 
+    @XmlAttribute
     public String getId() {
         return id;
     }
@@ -42,6 +45,7 @@ public class NavMenu {
         this.id = id;
     }
 
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -50,6 +54,7 @@ public class NavMenu {
         this.name = name;
     }
 
+    @XmlAttribute
     public String getDisplayName() {
         return displayName;
     }
@@ -58,6 +63,7 @@ public class NavMenu {
         this.displayName = displayName;
     }
 
+    @XmlAttribute
     public String getIcon() {
         return icon;
     }
@@ -66,6 +72,7 @@ public class NavMenu {
         this.icon = icon;
     }
 
+    @XmlAttribute
     public String getUrl() {
         return url;
     }
@@ -74,6 +81,7 @@ public class NavMenu {
         this.url = url;
     }
 
+    @XmlAttribute
     public String getPid() {
         return pid;
     }
@@ -82,6 +90,7 @@ public class NavMenu {
         this.pid = pid;
     }
 
+    @XmlAttribute
     public int getLevel() {
         return level;
     }
@@ -90,6 +99,7 @@ public class NavMenu {
         this.level = level;
     }
 
+    @XmlAttribute
     public String getProjectId() {
         return projectId;
     }
@@ -98,6 +108,7 @@ public class NavMenu {
         this.projectId = projectId;
     }
 
+    @XmlAttribute
     public boolean isValid() {
         return isValid;
     }
@@ -106,6 +117,7 @@ public class NavMenu {
         this.isValid = isValid;
     }
 
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -114,6 +126,7 @@ public class NavMenu {
         this.sortNum = sortNum;
     }
 
+    @XmlAttribute
     public Date getInputDate() {
         return inputDate;
     }
@@ -122,6 +135,7 @@ public class NavMenu {
         this.inputDate = inputDate;
     }
 
+    @XmlElement(name = "NavMenu")
     public List<NavMenu> getChildren() {
         if (children == null) {
             children = new ArrayList<NavMenu>();

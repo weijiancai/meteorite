@@ -27,6 +27,7 @@ import java.util.*;
  * @since  1.0.0
  */
 public class ViewManager {
+    private static List<View> viewList = new ArrayList<View>();
     private static Map<String, View> viewIdMap = new HashMap<String, View>();
     private static Map<String, View> viewNameMap = new HashMap<String, View>();
     private static Map<String, ViewLayout> viewLayoutMap = new HashMap<String, ViewLayout>();
@@ -41,7 +42,7 @@ public class ViewManager {
         // 从数据库中加载视图
         if (sysInfo.isViewInit()) {
             String sql = "SELECT * FROM mu_view";
-            List<View> viewList = template.query(sql, MetaRowMapperFactory.getView());
+            viewList = template.query(sql, MetaRowMapperFactory.getView());
             for (final View view : viewList) {
                 viewIdMap.put(view.getId(), view);
                 viewNameMap.put(view.getName(), view);
@@ -215,5 +216,14 @@ public class ViewManager {
      */
     public static View getFormView(Meta meta) {
         return getViewByName(meta.getName() + "FormView");
+    }
+
+    /**
+     * 获得所有视图信息
+     *
+     * @return 返回视图列表
+     */
+    public static List<View> getViewList() {
+        return viewList;
     }
 }

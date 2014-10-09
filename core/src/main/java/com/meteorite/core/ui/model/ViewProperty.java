@@ -3,6 +3,9 @@ package com.meteorite.core.ui.model;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.meta.model.MetaField;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,13 +15,18 @@ import java.util.Map;
  * @author wei_jc
  * @since 1.0.0
  */
+@XmlRootElement
 public class ViewProperty {
     /** 视图属性ID */
     private String id;
-    /** 属性值*/
-    private String value;
     /** 视图ID */
     private String viewId;
+    /** 布局属性ID */
+    private String layoutPropId;
+    /** 元字段ID */
+    private String metaFieldId;
+    /** 属性值 */
+    private String value;
 
     private View view;
     private MetaField field;
@@ -40,6 +48,7 @@ public class ViewProperty {
         this.property = property;
     }
 
+    @XmlAttribute
     public String getId() {
         return id;
     }
@@ -48,14 +57,7 @@ public class ViewProperty {
         this.id = id;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
+    @XmlAttribute
     public String getViewId() {
         return viewId;
     }
@@ -64,6 +66,43 @@ public class ViewProperty {
         this.viewId = viewId;
     }
 
+    @XmlAttribute
+    public String getLayoutPropId() {
+        return layoutPropId;
+    }
+
+    public void setLayoutPropId(String layoutPropId) {
+        this.layoutPropId = layoutPropId;
+    }
+
+    @XmlAttribute
+    public String getMetaFieldId() {
+        return metaFieldId;
+    }
+
+    public void setMetaFieldId(String metaFieldId) {
+        this.metaFieldId = metaFieldId;
+    }
+
+    @XmlAttribute
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    @XmlTransient
+    public View getView() {
+        return view;
+    }
+
+    public void setView(View view) {
+        this.view = view;
+    }
+
+    @XmlTransient
     public MetaField getField() {
         return field;
     }
@@ -72,20 +111,13 @@ public class ViewProperty {
         this.field = field;
     }
 
+    @XmlTransient
     public LayoutProperty getProperty() {
         return property;
     }
 
     public void setProperty(LayoutProperty property) {
         this.property = property;
-    }
-
-    public View getView() {
-        return view;
-    }
-
-    public void setView(View view) {
-        this.view = view;
     }
 
     public void persist() throws Exception {

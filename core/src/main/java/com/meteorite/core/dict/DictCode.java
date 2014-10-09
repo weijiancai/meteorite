@@ -14,13 +14,22 @@ import java.util.Date;
  */
 @XmlRootElement
 public class DictCode implements Serializable {
+    /** 代码ID */
     private String id;
+    /** 类别ID */
+    private String categoryId;
+    /** 代码名称 */
     private String name;
+    /** 代码显示名 */
     private String displayName;
+    /** 描述 */
     private String description;
+    /** 是否有效 */
     private boolean isValid;
-    private int sortNum;
+    /** 录入时间 */
     private Date inputDate;
+    /** 排序号 */
+    private int sortNum;
 
     private DictCategory category;
 
@@ -31,6 +40,15 @@ public class DictCode implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @XmlAttribute
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     @XmlAttribute

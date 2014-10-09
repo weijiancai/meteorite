@@ -39,10 +39,12 @@ public class DictManager {
         try {
             root.setId("ROOT");
             root.setName("数据字典");
+            root.setSystem(true);
             root.getChildren().add(system);
 
             system.setId("System_Category");
             system.setName("系统字典");
+            system.setSystem(true);
 
             addDict(DatabaseType.class);
             addDict(MetaDataType.class);
@@ -133,6 +135,10 @@ public class DictManager {
         if (!clazz.isAnnotationPresent(DictElement.class)) {
             throw new Exception(String.format("不能将非DictElement的对象【%s】转化为数据字典！", clazz.getName()));
         }
+        // 已经存在，不需要再生成
+        if (getDict(clazz) != null) {
+            return;
+        }
 
         if (clazz.isEnum()) { //将枚举类转化为数据字典
             DictElement dict = clazz.getAnnotation(DictElement.class);
@@ -163,6 +169,7 @@ public class DictManager {
                 code.setSortNum(sortNum++);
                 code.setValid(true);
                 code.setCategory(category);
+                code.setCategoryId(category.getId());
 
                 codeList.add(code);
             }
