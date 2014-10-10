@@ -127,6 +127,7 @@ public class MetaRowMapperFactory {
                 field.setValid("T".equals(rs.getString("is_valid")));
                 field.setInputDate(rs.getDate("input_date"));
                 field.setSortNum(rs.getInt("sort_num"));
+                field.setMetaId(rs.getString("meta_id"));
 
                 field.setOriginalName(rs.getString("original_name"));
                 field.setMaxLength(rs.getInt("max_length"));

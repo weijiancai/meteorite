@@ -13,6 +13,7 @@ import com.meteorite.core.rest.RestHandler;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.HashMap;
@@ -106,6 +107,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回数据源唯一ID
      */
+    @XmlAttribute
     public String getId() {
         return id;
     }
@@ -115,6 +117,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回数据源名称
      */
+    @XmlAttribute
     public String getName() {
         return name;
     }
@@ -124,6 +127,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回数据源显示名
      */
+    @XmlAttribute
     public String getDisplayName() {
         return displayName;
     }
@@ -133,6 +137,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回数据源类型
      */
+    @XmlAttribute
     public DataSourceType getType() {
         return type;
     }
@@ -142,6 +147,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回数据源描述信息
      */
+    @XmlAttribute
     public String getDescription() {
         return description;
     }
@@ -151,6 +157,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回数据源URL
      */
+    @XmlAttribute
     public String getUrl() {
         return url;
     }
@@ -160,6 +167,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回主机信息
      */
+    @XmlAttribute
     public String getHost() {
         return host;
     }
@@ -169,6 +177,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回数据源端口
      */
+    @XmlAttribute
     public int getPort() {
         return port;
     }
@@ -178,6 +187,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回数据源用户名
      */
+    @XmlAttribute
     public String getUserName() {
         return userName;
     }
@@ -187,6 +197,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回数据源密码
      */
+    @XmlAttribute
     public String getPwd() {
         return pwd;
     }
@@ -196,6 +207,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 如果有效返回true，否则返回false
      */
+    @XmlAttribute
     public boolean isValid() {
         return isValid;
     }
@@ -205,6 +217,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回排序号
      */
+    @XmlAttribute
     public int getSortNum() {
         return sortNum;
     }
@@ -214,6 +227,7 @@ public abstract class DataSource implements RestHandler {
      *
      * @return 返回录入时间
      */
+    @XmlAttribute
     public Date getInputDate() {
         return inputDate;
     }

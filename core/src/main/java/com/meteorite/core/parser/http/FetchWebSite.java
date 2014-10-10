@@ -170,8 +170,13 @@ public class FetchWebSite {
                 /*if(level > MAX_LEVEL) {
                     return;
                 }*/
-
-                Document doc = Jsoup.parse(httpConn.getInputStream(), charset, baseUrl);
+                Document doc;
+                try {
+                    doc = Jsoup.parse(httpConn.getInputStream(), charset, baseUrl);
+                } catch (FileNotFoundException e) {
+                    System.err.println(url);
+                    return;
+                }
                 Document.OutputSettings settings = new Document.OutputSettings();
                 settings.indentAmount(4);
                 doc.outputSettings(settings.prettyPrint(true));
@@ -243,7 +248,7 @@ public class FetchWebSite {
                     }
                 }
 
-                if(level > 0) {
+                if (level > 0) {
                     for (String href : result) {
                         fetch(href, level + 1);
                     }

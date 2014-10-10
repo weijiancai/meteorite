@@ -3,6 +3,9 @@ package com.meteorite.core.backup;
 import com.meteorite.core.config.PathManager;
 import com.meteorite.core.config.ProfileSetting;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.DefaultDataSource;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.dict.DictCategory;
@@ -12,13 +15,17 @@ import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaItem;
+import com.meteorite.core.meta.model.MetaReference;
 import com.meteorite.core.project.NavMenu;
 import com.meteorite.core.project.ProjectDefine;
 import com.meteorite.core.project.ProjectManager;
 import com.meteorite.core.project.tpl.CodeTpl;
 import com.meteorite.core.ui.ViewManager;
+import com.meteorite.core.ui.model.View;
+import com.meteorite.core.ui.model.ViewProperty;
 import com.meteorite.core.util.UDate;
 import com.meteorite.core.util.UFile;
+import com.meteorite.core.util.UString;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 
 import java.io.File;
@@ -56,7 +63,8 @@ public class BackupManager {
         info.setMetaReferenceList(MetaManager.getMetaReferenceList());
         // 备份视图
         info.setViewList(ViewManager.getViewList());
-        // TODO 备份数据源
+        // 备份数据源
+        info.setDataSourceList(DataSourceManager.getDataSources());
 
         File file = UFile.createFile(PathManager.getBackupPath(), "backup" + UDate.dateToString(new Date(), "yyyyMMddHHmmss") + ".xml");
         JAXBUtil.marshalToFile(info, file, BackupInfo.class, DictCategory.class, DictCode.class, ProjectDefine.class, NavMenu.class, CodeTpl.class, Meta.class, MetaField.class, MetaItem.class);
@@ -81,12 +89,41 @@ public class BackupManager {
             // 恢复元数据项
             template.clearTable("mu_meta_item");
             for (MetaItem item : info.getMetaItemList()) {
-                template.save(MetaPDBFactory.getMetaItem(item));
+//                template.save(MetaPDBFactory.getMetaItem(item));
             }
-            // 恢复原数据
+            // 恢复元数据
             template.clearTable("mu_meta");
             for (Meta meta : info.getMetaList()) {
-                template.save(MetaPDBFactory.getMeta(meta));
+//                template.save(MetaPDBFactory.getMeta(meta));
+                for (MetaField field : meta.getFields()) {
+//                    template.save(MetaPDBFactory.getMetaField(field));
+                }
+                // 恢复MetaSql
+                if (UString.isNotEmpty(meta.getSqlText())) {
+//                    template.save(MetaPDBFactory.getMetaSql(meta));
+                }
+            }
+            // 恢复元数据引用
+            template.clearTable("mu_meta_reference");
+            for (MetaReference reference : info.getMetaReferenceList()) {
+//                template.save(MetaPDBFactory.getMetaReference(reference));
+            }
+            // 恢复视图
+            template.clearTable("mu_view");
+            for (View view : info.getViewList()) {
+                template.save(MetaPDBFactory.getView(view));
+                for (ViewProperty property : view.getViewProperties()) {
+                    template.save(MetaPDBFactory.getViewProperty(property));
+                }
+            }
+
+            // 恢复数据源
+            template.clearTable("mu_db_datasource");
+            for (DataSource dataSource : info.getDataSourceList()) {
+                if ("MetaUI_DataSource".equals(dataSource.getId())) {
+                    continue;
+                }
+//                template.save(MetaPDBFactory.getDataSource(dataSource));
             }
         } finally {
             template.close();

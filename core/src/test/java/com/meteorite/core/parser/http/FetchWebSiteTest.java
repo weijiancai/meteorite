@@ -74,4 +74,12 @@ public class FetchWebSiteTest {
         FetchWebSite fetchWebSite = new FetchWebSite(dir);
         fetchWebSite.fetchImages(baseUrl);
     }
+
+    @Test
+    public void testMetronic() throws IOException {
+        String baseUrl = "http://www.keenthemes.com/preview/metronic/theme/templates/admin/";
+        File dir = new File("D:\\fetch\\metronic");
+        FetchWebSite fetchWebSite = new FetchWebSite(dir);
+        fetchWebSite.fetch(baseUrl, 20);
+    }
 }

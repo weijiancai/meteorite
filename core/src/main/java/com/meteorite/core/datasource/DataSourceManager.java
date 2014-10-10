@@ -142,6 +142,7 @@ public class DataSourceManager {
 
         dataSource.setId("MetaUI_DataSource");
         dataSource.setDisplayName("系统数据源");
+        dataSource.setType(DataSourceType.DATABASE);
         dataSources.add(dataSource);
         dataSourceMap.put(dataSource.getId(), dataSource);
 

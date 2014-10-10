@@ -1,6 +1,8 @@
 package com.meteorite.core.backup;
 
 import com.meteorite.core.config.ProfileSetting;
+import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.DefaultDataSource;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.model.Meta;
@@ -12,6 +14,8 @@ import com.meteorite.core.ui.model.View;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,10 +33,14 @@ public class BackupInfo {
     private List<Meta> metaList;
     private List<MetaReference> metaReferenceList;
     private List<View> viewList;
+    private List<DataSource> dataSourceList;
 
     @XmlElementWrapper(name = "ProfileSettings")
     @XmlElement(name = "Setting")
     public List<ProfileSetting> getSettingList() {
+        if (settingList == null) {
+            settingList = new ArrayList<ProfileSetting>();
+        }
         return settingList;
     }
 
@@ -62,6 +70,9 @@ public class BackupInfo {
     @XmlElementWrapper(name = "MetaItems")
     @XmlElement(name = "MetaItem")
     public List<MetaItem> getMetaItemList() {
+        if (metaItemList == null) {
+            metaItemList = new ArrayList<MetaItem>();
+        }
         return metaItemList;
     }
 
@@ -72,6 +83,9 @@ public class BackupInfo {
     @XmlElementWrapper(name = "Metas")
     @XmlElement(name = "Meta")
     public List<Meta> getMetaList() {
+        if (metaList == null) {
+            metaList = new ArrayList<Meta>();
+        }
         return metaList;
     }
 
@@ -82,6 +96,9 @@ public class BackupInfo {
     @XmlElementWrapper(name = "MetaReferences")
     @XmlElement(name = "MetaReference")
     public List<MetaReference> getMetaReferenceList() {
+        if (metaReferenceList == null) {
+            metaReferenceList = new ArrayList<MetaReference>();
+        }
         return metaReferenceList;
     }
 
@@ -92,10 +109,23 @@ public class BackupInfo {
     @XmlElementWrapper(name = "Views")
     @XmlElement(name = "View")
     public List<View> getViewList() {
+        if (viewList == null) {
+            viewList = new ArrayList<View>();
+        }
         return viewList;
     }
 
     public void setViewList(List<View> viewList) {
         this.viewList = viewList;
+    }
+
+    @XmlElementWrapper(name = "DataSources")
+    @XmlElement(name = "DataSource", type = DefaultDataSource.class)
+    public List<DataSource> getDataSourceList() {
+        return dataSourceList;
+    }
+
+    public void setDataSourceList(List<DataSource> dataSourceList) {
+        this.dataSourceList = dataSourceList;
     }
 }

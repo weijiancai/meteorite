@@ -44,6 +44,7 @@ public class MetaPDBFactory {
                 map.put("port", dataSource.getPort());
                 map.put("user_name", dataSource.getUserName());
                 map.put("pwd", dataSource.getPwd());
+                map.put("type", dataSource.getType().name());
 
                 result.put("mu_db_datasource", map);
 
@@ -113,10 +114,26 @@ public class MetaPDBFactory {
 
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("id", metaRef.getId());
-                map.put("pk_meta_id", metaRef.getPkMeta().getId());
-                map.put("pk_meta_field_id", metaRef.getPkMetaField().getId());
-                map.put("fk_meta_id", metaRef.getFkMeta().getId());
-                map.put("fk_meta_field_id", metaRef.getFkMetaField().getId());
+                if (metaRef.getPkMeta() != null) {
+                    map.put("pk_meta_id", metaRef.getPkMeta().getId());
+                } else {
+                    map.put("pk_meta_id", metaRef.getPkMetaId());
+                }
+                if (metaRef.getPkMetaField() != null) {
+                    map.put("pk_meta_field_id", metaRef.getPkMetaField().getId());
+                } else {
+                    map.put("pk_meta_field_id", metaRef.getPkMetaFieldId());
+                }
+                if (metaRef.getFkMeta() != null) {
+                    map.put("fk_meta_id", metaRef.getFkMeta().getId());
+                } else {
+                    map.put("fk_meta_id", metaRef.getFkMetaId());
+                }
+                if (metaRef.getFkMetaField() != null) {
+                    map.put("fk_meta_field_id", metaRef.getFkMetaField().getId());
+                } else {
+                    map.put("fk_meta_field_id", metaRef.getFkMetaFieldId());
+                }
 
                 result.put("mu_meta_reference", map);
 
@@ -137,7 +154,11 @@ public class MetaPDBFactory {
                 Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("meta_id", field.getMeta().getId());
+                if (field.getMeta() == null) {
+                    map.put("meta_id", field.getMetaId());
+                } else {
+                    map.put("meta_id", field.getMeta().getId());
+                }
                 map.put("id", field.getId());
                 map.put("name", field.getName());
                 map.put("display_name", field.getDisplayName());
@@ -186,6 +207,23 @@ public class MetaPDBFactory {
 
 
                 result.put("mu_meta_item", map);
+
+                return result;
+            }
+        };
+    }
+
+    public static IPDB getMetaSql(final Meta meta) {
+        return new IPDB() {
+            @Override
+            public Map<String, ? extends Map<String, Object>> getPDBMap() {
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("meta_id", meta.getId());
+                map.put("sql_text", meta.getSqlText());
+
+                result.put("mu_meta_sql", map);
 
                 return result;
             }

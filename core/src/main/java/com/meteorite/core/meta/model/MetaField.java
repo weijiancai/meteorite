@@ -38,6 +38,7 @@ public class MetaField {
     private boolean isValid;
     private int sortNum;
     private Date inputDate;
+    private String metaId;
 
     private Meta meta;
     private MetaField refField; // 引用字段
@@ -213,6 +214,15 @@ public class MetaField {
 
     public void setInputDate(Date inputDate) {
         this.inputDate = inputDate;
+    }
+
+    @XmlAttribute
+    public String getMetaId() {
+        return metaId;
+    }
+
+    public void setMetaId(String metaId) {
+        this.metaId = metaId;
     }
 
     @XmlTransient
