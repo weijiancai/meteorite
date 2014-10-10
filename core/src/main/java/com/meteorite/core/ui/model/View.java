@@ -36,6 +36,8 @@ public class View {
     private Date inputDate;
     /** 排序号 */
     private int sortNum;
+    /** 元数据ID */
+    private String metaId;
     private Node node;
 
     /** 元字段属性Map */
@@ -109,6 +111,15 @@ public class View {
 
     public void setSortNum(int sortNum) {
         this.sortNum = sortNum;
+    }
+
+    @XmlAttribute
+    public String getMetaId() {
+        return metaId;
+    }
+
+    public void setMetaId(String metaId) {
+        this.metaId = metaId;
     }
 
     @XmlTransient

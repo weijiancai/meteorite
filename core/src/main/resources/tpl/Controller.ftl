@@ -39,27 +39,9 @@ public class ${meta.name}Controller {
         ${meta.name?uncap_first}Service.update(vo);
     }
 
-    @RequestMapping(value = "/goList")
+    @RequestMapping(value = "/go")
     public String goList(HttpServletRequest req) throws Exception {
-        <#--String pageStr = req.getParameter("page");
-        String pageSizeStr = req.getParameter("pageSize");
-        int page;
-        int pageSize;
-        try {
-            page = Integer.parseInt(pageStr);
-            if (page <= 0) {
-                page = 1;
-            }
-        } catch (Exception e) {
-            page = 1;
-        }
-        try {
-            pageSize = Integer.parseInt(pageSizeStr);
-        } catch (Exception e) {
-            pageSize = 15;
-        }-->
-
-        return "${meta.name?uncap_first}/${meta.name?uncap_first}List";
+        return "admin/${meta.name}";
     }
 
     @RequestMapping(value = "/list")

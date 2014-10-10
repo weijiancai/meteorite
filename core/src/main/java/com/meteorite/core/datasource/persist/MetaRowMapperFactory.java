@@ -277,6 +277,7 @@ public class MetaRowMapperFactory {
                 view.setDisplayName(rs.getString("display_name"));
                 view.setDescription(rs.getString("description"));
                 view.setMeta(MetaManager.getMetaById(rs.getString("meta_id")));
+                view.setMetaId(rs.getString("meta_id"));
                 view.setValid("T".equals(rs.getString("is_valid")));
                 view.setInputDate(rs.getDate("input_date"));
                 view.setSortNum(rs.getInt("sort_num"));
@@ -328,9 +329,11 @@ public class MetaRowMapperFactory {
                 property.setId(rs.getString("id"));
                 property.setView(view);
                 property.setViewId(rs.getString("view_id"));
+                property.setLayoutPropId(rs.getString("layout_prop_id"));
+                property.setMetaFieldId(rs.getString("meta_field_id"));
+                property.setValue(rs.getString("value"));
                 property.setProperty(LayoutManager.getLayoutPropById(rs.getString("layout_prop_id")));
                 property.setField(MetaManager.getMetaField(rs.getString("meta_field_id")));
-                property.setValue(rs.getString("value"));
 
                 return property;
             }

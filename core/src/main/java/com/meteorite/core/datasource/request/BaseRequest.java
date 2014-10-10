@@ -24,8 +24,7 @@ public class BaseRequest implements IRequest{
     }
 
     public BaseRequest(String path) {
-        this.path = path;
-        pathHandler = new PathHandler(path);
+        setPath(path);
     }
 
     public String getPath() {
@@ -34,6 +33,7 @@ public class BaseRequest implements IRequest{
 
     public void setPath(String path) {
         this.path = path;
+        pathHandler = new PathHandler(path);
     }
 
     public Map<String, String> getParams() {

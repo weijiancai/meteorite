@@ -81,32 +81,32 @@ public class BackupManager {
             // 恢复系统参数
             template.clearTable("mu_profile_setting");
             for (ProfileSetting setting : info.getSettingList()) {
-//                template.save(MetaPDBFactory.getProfileSetting(setting));
+                template.save(MetaPDBFactory.getProfileSetting(setting));
             }
             // 恢复数据字典
             template.clearTable("mu_dz_category");
-//            restoreDict(info.getDictCategory(), template);
+            restoreDict(info.getDictCategory(), template);
             // 恢复元数据项
             template.clearTable("mu_meta_item");
             for (MetaItem item : info.getMetaItemList()) {
-//                template.save(MetaPDBFactory.getMetaItem(item));
+                template.save(MetaPDBFactory.getMetaItem(item));
             }
             // 恢复元数据
             template.clearTable("mu_meta");
             for (Meta meta : info.getMetaList()) {
-//                template.save(MetaPDBFactory.getMeta(meta));
+                template.save(MetaPDBFactory.getMeta(meta));
                 for (MetaField field : meta.getFields()) {
-//                    template.save(MetaPDBFactory.getMetaField(field));
+                    template.save(MetaPDBFactory.getMetaField(field));
                 }
                 // 恢复MetaSql
                 if (UString.isNotEmpty(meta.getSqlText())) {
-//                    template.save(MetaPDBFactory.getMetaSql(meta));
+                    template.save(MetaPDBFactory.getMetaSql(meta));
                 }
             }
             // 恢复元数据引用
             template.clearTable("mu_meta_reference");
             for (MetaReference reference : info.getMetaReferenceList()) {
-//                template.save(MetaPDBFactory.getMetaReference(reference));
+                template.save(MetaPDBFactory.getMetaReference(reference));
             }
             // 恢复视图
             template.clearTable("mu_view");
@@ -123,7 +123,7 @@ public class BackupManager {
                 if ("MetaUI_DataSource".equals(dataSource.getId())) {
                     continue;
                 }
-//                template.save(MetaPDBFactory.getDataSource(dataSource));
+                template.save(MetaPDBFactory.getDataSource(dataSource));
             }
         } finally {
             template.close();

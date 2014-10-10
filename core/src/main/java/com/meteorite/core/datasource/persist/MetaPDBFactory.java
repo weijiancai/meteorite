@@ -347,7 +347,11 @@ public class MetaPDBFactory {
                 map.put("name", view.getName());
                 map.put("display_name", view.getDisplayName());
                 map.put("description", view.getDescription());
-                map.put("meta_id", view.getMeta().getId());
+                if (view.getMeta() == null) {
+                    map.put("meta_id", view.getMetaId());
+                } else {
+                    map.put("meta_id", view.getMeta().getId());
+                }
                 map.put("is_valid", view.isValid() ? "T" : "F");
                 map.put("input_date", new Date());
                 map.put("sort_num", view.getSortNum());
@@ -410,10 +414,20 @@ public class MetaPDBFactory {
 
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("id", UUIDUtil.getUUID());
-                map.put("view_id", property.getView().getId());
-                map.put("layout_prop_id", property.getProperty().getId());
+                if (property.getView() != null) {
+                    map.put("view_id", property.getView().getId());
+                } else {
+                    map.put("view_id", property.getViewId());
+                }
+                if (property.getProperty() != null) {
+                    map.put("layout_prop_id", property.getProperty().getId());
+                } else {
+                    map.put("layout_prop_id", property.getLayoutPropId());
+                }
                 if (property.getField() != null) {
                     map.put("meta_field_id", property.getField().getId());
+                } else {
+                    map.put("meta_field_id", property.getMetaFieldId());
                 }
                 map.put("value", property.getValue());
 

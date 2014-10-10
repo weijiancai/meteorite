@@ -22,7 +22,7 @@ public class SqlUtil {
             return sql;
         }
 
-        String result = sql;
+        /*String result = sql;
         for (Object obj : paramQueue) {
             int idx = result.indexOf("?");
             if (idx > -1) {
@@ -30,7 +30,19 @@ public class SqlUtil {
             } else {
                 result += "<" + obj + "> ";
             }
+        }*/
+        int i = 0;
+        StringBuilder sb = new StringBuilder();
+        for (char c : sql.toCharArray()) {
+            if (i == paramQueue.length) {
+                break;
+            }
+            if (c == '?') {
+                sb.append(paramQueue[i++]);
+            } else {
+                sb.append(c);
+            }
         }
-        return result;
+        return sb.toString();
     }
 }

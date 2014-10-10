@@ -528,6 +528,14 @@ public class DBDataSource extends DataSource {
                     dataMap.remove(column);
                 }
             }
+            // 处理列映射
+            for (String sourceCol : dataMap.keySet()) {
+                if (colMapping.containsKey(sourceCol)) {
+                    dataMap.put(colMapping.get(sourceCol), dataMap.get(sourceCol));
+                    dataMap.remove(sourceCol);
+                }
+            }
+            // 设置默认值
             for (Map.Entry<String, Object> entry : expRequest.getDefaultValues().entrySet()) {
                 String key = colMapping.get(entry.getKey());
                 if (key == null) {
@@ -535,6 +543,7 @@ public class DBDataSource extends DataSource {
                 } else {
                     dataMap.put(key, entry.getValue());
                 }
+                dataMap.put(key, entry.getValue());
             }
             template.save(dataMap, tableName);
         }

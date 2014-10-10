@@ -95,7 +95,7 @@ public class MUCodeTplWin extends BorderPane {
                     }
 
                     for (DataMap dataMap : list) {
-                        Meta meta = dataMap.toClass(Meta.class);
+                        Meta meta = MetaManager.getMetaById(dataMap.getString("id"));
                         new CodeGen(project, tpls, meta).gen();
                     }
 

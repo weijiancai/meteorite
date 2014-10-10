@@ -30,6 +30,7 @@ import java.util.List;
 public class MetaCreateGuide extends BaseGuide {
     private List<GuideModel> modelList;
     private MUCheckListView<VirtualResource> tableList;
+    private TextField prefixTF;
 
     public MetaCreateGuide() {
         modelList = new ArrayList<GuideModel>();
@@ -55,7 +56,7 @@ public class MetaCreateGuide extends BaseGuide {
         try {
             for (VirtualResource resource : selectedResources) {
                 // 创建元数据
-                Meta meta = MetaManager.initMetaFromResource(template, resource);
+                Meta meta = MetaManager.initMetaFromResource(template, resource, prefixTF.getText());
                 // 创建视图
                 ViewManager.createViews(meta, template);
             }
@@ -91,7 +92,7 @@ public class MetaCreateGuide extends BaseGuide {
             dsChoice.getItems().addAll(DataSourceManager.getDataSources());
             dsHbox.getChildren().addAll(new Label("数据源"), dsChoice);
             // 前缀
-            TextField prefixTF = new TextField();
+            prefixTF = new TextField();
             dsHbox.getChildren().addAll(new Label("前缀"), prefixTF);
             // 表、视图
             tableList = new MUCheckListView<VirtualResource>();
