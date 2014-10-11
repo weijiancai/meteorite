@@ -528,23 +528,19 @@ public class DBDataSource extends DataSource {
                     dataMap.remove(column);
                 }
             }
+            // 设置默认值
+            for (Map.Entry<String, Object> entry : expRequest.getDefaultValues().entrySet()) {
+                dataMap.put(entry.getKey(), entry.getValue());
+            }
             // 处理列映射
+            DataMap newData = new DataMap();
             for (String sourceCol : dataMap.keySet()) {
                 if (colMapping.containsKey(sourceCol)) {
-                    dataMap.put(colMapping.get(sourceCol), dataMap.get(sourceCol));
+                    newData.put(colMapping.get(sourceCol), dataMap.get(sourceCol));
                     dataMap.remove(sourceCol);
                 }
             }
-            // 设置默认值
-            for (Map.Entry<String, Object> entry : expRequest.getDefaultValues().entrySet()) {
-                String key = colMapping.get(entry.getKey());
-                if (key == null) {
-                    dataMap.put(entry.getKey(), entry.getValue());
-                } else {
-                    dataMap.put(key, entry.getValue());
-                }
-                dataMap.put(key, entry.getValue());
-            }
+            dataMap.putAll(newData);
             template.save(dataMap, tableName);
         }
         template.commit();
