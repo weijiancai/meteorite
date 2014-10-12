@@ -10,6 +10,7 @@ import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.datasource.persist.MetaRowMapperFactory;
+import com.meteorite.core.dict.EnumBoolean;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.*;
@@ -435,6 +436,7 @@ public class MetaManager {
             field.setDescription(resource.getDisplayName());
             if (resource.getName().toLowerCase().startsWith("is_")) {
                 field.setDataType(MetaDataType.BOOLEAN);
+                field.setDictId(EnumBoolean.class.getSimpleName());
             } else if(column.isPk() && column.getMaxLength() == 32) {
                 field.setDataType(MetaDataType.GUID);
                 field.setDefaultValue("GUID()");

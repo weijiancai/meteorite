@@ -10,11 +10,14 @@ import java.util.Map;
  * @since 1.0.0
  */
 public class ExpDataRequest extends BaseRequest {
+    public ExpDataRequest() {}
+
     public ExpDataRequest(String path) {
         super(path);
     }
 
     private String[] excludeColumns;
+    private String sql;
     private Map<String, Object> defaultValues = new HashMap<String, Object>();
     private Map<String, String> colMapping = new HashMap<String, String>();
 
@@ -24,6 +27,14 @@ public class ExpDataRequest extends BaseRequest {
 
     public void setExcludeColumns(String[] excludeColumns) {
         this.excludeColumns = excludeColumns;
+    }
+
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
     }
 
     public Map<String, Object> getDefaultValues() {

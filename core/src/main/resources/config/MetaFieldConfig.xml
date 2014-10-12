@@ -4,5 +4,5 @@
     <row meta="MetaItem" fieldName="dataType" dict="MetaDataType"/>
     <row meta="MetaItem" fieldName="category" dict="MetaItemCategory"/>
     <row meta="MetaField" fieldName="dataType" dict="MetaDataType"/>
-    <row meta="MetaField" fieldName="dict_id" dict="ROOT"/>
+    <row meta="MetaField" fieldName="dictId" dict="ROOT"/>
 </config>

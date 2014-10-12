@@ -3,6 +3,8 @@ package com.meteorite.core.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 对象工具类
@@ -57,5 +59,31 @@ public class UObject {
      */
     public static boolean isEmpty(Object obj) {
         return obj == null || UString.isEmpty(toString(obj));
+    }
+
+    /**
+     * 将Java对象装换为Map对象
+     *
+     * @param source 源对象
+     * @return 返回Map对象
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    public static Map<String, Object> toMap(Object source) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Class<?> clazz = source.getClass();
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        for (Field field : clazz.getDeclaredFields()) {
+            String fieldName = field.getName();
+            String getMethodName = "get" + UString.firstCharToUpper(fieldName);
+            if (fieldName.startsWith("is")) {
+                getMethodName = fieldName;
+            }
+            Method getMethod = clazz.getMethod(getMethodName);
+            map.put(fieldName, getMethod.invoke(source));
+        }
+
+        return map;
     }
 }

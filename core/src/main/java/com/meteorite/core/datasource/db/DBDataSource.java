@@ -31,10 +31,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 数据库数据源
@@ -500,12 +497,25 @@ public class DBDataSource extends DataSource {
 
             return expDdl(ddlReq);
         }
-        Map<String, String> map = request.getPathHandler().parseForDb();
-        String tableName = map.get("table");
+
         JdbcTemplate template = new JdbcTemplate(this);
-        QueryBuilder builder = QueryBuilder.create(tableName, request.getConditions());
-        builder.sql().build(getDatabaseType());
-        List<DataMap> listData = template.queryForList(builder, -1, 0);
+        List<DataMap> listData = new ArrayList<DataMap>();
+        // 直接使用sql导出数据
+        if (request instanceof ExpDataRequest) {
+            ExpDataRequest dbRequest = (ExpDataRequest) request;
+            String sql = dbRequest.getSql();
+            if (UString.isNotEmpty(sql)) {
+                listData = template.queryForList(sql);
+            }
+        } else {
+            Map<String, String> map = request.getPathHandler().parseForDb();
+            String tableName = map.get("table");
+
+            QueryBuilder builder = QueryBuilder.create(tableName, request.getConditions());
+            builder.sql().build(getDatabaseType());
+            listData = template.queryForList(builder, -1, 0);
+        }
+
         BaseResponse response = (BaseResponse) request.getResponse();
         response.setListData(listData);
         return response;
@@ -534,7 +544,7 @@ public class DBDataSource extends DataSource {
             }
             // 处理列映射
             DataMap newData = new DataMap();
-            for (String sourceCol : dataMap.keySet()) {
+            for (String sourceCol : new ArrayList<String>(dataMap.keySet())) {
                 if (colMapping.containsKey(sourceCol)) {
                     newData.put(colMapping.get(sourceCol), dataMap.get(sourceCol));
                     dataMap.remove(sourceCol);

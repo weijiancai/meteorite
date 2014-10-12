@@ -20,9 +20,9 @@ public interface ${meta.name}Dao {
 
     ${meta.name} findById(String id) throws Exception;
 
-    List<${meta.name}> find(${meta.name} vo, @Param("page")int page, @Param("pageSize")int pageSize) throws Exception;
+    List<${meta.name}> find(Map<String, Object> map) throws Exception;
 
     List<${meta.name}> listAll(@Param("page")int page, @Param("pageSize")int pageSize) throws Exception;
 
-    int count() throws Exception;
+    int count(Map<String, Object> map) throws Exception;
 }

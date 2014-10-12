@@ -92,7 +92,7 @@ public class BackupManager {
                 template.save(MetaPDBFactory.getMetaItem(item));
             }
             // 恢复元数据
-            template.clearTable("mu_meta");
+            /*template.clearTable("mu_meta");
             for (Meta meta : info.getMetaList()) {
                 template.save(MetaPDBFactory.getMeta(meta));
                 for (MetaField field : meta.getFields()) {
@@ -115,7 +115,7 @@ public class BackupManager {
                 for (ViewProperty property : view.getViewProperties()) {
                     template.save(MetaPDBFactory.getViewProperty(property));
                 }
-            }
+            }*/
 
             // 恢复数据源
             template.clearTable("mu_db_datasource");

@@ -37,14 +37,18 @@ public class ${meta.name}ServiceImpl implements ${meta.name}Service {
     }
 
     public List<${meta.name}> find(${meta.name} vo, int page, int pageSize) throws Exception {
-        return ${meta.name?uncap_first}Dao.find(vo, page, pageSize);
+        Map<String, Object> map = UtilObject.toMap(vo);
+        map.put("page", page);
+        map.put("pageSize", pageSize);
+        return ${meta.name?uncap_first}Dao.find(map);
     }
 
     public List<${meta.name}> listAll(int page, int pageSize) throws Exception {
         return ${meta.name?uncap_first}Dao.listAll(page, pageSize);
     }
 
-    public int count() throws Exception {
-        return ${meta.name?uncap_first}Dao.count();
+    public int count(${meta.name} vo) throws Exception {
+        Map<String, Object> map = UtilObject.toMap(vo);
+        return ${meta.name?uncap_first}Dao.count(map);
     }
 }

@@ -7,8 +7,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="${project.packageName}.dao.${meta.name}Dao">
-    <select id="find" resultType="${project.packageName}.entity.${meta.name}">
-        SELECT * FROM ${meta.resource.name}
+    <select id="find" resultType="${project.packageName}.entity.${meta.name}" parameterType="java.util.Map">
+        SELECT <#list meta.fields as field>${field.originalName} ${field.name}<#if field_index < meta.fields?size - 1>,</#if></#list> FROM ${meta.resource.name}
         <where>
         <#list meta.fields as field>
             <if test="${field.name} != null">
@@ -16,11 +16,13 @@
             </if>
         </#list>
         </where>
+        <if test="page != null">
         limit ${"#"}{page, jdbcType=INTEGER} , ${"#"}{pageSize, jdbcType=INTEGER}
+        </if>
     </select>
 
     <select id="findById" resultType="${project.packageName}.entity.${meta.name}">
-        SELECT * FROM ${meta.resource.name}
+        SELECT <#list meta.fields as field>${field.originalName} ${field.name}<#if field_index < meta.fields?size - 1>,</#if></#list> FROM ${meta.resource.name}
         <where>
         <#list meta.pkFields as field>
             <if test="${field.name} != null">
@@ -31,7 +33,10 @@
     </select>
 
     <select id="listAll" resultType="${project.packageName}.entity.${meta.name}">
-        SELECT * FROM ${meta.resource.name} limit ${"#"}{page, jdbcType=INTEGER} , ${"#"}{pageSize, jdbcType=INTEGER}
+        SELECT <#list meta.fields as field>${field.originalName} ${field.name}<#if field_index < meta.fields?size - 1>,</#if></#list> FROM ${meta.resource.name}
+        <if test="page != null">
+            limit ${"#"}{page, jdbcType=INTEGER} , ${"#"}{pageSize, jdbcType=INTEGER}
+        </if>
     </select>
 
     <update id="update" parameterType="${project.packageName}.entity.${meta.name}">
@@ -77,7 +82,14 @@
         </where>
     </delete>
 
-    <select id="count" resultType="int">
+    <select id="count" resultType="int" parameterType="java.util.Map">
         SELECT count(1) FROM ${meta.resource.name}
+        <where>
+        <#list meta.fields as field>
+            <if test="${field.name} != null">
+                and ${field.originalName} = #${field.name}#
+            </if>
+        </#list>
+        </where>
     </select>
 </mapper>
