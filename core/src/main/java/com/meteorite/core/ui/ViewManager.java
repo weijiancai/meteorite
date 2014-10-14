@@ -44,8 +44,7 @@ public class ViewManager {
             String sql = "SELECT * FROM mu_view";
             viewList = template.query(sql, MetaRowMapperFactory.getView());
             for (final View view : viewList) {
-                viewIdMap.put(view.getId(), view);
-                viewNameMap.put(view.getName(), view);
+                addCache(view);
                 // 查询视图布局
                 /*sql = "SELECT * FROM mu_view_layout WHERE view_id=?";
                 List<ViewLayout> viewLayoutList = template.query(sql, MetaRowMapperFactory.getViewLayout(view), view.getId());
@@ -87,6 +86,21 @@ public class ViewManager {
         template.close();
     }
 
+    public static void addCache(View view) throws Exception {
+        // 如果缓存里已有，则先删除原来的视图
+        View oldView = getViewByName(view.getName());
+        if (oldView != null) {
+            deleteCache(oldView);
+        }
+        viewIdMap.put(view.getId(), view);
+        viewNameMap.put(view.getName(), view);
+    }
+
+    public static void deleteCache(View view) {
+        viewIdMap.remove(view.getId());
+        viewNameMap.remove(view.getName());
+    }
+
     /**
      * 根据元数据和布局创建视图
      *
@@ -98,9 +112,7 @@ public class ViewManager {
         System.out.println(String.format("创建%sFormView", meta.getName()));
         View formView = FormProperty.createFormView(meta, false);
         formView.setMeta(meta);
-        template.save(MetaPDBFactory.getView(formView));
-        viewIdMap.put(formView.getId(), formView);
-        viewNameMap.put(formView.getName(), formView);
+        addView(formView, template);
 
         for (ViewProperty property : formView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));
@@ -109,9 +121,7 @@ public class ViewManager {
         System.out.println(String.format("创建%sTableView", meta.getName()));
         View tableView = TableProperty.createTableView(meta);
         tableView.setMeta(meta);
-        template.save(MetaPDBFactory.getView(tableView));
-        viewIdMap.put(tableView.getId(), tableView);
-        viewNameMap.put(tableView.getName(), tableView);
+        addView(tableView, template);
 
         for (ViewProperty property : tableView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));
@@ -120,9 +130,7 @@ public class ViewManager {
         System.out.println(String.format("创建%sQueryView", meta.getName()));
         View queryView = FormProperty.createFormView(meta, true);
         queryView.setMeta(meta);
-        template.save(MetaPDBFactory.getView(queryView));
-        viewIdMap.put(queryView.getId(), queryView);
-        viewNameMap.put(queryView.getName(), queryView);
+        addView(queryView, template);
 
         for (ViewProperty property : queryView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));
@@ -131,9 +139,7 @@ public class ViewManager {
         System.out.println(String.format("创建%sCrudView", meta.getName()));
         View crudView = CrudProperty.createCrudView(meta, formView, tableView, queryView);
         crudView.setMeta(meta);
-        template.save(MetaPDBFactory.getView(crudView));
-        viewIdMap.put(crudView.getId(), crudView);
-        viewNameMap.put(crudView.getName(), crudView);
+        addView(crudView, template);
 
         for (ViewProperty property : crudView.getViewProperties()) {
             template.save(MetaPDBFactory.getViewProperty(property));
@@ -141,6 +147,30 @@ public class ViewManager {
 
         System.out.println(String.format("创建视图完成"));
         System.out.println("--------------------------------------------------------------------------------");
+    }
+
+    private static void addView(View view, JdbcTemplate template) throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("name", view.getName());
+        template.delete(params, "mu_view");
+        template.save(MetaPDBFactory.getView(view));
+        addCache(view);
+    }
+
+    /**
+     * 根据元数据创建视图
+     *
+     * @param meta 元数据
+     * @since 1.0.0
+     */
+    public static void createView(Meta meta) throws Exception {
+        JdbcTemplate template = new JdbcTemplate();
+        try {
+            createViews(meta, template);
+            template.commit();
+        } finally {
+            template.close();
+        }
     }
 
     public static ViewLayout createViewLayout(Meta meta, Layout layout) {

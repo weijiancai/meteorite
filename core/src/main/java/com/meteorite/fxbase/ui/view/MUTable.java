@@ -363,10 +363,21 @@ public class MUTable extends StackPane {
                 public void handle(MouseEvent event) {
                     if (event.getClickCount() == 2) {
                         FormProperty property = new FormProperty(ViewManager.getViewByName(meta.getName() + "FormView"));
-                        property.setFormType(FormType.READONLY);
-                        MUForm form = new MUForm(property);
+                        property.setFormType(FormType.EDIT);
+                        final MUForm form = new MUForm(property);
                         form.setValues(table.getSelectedItem());
-                        MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
+                        MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, new Callback<Void, Void>() {
+                            @Override
+                            public Void call(Void param) {
+                                try {
+                                    form.save();
+                                    table.getSelectedItem().putAll(form.getData());
+                                } catch (Exception e) {
+                                    MUDialog.showInformation("保存数据失败！");
+                                }
+                                return null;
+                            }
+                        });
                     }
                 }
             });

@@ -556,6 +556,10 @@ public class Meta {
     }
 
     public void update(Map<String, IValue> modifiedValueMap, DataMap rowData) throws Exception {
+        if (modifiedValueMap.size() == 0) {
+            return;
+        }
+
         Map<String, Object> valueMap = new HashMap<String, Object>();
         for (IValue value : modifiedValueMap.values()) {
             valueMap.put(value.getMetaField().getOriginalName(), value.value());

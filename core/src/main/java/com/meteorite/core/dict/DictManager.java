@@ -56,19 +56,6 @@ public class DictManager {
             addDict(GroupFunction.class);
             addDict(MetaItemCategory.class);
             addDict(QueryModel.class);
-
-            List<DictCode> codeList = new ArrayList<DictCode>();
-            for (DictCategory category : categoryMap.values()) {
-                DictCode code = new DictCode();
-                code.setCategory(category);
-                code.setId(category.getId());
-                code.setName(category.getName());
-                code.setDisplayName(category.getName());
-
-                codeList.add(code);
-            }
-            root.setCodeList(codeList);
-            categoryMap.put("ROOT", root);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,6 +103,20 @@ public class DictManager {
 
         template.commit();
         template.close();
+
+        // 初始化根数据字典
+        List<DictCode> codeList = new ArrayList<DictCode>();
+        for (DictCategory category : categoryMap.values()) {
+            DictCode code = new DictCode();
+            code.setCategory(category);
+            code.setId(category.getId());
+            code.setName(category.getId());
+            code.setDisplayName(category.getName());
+
+            codeList.add(code);
+        }
+        root.setCodeList(codeList);
+        categoryMap.put("ROOT", root);
 
         // 构造树形字典分类
         for (DictCategory category : categoryMap.values()) {

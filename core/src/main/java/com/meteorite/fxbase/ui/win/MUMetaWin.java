@@ -1,6 +1,10 @@
 package com.meteorite.fxbase.ui.win;
 
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.meta.MetaManager;
+import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.ui.ViewManager;
+import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.component.guide.MetaCreateGuide;
 import com.meteorite.fxbase.ui.view.MUDialog;
 import com.meteorite.fxbase.ui.view.MUTable;
@@ -21,6 +25,7 @@ public class MUMetaWin extends BorderPane {
     private MUTable metaTable;
     private Button btnDesign;
     private Button btnMetaCreate;
+    private Button btnViewCreate;
 
     public MUMetaWin() {
         initUI();
@@ -37,11 +42,12 @@ public class MUMetaWin extends BorderPane {
 
         btnDesign = new Button("设计视图");
         btnMetaCreate = new Button("创建元数据");
+        btnViewCreate = new Button("创建视图");
 
         metaTable = new MUTable();
         metaTable.addTableButton("View", btnDesign);
         metaTable.initUI(MetaManager.getMeta("Meta"));
-        metaTable.getTableToolBar().getItems().add(btnMetaCreate);
+        metaTable.getTableToolBar().getItems().addAll(btnMetaCreate, btnViewCreate);
 
         Tab metaTab = new Tab("元数据");
         metaTab.setClosable(false);
@@ -63,6 +69,20 @@ public class MUMetaWin extends BorderPane {
             public void handle(ActionEvent event) {
                 MetaCreateGuide guide = new MetaCreateGuide();
                 MUDialog.showCustomDialog(null, "创建元数据向导", guide, null);
+            }
+        });
+        // 创建视图
+        btnViewCreate.setOnAction(new MuEventHandler<ActionEvent>() {
+            @Override
+            public void doHandler(ActionEvent event) throws Exception {
+                DataMap data = metaTable.getSelectedItem();
+                if (data == null) {
+                    MUDialog.showInformation("请选择元数据！");
+                    return;
+                }
+                Meta meta = MetaManager.getMetaById(data.getString("id"));
+                ViewManager.createView(meta);
+                MUDialog.showInformation("创建成功！");
             }
         });
     }

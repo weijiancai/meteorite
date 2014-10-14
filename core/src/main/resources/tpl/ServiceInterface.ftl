@@ -23,5 +23,5 @@ public interface ${meta.name}Service {
 
     List<${meta.name}> listAll(int page, int pageSize) throws Exception;
 
-    int count() throws Exception;
+    int count(${meta.name} vo) throws Exception;
 }

@@ -17,7 +17,7 @@
         </#list>
         </where>
         <if test="page != null">
-        limit ${"#"}{page, jdbcType=INTEGER} , ${"#"}{pageSize, jdbcType=INTEGER}
+            limit ${"#"}{page, jdbcType=INTEGER} , ${"#"}{pageSize, jdbcType=INTEGER}
         </if>
     </select>
 
@@ -45,7 +45,7 @@
         <#list meta.fields as field>
             <#if !field.pk>
                 <if test="${field.name} != null">
-                    ${field.name} = ${"#"}{${field.name}}<#if field_index < meta.fields?size - 1>,</#if>
+                ${field.name} = ${"#"}{${field.name}}<#if field_index < meta.fields?size - 1>,</#if>
                 </if>
             </#if>
         </#list>
@@ -61,13 +61,13 @@
 
     <insert id="add" parameterType="${project.packageName}.entity.${meta.name}">
         insert into ${meta.resource.name}(
-        <#list meta.fields as field>
-            ${field.originalName}<#if field_index < meta.fields?size - 1>,</#if>
-        </#list>
+    <#list meta.fields as field>
+    ${field.originalName}<#if field_index < meta.fields?size - 1>,</#if>
+    </#list>
         ) values(
-        <#list meta.fields as field>
-            ${"#"}{${field.name}}<#if field_index < meta.fields?size - 1>,</#if>
-        </#list>
+    <#list meta.fields as field>
+    ${"#"}{${field.name}}<#if field_index < meta.fields?size - 1>,</#if>
+    </#list>
         )
     </insert>
 
@@ -87,7 +87,7 @@
         <where>
         <#list meta.fields as field>
             <if test="${field.name} != null">
-                and ${field.originalName} = #${field.name}#
+                and ${field.originalName} = ${"#"}{${field.name}}
             </if>
         </#list>
         </where>

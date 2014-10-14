@@ -48,7 +48,7 @@ public class ${meta.name}Controller {
     @ResponseBody
     public void list(HttpServletResponse response, ${meta.name} vo, int start, int length) throws Exception {
         Map<String, Object> result = new HashMap<String, Object>();
-        int count = ${meta.name?uncap_first}Service.count();
+        int count = ${meta.name?uncap_first}Service.count(vo);
         List<${meta.name}> list = ${meta.name?uncap_first}Service.listAll(start, length);
         result.put("draw", 1);
         result.put("recordsTotal", count);

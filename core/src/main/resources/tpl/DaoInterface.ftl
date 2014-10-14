@@ -6,6 +6,7 @@ import ${project.packageName}.entity.${meta.name};
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wei_jc

@@ -260,9 +260,9 @@ public class FormProperty implements PropertyNames {
         StringBuilder sb = new StringBuilder();
 
         String colName = field.getName();
-        if (field.getDisplayStyle() == DisplayStyle.COMBO_BOX) {
-            sb.append(String.format("<select name=\"%s\" style=\"width:150px;\"></select>",
-                    colName));
+        if (field.getDisplayStyle() == DisplayStyle.COMBO_BOX || field.getDisplayStyle() == DisplayStyle.BOOLEAN) {
+            sb.append(String.format("<select class=\"dictList\" dictId=\"%s\" name=\"%s\" style=\"width:150px;\"></select>",
+                    field.getDict().getId(), colName));
         } else if(field.getDisplayStyle() == DisplayStyle.DATE) {
             if (field.getFormProperty().getFormType() == FormType.QUERY) {
                 sb.append("<div class=\"controls\">\n" +

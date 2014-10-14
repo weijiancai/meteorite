@@ -2,7 +2,7 @@
 <#-- @ftlvariable name="project" type="com.meteorite.core.project.ProjectDefine" -->
 <#-- @ftlvariable name="meta" type="com.meteorite.core.meta.model.Meta" -->
 <#assign objectEqual = "com.meteorite.core.util.ftl.FtlObjectEqualMethod"?new()>
-package ${project.packageName}.${packageName};
+package ${project.packageName}.entity;
 
 import java.util.Date;
 import com.alibaba.fastjson.annotation.JSONField;

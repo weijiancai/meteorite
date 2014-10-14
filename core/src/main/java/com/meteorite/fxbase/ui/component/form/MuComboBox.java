@@ -39,6 +39,7 @@ import java.util.List;
 public class MuComboBox extends BaseFormField implements IValue {
     private DictCategory category;
     private ComboBox<DictCode> comboBox;
+    private MouseClickEventHandler mouseClickEventHandler = new MouseClickEventHandler();
 
     public MuComboBox(FormFieldProperty fieldConfig) {
         super(fieldConfig);
@@ -58,12 +59,12 @@ public class MuComboBox extends BaseFormField implements IValue {
             public ListCell<DictCode> call(ListView<DictCode> param) {
                 final ListCell<DictCode> cell = new ListCell<DictCode>() {
 
-                    @Override public void updateItem(DictCode item, boolean empty) {
+                    @Override
+                    public void updateItem(DictCode item, boolean empty) {
                         super.updateItem(item, empty);
                         if (item != null) {
                             setText(item.getDisplayName());
-                        }
-                        else {
+                        } else {
                             setText(null);
                         }
                     }
@@ -71,14 +72,10 @@ public class MuComboBox extends BaseFormField implements IValue {
                 return cell;
             }
         });
-        comboBox.setOnMouseClicked(new MuEventHandler<MouseEvent>() {
-            @Override
-            public void doHandler(MouseEvent event) throws Exception {
-                if (event.getClickCount() == 1) {
-                    fireEvent(new FormFieldClickEvent((MuComboBox.this)));
-                }
-            }
-        });
+        // 添加鼠标单击发布事件
+        comboBox.getEditor().setOnMouseClicked(mouseClickEventHandler);
+        comboBox.setOnMouseClicked(mouseClickEventHandler);
+
         if (category != null) {
             List<DictCode> list = category.getCodeList();
             comboBox.setItems(FXCollections.observableArrayList(list));
@@ -166,6 +163,16 @@ public class MuComboBox extends BaseFormField implements IValue {
                 }
             }
             return null;
+        }
+    }
+
+    class MouseClickEventHandler extends MuEventHandler<MouseEvent> {
+
+        @Override
+        public void doHandler(MouseEvent event) throws Exception {
+            if (event.getClickCount() == 1) {
+                fireEvent(new FormFieldClickEvent((MuComboBox.this)));
+            }
         }
     }
 }

@@ -18,15 +18,17 @@ import javafx.scene.layout.VBox;
  * @since 1.0.0
  */
 public class MUFormDesigner extends BorderPane {
-    private MUForm sourceForm;
     private MUForm currentForm;
     private MUForm hiddenForm;
     private FormProperty formConfig;
     private Properties properties;
 
     public MUFormDesigner(MUForm source) {
-        this.sourceForm = source;
-        this.formConfig = source.getFormConfig();
+        this(source.getFormConfig());
+    }
+
+    public MUFormDesigner(FormProperty formConfig) {
+        this.formConfig = formConfig;
         initUI();
     }
 
@@ -35,7 +37,7 @@ public class MUFormDesigner extends BorderPane {
         // 显示未隐藏的表单
         currentForm = new MUForm();
         currentForm.setDesignMode(true);
-        currentForm.initUI(sourceForm.getFormConfig());
+        currentForm.initUI(formConfig);
         currentForm.addEventHandler(FormFieldClickEvent.EVENT_TYPE, new MuEventHandler<FormFieldClickEvent>() {
             @Override
             public void doHandler(FormFieldClickEvent event) throws Exception {
