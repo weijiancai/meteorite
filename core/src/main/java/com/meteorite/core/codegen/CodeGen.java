@@ -4,6 +4,7 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.project.ProjectDefine;
 import com.meteorite.core.project.tpl.CodeTpl;
 import com.meteorite.core.ui.ViewManager;
+import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.ftl.FreeMarkerConfiguration;
@@ -48,6 +49,9 @@ public class CodeGen {
         map.put("project", project);
         map.put("meta", meta);
         map.put("queryForm", ViewManager.getViewByName(meta.getName() + "QueryView").getQueryForm().toHtml(true));
+        View editFormView = ViewManager.getViewByName(meta.getName() + "FormView");
+        map.put("editForm", editFormView.getQueryForm().toHtml(true));
+        map.put("editFormConfig", editFormView.getQueryForm());
     }
 
     public void gen() {
