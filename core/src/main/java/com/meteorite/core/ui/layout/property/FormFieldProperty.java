@@ -9,15 +9,10 @@ import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.*;
 import com.meteorite.core.ui.model.*;
-import com.meteorite.core.util.UNumber;
-import com.meteorite.core.util.UString;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import static com.meteorite.core.ui.ViewManager.createViewConfig;
 
 /**
  * 表单字段布局器
@@ -38,7 +33,7 @@ public class FormFieldProperty extends BaseProperty {
     private DisplayStyle displayStyle;
     private DictCategory dict;
     private MetaDataType dataType;
-    private String value;
+    private String defaultValue;
     private int sortNum;
 
     private FormProperty formProperty;
@@ -50,20 +45,46 @@ public class FormFieldProperty extends BaseProperty {
         super(field, propMap);
         this.formProperty = formProperty;
 
+        // 初始化默认值
+        int defaultWidth = 180;
+        if(FormType.QUERY == formProperty.getFormType()) {
+            defaultWidth = 250;
+        }
+        DisplayStyle defaultDisplayStyle = DisplayStyle.TEXT_FIELD;
+        boolean defaultSingleLine = false;
+        int defaultHeight = 0;
+        if (MetaDataType.BOOLEAN == field.getDataType()) {
+            defaultDisplayStyle = DisplayStyle.BOOLEAN;
+        } else if (MetaDataType.DICT == field.getDataType()) {
+            defaultDisplayStyle = DisplayStyle.COMBO_BOX;
+        } else if (MetaDataType.DATE == field.getDataType()) {
+            defaultDisplayStyle = DisplayStyle.DATE;
+        } else if (MetaDataType.TEXT == field.getDataType()) {
+            defaultDisplayStyle = DisplayStyle.TEXT_AREA;
+            defaultHeight = 500;
+        }
+        if (field.getMaxLength() > 500 && field.getDataType() != MetaDataType.TEXT) {
+            defaultDisplayStyle = DisplayStyle.TEXT_AREA;
+            defaultSingleLine = true;
+            defaultHeight = 60;
+        } else if(field.getMaxLength() >= 200) {
+            defaultSingleLine = true;
+        }
+
         dataType = field.getDataType();
         name = field.getName();
-        maxLength = field.getMaxLength();
-        displayName = getPropertyValue(FORM_FIELD.DISPLAY_NAME);
-        this.queryModel = QueryModel.convert(getPropertyValue(FORM_FIELD.QUERY_MODEL));
-        isSingleLine = UString.toBoolean(getPropertyValue(FORM_FIELD.IS_SINGLE_LINE));
-        isDisplay = UString.toBoolean(getPropertyValue(FORM_FIELD.IS_DISPLAY));
-        isRequire = UString.toBoolean(getPropertyValue(FORM_FIELD.IS_REQUIRE));
-        width = UNumber.toInt(getPropertyValue(FORM_FIELD.WIDTH));
-        height = UNumber.toInt(getPropertyValue(FORM_FIELD.HEIGHT));
-        displayStyle = DisplayStyle.getStyle(getPropertyValue(FORM_FIELD.DISPLAY_STYLE));
-        dict = DictManager.getDict(getPropertyValue(FORM_FIELD.DICT_ID));
-        value = getPropertyValue(FORM_FIELD.VALUE);
-        sortNum = UNumber.toInt(getPropertyValue(FORM_FIELD.SORT_NUM));
+        maxLength = getIntPropertyValue(FORM_FIELD.MAX_LENGTH, field.getMaxLength());
+        displayName = getPropertyValue(FORM_FIELD.DISPLAY_NAME, field.getDisplayName());
+        queryModel = QueryModel.convert(getPropertyValue(FORM_FIELD.QUERY_MODEL, QueryModel.EQUAL.name()));
+        isSingleLine = getBooleanPropertyValue(FORM_FIELD.IS_SINGLE_LINE, defaultSingleLine);
+        isDisplay = getBooleanPropertyValue(FORM_FIELD.IS_DISPLAY, true);
+        isRequire = getBooleanPropertyValue(FORM_FIELD.IS_REQUIRE, field.isRequire());
+        width = getIntPropertyValue(FORM_FIELD.WIDTH, defaultWidth);
+        height = getIntPropertyValue(FORM_FIELD.HEIGHT, defaultHeight);
+        displayStyle = DisplayStyle.getStyle(getPropertyValue(FORM_FIELD.DISPLAY_STYLE, defaultDisplayStyle.name()));
+        dict = DictManager.getDict(getPropertyValue(FORM_FIELD.DICT_ID, field.getDictId()));
+        defaultValue = getPropertyValue(FORM_FIELD.VALUE, field.getDefaultValue());
+        sortNum = getIntPropertyValue(FORM_FIELD.SORT_NUM, field.getSortNum());
     }
 
     public FormFieldProperty(String name, String displayName, int sortNum) {
@@ -172,12 +193,12 @@ public class FormFieldProperty extends BaseProperty {
         this.dataType = dataType;
     }
 
-    public String getValue() {
-        return value;
+    public String getDefaultValue() {
+        return defaultValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     public int getSortNum() {
@@ -245,5 +266,13 @@ public class FormFieldProperty extends BaseProperty {
         configList.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM_FIELD.SORT_NUM), field, field.getSortNum() + ""));
 
         return configList;
+    }
+
+    public int getDefaultWidth() {
+        int defaultWidth = 180;
+        if(FormType.QUERY == formProperty.getFormType()) {
+            width = 250;
+        }
+        return defaultWidth;
     }
 }

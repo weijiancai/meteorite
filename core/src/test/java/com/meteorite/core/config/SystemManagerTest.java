@@ -40,4 +40,9 @@ public class SystemManagerTest {
         assertThat(dataSource.getDbVersion(), equalTo("1.0.0"));
         assertThat(dataSource.getDatabaseType(), equalTo(DatabaseType.UNKNOWN));
     }
+
+    @Test
+    public void testResetToDefaultSetting() throws Exception {
+        SystemManager.resetToDefaultSetting();
+    }
 }

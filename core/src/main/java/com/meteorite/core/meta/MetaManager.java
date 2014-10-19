@@ -453,7 +453,7 @@ public class MetaManager {
 
             // 默认值
             if ("isValid".equals(field.getName())) {
-//                field.setDefaultValue("T");
+                field.setDefaultValue("T");
             } else if ("inputDate".equals(field.getName())) {
                 field.setDefaultValue("SYSDATE()");
             } else if ("sortNum".equals(field.getName())) {

@@ -37,8 +37,8 @@ public class CodeGen {
             this.baseDir = baseDir;
     }
 
-    public CodeGen(ProjectDefine project, CodeTpl tpl, Meta meta) {
-
+    public CodeGen(ProjectDefine project, Meta meta) {
+        this(project, project.getCodeTpls(), meta);
     }
 
     public CodeGen(ProjectDefine project, List<CodeTpl> codeTpls, Meta meta) {

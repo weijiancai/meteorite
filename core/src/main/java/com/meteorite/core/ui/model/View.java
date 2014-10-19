@@ -193,8 +193,24 @@ public class View {
         return propMap.get(propertyId).getValue();
     }
 
+    public String getStringProperty(String propertyId, String defaultValue) {
+        ViewProperty viewProperty = getProperty(propertyId);
+        if (viewProperty == null) {
+            return defaultValue;
+        }
+        return viewProperty.getValue();
+    }
+
     public int getIntProperty(String propertyId) {
         return UNumber.toInt(propMap.get(propertyId).getValue());
+    }
+
+    public int getIntProperty(String propertyId, int defaultValue) {
+        ViewProperty viewProperty = getProperty(propertyId);
+        if (viewProperty == null) {
+            return defaultValue;
+        }
+        return UNumber.toInt(viewProperty.getValue());
     }
 
     public boolean getBooleanProperty(String propertyId) {
@@ -208,7 +224,8 @@ public class View {
      * @return 返回元字段配置
      */
     public Map<String, ViewProperty> getMetaFieldConfig(MetaField field) {
-        return fieldPropMap.get(field);
+        Map<String, ViewProperty> result = fieldPropMap.get(field);
+        return result == null ? new HashMap<String, ViewProperty>() : result;
     }
 
     @XmlTransient

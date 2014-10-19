@@ -108,14 +108,10 @@ public class MUTable extends StackPane {
     }
 
     public void initUI(Meta meta) {
-        View crudView = ViewManager.getViewByName(meta.getName() + "CrudView");
-        CrudProperty crudConfig = new CrudProperty(crudView);
-        if (crudView != null) {
-            queryForm = new MUForm(new FormProperty(crudConfig.getQueryView()));
-            editForm = new MUForm(new FormProperty(crudConfig.getFormView()));
-            editForm.setDataStatusSubject(dataStatusSubject);
-            config = new TableProperty(crudConfig.getTableView());
-        }
+        queryForm = new MUForm(new FormProperty(ViewManager.getViewByName(meta.getName() + "QueryView")));
+        editForm = new MUForm(new FormProperty(ViewManager.getViewByName(meta.getName() + "FormView")));
+        editForm.setDataStatusSubject(dataStatusSubject);
+        config = new TableProperty(ViewManager.getViewByName(meta.getName() + "TableView"));
         initUI();
     }
 

@@ -3,6 +3,8 @@ package com.meteorite.core.ui.layout.property;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.PropertyNames;
 import com.meteorite.core.ui.model.ViewProperty;
+import com.meteorite.core.util.UNumber;
+import com.meteorite.core.util.UString;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,9 +47,29 @@ public class BaseProperty implements PropertyNames {
         return vp.getValue();
     }
 
-    /*public DBColumn getDbColumn() {
-        return dbColumn;
-    }*/
+    public String getPropertyValue(String prop, String defaultValue) {
+        ViewProperty vp = propMap.get(prop);
+        if (vp == null) {
+            return defaultValue;
+        }
+        return vp.getValue();
+    }
+
+    public int getIntPropertyValue(String prop, int defaultValue) {
+        ViewProperty vp = propMap.get(prop);
+        if (vp == null) {
+            return defaultValue;
+        }
+        return UNumber.toInt(vp.getValue());
+    }
+
+    public boolean getBooleanPropertyValue(String prop, boolean defaultValue) {
+        ViewProperty vp = propMap.get(prop);
+        if (vp == null) {
+            return defaultValue;
+        }
+        return UString.toBoolean(vp.getValue());
+    }
 
     public MetaField getMetaField() {
         return metaField;

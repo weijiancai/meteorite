@@ -79,15 +79,45 @@ public class TableFieldProperty extends BaseProperty {
 
     public TableFieldProperty(MetaField field, Map<String, ViewProperty> propMap) {
         super(field, propMap);
+
+        // 初始化默认值
+        int defaultWidth = field.getMaxLength();
+        if(defaultWidth <= 0) {
+            defaultWidth = 80;
+        }
+        if ((field.isPk() || field.isFk()) && defaultWidth == 32) {
+            defaultWidth = 250;
+        }
+
+        if(defaultWidth > 500) {
+            defaultWidth = 200;
+        }
+
+        String defaultDisplayStyle = DisplayStyle.TEXT_FIELD.name();
+        String defaultAlign = EnumAlign.LEFT.name();
+        String dictId = field.getDictId();
+        if (MetaDataType.BOOLEAN == field.getDataType()) {
+            defaultWidth = 50;
+            defaultDisplayStyle = DisplayStyle.BOOLEAN.name();
+        } else if (MetaDataType.INTEGER == field.getDataType()) {
+            defaultWidth = 60;
+            defaultAlign = EnumAlign.CENTER.name();
+        } else if (MetaDataType.DATE == field.getDataType()) {
+            defaultWidth = 140;
+        }
+        if (UString.isNotEmpty(dictId)) {
+            defaultDisplayStyle = DisplayStyle.COMBO_BOX.name();
+        }
+
         this.name = field.getName();
-        setDisplayName(field.getDisplayName());
+        setDisplayName(getPropertyValue(TABLE_FIELD.DISPLAY_NAME, field.getDisplayName()));
         this.dataType = field.getDataType();
-        setWidth(UNumber.toInt(getPropertyValue(TABLE_FIELD.WIDTH)));
-        setDisplay(UString.toBoolean(getPropertyValue(TABLE_FIELD.IS_DISPLAY)));
-        this.displayStyle = DisplayStyle.getStyle(getPropertyValue(TABLE_FIELD.DISPLAY_STYLE));
-        this.dict = DictManager.getDict(getPropertyValue(TABLE_FIELD.DICT_ID));
-        setAlign(EnumAlign.getAlign(getPropertyValue(TABLE_FIELD.ALIGN)));
-        setSortNum(UNumber.toInt(getPropertyValue(TABLE_FIELD.SORT_NUM)));
+        setWidth(getIntPropertyValue(TABLE_FIELD.WIDTH, defaultWidth));
+        setDisplay(getBooleanPropertyValue(TABLE_FIELD.IS_DISPLAY, true));
+        this.displayStyle = DisplayStyle.getStyle(getPropertyValue(TABLE_FIELD.DISPLAY_STYLE, defaultDisplayStyle));
+        this.dict = DictManager.getDict(getPropertyValue(TABLE_FIELD.DICT_ID, field.getDictId()));
+        setAlign(EnumAlign.getAlign(getPropertyValue(TABLE_FIELD.ALIGN, defaultAlign)));
+        setSortNum(getIntPropertyValue(TABLE_FIELD.SORT_NUM, field.getSortNum()));
         setPk(field.isPk());
         setFk(field.isFk());
 

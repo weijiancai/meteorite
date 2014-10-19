@@ -58,7 +58,7 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
         this.setAlignment(Pos.CENTER_LEFT);
         this.setSpacing(5);
         // 设置默认值
-        String value = config.getValue();
+        String value = config.getDefaultValue();
         if ("GUID()".equals(value)) {
             if(isQuery) {
                 this.setValue("");
@@ -72,7 +72,7 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
                 this.setValue(UDate.dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
             }
         } else {
-            this.setValue(config.getValue());
+            this.setValue(config.getDefaultValue());
         }
 
         for (Node node : getControls()) {
@@ -279,6 +279,6 @@ public abstract class BaseFormField extends HBox implements IValue, ICanQuery {
 
     @Override
     public String getDefaultValue() {
-        return config.getValue();
+        return config.getDefaultValue();
     }
 }
