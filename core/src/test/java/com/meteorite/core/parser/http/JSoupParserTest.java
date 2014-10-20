@@ -193,4 +193,12 @@ public class JSoupParserTest {
         Document doc = parser.parse(data);
         System.out.println(doc.html());
     }
+
+    @Test
+    public void testTaobao() throws Exception {
+        String url = "https://login.taobao.com/member/login.jhtml";
+        JSoupParser parser = new JSoupParser(url);
+        Document doc = parser.parse();
+        System.out.println(doc.html());
+    }
 }
