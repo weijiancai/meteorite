@@ -66,7 +66,7 @@ public class LayoutManager {
                 layout.setProperties(propList);
             }*/
 
-            String sql = "SELECT * FROM mu_layout_prop";
+            /*String sql = "SELECT * FROM mu_layout_prop";
             List<LayoutProperty> propList = template.query(sql, MetaRowMapperFactory.getLayoutProperty(null));
             for (LayoutProperty prop : propList) {
                 propMap.put(prop.getId(), prop);
@@ -76,6 +76,9 @@ public class LayoutManager {
                     layoutTypeMap.put(prop.getLayoutType().name(), list);
                 }
                 list.add(prop);
+            }*/
+            for (LayoutProperty property : LayoutProperties.getAllProperties()) {
+                propMap.put(property.getId(), property);
             }
         } else { // 初始化Layout
             /*if (root == null) {

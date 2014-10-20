@@ -61,7 +61,11 @@ public class CodeGen {
             config.setTemplateLoader(loader);
 
             for (CodeTpl tpl : codeTpls) {
-                loader.putTemplate(tpl.getName(), tpl.getTplContent());
+                String tplContent = tpl.getTplContent();
+                if (UString.isNotEmpty(tpl.getTplFile())) {
+                    tplContent = UFile.readString(new File(tpl.getTplFile()));
+                }
+                loader.putTemplate(tpl.getName(), tplContent);
                 String str = FreeMarkerTemplateUtils.processTemplateIntoString(config.getTemplate(tpl.getName()), map);
                 String fileName = tpl.getFileName().replace("${meta.name}", meta.getName());
                 UFile.write(str, new File(tpl.getFilePath(), fileName).getAbsolutePath());

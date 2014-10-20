@@ -178,7 +178,7 @@ public class Properties implements Initializable {
 
         // 保存到数据库
         try {
-            viewProperty.persist();
+            viewProperty.update();
         } catch (Exception e) {
             throw new RuntimeException("保存视图属性失败！", e);
         }

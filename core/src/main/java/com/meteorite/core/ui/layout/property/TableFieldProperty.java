@@ -11,7 +11,6 @@ import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.ui.model.ViewProperty;
-import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.view.MUDialog;
 import javafx.beans.property.*;
@@ -30,6 +29,7 @@ import java.util.Map;
  */
 @MetaElement(displayName = "表格字段配置")
 public class TableFieldProperty extends BaseProperty {
+    private TableProperty tableProperty;
     private String name;
     private StringProperty displayName = new SimpleStringProperty();
     private MetaDataType dataType;
@@ -77,8 +77,9 @@ public class TableFieldProperty extends BaseProperty {
         setAlign(align);
     }
 
-    public TableFieldProperty(MetaField field, Map<String, ViewProperty> propMap) {
-        super(field, propMap);
+    public TableFieldProperty(final TableProperty tableProperty, final MetaField field, Map<String, ViewProperty> propMap) {
+        super(tableProperty.getView(), field, propMap);
+        this.tableProperty = tableProperty;
 
         // 初始化默认值
         int defaultWidth = field.getMaxLength();
@@ -126,13 +127,7 @@ public class TableFieldProperty extends BaseProperty {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 if (oldValue.intValue() != newValue.intValue()) {
-                    ViewProperty viewProperty = getProperty(TABLE_FIELD.WIDTH);
-                    try {
-                        viewProperty.setValue(newValue.toString());
-                        viewProperty.persist();
-                    } catch (Exception e) {
-                        MUDialog.showExceptionDialog(e);
-                    }
+                    saveOrUpdateViewProperty(TABLE_FIELD.WIDTH, newValue.toString());
                 }
             }
         });
@@ -140,16 +135,42 @@ public class TableFieldProperty extends BaseProperty {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 if (oldValue.intValue() != newValue.intValue()) {
-                    ViewProperty viewProperty = getProperty(TABLE_FIELD.SORT_NUM);
-                    try {
-                        viewProperty.setValue(newValue.toString());
-                        viewProperty.persist();
-                    } catch (Exception e) {
-                        MUDialog.showExceptionDialog(e);
-                    }
+                    saveOrUpdateViewProperty(TABLE_FIELD.SORT_NUM, newValue.toString());
                 }
             }
         });
+
+        // 初始化视图属性
+        initViewProperties();
+    }
+
+    private void initViewProperties() {
+        addViewProperty(TABLE_FIELD.NAME, getName());
+        addViewProperty(TABLE_FIELD.DISPLAY_NAME, getDisplayName());
+        addViewProperty(TABLE_FIELD.IS_DISPLAY, isDisplay() ? "true" : "false");
+        addViewProperty(TABLE_FIELD.IS_PK, isPk() ? "true" : "false");
+        addViewProperty(TABLE_FIELD.IS_FK, isFk() ? "true" : "false");
+        addViewProperty(TABLE_FIELD.WIDTH, getWidth() + "");
+        addViewProperty(TABLE_FIELD.DISPLAY_STYLE, getDisplayStyle().name());
+        addViewProperty(TABLE_FIELD.ALIGN, getAlign().name());
+        addViewProperty(TABLE_FIELD.DICT_ID, getDict() == null ? "" : getDict().getId());
+        addViewProperty(TABLE_FIELD.SORT_NUM, getSortNum() + "");
+    }
+
+    private void saveOrUpdateViewProperty(String layoutPropId, String value) {
+        ViewProperty viewProperty = getProperty(layoutPropId);
+        try {
+            if (viewProperty == null) {
+                viewProperty = new ViewProperty(tableProperty.getView(), LayoutManager.getLayoutPropById(layoutPropId), metaField, value);
+                viewProperty.save();
+                addViewProperty(viewProperty);
+            } else {
+                viewProperty.setValue(value);
+                viewProperty.update();
+            }
+        } catch (Exception e) {
+            MUDialog.showExceptionDialog(e);
+        }
     }
 
     @MetaFieldElement(displayName = "名称", sortNum = 10)
@@ -170,7 +191,7 @@ public class TableFieldProperty extends BaseProperty {
         this.displayName.set(displayName);
     }
 
-    @MetaFieldElement(displayName = "数据类型", sortNum = 30)
+    @MetaFieldElement(displayName = "数据类型", sortNum = 30, dictId = "MetaDataType", dataType = MetaDataType.DICT)
     public MetaDataType getDataType() {
         return dataType;
     }

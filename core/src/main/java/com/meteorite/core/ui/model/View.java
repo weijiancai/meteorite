@@ -4,6 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.ui.layout.property.FormProperty;
+import com.meteorite.core.ui.layout.property.TableProperty;
 import com.meteorite.core.util.UNumber;
 import com.meteorite.core.util.UString;
 import javafx.scene.Node;

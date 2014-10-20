@@ -31,6 +31,7 @@ public class FormProperty implements PropertyNames {
     private int hgap = 3;
     private int vgap = 5;
     private Meta meta;
+    private View view;
 
     private List<FormFieldProperty> formFields = new ArrayList<FormFieldProperty>();
 
@@ -54,6 +55,7 @@ public class FormProperty implements PropertyNames {
     }
 
     public FormProperty(View view) {
+        this.view = view;
         this.meta = view.getMeta();
         name = view.getStringProperty(FORM.NAME, meta.getName());
         displayName = view.getStringProperty(FORM.DISPLAY_NAME, meta.getDisplayName());
@@ -159,6 +161,10 @@ public class FormProperty implements PropertyNames {
 
     public void setMeta(Meta meta) {
         this.meta = meta;
+    }
+
+    public View getView() {
+        return view;
     }
 
     public List<FormFieldProperty> getFormFields() {

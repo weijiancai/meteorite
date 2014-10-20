@@ -9,6 +9,9 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.meta.model.MetaItem;
 import com.meteorite.core.meta.model.MetaReference;
+import com.meteorite.core.project.NavMenu;
+import com.meteorite.core.project.ProjectDefine;
+import com.meteorite.core.project.tpl.CodeTpl;
 import com.meteorite.core.ui.model.*;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.UUIDUtil;
@@ -410,10 +413,13 @@ public class MetaPDBFactory {
         return new IPDB() {
             @Override
             public Map<String, Map<String, Object>> getPDBMap() {
+                if (UString.isEmpty(property.getId())) {
+                    property.setId(UUIDUtil.getUUID());
+                }
                 Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
 
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("id", UUIDUtil.getUUID());
+                map.put("id", property.getId());
                 if (property.getView() != null) {
                     map.put("view_id", property.getView().getId());
                 } else {
@@ -432,6 +438,86 @@ public class MetaPDBFactory {
                 map.put("value", property.getValue());
 
                 result.put("mu_view_prop", map);
+
+                return result;
+            }
+        };
+    }
+
+    public static IPDB getProjectDefine(final ProjectDefine projectDefine) {
+        return new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+
+                map.put("id", UString.getValue(projectDefine.getId(), UUIDUtil.getUUID()));
+                map.put("name", projectDefine.getName());
+                map.put("display_name", projectDefine.getDisplayName());
+                map.put("description", projectDefine.getDescription());
+                map.put("package_name", projectDefine.getPackageName());
+                map.put("is_valid", projectDefine.isValid() ? "T" : "F");
+                map.put("sort_num", projectDefine.getSortNum());
+                map.put("input_date", projectDefine.getInputDate());
+                map.put("project_url", projectDefine.getProjectUrl());
+
+                result.put("mu_project_define", map);
+
+                return result;
+            }
+        };
+    }
+
+    public static IPDB getNavMenu(final NavMenu navMenu) {
+        return new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+
+                map.put("id", UString.getValue(navMenu.getId(), UUIDUtil.getUUID()));
+                map.put("name", navMenu.getName());
+                map.put("display_name", navMenu.getDisplayName());
+                map.put("icon", navMenu.getIcon());
+                map.put("url", navMenu.getUrl());
+                map.put("pid", navMenu.getPid());
+                map.put("level", navMenu.getLevel());
+                map.put("project_id", navMenu.getProjectId());
+                map.put("is_valid", navMenu.isValid() ? "T" : "F");
+                map.put("sort_num", navMenu.getSortNum());
+                map.put("input_date", navMenu.getInputDate());
+
+                result.put("mu_nav_menu", map);
+
+                return result;
+            }
+        };
+    }
+
+    public static IPDB getCodeTpl(final CodeTpl codeTpl) {
+        return new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+
+                map.put("id", UString.getValue(codeTpl.getId(), UUIDUtil.getUUID()));
+                map.put("name", codeTpl.getName());
+                map.put("display_name", codeTpl.getDisplayName());
+                map.put("description", codeTpl.getDescription());
+                map.put("project_id", codeTpl.getProjectId());
+                map.put("file_name", codeTpl.getFileName());
+                map.put("file_path", codeTpl.getFilePath());
+                map.put("tpl_file", codeTpl.getTplFile());
+                map.put("tpl_content", codeTpl.getTplContent());
+                map.put("is_valid", codeTpl.isValid() ? "T" : "F");
+                map.put("sort_num", codeTpl.getSortNum());
+                map.put("input_date", codeTpl.getInputDate());
+
+                result.put("mu_code_tpl", map);
 
                 return result;
             }

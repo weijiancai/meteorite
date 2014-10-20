@@ -36,6 +36,7 @@ public class LayoutProperties {
         list.add(new LayoutProperty(PropertyNames.FORM_FIELD.VALUE, "默认值", LayoutType.FORM_FIELD, null, PropertyType.IP, 100));
         list.add(new LayoutProperty(PropertyNames.FORM_FIELD.DICT_ID, "数据字典", LayoutType.FORM_FIELD, null, PropertyType.IP, 110));
         list.add(new LayoutProperty(PropertyNames.FORM_FIELD.QUERY_MODEL, "查询模式", LayoutType.FORM_FIELD, null, PropertyType.IP, 120));
+        list.add(new LayoutProperty(PropertyNames.FORM_FIELD.MAX_LENGTH, "最大长度", LayoutType.FORM_FIELD, null, PropertyType.IP, 130));
         return list;
     }
 

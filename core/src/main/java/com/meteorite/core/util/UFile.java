@@ -232,4 +232,31 @@ public class UFile {
             }
         }
     }
+
+    /**
+     * 获得文件的大小，用字符串表示，例如: 10TB 10GB 10MB 10KB
+     *
+     * @param file 文件
+     * @return 返回字符串表示的文件大小
+     */
+    public static String getSize(File file) {
+        double kb = 1024;
+        double mb = 1024 * 1024;
+        double gb = 1024 * 1024 * 1024;
+        double tb = 1024.0 * 1024 * 1024 * 1024;
+
+        long number = file.length();
+        String result;
+        if(number > tb) {
+            result = String.format("%.2f", number / tb) + " TB";
+        } else if(number > gb) {
+            result = String.format("%.2f", number / gb) + " GB";
+        } else if(number > mb) {
+            result = String.format("%.2f", number / mb) + " MB";
+        } else {
+            result = String.format("%.2f", number / kb) + " KB";
+        }
+
+        return result.replace(".00", "");
+    }
 }

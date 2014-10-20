@@ -127,6 +127,17 @@ public class DictManager {
         }
     }
 
+    public static void addDict(DictCategory category) {
+        categoryMap.put(category.getId(), category);
+        // 添加到root字典中
+        DictCode code = new DictCode();
+        code.setCategory(category);
+        code.setId(category.getId());
+        code.setName(category.getId());
+        code.setDisplayName(category.getName());
+        root.getCodeList().add(code);
+    }
+
     /**
      * 将类转化为数据字典
      *

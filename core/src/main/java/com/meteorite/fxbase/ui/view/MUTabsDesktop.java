@@ -26,10 +26,7 @@ import com.meteorite.fxbase.ui.component.search.MUSearchBox;
 import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
 import com.meteorite.fxbase.ui.event.FormFieldValueEvent;
 import com.meteorite.fxbase.ui.meta.AddMetaGuide;
-import com.meteorite.fxbase.ui.win.MUDictWin;
-import com.meteorite.fxbase.ui.win.MUMetaWin;
-import com.meteorite.fxbase.ui.win.MUProjectWin;
-import com.meteorite.fxbase.ui.win.MUViewWin;
+import com.meteorite.fxbase.ui.win.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -59,7 +56,6 @@ import java.util.*;
  * @since 1.0.0
  */
 public class MUTabsDesktop extends BorderPane implements IDesktop {
-    private ToolBar toolBar;
     private MUSearchBox searchBox;
     protected MUTree tree;
     protected MUTabPane tabPane;
@@ -81,7 +77,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     }
 
     public void initUI() {
-        toolBar = new ToolBar();
+        ToolBar toolBar = new ToolBar();
         searchBox = new MUSearchBox(this);
         tabPane = new MUTabPane();
         popup.getContent().add(searchBox);
@@ -96,82 +92,6 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         Tab tab = new Tab("桌面");
         tab.setClosable(false);
         tabPane.getTabs().add(tab);
-
-        Button btnAddDs = new Button("添加数据源");
-        btnAddDs.setOnAction(new MuEventHandler<ActionEvent>() {
-            @Override
-            public void doHandler(ActionEvent event) throws Exception {
-                FormProperty formProperty = new FormProperty(ViewManager.getViewByName("DBDataSourceFormView"));
-                formProperty.setFormType(FormType.READONLY);
-                final MUForm form = new MUForm(formProperty);
-                form.addEventHandler(FormFieldValueEvent.EVENT_TYPE, new MuEventHandler<FormFieldValueEvent>() {
-                    @Override
-                    public void doHandler(FormFieldValueEvent event) throws Exception {
-                        if ("DatabaseType".equalsIgnoreCase(event.getName())) {
-                            DatabaseType type = DatabaseType.valueOf(event.getNewValue());
-                            switch (type) {
-                                case MYSQL:
-                                    form.setValue("DriverClass", "com.mysql.jdbc.Driver");
-                                    form.setValue("Url", "jdbc:mysql://localhost:3306/");
-                                    break;
-                                case SQLSERVER:
-                                    form.setValue("DriverClass", "com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                                    form.setValue("Url", "jdbc:sqlserver://192.168.0.109:1433");
-                                    break;
-                            }
-                        }
-                    }
-                });
-                MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "新增数据源", form, new Callback<Void, Void>() {
-                    @Override
-                    public Void call(Void param) {
-                        Map<String, IValue> map = form.getValueMap();
-                        System.out.println(map);
-                        String name = map.get("Name").value();
-                        DBDataSource ds = new DBDataSource();
-                        ds.setName(name);
-                        ds.setDatabaseType(DatabaseType.get(map.get("DatabaseType").value()));
-                        ds.setDriverClass(map.get("DriverClass").value());
-                        ds.setUrl(map.get("Url").value());
-                        ds.setUserName(map.get("Username").value());
-                        ds.setPwd(map.get("Password").value());
-
-                        if (UString.isEmpty(name)) {
-                            return null;
-                        }
-
-                        try {
-                            Connection connection = ds.getDbConnection().getConnection();
-                            if (connection == null) {
-                                MUDialog.showInformation("数据源配置错误！");
-                                return null;
-                            }
-                            ConnectionUtil.closeConnection(connection);
-                            ProjectConfig projectConfig = BaseApp.getInstance().getFacade().getProjectConfig();
-                            projectConfig.getDataSources().add(ds);
-                            SystemManager.save(projectConfig);
-                            TreeItem<ITreeNode> item = tree.addTreeNode(ds.getNavTree());
-                            tree.getRoot().getChildren().add(item);
-                        } catch (Exception e) {
-                            MUDialog.showExceptionDialog(e);
-                        }
-                        return null;
-                    }
-                });
-            }
-        });
-
-        // 添加元数据
-        Button btnAddMeta = new Button("添加元数据");
-        btnAddMeta.setOnAction(new MuEventHandler<ActionEvent>() {
-            @Override
-            public void doHandler(ActionEvent event) throws Exception {
-                AddMetaGuide guide = new AddMetaGuide();
-                MUDialog.showCustomDialog(null, "添加元数据向导", guide, null);
-            }
-        });
-
-        toolBar.getItems().addAll(btnAddDs, btnAddMeta);
 
         Region region = new Region();
         HBox.setHgrow(region, Priority.ALWAYS);
@@ -234,7 +154,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         final TreeItem<ITreeNode> navTreeItem = new TreeItem<ITreeNode>(navTree);
         navTreeItem.setExpanded(true);
         // 数据源管理
-        final BaseTreeNode dataSource = new BaseTreeNode("数据源管理");
+        BaseTreeNode dataSource = new BaseTreeNode("数据源管理");
         dataSource.setId("DataSource");
         dataSource.setView(View.createNodeView(new MUTable(MetaManager.getMeta("Datasource"))));
         final TreeItem<ITreeNode> dataSourceItem = new TreeItem<ITreeNode>(dataSource);
@@ -257,10 +177,12 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         MUProjectWin projectWin = new MUProjectWin();
         TreeItem<ITreeNode> projectItem = projectWin.getProjectTree();
         // 参数配置
-        final BaseTreeNode profileSetting = new BaseTreeNode("参数配置");
+        BaseTreeNode profileSetting = new BaseTreeNode("参数配置");
         profileSetting.setId("ProfileSetting");
         profileSetting.setView(View.createNodeView(new MUTable(MetaManager.getMeta("ProfileSetting"))));
-        final TreeItem<ITreeNode> ProfileSettingItem = new TreeItem<ITreeNode>(profileSetting);
+        TreeItem<ITreeNode> ProfileSettingItem = new TreeItem<ITreeNode>(profileSetting);
+        // 备份恢复
+        MUBackupWin backupWin = new MUBackupWin();
 
         tree.setRoot(navTreeItem);
         tree.setShowRoot(false);
@@ -270,6 +192,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         navTreeItem.getChildren().add(projectItem);
         navTreeItem.getChildren().add(dataSourceItem);
         navTreeItem.getChildren().add(ProfileSettingItem);
+        navTreeItem.getChildren().add(backupWin.getBackupTreeItem());
 
         BaseTreeNode dsConfigTreeNode = new BaseTreeNode("SQL控制台");
         dsConfigTreeNode.setId("SqlConsoleView");
@@ -437,10 +360,16 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         TextArea rowMapperTa = new TextArea();
         rowMapperTab.setContent(rowMapperTa);
         rowMapperTa.setText(meta.genRowMapperCode());
+        // 生成PDB代码
+        Tab pdbTab = new Tab("PDB");
+        TextArea pdbTa = new TextArea();
+        pdbTab.setContent(pdbTa);
+        pdbTa.setText(meta.getPDBCode());
 
         List<Tab> result = new ArrayList<Tab>();
         result.add(javaBeanTab);
         result.add(rowMapperTab);
+        result.add(pdbTab);
 
         return result;
     }

@@ -42,7 +42,7 @@ public class FormFieldProperty extends BaseProperty {
     }
 
     public FormFieldProperty(FormProperty formProperty, MetaField field, Map<String, ViewProperty> propMap) {
-        super(field, propMap);
+        super(formProperty.getView(), field, propMap);
         this.formProperty = formProperty;
 
         // 初始化默认值

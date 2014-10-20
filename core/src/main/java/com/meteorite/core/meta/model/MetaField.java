@@ -2,6 +2,7 @@ package com.meteorite.core.meta.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.datasource.db.object.DBColumn;
+import com.meteorite.core.dict.EnumBoolean;
 import com.meteorite.core.meta.MetaDataType;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
@@ -95,7 +96,7 @@ public class MetaField {
 
     public void setDictId(String dictId) {
         this.dictId = dictId;
-        if (UString.isNotEmpty(dictId)) {
+        if (UString.isNotEmpty(dictId) && !EnumBoolean.class.getSimpleName().equals(dictId)) {
             this.dataType = MetaDataType.DICT;
         }
     }
