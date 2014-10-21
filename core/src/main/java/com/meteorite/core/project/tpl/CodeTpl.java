@@ -25,6 +25,8 @@ public class CodeTpl {
     private String fileName;
     /** 文件路径 */
     private String filePath;
+    /** 模板文件 */
+    private String tplFile;
     /** 模板内容 */
     private String tplContent;
     /** 是否有效 */
@@ -95,6 +97,15 @@ public class CodeTpl {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    @XmlAttribute
+    public String getTplFile() {
+        return tplFile;
+    }
+
+    public void setTplFile(String tplFile) {
+        this.tplFile = tplFile;
     }
 
     @XmlElement

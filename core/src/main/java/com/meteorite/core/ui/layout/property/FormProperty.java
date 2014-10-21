@@ -31,6 +31,7 @@ public class FormProperty implements PropertyNames {
     private int hgap = 3;
     private int vgap = 5;
     private Meta meta;
+    private View view;
 
     private List<FormFieldProperty> formFields = new ArrayList<FormFieldProperty>();
 
@@ -54,18 +55,23 @@ public class FormProperty implements PropertyNames {
     }
 
     public FormProperty(View view) {
+        this.view = view;
         this.meta = view.getMeta();
-        name = view.getStringProperty(FORM.NAME);
-        displayName = view.getStringProperty(FORM.DISPLAY_NAME);
-        formType = FormType.convert(view.getStringProperty(FORM.FORM_TYPE));
-        colCount = view.getIntProperty(FORM.COL_COUNT);
-        colWidth = view.getIntProperty(FORM.COL_WIDTH);
-        labelGap = view.getIntProperty(FORM.LABEL_GAP);
-        fieldGap = view.getIntProperty(FORM.FIELD_GAP);
-        hgap = view.getIntProperty(FORM.HGAP);
-        vgap = view.getIntProperty(FORM.VGAP);
+        name = view.getStringProperty(FORM.NAME, meta.getName());
+        displayName = view.getStringProperty(FORM.DISPLAY_NAME, meta.getDisplayName());
+        FormType defaultFormType = FormType.EDIT;
+        if (view.getName().endsWith("QueryView")) {
+            defaultFormType = FormType.QUERY;
+        }
+        formType = FormType.convert(view.getStringProperty(FORM.FORM_TYPE, defaultFormType.name()));
+        colCount = view.getIntProperty(FORM.COL_COUNT, 3);
+        colWidth = view.getIntProperty(FORM.COL_WIDTH, 180);
+        labelGap = view.getIntProperty(FORM.LABEL_GAP, 5);
+        fieldGap = view.getIntProperty(FORM.FIELD_GAP, 15);
+        hgap = view.getIntProperty(FORM.HGAP, 3);
+        vgap = view.getIntProperty(FORM.VGAP, 5);
 
-        for (MetaField field : view.getMetaFieldList()) {
+        for (MetaField field : meta.getFields()) {
             formFields.add(new FormFieldProperty(this, field, view.getMetaFieldConfig(field)));
         }
         // 排序
@@ -157,6 +163,10 @@ public class FormProperty implements PropertyNames {
         this.meta = meta;
     }
 
+    public View getView() {
+        return view;
+    }
+
     public List<FormFieldProperty> getFormFields() {
         return formFields;
     }
@@ -186,12 +196,12 @@ public class FormProperty implements PropertyNames {
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.NAME), name));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.DISPLAY_NAME), displayName));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.FORM_TYPE), formType.name()));
-        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.COL_COUNT), "3"));
+        /*viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.COL_COUNT), "3"));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.COL_WIDTH), "180"));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.LABEL_GAP), "5"));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.FIELD_GAP), "15"));
         viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.HGAP), "3"));
-        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.VGAP), "5"));
+        viewProperties.add(new ViewProperty(view, LayoutManager.getLayoutPropById(FORM.VGAP), "5"));*/
 
         // 创建属性配置
         for (MetaField field : meta.getFields()) {
@@ -261,13 +271,18 @@ public class FormProperty implements PropertyNames {
 
         String colName = field.getName();
         if (field.getDisplayStyle() == DisplayStyle.COMBO_BOX || field.getDisplayStyle() == DisplayStyle.BOOLEAN) {
-            sb.append(String.format("<select class=\"dictList\" dictId=\"%s\" name=\"%s\" style=\"width:150px;\"></select>",
+            sb.append(String.format("<select class=\"dictList\" dictId=\"%s\" name=\"%s\" style=\"width:150px;\" %s></select>",
                     field.getDict().getId(), colName));
         } else if(field.getDisplayStyle() == DisplayStyle.DATE) {
             if (field.getFormProperty().getFormType() == FormType.QUERY) {
                 sb.append("<div class=\"controls\">\n" +
                         "    <div class=\"form-date-range btn\"><i class=\"icon-calendar\"></i>&nbsp;<span></span><b class=\"caret\"></b></div>\n" +
                         "</div>");
+            } else { // 日期
+                sb.append("<div class=\"form-group input-append date mu_date\" data-date-format=\"yyyy-mm-dd\">\n" +
+                        "    <input class=\"form-control\" type=\"text\" name=\"" + field.getName() + "\" readonly>\n" +
+                        "    <span class=\"add-on\"><i class=\"icon-th\"></i></span>\n" +
+                        "</div> ");
             }
         }
         else {

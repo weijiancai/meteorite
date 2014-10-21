@@ -98,4 +98,17 @@ public class UList {
     public static boolean isEmpty(Collection collection) {
         return collection == null || collection.size() == 0;
     }
+
+    /**
+     * 复制List
+     *
+     * @param source 源List
+     * @param <T> 类型
+     * @return 返回复制后的list
+     */
+    public static <T> List<T> copy(List<T> source) {
+        List<T> result = new ArrayList<T>();
+        result.addAll(source);
+        return result;
+    }
 }

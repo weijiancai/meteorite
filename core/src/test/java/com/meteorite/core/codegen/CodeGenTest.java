@@ -6,15 +6,18 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.project.ProjectDefine;
 import com.meteorite.core.project.ProjectManager;
 import com.meteorite.project.wlb.ProjectDefineInit;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class CodeGenTest {
-
+    @BeforeClass
+    public static void setup() throws Exception {
+        SystemManager.getInstance().init();
+    }
     @Test
     public void testGenSpringCode() throws Exception {
-        SystemManager.getInstance().init();
 
         /*Meta meta = MetaManager.getMeta("CmsDbNews");
         meta.setName("News");
@@ -36,5 +39,12 @@ public class CodeGenTest {
         codeGen.setBasePageDir("D:\\workspace_other\\wlb\\WebContent\\WEB-INF\\html");
         ProjectDefine project = ProjectManager.getProjectByName(ProjectDefineInit.PROJECT_NAME);
         codeGen.genSpringCode(project, meta, "BsDz");
+    }
+
+    @Test
+    public void testGenProjectCode() throws Exception {
+        ProjectDefine project = ProjectManager.getProjectByName("XinJu");
+        CodeGen codeGen = new CodeGen(project, MetaManager.getMeta("News"));
+        codeGen.gen();
     }
 }

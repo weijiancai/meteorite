@@ -70,15 +70,17 @@ public class ProjectManager {
         }
     }
 
-    private static void putCache(ProjectDefine project) {
+    public static void putCache(ProjectDefine project) {
         projectIdMap.put(project.getId(), project);
         projectNameMap.put(project.getName(), project);
         projects.add(project);
-        NavMenu root = new NavMenu();
-        root.setId("root");
-        root.setName("root");
-        root.setDisplayName("导航菜单");
-        project.setRootNavMenu(root);
+        if (project.getRootNavMenu() == null) {
+            NavMenu root = new NavMenu();
+            root.setId("root");
+            root.setName("root");
+            root.setDisplayName("导航菜单");
+            project.setRootNavMenu(root);
+        }
     }
 
     /**

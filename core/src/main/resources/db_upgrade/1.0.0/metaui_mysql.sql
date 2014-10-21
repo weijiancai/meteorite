@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/10/5 0:09:36                            */
+/* Created on:     2014/10/19 20:53:23                          */
 /*==============================================================*/
 
 
@@ -66,7 +66,8 @@ create table mu_code_tpl
    project_id           varchar(32) not null comment '项目ID',
    file_name            varchar(128) not null comment '文件名',
    file_path            varchar(256) comment '文件路径',
-   tpl_content          text not null comment '模板内容',
+   tpl_file             varchar(256) comment '模板文件',
+   tpl_content          text comment '模板内容',
    is_valid             char(1) not null comment '是否有效',
    sort_num             int not null comment '排序号',
    input_date           datetime not null comment '录入时间',
@@ -517,7 +518,7 @@ alter table mu_module add constraint FK_module_viewId foreign key (view_id)
       references mu_view (id) on delete restrict on update restrict;
 
 alter table mu_nav_menu add constraint FK_nav_menu_projectId foreign key (project_id)
-      references mu_project_define (id) on delete restrict on update restrict;
+      references mu_project_define (id) on delete cascade on update cascade;
 
 alter table mu_view add constraint FK_view_metaId foreign key (meta_id)
       references mu_meta (id) on delete cascade on update cascade;

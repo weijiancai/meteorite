@@ -286,4 +286,16 @@ public class UString {
         }
         return result;
     }
+
+    /**
+     * 获得字符串值，如果值为空，则返回默认值
+     *
+     * @param value 字符串值
+     * @param defaultValue 默认值
+     * @return 如果值为空，则返回默认值
+     * @since 1.0.0
+     */
+    public static String getValue(String value, String defaultValue) {
+        return UString.isEmpty(value) ? defaultValue : value;
+    }
 }

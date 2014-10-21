@@ -598,4 +598,14 @@ public class Meta {
             throw new RuntimeException("生成RowMapper代码失败！", e);
         }
     }
+
+    public String getPDBCode() {
+        try {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("meta", this);
+            return FreeMarkerTemplateUtils.processTemplateIntoString(FreeMarkerConfiguration.classPath().getTemplate("PDBMapper.ftl"), map);
+        } catch (Exception e) {
+            throw new RuntimeException("生成PDB代码失败！", e);
+        }
+    }
 }

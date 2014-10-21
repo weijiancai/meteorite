@@ -21,6 +21,7 @@ import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.*;
 
 import static com.meteorite.core.config.SystemConfig.*;
@@ -286,5 +287,14 @@ public class SystemManager {
      */
     public static List<ProfileSetting> getSettingList() {
         return settingList;
+    }
+
+    /**
+     * 重置系统到默认配置，即恢复到出厂设置
+     */
+    public static void resetToDefaultSetting() throws SQLException {
+        JdbcTemplate template = new JdbcTemplate();
+        template.clearTable("mu_db_version", "mu_profile_setting");
+        template.commit();
     }
 }

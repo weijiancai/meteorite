@@ -33,6 +33,8 @@ public interface PropertyNames {
         String SORT_NUM = "FORM_FIELD.sortNum";
         String QUERY_MODEL = "FORM_FIELD.queryModel";
         String IS_REQUIRE = "FORM_FIELD.require";
+        String IS_READONLY = "FORM_FIELD.readonly";
+        String MAX_LENGTH = "FORM_FIELD.maxLength";
     }
     
     interface TABLE {

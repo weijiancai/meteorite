@@ -5,10 +5,6 @@ import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.dict.DictManager;
 import com.meteorite.core.dict.QueryModel;
 import com.meteorite.core.meta.DisplayStyle;
-import com.meteorite.core.meta.model.MetaField;
-import com.meteorite.core.ui.config.LayoutProperty;
-import com.meteorite.core.ui.layout.LayoutProperties;
-import com.meteorite.core.ui.layout.PropertyNames;
 import com.meteorite.core.ui.layout.property.FormFieldProperty;
 import com.meteorite.core.ui.model.ViewProperty;
 import com.meteorite.core.util.UNumber;
@@ -182,7 +178,7 @@ public class Properties implements Initializable {
 
         // 保存到数据库
         try {
-            viewProperty.persist();
+            viewProperty.update();
         } catch (Exception e) {
             throw new RuntimeException("保存视图属性失败！", e);
         }
@@ -275,7 +271,7 @@ public class Properties implements Initializable {
         heightTF.setText(config.getHeight() + "");
         displayStyleCB.setValue(displayStyleCategory.getDictCodeByName(config.getDisplayStyle().name()));
         sortNumTF.setText(config.getSortNum() + "");
-        defaultValueTF.setText(config.getValue());
+        defaultValueTF.setText(config.getDefaultValue());
         if (config.getDict() != null) {
             dictCB.setValue(DictManager.getRoot().getDictCode(config.getDict().getId()));
         } else {

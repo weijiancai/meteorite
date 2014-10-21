@@ -115,7 +115,7 @@ public class ViewManager {
         addView(formView, template);
 
         for (ViewProperty property : formView.getViewProperties()) {
-            template.save(MetaPDBFactory.getViewProperty(property));
+//            template.save(MetaPDBFactory.getViewProperty(property));
         }
 
         System.out.println(String.format("创建%sTableView", meta.getName()));
@@ -124,7 +124,7 @@ public class ViewManager {
         addView(tableView, template);
 
         for (ViewProperty property : tableView.getViewProperties()) {
-            template.save(MetaPDBFactory.getViewProperty(property));
+//            template.save(MetaPDBFactory.getViewProperty(property));
         }
 
         System.out.println(String.format("创建%sQueryView", meta.getName()));
@@ -133,7 +133,7 @@ public class ViewManager {
         addView(queryView, template);
 
         for (ViewProperty property : queryView.getViewProperties()) {
-            template.save(MetaPDBFactory.getViewProperty(property));
+//            template.save(MetaPDBFactory.getViewProperty(property));
         }
 
         System.out.println(String.format("创建%sCrudView", meta.getName()));
@@ -142,7 +142,7 @@ public class ViewManager {
         addView(crudView, template);
 
         for (ViewProperty property : crudView.getViewProperties()) {
-            template.save(MetaPDBFactory.getViewProperty(property));
+//            template.save(MetaPDBFactory.getViewProperty(property));
         }
 
         System.out.println(String.format("创建视图完成"));

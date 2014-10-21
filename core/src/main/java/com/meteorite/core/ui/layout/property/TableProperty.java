@@ -32,9 +32,9 @@ public class TableProperty implements PropertyNames {
         this.view = view;
         this.meta = view.getMeta();
         fieldProperties = new ArrayList<TableFieldProperty>();
-        for (MetaField field : view.getMetaFieldList()) {
+        for (MetaField field : meta.getFields()) {
             Map<String, ViewProperty> map = view.getMetaFieldConfig(field);
-            TableFieldProperty fieldProperty = new TableFieldProperty(field, map);
+            TableFieldProperty fieldProperty = new TableFieldProperty(this, field, map);
             fieldProperties.add(fieldProperty);
             fieldMap.put(field, fieldProperty);
         }
@@ -82,9 +82,13 @@ public class TableProperty implements PropertyNames {
         view.setInputDate(new Date());
         view.setSortNum(0);
 
+        view.setViewProperties(createViewProperties(view, meta));
+
+        return view;
+    }
+
+    public static List<ViewProperty> createViewProperties(View view, Meta meta) {
         List<ViewProperty> viewProperties = new ArrayList<ViewProperty>();
-
-
         // 创建属性配置
         for (MetaField field : meta.getFields()) {
             viewProperties.addAll(TableFieldProperty.getViewProperties(view, field, true));
@@ -95,9 +99,7 @@ public class TableProperty implements PropertyNames {
                 viewProperties.addAll(TableFieldProperty.getViewProperties(view, field, false));
             }
         }
-        view.setViewProperties(viewProperties);
-
-        return view;
+        return viewProperties;
     }
 
     public View getView() {

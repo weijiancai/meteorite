@@ -13,7 +13,6 @@ import com.meteorite.core.observer.BaseSubject;
 import com.meteorite.core.observer.Observer;
 import com.meteorite.core.observer.Subject;
 import com.meteorite.core.ui.ViewManager;
-import com.meteorite.core.ui.layout.property.CrudProperty;
 import com.meteorite.core.ui.layout.property.FormProperty;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.ui.layout.property.TableProperty;
@@ -108,14 +107,10 @@ public class MUTable extends StackPane {
     }
 
     public void initUI(Meta meta) {
-        View crudView = ViewManager.getViewByName(meta.getName() + "CrudView");
-        CrudProperty crudConfig = new CrudProperty(crudView);
-        if (crudView != null) {
-            queryForm = new MUForm(new FormProperty(crudConfig.getQueryView()));
-            editForm = new MUForm(new FormProperty(crudConfig.getFormView()));
-            editForm.setDataStatusSubject(dataStatusSubject);
-            config = new TableProperty(crudConfig.getTableView());
-        }
+        queryForm = new MUForm(new FormProperty(ViewManager.getViewByName(meta.getName() + "QueryView")));
+        editForm = new MUForm(new FormProperty(ViewManager.getViewByName(meta.getName() + "FormView")));
+        editForm.setDataStatusSubject(dataStatusSubject);
+        config = new TableProperty(ViewManager.getViewByName(meta.getName() + "TableView"));
         initUI();
     }
 
@@ -187,6 +182,8 @@ public class MUTable extends StackPane {
                 table.getTableToolBar().getItems().add(button);
             }
         }
+        // 允许多选
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     private void createTableColumns() {
@@ -559,6 +556,7 @@ public class MUTable extends StackPane {
                     String name = prop.getProperty().getName();
                     data.put(name, property.getPropertyValue(id));
                 }
+                data.put("dataType", property.getDataType().name()); // 数据类型
                 list.add(data);
             }
             table.addEventHandler(DataChangeEvent.EVENT_TYPE, new MuEventHandler<DataChangeEvent>() {
@@ -570,7 +568,7 @@ public class MUTable extends StackPane {
                     viewProperty.setValue(event.getNewValue());
                     config.setPropertyValue(field, event.getName(), event.getNewValue());
                     // 保存到数据库
-                    viewProperty.persist();
+                    viewProperty.update();
                 }
             });
             table.getItems().addAll(list);
@@ -715,9 +713,19 @@ public class MUTable extends StackPane {
         @Override
         public void doHandler(ActionEvent event) throws Exception {
             Meta meta = config.getMeta();
-            int selected = table.getSelectionModel().getSelectedIndex();
-            meta.delete(selected);
-            table.getItems().remove(selected);
+            List<Integer> list = UList.copy(table.getSelectionModel().getSelectedIndices());
+            // 排序
+            Collections.sort(list, new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    return o2 - o1;
+                }
+            });
+            // 删除数据，从大到小删除
+            for (int selected : list) {
+                meta.delete(selected);
+                table.getItems().remove(selected);
+            }
         }
     }
 

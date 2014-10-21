@@ -47,31 +47,49 @@ public class BackupManager {
     private BackupManager() {
     }
 
-    public void backup() throws Exception {
+    public void backup(BackupSetting setting) throws Exception {
         BackupInfo info = new BackupInfo();
         // 备份系统参数设置
-        info.setSettingList(SystemManager.getSettingList());
+        if (setting.isSetting()) {
+            info.setSettingList(SystemManager.getSettingList());
+        }
         // 备份用户数据字典
-        info.setDictCategory(DictManager.getRoot());
+        if (setting.isDict()) {
+            info.setDictCategory(DictManager.getRoot());
+        }
         // 备份项目
-        info.setProjectList(ProjectManager.getProjects());
+        if (setting.isProject()) {
+            info.setProjectList(ProjectManager.getProjects());
+        }
         // 备份元数据项
-        info.setMetaItemList(MetaManager.getMetaItemList());
+        if (setting.isMetaItem()) {
+            info.setMetaItemList(MetaManager.getMetaItemList());
+        }
         // 备份元数据
-        info.setMetaList(MetaManager.getMetaList());
+        if (setting.isMeta()) {
+            info.setMetaList(MetaManager.getMetaList());
+        }
         // 备份元数据引用
-        info.setMetaReferenceList(MetaManager.getMetaReferenceList());
+        if (setting.isMetaReference()) {
+            info.setMetaReferenceList(MetaManager.getMetaReferenceList());
+        }
         // 备份视图
-        info.setViewList(ViewManager.getViewList());
+        if (setting.isView()) {
+            info.setViewList(ViewManager.getViewList());
+        }
         // 备份数据源
-        info.setDataSourceList(DataSourceManager.getDataSources());
+        if (setting.isDataSource()) {
+            info.setDataSourceList(DataSourceManager.getDataSources());
+        }
 
         File file = UFile.createFile(PathManager.getBackupPath(), "backup" + UDate.dateToString(new Date(), "yyyyMMddHHmmss") + ".xml");
         JAXBUtil.marshalToFile(info, file, BackupInfo.class, DictCategory.class, DictCode.class, ProjectDefine.class, NavMenu.class, CodeTpl.class, Meta.class, MetaField.class, MetaItem.class);
     }
 
-    public void restore() throws Exception {
-        File file = getLastBackupFile();
+    public void restore(BackupSetting setting, File file) throws Exception {
+        if (file == null) {
+            file = getLastBackupFile();
+        }
         if (file == null) {
             return;
         }
@@ -79,52 +97,82 @@ public class BackupManager {
         JdbcTemplate template = new JdbcTemplate();
         try {
             // 恢复系统参数
-            template.clearTable("mu_profile_setting");
-            for (ProfileSetting setting : info.getSettingList()) {
-                template.save(MetaPDBFactory.getProfileSetting(setting));
+            if (setting.isSetting()) {
+                template.clearTable("mu_profile_setting");
+                for (ProfileSetting profileSetting : info.getSettingList()) {
+                    template.save(MetaPDBFactory.getProfileSetting(profileSetting));
+                }
             }
             // 恢复数据字典
-            template.clearTable("mu_dz_category");
-            restoreDict(info.getDictCategory(), template);
+            if (setting.isDict()) {
+                template.clearTable("mu_dz_category");
+                restoreDict(info.getDictCategory(), template);
+            }
             // 恢复元数据项
-            template.clearTable("mu_meta_item");
-            for (MetaItem item : info.getMetaItemList()) {
-                template.save(MetaPDBFactory.getMetaItem(item));
+            if (setting.isMetaItem()) {
+                template.clearTable("mu_meta_item");
+                for (MetaItem item : info.getMetaItemList()) {
+                    template.save(MetaPDBFactory.getMetaItem(item));
+                }
             }
             // 恢复元数据
-            template.clearTable("mu_meta");
-            for (Meta meta : info.getMetaList()) {
-                template.save(MetaPDBFactory.getMeta(meta));
-                for (MetaField field : meta.getFields()) {
-                    template.save(MetaPDBFactory.getMetaField(field));
-                }
-                // 恢复MetaSql
-                if (UString.isNotEmpty(meta.getSqlText())) {
-                    template.save(MetaPDBFactory.getMetaSql(meta));
+            if (setting.isMeta()) {
+                template.clearTable("mu_meta");
+                for (Meta meta : info.getMetaList()) {
+                    template.save(MetaPDBFactory.getMeta(meta));
+                    for (MetaField field : meta.getFields()) {
+                        template.save(MetaPDBFactory.getMetaField(field));
+                    }
+                    // 恢复MetaSql
+                    if (UString.isNotEmpty(meta.getSqlText())) {
+                        template.save(MetaPDBFactory.getMetaSql(meta));
+                    }
                 }
             }
             // 恢复元数据引用
-            template.clearTable("mu_meta_reference");
-            for (MetaReference reference : info.getMetaReferenceList()) {
-                template.save(MetaPDBFactory.getMetaReference(reference));
+            if (setting.isMetaReference()) {
+                template.clearTable("mu_meta_reference");
+                for (MetaReference reference : info.getMetaReferenceList()) {
+                    template.save(MetaPDBFactory.getMetaReference(reference));
+                }
             }
             // 恢复视图
-            template.clearTable("mu_view");
-            for (View view : info.getViewList()) {
-                template.save(MetaPDBFactory.getView(view));
-                for (ViewProperty property : view.getViewProperties()) {
-                    template.save(MetaPDBFactory.getViewProperty(property));
+            if (setting.isView()) {
+                template.clearTable("mu_view");
+                for (View view : info.getViewList()) {
+                    template.save(MetaPDBFactory.getView(view));
+                    for (ViewProperty property : view.getViewProperties()) {
+                        template.save(MetaPDBFactory.getViewProperty(property));
+                    }
+                    ViewManager.addCache(view);
+                }
+            }
+            // 恢复数据源
+            if (setting.isDataSource()) {
+                template.clearTable("mu_db_datasource");
+                for (DataSource dataSource : info.getDataSourceList()) {
+                    if ("MetaUI_DataSource".equals(dataSource.getId())) {
+                        continue;
+                    }
+                    template.save(MetaPDBFactory.getDataSource(dataSource));
+                    DataSourceManager.addDataSource(dataSource);
+                }
+            }
+            // 恢复项目
+            if (setting.isProject()) {
+                template.clearTable("mu_project_define");
+                for (ProjectDefine project : info.getProjectList()) {
+                    template.save(MetaPDBFactory.getProjectDefine(project));
+                    // 恢复导航菜单
+                    restoreNavMenu(project.getRootNavMenu(), template);
+                    // 恢复代码模板
+                    for (CodeTpl codeTpl : project.getCodeTpls()) {
+                        template.save(MetaPDBFactory.getCodeTpl(codeTpl));
+                    }
+                    ProjectManager.putCache(project);
                 }
             }
 
-            // 恢复数据源
-            template.clearTable("mu_db_datasource");
-            for (DataSource dataSource : info.getDataSourceList()) {
-                if ("MetaUI_DataSource".equals(dataSource.getId())) {
-                    continue;
-                }
-                template.save(MetaPDBFactory.getDataSource(dataSource));
-            }
             template.commit();
         } finally {
             template.close();
@@ -143,9 +191,24 @@ public class BackupManager {
         }
 
         template.save(MetaPDBFactory.getDictCategory(parent));
+        DictManager.addDict(parent);
         for (DictCode code : parent.getCodeList()) {
             template.save(MetaPDBFactory.getDictCode(code));
         }
+    }
+
+    private void restoreNavMenu(NavMenu parent, JdbcTemplate template) throws Exception {
+        if (parent.getChildren().size() > 0) {
+            for (NavMenu category : parent.getChildren()) {
+                restoreNavMenu(category, template);
+            }
+        }
+
+        if ("ROOT".equalsIgnoreCase(parent.getId())) {
+            return;
+        }
+
+        template.save(MetaPDBFactory.getNavMenu(parent));
     }
 
     private File getLastBackupFile() {

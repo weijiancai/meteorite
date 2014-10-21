@@ -1,6 +1,8 @@
 package com.meteorite.core.ui.model;
 
+import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.datasource.persist.MetaPDBFactory;
 import com.meteorite.core.meta.model.MetaField;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -39,6 +41,8 @@ public class ViewProperty {
         this.value = value;
         this.view = view;
         this.property = property;
+        this.viewId = view.getId();
+        this.layoutPropId = property.getId();
     }
 
     public ViewProperty(View view, LayoutProperty property, MetaField field, String value) {
@@ -46,6 +50,9 @@ public class ViewProperty {
         this.view = view;
         this.field = field;
         this.property = property;
+        this.viewId = view.getId();
+        this.layoutPropId = property.getId();
+        this.metaFieldId = field.getId();
     }
 
     @XmlAttribute
@@ -120,7 +127,7 @@ public class ViewProperty {
         this.property = property;
     }
 
-    public void persist() throws Exception {
+    public void update() throws Exception {
         JdbcTemplate template = new JdbcTemplate();
         try {
             Map<String, Object> valueMap = new HashMap<String, Object>();
@@ -134,5 +141,9 @@ public class ViewProperty {
         } finally {
             template.close();
         }
+    }
+
+    public void save() throws Exception {
+        JdbcTemplate.save(DataSourceManager.getSysDataSource(), MetaPDBFactory.getViewProperty(this));
     }
 }

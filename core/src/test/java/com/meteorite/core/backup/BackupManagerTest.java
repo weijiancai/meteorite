@@ -10,11 +10,11 @@ public class BackupManagerTest {
     @Test
     public void testBackup() throws Exception {
         SystemManager.getInstance().init();
-        BackupManager.getInstance().backup();
+        BackupManager.getInstance().backup(null);
     }
 
     @Test
     public void testRestore() throws Exception {
-        BackupManager.getInstance().restore();
+        BackupManager.getInstance().restore(null, null);
     }
 }

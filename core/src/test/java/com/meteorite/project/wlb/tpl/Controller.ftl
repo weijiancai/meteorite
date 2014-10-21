@@ -40,7 +40,7 @@ public class ${meta.name}Controller {
     }
 
     @RequestMapping(value = "/go")
-    public String goList(HttpServletRequest req) throws Exception {
+    public String goList() throws Exception {
         return "admin/${meta.name}";
     }
 

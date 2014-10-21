@@ -4,6 +4,7 @@ import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.project.ProjectDefine;
 import com.meteorite.core.project.tpl.CodeTpl;
 import com.meteorite.core.ui.ViewManager;
+import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
 import com.meteorite.core.util.ftl.FreeMarkerConfiguration;
@@ -36,8 +37,8 @@ public class CodeGen {
             this.baseDir = baseDir;
     }
 
-    public CodeGen(ProjectDefine project, CodeTpl tpl, Meta meta) {
-
+    public CodeGen(ProjectDefine project, Meta meta) {
+        this(project, project.getCodeTpls(), meta);
     }
 
     public CodeGen(ProjectDefine project, List<CodeTpl> codeTpls, Meta meta) {
@@ -48,6 +49,9 @@ public class CodeGen {
         map.put("project", project);
         map.put("meta", meta);
         map.put("queryForm", ViewManager.getViewByName(meta.getName() + "QueryView").getQueryForm().toHtml(true));
+        View editFormView = ViewManager.getViewByName(meta.getName() + "FormView");
+        map.put("editForm", editFormView.getQueryForm().toHtml(true));
+        map.put("editFormConfig", editFormView.getQueryForm());
     }
 
     public void gen() {
@@ -57,7 +61,11 @@ public class CodeGen {
             config.setTemplateLoader(loader);
 
             for (CodeTpl tpl : codeTpls) {
-                loader.putTemplate(tpl.getName(), tpl.getTplContent());
+                String tplContent = tpl.getTplContent();
+                if (UString.isNotEmpty(tpl.getTplFile())) {
+                    tplContent = UFile.readString(new File(tpl.getTplFile()));
+                }
+                loader.putTemplate(tpl.getName(), tplContent);
                 String str = FreeMarkerTemplateUtils.processTemplateIntoString(config.getTemplate(tpl.getName()), map);
                 String fileName = tpl.getFileName().replace("${meta.name}", meta.getName());
                 UFile.write(str, new File(tpl.getFilePath(), fileName).getAbsolutePath());
