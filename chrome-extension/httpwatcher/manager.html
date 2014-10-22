@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link href="lib/bootstrap/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="lib/dataTables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-sm-12">
+        <table id="example" class="display" width="100%" cellspacing="0"></table>
+    </div>
+</div>
+
+
+<div id="detail_tpl" style="display: none;">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#headers" role="tab" data-toggle="tab">Headers</a></li>
+        <li><a href="#cookies" role="tab" data-toggle="tab">Cookies</a></li>
+        <li><a href="#query_strings" role="tab" data-toggle="tab">Query String</a></li>
+        <li><a href="#post_data" role="tab" data-toggle="tab">Post Data</a></li>
+        <li><a href="#content" role="tab" data-toggle="tab">Content</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="headers">
+            <div class="row">
+                <div class="col-sm-6">
+                    <table id="requestHeaders" class="display" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <td style="width: 150px;">Request Header</td>
+                            <td>Value</td>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6">
+                    <table id="responseHeaders" class="display" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <td style="width: 150px;">Response Header</td>
+                            <td>Value</td>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="cookies">
+            <table id="requestCookies" class="display" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <td style="width: 150px;">Cookie Sent</td>
+                    <td>Value</td>
+                    <td>Path</td>
+                    <td>Domain</td>
+                    <td>expires</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <table id="responseCookies" class="display" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <td style="width: 150px;">Cookie Received</td>
+                    <td>Value</td>
+                    <td>Path</td>
+                    <td>Domain</td>
+                    <td>expires</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="query_strings">
+            <table id="queryStrings" class="display" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <td style="width: 150px;">Parameter</td>
+                    <td>Value</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="post_data">
+            <table id="postData" class="display" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <td style="width: 150px;">Parameter</td>
+                    <td>Value</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="content">
+            <label for="responseContent"></label>
+            <textarea id="responseContent"></textarea>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="lib/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="lib/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="manager.js"></script>
+</body>
+</html>
