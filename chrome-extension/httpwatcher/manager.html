@@ -1,66 +1,120 @@
+<!DOCTYPE html>
 <html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <style>
-        table {
-            border-collapse: collapse;
-        }
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
 
-        td {
-            border: 1px solid black;
-            padding-left: 5px;
-        }
+    <link href="lib/bootstrap/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="lib/dataTables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
 
-        td.button {
-            border: none;
-        }
-
-        td.cookie_count {
-            text-align: right;
-        }
+    <style type="text/css">
 
     </style>
-    <script src="manager.js"></script>
 </head>
 <body>
-<h2>Cookies! ... Nom Nom Nom...</h2>
-<button id="remove_button">DELETE ALL!</button>
-<div id="filter_div">
-    Filter: <input id="filter" type="text">
-    <button>x</button>
+<div class="container-fluid">
+    <div class="col-sm-12">
+        <table id="example" class="display" width="100%" cellspacing="0"></table>
+    </div>
 </div>
-<br>
 
-<div id="summary_div">
-    Showing <span id="filter_count"></span> of <span id="total_count"></span> cookie domains.
-    <span id="delete_all_button"></span>
-    <button id="sendCookie" type="button">发送Cookie</button>
+
+<div id="detail_tpl" style="display: none;">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#headers" role="tab" data-toggle="tab">Headers</a></li>
+        <li><a href="#cookies" role="tab" data-toggle="tab">Cookies</a></li>
+        <li><a href="#query_strings" role="tab" data-toggle="tab">Query String</a></li>
+        <li><a href="#post_data" role="tab" data-toggle="tab">Post Data</a></li>
+        <li><a href="#content" role="tab" data-toggle="tab">Content</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="headers">
+            <div class="row">
+                <div class="col-sm-6">
+                    <table id="requestHeaders" class="display" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <td style="width: 150px;">Request Header</td>
+                            <td>Value</td>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="col-sm-6">
+                    <table id="responseHeaders" class="display" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <td style="width: 150px;">Response Header</td>
+                            <td>Value</td>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="cookies">
+            <table id="requestCookies" class="display" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <td style="width: 150px;">Cookie Sent</td>
+                    <td>Value</td>
+                    <td>Path</td>
+                    <td>Domain</td>
+                    <td>expires</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <table id="responseCookies" class="display" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <td style="width: 150px;">Cookie Received</td>
+                    <td>Value</td>
+                    <td>Path</td>
+                    <td>Domain</td>
+                    <td>expires</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="query_strings">
+            <table id="queryStrings" class="display" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <td style="width: 150px;">Parameter</td>
+                    <td>Value</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="post_data">
+            <table id="postData" class="display" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <td style="width: 150px;">Parameter</td>
+                    <td>Value</td>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="tab-pane" id="content">
+            <label for="responseContent"></label>
+            <textarea id="responseContent"></textarea>
+        </div>
+    </div>
 </div>
-<br>
-<table id="cookies">
-    <tbody>
-    <tr class="header">
-        <th>Name</th>
-        <th>#Cookies</th>
-    </tr>
-    </tbody>
-</table>
 
-<table id="cookies1">
-    <tbody>
-    <tr class="header">
-        <th>name</th>
-        <th style="width:300px;">value</th>
-        <th>domain</th>
-        <th>hostOnly</th>
-        <th>path</th>
-        <th>secure</th>
-        <th>httpOnly</th>
-        <th>session</th>
-        <th>expirationDate</th>
-        <th>storeId</th>
-    </tr>
-    </tbody>
-</table>
+<script type="text/javascript" src="lib/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="lib/bootstrap/bootstrap.js"></script>
+<script type="text/javascript" src="lib/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="manager.js"></script>
 </body>
 </html>

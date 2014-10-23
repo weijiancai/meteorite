@@ -1,317 +1,268 @@
-if (!chrome.cookies) {
-    chrome.cookies = chrome.experimental.cookies;
-}
-
-// A simple Timer class.
-function Timer() {
-    this.start_ = new Date();
-
-    this.elapsed = function () {
-        return (new Date()) - this.start_;
-    };
-
-    this.reset = function () {
-        this.start_ = new Date();
-    }
-}
-
-// Compares cookies for "key" (name, domain, etc.) equality, but not "value"
-// equality.
-function cookieMatch(c1, c2) {
-    return (c1.name == c2.name) && (c1.domain == c2.domain) &&
-        (c1.hostOnly == c2.hostOnly) && (c1.path == c2.path) &&
-        (c1.secure == c2.secure) && (c1.httpOnly == c2.httpOnly) &&
-        (c1.session == c2.session) && (c1.storeId == c2.storeId);
-}
-
-// Returns an array of sorted keys from an associative array.
-function sortedKeys(array) {
-    var keys = [];
-    for (var i in array) {
-        keys.push(i);
-    }
-    keys.sort();
-    return keys;
-}
-
-// Shorthand for document.querySelector.
-function select(selector) {
-    return document.querySelector(selector);
-}
-
-// An object used for caching data about the browser's cookies, which we update
-// as notifications come in.
-function CookieCache() {
-    this.cookies_ = {};
-
-    this.reset = function () {
-        this.cookies_ = {};
-    };
-
-    this.add = function (cookie) {
-        var domain = cookie.domain;
-        if (!this.cookies_[domain]) {
-            this.cookies_[domain] = [];
-        }
-        this.cookies_[domain].push(cookie);
-    };
-
-    this.remove = function (cookie) {
-        var domain = cookie.domain;
-        if (this.cookies_[domain]) {
-            var i = 0;
-            while (i < this.cookies_[domain].length) {
-                if (cookieMatch(this.cookies_[domain][i], cookie)) {
-                    this.cookies_[domain].splice(i, 1);
-                } else {
-                    i++;
-                }
-            }
-            if (this.cookies_[domain].length == 0) {
-                delete this.cookies_[domain];
-            }
-        }
-    };
-
-    // Returns a sorted list of cookie domains that match |filter|. If |filter| is
-    //  null, returns all domains.
-    this.getDomains = function (filter) {
-        var result = [];
-        sortedKeys(this.cookies_).forEach(function (domain) {
-            if (!filter || domain.indexOf(filter) != -1) {
-                result.push(domain);
-            }
-        });
-        return result;
-    };
-
-    this.getCookies = function (domain) {
-        return this.cookies_[domain];
-    };
-}
-
-
-var cache = new CookieCache();
-
-
-function removeAllForFilter() {
-    var filter = select("#filter").value;
-    var timer = new Timer();
-    cache.getDomains(filter).forEach(function (domain) {
-        removeCookiesForDomain(domain);
-    });
-}
-
-function removeAll() {
-    var all_cookies = [];
-    cache.getDomains().forEach(function (domain) {
-        cache.getCookies(domain).forEach(function (cookie) {
-            all_cookies.push(cookie);
-        });
-    });
-    cache.reset();
-    var count = all_cookies.length;
-    var timer = new Timer();
-    for (var i = 0; i < count; i++) {
-        removeCookie(all_cookies[i]);
-    }
-    timer.reset();
-    chrome.cookies.getAll({}, function (cookies) {
-        for (var i in cookies) {
-            cache.add(cookies[i]);
-            removeCookie(cookies[i]);
-        }
-    });
-}
-
-function removeCookie(cookie) {
-    var url = "http" + (cookie.secure ? "s" : "") + "://" + cookie.domain +
-        cookie.path;
-    chrome.cookies.remove({"url": url, "name": cookie.name});
-}
-
-function removeCookiesForDomain(domain) {
-    var timer = new Timer();
-    cache.getCookies(domain).forEach(function (cookie) {
-        removeCookie(cookie);
-    });
-}
-
-function resetTable() {
-    var table = select("#cookies");
-    while (table.rows.length > 1) {
-        table.deleteRow(table.rows.length - 1);
-    }
-
-    table = select("#cookies1");
-    while (table.rows.length > 1) {
-        table.deleteRow(table.rows.length - 1);
-    }
-}
-
-var reload_scheduled = false;
-
-function scheduleReloadCookieTable() {
-    if (!reload_scheduled) {
-        reload_scheduled = true;
-        setTimeout(reloadCookieTable, 250);
-    }
-}
-
-function reloadCookieTable() {
-    reload_scheduled = false;
-
-    var filter = select("#filter").value;
-
-    var domains = cache.getDomains(filter);
-
-    select("#filter_count").innerText = domains.length;
-    select("#total_count").innerText = cache.getDomains().length;
-
-    select("#delete_all_button").innerHTML = "";
-    if (domains.length) {
-        var button = document.createElement("button");
-        button.onclick = removeAllForFilter;
-        button.innerText = "delete all " + domains.length;
-        select("#delete_all_button").appendChild(button);
-    }
-
-    resetTable();
-    var table = select("#cookies");
-
-    domains.forEach(function (domain) {
-        var cookies = cache.getCookies(domain);
-        var row = table.insertRow(-1);
-        row.insertCell(-1).innerText = domain;
-        var cell = row.insertCell(-1);
-        cell.innerText = cookies.length;
-        cell.setAttribute("class", "cookie_count");
-
-        var button = document.createElement("button");
-        button.innerText = "delete";
-        button.onclick = (function (dom) {
-            return function () {
-                removeCookiesForDomain(dom);
-            };
-        }(domain));
-        cell = row.insertCell(-1);
-        cell.appendChild(button);
-        cell.setAttribute("class", "button");
-    });
-
-    // 明细table
-    table = select("#cookies1");
-
-    chrome.cookies.getAll({}, function callback(data) {
-        data.forEach(function(cookie) {
-            var row = table.insertRow(-1);
-            row.insertCell(-1).innerText = cookie.name;
-            row.insertCell(-1).innerText = cookie.value;
-            row.insertCell(-1).innerText = cookie.domain;
-            row.insertCell(-1).innerText = cookie.hostOnly;
-            row.insertCell(-1).innerText = cookie.path;
-            row.insertCell(-1).innerText = cookie.secure;
-            row.insertCell(-1).innerText = cookie.httpOnly;
-            row.insertCell(-1).innerText = cookie.session;
-            row.insertCell(-1).innerText = cookie.expirationDate;
-            row.insertCell(-1).innerText = cookie.storeId;
-        });
-
-    });
-}
-
-function focusFilter() {
-    select("#filter").focus();
-}
-
-function resetFilter() {
-    var filter = select("#filter");
-    filter.focus();
-    if (filter.value.length > 0) {
-        filter.value = "";
-        reloadCookieTable();
-    }
-}
-
-var ESCAPE_KEY = 27;
-window.onkeydown = function (event) {
-    if (event.keyCode == ESCAPE_KEY) {
-        resetFilter();
-    }
-};
-
-function listener(info) {
-    cache.remove(info.cookie);
-    if (!info.removed) {
-        cache.add(info.cookie);
-    }
-    scheduleReloadCookieTable();
-}
-
-function startListening() {
-    chrome.cookies.onChanged.addListener(listener);
-}
-
-function stopListening() {
-    chrome.cookies.onChanged.removeListener(listener);
-}
-
-function onload() {
-    focusFilter();
-    var timer = new Timer();
-    chrome.cookies.getAll({}, function (cookies) {
-        startListening();
-        start = new Date();
-        for (var i in cookies) {
-            cache.add(cookies[i]);
-        }
-        timer.reset();
-        reloadCookieTable();
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    onload();
-    document.body.addEventListener('click', focusFilter);
-    document.querySelector('#remove_button').addEventListener('click', removeAll);
-    document.querySelector('#filter_div input').addEventListener(
-        'input', reloadCookieTable);
-    document.querySelector('#filter_div button').addEventListener('click', resetFilter);
-    document.querySelector('#sendCookie').addEventListener('click', sendCookie);
-
-    // 创建发送cookie按钮
-    /*var button = document.createElement("button");
-    button.onclick = sendCookie();
-    button.innerText = "发送Cookie";
-    select("#delete_all_button").appendChild(button);*/
+var requestTable =  $('#example').DataTable({
+    columns: [
+        {
+            "class":          'details-control',
+            "orderable":      false,
+            "data":           null,
+            "defaultContent": ''
+        },
+        {data: 'requestId', title: 'requestId'},
+        {data: 'url', title: 'url'},
+        {data: 'method', title: 'method'},
+        {data: 'frameId', title: 'frameId'},
+        {data: 'parentFrameId', title: 'parentFrameId'},
+        //{data: 'requestBody', title: 'requestBody'},
+        {data: 'tabId', title: 'tabId'},
+        {data: 'type', title: 'type'},
+        {data: 'timeStamp', title: 'timeStamp'}
+    ]
 });
 
-function sendCookie() {
-    var req = new XMLHttpRequest();
-    var url = "http://localhost:9588/taobao";
-    req.open("POST", url, true);
-    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    req.onreadystatechange = function () {
-        if (req.readyState == 4) {
-            if (req.status == 200) {
-                alert(req.responseText);
-            } else {
-                alert("服务器故障");
+$('#example tbody').on('click', 'td.details-control', function () {
+    var tr = $(this).closest('tr');
+    var row = requestTable.row( tr );
+
+    if ( row.child.isShown() ) {
+        // This row is already open - close it
+        row.child.hide();
+        tr.removeClass('shown');
+    } else {
+        // Open this row
+        row.child( format(row.data()) ).show();
+        tr.addClass('shown');
+    }
+});
+
+function format ( data ) {
+    var detailTpl = $('#detail_tpl').clone().show();
+    // 设置请求头
+    detailTpl.find('#requestHeaders').DataTable({
+        searching: false,
+        lengthChange: false,
+        paginate: false,
+        info: false,
+        columns: [
+            {data: 'name'},
+            {data: 'value'}
+        ],
+        data: cache[data['requestId']]['requestHeaders']
+    });
+    // 设置响应头
+    detailTpl.find('#responseHeaders').DataTable({
+        searching: false,
+        lengthChange: false,
+        paginate: false,
+        info: false,
+        columns: [
+            {data: 'name'},
+            {data: 'value'}
+        ],
+        data: cache[data['requestId']]['responseHeaders']
+    });
+    // 设置请求Cookie
+    detailTpl.find('#requestCookies').DataTable({
+        searching: false,
+        lengthChange: false,
+        paginate: false,
+        info: false,
+        columns: [
+            {data: 'name'},
+            {data: 'value'}
+        ],
+        data: getRequestCookies(data['requestId'])
+    });
+    // 设置响应Cookie
+    detailTpl.find('#responseCookies').DataTable({
+        searching: false,
+        lengthChange: false,
+        paginate: false,
+        info: false,
+        columns: [
+            {data: 'name'},
+            {data: 'value'},
+            {data: 'path', defaultContent: ''},
+            {data: 'domain', defaultContent: ''}
+        ],
+        data: getResponseCookie(data['requestId'])
+    });
+    // 设置请求字符串
+    detailTpl.find('#queryStrings').DataTable({
+        searching: false,
+        lengthChange: false,
+        paginate: false,
+        info: false,
+        columns: [
+            {data: 'name'},
+            {data: 'value'}
+        ],
+        data: getQueryString(data['requestId'])
+    });
+    // 设置Post Data
+    detailTpl.find('#postData').DataTable({
+        searching: false,
+        lengthChange: false,
+        paginate: false,
+        info: false,
+        columns: [
+            {data: 'name'},
+            {data: 'value'}
+        ],
+        data: getPostData(data['requestId'])
+    });
+    chrome.tabs.get(data['tabId'], function (tab) {
+        console.log(tab);
+    });
+    // 设置内容
+    detailTpl.find('#responseContent').val();
+
+    return detailTpl.html();
+}
+
+// 从请求头中获取Cookie信息
+function getRequestCookies(requestId) {
+    var result = [];
+    var requestHeaders = cache[requestId]['requestHeaders'];
+    if(requestHeaders) {
+        for(var i = 0; i < requestHeaders.length; i++) {
+            var header = requestHeaders[i];
+            if(header.name == 'Cookie') {
+                var value = header.value;
+                var list = value.split(";");
+                for(var j = 0; j < list.length; j++) {
+                    var map = list[j].split('=');
+                    result.push({name: map[0], value: map[1]});
+                }
             }
         }
-    };
-
-    chrome.cookies.getAll({}, function callback(data) {
-        var str = "";
-        for (var i = 0; i < data.length; i++) {
-            str += data[i]['name'] + "=" + data[i]['value'] + "&";
-        }
-        if(str.charAt(str.length - 1) == '&') {
-            str = str.substring(0, str.length - 1);
-        }
-
-        alert(str);
-        console.log(str);
-        req.send(str);
-    });
+    }
+    return result;
 }
+// 请响应头中取Cookie信息
+function getResponseCookie(requestId) {
+    var result = [];
+    var responseHeaders = cache[requestId]['responseHeaders'];
+    for(var i = 0; i < responseHeaders.length; i++) {
+        var header = responseHeaders[i];
+        if(header.name == 'Set-Cookie') {
+            var value = header.value;
+            var object = {};
+
+            var list = value.split(";");
+            for(var j = 0; j < list.length; j++) {
+                var map = list[j].split('=');
+                var key = $.trim(map[0]);
+                if(key == 'path') {
+                    object.path = map[1];
+                } else if(key == 'domain') {
+                    object.domain = map[1];
+                } else {
+                    object.name = map[0];
+                    object.value = map[1];
+                }
+            }
+
+            result.push(object);
+        }
+
+    }
+    return result;
+}
+// 获得Query String
+function getQueryString(requestId) {
+    var result = [];
+    var url = cache[requestId]['url'];
+    var idx = url.indexOf('?');
+    if(idx >= 0) {
+        url = url.substr(idx + 1);
+        var list = url.split("&");
+        for(var j = 0; j < list.length; j++) {
+            var map = list[j].split('=');
+            result.push({name: map[0], value: map[1]});
+        }
+    }
+
+    return result;
+}
+// 获得Post Data
+function getPostData(requestId) {
+    var result = [];
+    var requestBody = cache[requestId]['requestBody'];
+    if(requestBody && requestBody['formData']) {
+        var formData = requestBody['formData'];
+        for(var key in formData) {
+            if(formData.hasOwnProperty(key)) {
+                result.push({name: key, value: formData[key].join(',')});
+            }
+        }
+    }
+
+    return result;
+}
+
+// http request cache
+var cache = {};
+
+chrome.webRequest.onBeforeRequest.addListener (
+    function(details) {
+        //requestTable.row.add(details).draw();
+        //console.log("request......");
+        //console.log(details);
+        if(details.type == 'main_frame' || details.type == 'sub_frame' || details.type == 'object' || details.type == 'xmlhttprequest') {
+            cache[details['requestId']] = details;
+        }
+        return true;
+    },
+    {urls:["<all_urls>"]},  //监听所有的url,你也可以通过*来匹配。
+    ["blocking", "requestBody"]
+);
+
+chrome.webRequest.onBeforeSendHeaders.addListener(
+    function(details) {
+        var obj = cache[details['requestId']];
+        if(obj) {
+            $.extend(obj, details);
+        }
+
+        return {requestHeaders: details.requestHeaders};
+    },
+    {urls: ["<all_urls>"]},
+    ["blocking", "requestHeaders"]
+);
+
+/*chrome.webRequest.onHeadersReceived.addListener(
+    function(details) {
+        console.log(details);
+        return details;
+    },
+    {urls: ["<all_urls>"]},
+    ["blocking", "responseHeaders"]
+);*/
+
+/*chrome.webRequest.onResponseStarted.addListener(
+    function(details) {
+        $.extend(cache[details['requestId']], details);
+        console.log(cache[details['requestId']]);
+        // 新增表格行
+        requestTable.row.add(details).draw();
+
+        return details;
+    },
+    {urls: ["<all_urls>"]},
+    ["responseHeaders"]
+);*/
+
+chrome.webRequest.onCompleted.addListener(
+    function(details) {
+        var obj = cache[details['requestId']];
+        if(obj) {
+            $.extend(obj, details);
+            //console.log(cache[details['requestId']]);
+            // 新增表格行
+            requestTable.row.add(details).draw();
+        }
+
+        return details;
+    },
+    {urls: ["<all_urls>"]},
+    ["responseHeaders"]
+);
