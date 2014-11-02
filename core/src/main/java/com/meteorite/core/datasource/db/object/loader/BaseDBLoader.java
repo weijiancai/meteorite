@@ -254,7 +254,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBIndex> loadIndexes(DBSchema schema) {
+    public List<DBIndex> loadIndexes(DBSchema schema) throws Exception {
         List<DBIndex> result = new ArrayList<DBIndex>();
         List<DataMap> list = dbConn.getResultSet(String.format(getIndexesSql(), schema.getName()));
         Map<String, DBIndexImpl> indexMap = new HashMap<String, DBIndexImpl>();
@@ -505,7 +505,7 @@ public abstract class BaseDBLoader implements DBLoader {
         return result;
     }
 
-    public List<DBConstraint> loadFkConstraints(DBSchema schema) {
+    public List<DBConstraint> loadFkConstraints(DBSchema schema) throws Exception {
         List<DBConstraint> result = new ArrayList<DBConstraint>();
 
         List<DataMap> list = dbConn.getResultSet(String.format(getFKConstraintsColumnsSql(), schema.getName()));

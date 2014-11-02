@@ -32,7 +32,7 @@ public interface DBSchema extends DBObject {
 
     List<DBFunction> getFunctions();
 
-    List<DBIndex> getIndexes();
+    List<DBIndex> getIndexes() throws Exception;
 
     List<DBSynonym> getSynonyms();
 
@@ -44,7 +44,7 @@ public interface DBSchema extends DBObject {
 
     List<DBConstraint> getConstraints();
 
-    List<DBConstraint> getFkConstraints();
+    List<DBConstraint> getFkConstraints() throws Exception;
 
     DBTable getTable(String name);
 

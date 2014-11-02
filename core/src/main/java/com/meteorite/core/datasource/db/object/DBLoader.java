@@ -21,7 +21,7 @@ public interface DBLoader extends ILoader {
 
     List<DBSchema> loadSchemas() throws Exception;
 
-    List<DBIndex> loadIndexes(DBSchema schema);
+    List<DBIndex> loadIndexes(DBSchema schema) throws Exception;
 
     List<DBTrigger> loadTriggers(DBSchema schema);
 
@@ -37,7 +37,7 @@ public interface DBLoader extends ILoader {
 
     List<DBConstraint> loadConstraint(DBDataset table) throws Exception;
 
-    List<DBConstraint> loadFkConstraints(DBSchema schema);
+    List<DBConstraint> loadFkConstraints(DBSchema schema) throws Exception;
 
     DBTable getTable(String tableName) throws Exception;
 

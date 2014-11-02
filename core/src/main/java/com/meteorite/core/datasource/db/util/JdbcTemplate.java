@@ -1,9 +1,6 @@
 package com.meteorite.core.datasource.db.util;
 
-import com.meteorite.core.datasource.DataMap;
-import com.meteorite.core.datasource.DataSource;
-import com.meteorite.core.datasource.DataSourceManager;
-import com.meteorite.core.datasource.QueryBuilder;
+import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.db.RowMapper;
@@ -120,6 +117,12 @@ public class JdbcTemplate {
         ResultSet rs = pstmt.executeQuery();
         ResultSetMetaData md = rs.getMetaData();
         int columnCount = md.getColumnCount();
+        // 设置DataMap 元数据
+        DataMapMetaData dmMd = new DataMapMetaData();
+        dmMd.setColumnCount(columnCount);
+        for (int i = 1; i <= columnCount; i++) {
+            dmMd.add(md.getColumnName(i), md.getColumnLabel(i), md.getColumnDisplaySize(i), md.getColumnType(i), md.getColumnTypeName(i));
+        }
 
         List<DataMap> list = new ArrayList<DataMap>();
         DataMap map;
@@ -132,6 +135,9 @@ public class JdbcTemplate {
             list.add(map);
         }
         rs.close();
+        if (list.size() > 0) {
+            list.get(0).setMetaData(dmMd);
+        }
 
         return list;
     }

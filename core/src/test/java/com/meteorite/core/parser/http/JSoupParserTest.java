@@ -193,4 +193,28 @@ public class JSoupParserTest {
         Document doc = parser.parse(data);
         System.out.println(doc.html());
     }
+
+    @Test
+    public void testSongYuanVote() throws IOException {
+        String url = "http://www.songyuan163.com/";
+        Connection conn = Jsoup.connect(url);
+        conn.userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0");
+        System.out.println(conn.execute().cookies());
+
+        Map<String, String> cookies = conn.response().cookies();
+        System.out.println(cookies);
+        url = "http://www.songyuan163.com/liao/PlusVote";
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("ID", "30");
+
+        /*JSoupParser parser = new JSoupParser(url);
+        Document doc = parser.parse(data, headers, cookies);
+        System.out.println(doc.html());*/
+        conn = Jsoup.connect(url);
+        conn.header("myreq", "1637f2b4e86554f0ffbc21ea06f8756d");
+        conn.header("myver", "3136333766326234653836353534663066666263323165613036663837353664");
+        conn.header("x-forwarded-for", "192.168.1.2");
+        Document doc = conn.cookies(cookies).data(data).post();
+        System.out.println(doc.html());
+    }
 }

@@ -15,7 +15,7 @@ public interface DBDataset extends DBObject {
      * @param columnName 列名
      * @return 返回数据库列信息
      */
-    DBColumn getColumn(String columnName);
+    DBColumn getColumn(String columnName) throws Exception;
 
     /**
      * 获得数据库表中的所有列信息

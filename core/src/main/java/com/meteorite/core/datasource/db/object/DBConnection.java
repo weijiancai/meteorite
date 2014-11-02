@@ -4,6 +4,8 @@ import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.datasource.eventdata.SqlExecuteEventData;
+import com.meteorite.core.observer.Subject;
 
 import java.io.File;
 import java.sql.Connection;
@@ -87,4 +89,11 @@ public interface DBConnection {
      * @return 如果可以获得数据库连接，返回true，否则返回false
      */
     boolean isAvailable();
+
+    /**
+     * 获得执行Sql主题
+     *
+     * @return 返回执行Sql主题
+     */
+    Subject<SqlExecuteEventData> getSqlExecuteSubject();
 }

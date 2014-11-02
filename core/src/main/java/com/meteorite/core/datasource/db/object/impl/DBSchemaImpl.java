@@ -107,7 +107,7 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     }
 
     @Override
-    public List<DBIndex> getIndexes() {
+    public List<DBIndex> getIndexes() throws Exception {
         if (indexes == null) {
             indexes = loader.loadIndexes(this);
         }
@@ -146,7 +146,7 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     }
 
     @Override
-    public List<DBConstraint> getFkConstraints() {
+    public List<DBConstraint> getFkConstraints() throws Exception {
         if (fkConstraints == null) {
             fkConstraints = loader.loadFkConstraints(this);
         }

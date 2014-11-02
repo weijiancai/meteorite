@@ -160,7 +160,7 @@ public class TableFieldProperty extends BaseProperty {
     private void saveOrUpdateViewProperty(String layoutPropId, String value) {
         ViewProperty viewProperty = getProperty(layoutPropId);
         try {
-            if (viewProperty == null) {
+            if (viewProperty == null || UString.isEmpty(viewProperty.getId())) {
                 viewProperty = new ViewProperty(tableProperty.getView(), LayoutManager.getLayoutPropById(layoutPropId), metaField, value);
                 viewProperty.save();
                 addViewProperty(viewProperty);

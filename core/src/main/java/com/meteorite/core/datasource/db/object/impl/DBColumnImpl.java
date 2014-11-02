@@ -87,6 +87,21 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
 
     @Override
     public String getDataTypeString() {
+        if(UString.isEmpty(dataTypeString)) {
+            StringBuilder sb =  new StringBuilder();
+            sb.append(dbDataType.toLowerCase());
+            if (maxLength > 0) {
+                sb.append("(").append(maxLength).append(")");
+            } else if (precision > 0) {
+                sb.append("(").append(precision);
+                if (scale > 0) {
+                    sb.append(",").append(scale);
+                }
+                sb.append(")");
+            }
+            dataTypeString = sb.toString();
+        }
+
         return dataTypeString;
     }
 
@@ -115,6 +130,9 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
             }
             case INTEGER: {
                 return "int";
+            }
+            case TEXT: {
+                return "clob";
             }
         }
         return "";

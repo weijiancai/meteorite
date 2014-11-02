@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/10/19 20:53:23                          */
+/* Created on:     2014/11/1 15:50:35                           */
 /*==============================================================*/
 
 
@@ -51,6 +51,8 @@ drop table if exists mu_view;
 drop index idx_view_config_prop on mu_view_config;
 
 drop table if exists mu_view_config;
+
+drop index iux_view_prop on mu_view_prop;
 
 drop table if exists mu_view_prop;
 
@@ -138,6 +140,10 @@ create table mu_dz_category
    name                 varchar(64) not null comment '类别名称',
    description          varchar(1024) comment '描述',
    pid                  varchar(32) comment '父类别ID',
+   db_table             varchar(128) comment '数据库表',
+   table_id_col         varchar(64) comment '表ID列',
+   table_name_col       varchar(64) comment '表显示名列',
+   sql_text             varchar(1024) comment 'SQL语句',
    is_system            char(1) not null comment '是否系统内置',
    is_valid             char(1) not null comment '是否有效',
    sort_num             int not null comment '排序号',
@@ -474,6 +480,16 @@ create table mu_view_prop
 );
 
 alter table mu_view_prop comment '视图属性';
+
+/*==============================================================*/
+/* Index: iux_view_prop                                         */
+/*==============================================================*/
+create unique index iux_view_prop on mu_view_prop
+(
+   view_id,
+   layout_prop_id,
+   meta_field_id
+);
 
 alter table mu_code_tpl add constraint FK_code_tpl_projectId foreign key (project_id)
       references mu_project_define (id) on delete cascade on update cascade;

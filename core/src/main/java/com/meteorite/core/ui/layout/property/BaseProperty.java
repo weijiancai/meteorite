@@ -84,7 +84,8 @@ public class BaseProperty implements PropertyNames {
     }
 
     public void addViewProperty(ViewProperty viewProperty) {
-        if (propMap.containsKey(viewProperty.getLayoutPropId())) {
+        ViewProperty prop = propMap.get(viewProperty.getId());
+        if (prop != null && UString.isNotEmpty(prop.getId()) && propMap.containsKey(viewProperty.getLayoutPropId())) {
             return;
         }
         propMap.put(viewProperty.getLayoutPropId(), viewProperty);
@@ -93,5 +94,9 @@ public class BaseProperty implements PropertyNames {
 
     public void addViewProperty(String propId, String value) {
         addViewProperty(new ViewProperty(view, LayoutManager.getLayoutPropById(propId), metaField, value));
+    }
+
+    public View getView() {
+        return view;
     }
 }

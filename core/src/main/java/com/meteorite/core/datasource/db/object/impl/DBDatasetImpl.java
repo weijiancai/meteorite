@@ -23,7 +23,8 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
     private Map<String, DBConstraint> constraintMap = new HashMap<String, DBConstraint>();
 
     @Override
-    public DBColumn getColumn(String columnName) {
+    public DBColumn getColumn(String columnName) throws Exception {
+        initColumns();
         return columnMap.get(columnName.toLowerCase());
     }
 
@@ -31,9 +32,7 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
     @XmlElementWrapper(name = "Columns")
     @XmlAnyElement
     public List<DBColumn> getColumns() throws Exception {
-        if (columns == null) {
-            columns = getDataSource().getDbConnection().getLoader().loadColumns(this);
-        }
+        initColumns();
         return columns;
     }
 
@@ -82,6 +81,12 @@ public abstract class DBDatasetImpl extends DBObjectImpl implements DBDataset {
         constraintMap.clear();
         for (DBConstraint constraint : constraints) {
             constraintMap.put(constraint.getName(), constraint);
+        }
+    }
+
+    private void initColumns() throws Exception {
+        if (columns == null) {
+            setColumns(getDataSource().getDbConnection().getLoader().loadColumns(this));
         }
     }
 }

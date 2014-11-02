@@ -1,3 +1,4 @@
+drop table if exists mu_code_tpl;
 drop table if exists mu_db_datasource;
 drop table if exists mu_db_mobile_number;
 drop table if exists mu_db_version;
@@ -23,6 +24,39 @@ drop table if exists mu_view_prop;
 
 drop index iux_dzCategory_name if exists;
 drop index idx_view_config_prop if exists;
+
+/*==============================================================*/
+/* Table: mu_code_tpl                                      */
+/*==============================================================*/
+create table mu_code_tpl
+(
+    id                               varchar(32)     not null,
+    name                             varchar(64)     not null,
+    display_name                     varchar(128)    not null,
+    description                      varchar(1024)   ,
+    project_id                       varchar(32)     not null,
+    file_name                        varchar(128)    not null,
+    file_path                        varchar(256)    ,
+    tpl_file                         varchar(1024)   ,
+    tpl_content                      clob            ,
+    is_valid                         char(1)         not null,
+    sort_num                         int             not null,
+    input_date                       date            not null,
+    primary key (id)
+);
+comment on table mu_code_tpl is '代码模板';
+comment on column mu_code_tpl.id is '模板ID';
+comment on column mu_code_tpl.name is '模板名称';
+comment on column mu_code_tpl.display_name is '显示名';
+comment on column mu_code_tpl.description is '描述';
+comment on column mu_code_tpl.project_id is '项目ID';
+comment on column mu_code_tpl.file_name is '文件名';
+comment on column mu_code_tpl.file_path is '文件路径';
+comment on column mu_code_tpl.tpl_file is '模板文件';
+comment on column mu_code_tpl.tpl_content is '模板内容';
+comment on column mu_code_tpl.is_valid is '是否有效';
+comment on column mu_code_tpl.sort_num is '排序号';
+comment on column mu_code_tpl.input_date is '录入时间';
 
 /*==============================================================*/
 /* Table: mu_db_datasource                                      */
@@ -104,6 +138,11 @@ create table mu_dz_category
     id                               varchar(32)     not null,
     name                             varchar(64)     not null,
     description                      varchar(1024)   ,
+    pid                              varchar(32)     ,
+    db_table                         varchar(128)    ,
+    table_id_col                     varchar(64)     ,
+    table_name_col                   varchar(64)     ,
+    sql_text                         varchar(1024)   ,
     is_system                        char(1)         not null,
     is_valid                         char(1)         not null,
     sort_num                         int             not null,
@@ -114,6 +153,11 @@ comment on table mu_dz_category is '字典类别';
 comment on column mu_dz_category.id is '类别ID';
 comment on column mu_dz_category.name is '类别名称';
 comment on column mu_dz_category.description is '描述';
+comment on column mu_dz_category.pid is '父类别ID';
+comment on column mu_dz_category.db_table is '数据库表';
+comment on column mu_dz_category.table_id_col is '表ID列';
+comment on column mu_dz_category.table_name_col is '表显示名列';
+comment on column mu_dz_category.sql_text is 'SQL语句';
 comment on column mu_dz_category.is_system is '是否系统内置';
 comment on column mu_dz_category.is_valid is '是否有效';
 comment on column mu_dz_category.sort_num is '排序号';
@@ -315,7 +359,7 @@ create table mu_meta_obj_value
 (
     meta_obj_id                      varchar(32)     not null,
     meta_field_id                    varchar(32)     not null,
-    value                            varchar(1024)   ,
+    value                            varchar(1024)   
 );
 comment on table mu_meta_obj_value is '元对象值';
 comment on column mu_meta_obj_value.meta_obj_id is '元对象ID';
@@ -544,29 +588,26 @@ comment on column mu_view_prop.meta_field_id is '元字段ID';
 comment on column mu_view_prop.value is '属性值';
 
 
-alter table mu_dz_code add constraint FK_code_categoryId foreign key (category_id)
-    references mu_dz_category (id) on delete cascade on update cascade;
+alter table mu_code_tpl add constraint FK_code_tpl_projectId foreign key (project_id)
+    references mu_project_define (id) on delete cascade on update cascade;
 
 alter table mu_layout_prop add constraint FK_layout_prop_layoutId foreign key (layout_id)
     references mu_layout (id) on delete cascade on update cascade;
 
-alter table mu_meta_field add constraint FK_meta_field_metaId foreign key (meta_id)
-    references mu_meta (id) on delete cascade on update cascade;
-
 alter table mu_meta_field add constraint FK_metaField_metaItem foreign key (meta_item_id)
     references mu_meta_item (id) on delete cascade on update cascade;
+
+alter table mu_meta_field add constraint FK_meta_field_metaId foreign key (meta_id)
+    references mu_meta (id) on delete cascade on update cascade;
 
 alter table mu_meta_obj add constraint FK_meta_obj_metaId foreign key (meta_id)
     references mu_meta (id) on delete cascade on update cascade;
 
-alter table mu_meta_obj_value add constraint FK_meta_obj_value_metaObjId foreign key (meta_obj_id)
-    references mu_meta_obj (id) on delete cascade on update cascade;
-
 alter table mu_meta_obj_value add constraint FK_meta_field_value_metaField foreign key (meta_field_id)
     references mu_meta_field (id) on delete cascade on update cascade;
 
-alter table mu_meta_reference add constraint FK_meta_reference_pkMetaId foreign key (pk_meta_id)
-    references mu_meta (id) on delete cascade on update cascade;
+alter table mu_meta_obj_value add constraint FK_meta_obj_value_metaObjId foreign key (meta_obj_id)
+    references mu_meta_obj (id) on delete cascade on update cascade;
 
 alter table mu_meta_reference add constraint FK_meta_reference_fkMetaFieldId foreign key (fk_meta_field_id)
     references mu_meta_field (id) on delete cascade on update cascade;
@@ -576,6 +617,9 @@ alter table mu_meta_reference add constraint FK_meta_reference_fkMetaId foreign 
 
 alter table mu_meta_reference add constraint FK_meta_reference_pkMetaFieldId foreign key (pk_meta_field_id)
     references mu_meta_field (id) on delete cascade on update cascade;
+
+alter table mu_meta_reference add constraint FK_meta_reference_pkMetaId foreign key (pk_meta_id)
+    references mu_meta (id) on delete cascade on update cascade;
 
 alter table mu_meta_sql add constraint FK_meta_sql_metaId foreign key (meta_id)
     references mu_meta (id) on delete cascade on update cascade;
@@ -589,20 +633,20 @@ alter table mu_nav_menu add constraint FK_nav_menu_projectId foreign key (projec
 alter table mu_view add constraint FK_view_metaId foreign key (meta_id)
     references mu_meta (id) on delete cascade on update cascade;
 
-alter table mu_view_config add constraint FK_view_config_metaFieldId foreign key (meta_field_id)
-    references mu_meta_field (id) on delete cascade on update cascade;
-
 alter table mu_view_config add constraint FK_view_config_layoutPropId foreign key (prop_id)
     references mu_layout_prop (id) on delete cascade on update cascade;
 
-alter table mu_view_prop add constraint FK_view_prop_viewId foreign key (view_id)
-    references mu_view (id) on delete cascade on update cascade;
+alter table mu_view_config add constraint FK_view_config_metaFieldId foreign key (meta_field_id)
+    references mu_meta_field (id) on delete cascade on update cascade;
 
 alter table mu_view_prop add constraint FK_view_prop_layoutPropId foreign key (layout_prop_id)
     references mu_layout_prop (id) on delete cascade on update cascade;
 
 alter table mu_view_prop add constraint FK_view_prop_metaFieldId foreign key (meta_field_id)
     references mu_meta_field (id) on delete cascade on update cascade;
+
+alter table mu_view_prop add constraint FK_view_prop_viewId foreign key (view_id)
+    references mu_view (id) on delete cascade on update cascade;
 
 
 create  index iux_dzCategory_name on mu_dz_category
