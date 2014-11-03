@@ -401,6 +401,7 @@ public class MetaRowMapperFactory {
                 codeTpl.setValid("T".equals(rs.getString("is_valid")));
                 codeTpl.setSortNum(rs.getInt("sort_num"));
                 codeTpl.setInputDate(rs.getDate("input_date"));
+                codeTpl.setTplFile(rs.getString("tpl_file"));
 
                 return codeTpl;
             }

@@ -24,6 +24,7 @@ public class DataMap extends HashMap<String,Object> {
 
     private STATUS status = STATUS.NOT_MODIFY;
     private String uid; // 标识此DataMap的唯一值
+    private DataMapMetaData metaData;
 
     public DataMap() {
         uid = UUIDUtil.getUUID();
@@ -126,5 +127,13 @@ public class DataMap extends HashMap<String,Object> {
 
     public <T> T toClass(Class<T> clazz) {
         return UClass.convert(clazz, this);
+    }
+
+    public DataMapMetaData getMetaData() {
+        return metaData;
+    }
+
+    public void setMetaData(DataMapMetaData metaData) {
+        this.metaData = metaData;
     }
 }

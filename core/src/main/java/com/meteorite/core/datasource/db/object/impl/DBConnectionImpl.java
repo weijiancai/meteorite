@@ -11,6 +11,9 @@ import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.loader.HsqldbLoader;
 import com.meteorite.core.datasource.db.object.loader.MySqlLoader;
 import com.meteorite.core.datasource.db.object.loader.SqlServerLoader;
+import com.meteorite.core.datasource.eventdata.SqlExecuteEventData;
+import com.meteorite.core.observer.BaseSubject;
+import com.meteorite.core.observer.Subject;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
 import org.apache.log4j.Logger;
@@ -34,6 +37,7 @@ public class DBConnectionImpl implements DBConnection {
     private DBSchema currentSchema; // 当前连接Schema
     private DatabaseType dbType = DatabaseType.UNKNOWN;
     private boolean isAvailable;
+    private Subject<SqlExecuteEventData> sqlExecuteSubject = new BaseSubject<SqlExecuteEventData>();
 
     public DBConnectionImpl(DBDataSource dataSource) throws Exception {
         this.dataSource = dataSource;
@@ -196,9 +200,12 @@ public class DBConnectionImpl implements DBConnection {
     public void execSqlScript(String script, String splitStr) throws Exception {
         String[] sqls = script.split(splitStr);
         Connection conn = null;
+        SqlExecuteEventData eventData = new SqlExecuteEventData();
+
         try {
             conn = getConnection();
             conn.setAutoCommit(false);
+
             for (String sql : sqls) {
                 if(UString.isEmpty(sql)) {
                     continue;
@@ -208,8 +215,12 @@ public class DBConnectionImpl implements DBConnection {
                 if (sql.toUpperCase().startsWith("DELIMITER")) {
                     continue;
                 }
+                eventData = new SqlExecuteEventData();
+                eventData.setSql(sql);
+
                 // MySql Drop Index处理
                 String temp = sql.toLowerCase();
+
                 if(dbType == DatabaseType.MYSQL) {
                     if(temp.startsWith("drop index ")) {
                         int idx = temp.indexOf("drop index ");
@@ -217,6 +228,9 @@ public class DBConnectionImpl implements DBConnection {
                         String indexName = temp.substring(idx + 11, onIndex).trim();
                         String tableName = temp.substring(onIndex + 4).trim();
                         loader.deleteIndex(tableName, indexName);
+
+                        eventData.setSuccess(true);
+                        sqlExecuteSubject.notifyObserver(eventData);
 
                         continue;
                     }
@@ -226,18 +240,26 @@ public class DBConnectionImpl implements DBConnection {
                     String tableName = temp.substring("drop table if exists ".length());
                     loader.dropTable(tableName);
 
+                    eventData.setSuccess(true);
+                    sqlExecuteSubject.notifyObserver(eventData);
+
                     continue;
                 }
                 log.info("SQL = " + sql);
                 Statement stmt = conn.createStatement();
                 stmt.execute(sql);
+
+                eventData.setSuccess(true);
+                sqlExecuteSubject.notifyObserver(eventData);
             }
             conn.commit();
         } catch (Exception e) {
             if (conn != null) {
                 conn.rollback();
             }
-            log.error("执行升级Sql脚本错误：", e);
+            log.error("执行Sql脚本错误：", e);
+            eventData.setException(e);
+            sqlExecuteSubject.notifyObserver(eventData);
             throw e;
         } finally {
             if (conn != null) {
@@ -268,6 +290,11 @@ public class DBConnectionImpl implements DBConnection {
             }
         }
         return isAvailable;
+    }
+
+    @Override
+    public Subject<SqlExecuteEventData> getSqlExecuteSubject() {
+        return sqlExecuteSubject;
     }
 
     public void setSchemas(List<DBSchema> schemas) {

@@ -8,6 +8,8 @@ import ${project.packageName}.dao.${meta.name}Dao;
 import com.wlb.util.UtilObject;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,16 @@ public class ${meta.name}ServiceImpl implements ${meta.name}Service {
     private ${meta.name}Dao ${meta.name?uncap_first}Dao;
 
     public void add(${meta.name} vo) throws Exception {
+        // 默认值
+<#list meta.fields as field>
+<#if field.defaultValue??>
+    <#if field.defaultValue == "GUID()">
+        vo.${field.setterName}(UUID.randomUUID().toString().replaceAll("-", ""));
+    <#elseif field.defaultValue == "SYSDATE()">
+        vo.${field.setterName}(new Date());
+    </#if>
+</#if>
+</#list>
         ${meta.name?uncap_first}Dao.add(vo);
     }
 

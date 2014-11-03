@@ -266,3 +266,16 @@ chrome.webRequest.onCompleted.addListener(
     {urls: ["<all_urls>"]},
     ["responseHeaders"]
 );
+
+// Cookies
+// 启动监听
+var ce = new CE();
+ce.cookies.load();
+// 添加domain监听
+ce.cookies.addDomainChangeListener(function() {
+    var $domainList = $('#domainList').html('');
+    ce.cookies.getDomains().forEach(function(domain) {
+        $domainList.append('<li class="list-group-item"><span class="badge">' + ce.cookies.getCookiesByDomain(domain).length + '</span>' + domain + '</li>');
+    });
+});
+

@@ -248,4 +248,11 @@ public class MetaField {
     public void setRefField(MetaField refField) {
         this.refField = refField;
     }
+
+    public String getSetterName() {
+        if (MetaDataType.BOOLEAN == dataType && name.startsWith("is")) {
+            return "set" + name.substring(2);
+        }
+        return "set" + UString.firstCharToUpper(name);
+    }
 }

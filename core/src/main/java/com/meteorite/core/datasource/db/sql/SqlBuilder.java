@@ -1,5 +1,12 @@
 package com.meteorite.core.datasource.db.sql;
 
+import com.alibaba.druid.sql.SQLUtils;
+import com.alibaba.druid.sql.ast.SQLStatement;
+import com.alibaba.druid.sql.ast.statement.SQLSelectQueryBlock;
+import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
+import com.alibaba.druid.sql.parser.SQLParserUtils;
+import com.alibaba.druid.sql.parser.SQLStatementParser;
+import com.alibaba.druid.sql.visitor.SQLASTOutputVisitor;
 import com.meteorite.core.datasource.QueryCondition;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.util.SqlUtil;
@@ -480,7 +487,11 @@ public class SqlBuilder {
         String result = "";
 
         if (UString.isNotEmpty(querySql)) { // 如果设置了查询Sql，则不在组装查询语句
-            result = querySql + " WHERE " + where;
+            if (querySql.toLowerCase().contains("where")) {
+                result = querySql;
+            } else {
+                result = querySql + " WHERE " + where;
+            }
         } else {
             if (isQuery) {
                 if (haveWith) {
@@ -507,7 +518,23 @@ public class SqlBuilder {
      */
     public String getCountSql() {
         if (UString.isNotEmpty(querySql)) { // 如果设置了查询Sql，则不在组装查询语句
-            return "SELECT count(1) " + querySql.substring(querySql.lastIndexOf(" FROM")) + " WHERE " + where;
+            String type = SqlFormat.convertToDruidType(dbType);
+            SQLStatementParser parser = SQLParserUtils.createSQLStatementParser(sql, type);
+            List<SQLStatement> stmtList = parser.parseStatementList();
+            StringBuffer from = new StringBuffer();
+            StringBuffer where = new StringBuffer();
+            SQLASTOutputVisitor fromVisitor = SQLUtils.createFormatOutputVisitor(from, stmtList, type);
+            SQLASTOutputVisitor whereVisitor = SQLUtils.createFormatOutputVisitor(where, stmtList, type);
+            for (SQLStatement stmt : stmtList) {
+                if (stmt instanceof SQLSelectStatement) {
+                    SQLSelectStatement sqlSelectStatement = (SQLSelectStatement) stmt;
+                    SQLSelectQueryBlock query = (SQLSelectQueryBlock) sqlSelectStatement.getSelect().getQuery();
+                    query.getFrom().accept(fromVisitor);
+                    query.getWhere().accept(whereVisitor);
+                }
+                return "SELECT count(1) FROM " + from.toString() + " WHERE " + where.toString();
+            }
+            return "SELECT count(1) " + querySql.substring(querySql.toUpperCase().lastIndexOf(" FROM")) + " WHERE " + where;
         } else {
             if (isQuery) {
                 if (haveWith) {

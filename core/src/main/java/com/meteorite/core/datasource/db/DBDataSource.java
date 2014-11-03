@@ -248,6 +248,8 @@ public class DBDataSource extends DataSource {
 
         QueryResult<DataMap> queryResult = new QueryResult<DataMap>();
         queryResult.setPageRows(rows);
+        queryResult.setQueryBuilder(builder);
+        queryResult.setDataSource(this);
 
         builder.sql().build(getDatabaseType());
         JdbcTemplate template = new JdbcTemplate(this);
@@ -595,7 +597,12 @@ public class DBDataSource extends DataSource {
                             pkStr.deleteCharAt(pkStr.length() - 1);
                         }
                         createTableStr.append(String.format("    primary key (%s)\r\n", pkStr));
+                    } else {
+                        if (createTableStr.charAt(createTableStr.length() - 3) == ',') {
+                            createTableStr.deleteCharAt(createTableStr.length() - 3);
+                        }
                     }
+
                     createTableStr.append(");\r\n").append(commentStr).append("\r\n");
                 }
             }

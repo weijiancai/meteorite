@@ -1,8 +1,10 @@
 package com.meteorite.fxbase.ui.component.table.cell;
 
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.dict.EnumAlign;
 import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
@@ -24,6 +26,11 @@ public class TextTableCell extends BaseTableCell {
     public TextTableCell(TableColumn<DataMap, String> column, TableFieldProperty prop) {
         super(column, prop);
         label = new Label();
+        if (EnumAlign.CENTER == prop.getAlign()) {
+            this.setAlignment(Pos.CENTER);
+        } else if (EnumAlign.RIGHT == prop.getAlign()) {
+            this.setAlignment(Pos.CENTER_RIGHT);
+        }
     }
 
     @Override

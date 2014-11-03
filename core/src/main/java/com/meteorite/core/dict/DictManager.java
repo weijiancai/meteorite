@@ -2,6 +2,8 @@ package com.meteorite.core.dict;
 
 import com.meteorite.core.config.ProfileSetting;
 import com.meteorite.core.config.SystemManager;
+import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.DataSourceType;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
@@ -31,18 +33,23 @@ import java.util.Map;
  */
 public class DictManager {
     private static final Logger log = Logger.getLogger(DictManager.class);
+
+    public static final String DICT_ROOT = "ROOT";
+    public static final String DICT_SYSTEM = "System_Category";
+    public static final String DICT_DB_DATA_SOURCE = "DataBase_Data_Source_Category";
+
     private static Map<String, DictCategory> categoryMap = new HashMap<String, DictCategory>();
     private static DictCategory root = new DictCategory();
     private static DictCategory system = new DictCategory();
 
     static {
         try {
-            root.setId("ROOT");
+            root.setId(DICT_ROOT);
             root.setName("数据字典");
             root.setSystem(true);
             root.getChildren().add(system);
 
-            system.setId("System_Category");
+            system.setId(DICT_SYSTEM);
             system.setName("系统字典");
             system.setSystem(true);
 
@@ -60,6 +67,24 @@ public class DictManager {
             e.printStackTrace();
         }
 
+    }
+
+    private static void addDBDataSource() {
+        DictCategory category = new DictCategory();
+        category.setId(DICT_DB_DATA_SOURCE);
+        category.setName("数据库数据源");
+        categoryMap.put(category.getId(), category);
+        system.getChildren().add(category);
+        // 字典代码
+        for (DataSource dataSource : DataSourceManager.getDataSources()) {
+            if (DataSourceType.DATABASE == dataSource.getType()) {
+                DictCode code = new DictCode();
+                code.setId(dataSource.getId());
+                code.setName(dataSource.getName());
+                code.setDisplayName(dataSource.getDisplayName());
+                category.getCodeList().add(code);
+            }
+        }
     }
 
     public static void load() throws Exception {
@@ -116,7 +141,7 @@ public class DictManager {
             codeList.add(code);
         }
         root.setCodeList(codeList);
-        categoryMap.put("ROOT", root);
+        categoryMap.put(DICT_ROOT, root);
 
         // 构造树形字典分类
         for (DictCategory category : categoryMap.values()) {
@@ -125,6 +150,8 @@ public class DictManager {
                 parent.getChildren().add(category);
             }
         }
+        // 添加数据库数据源字典
+        addDBDataSource();
     }
 
     public static void addDict(DictCategory category) {

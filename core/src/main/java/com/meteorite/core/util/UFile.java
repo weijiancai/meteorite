@@ -39,6 +39,11 @@ public class UFile {
         return  result.toString();
     }
 
+    public static String readStringFromCP(String path) throws IOException {
+        InputStream is = UFile.class.getResourceAsStream(path);
+        return readString(is, "UTF-8");
+    }
+
     /**
      * 根据目录路径，创建目录结构
      *

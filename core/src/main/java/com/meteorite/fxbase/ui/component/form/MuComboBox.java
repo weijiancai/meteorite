@@ -44,13 +44,18 @@ public class MuComboBox extends BaseFormField implements IValue {
     public MuComboBox(FormFieldProperty fieldConfig) {
         super(fieldConfig);
         this.isAddQueryMode = false;
+        this.category = config.getDict();
         init();
+    }
+
+    public MuComboBox(DictCategory category) {
+        this.category = category;
+        initPrep();
+        this.getChildren().addAll(getControls());
     }
 
     @Override
     protected void initPrep() {
-        this.category = config.getDict();
-
         comboBox = new ComboBox<DictCode>();
         comboBox.setEditable(true);
         comboBox.setConverter(new DictCodeConverter());
@@ -72,9 +77,12 @@ public class MuComboBox extends BaseFormField implements IValue {
                 return cell;
             }
         });
-        // 添加鼠标单击发布事件
-        comboBox.getEditor().setOnMouseClicked(mouseClickEventHandler);
-        comboBox.setOnMouseClicked(mouseClickEventHandler);
+
+        if (config != null) {
+            // 添加鼠标单击发布事件
+            comboBox.getEditor().setOnMouseClicked(mouseClickEventHandler);
+            comboBox.setOnMouseClicked(mouseClickEventHandler);
+        }
 
         if (category != null) {
             List<DictCode> list = category.getCodeList();
@@ -141,6 +149,10 @@ public class MuComboBox extends BaseFormField implements IValue {
         if (value == null) {
             comboBox.getSelectionModel().clearSelection();
         }
+    }
+
+    public DictCode getSelectedItem() {
+        return comboBox.getSelectionModel().getSelectedItem();
     }
 
     class DictCodeConverter extends StringConverter<DictCode> {

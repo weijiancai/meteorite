@@ -1,9 +1,11 @@
 package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.datasource.DataMap;
+import com.meteorite.core.datasource.DataMapMetaData;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.dict.DictManager;
+import com.meteorite.core.dict.EnumAlign;
 import com.meteorite.core.dict.EnumDataStatus;
 import com.meteorite.core.dict.FormType;
 import com.meteorite.core.meta.model.Meta;
@@ -34,6 +36,7 @@ import com.meteorite.fxbase.ui.event.DataChangeEvent;
 import com.meteorite.fxbase.ui.event.data.DataStatusEventData;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,6 +47,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Callback;
 
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.*;
 
 /**
@@ -58,6 +63,7 @@ public class MUTable extends StackPane {
     private ToolBar formToolBar;
     private boolean isShowToolBar = true;
     private boolean isShowQueryForm = true;
+    private boolean isShowPaging = true;
     private boolean isEditable = false;
     private TableColumnChangeListener tableColumnChangeListener;
 
@@ -114,6 +120,85 @@ public class MUTable extends StackPane {
         initUI();
     }
 
+    public void initUI(List<DataMap> list) {
+        if (UList.isEmpty(list)) {
+            return;
+        }
+        TableProperty tableProperty = new TableProperty();
+        DataMap dataMap = list.get(0);
+        DataMapMetaData dmMd = dataMap.getMetaData();
+        if (dmMd != null) {
+            for (int i = 0; i < dmMd.getColumnCount(); i++) {
+                TableFieldProperty fieldProperty = new TableFieldProperty();
+                fieldProperty.setName(dmMd.getColumnLabel(i));
+                fieldProperty.setDisplayName(dmMd.getColumnLabel(i));
+                int w = dmMd.getColumnDisplaySize(i);
+                if(w <= 80) {
+                    w = 80;
+                }
+
+                if(w > 500) {
+                    w = 200;
+                }
+                fieldProperty.setWidth(w);
+
+                switch (dmMd.getColumnType(i)) {
+                    case Types.TIMESTAMP:
+                    case Types.DATE: {
+                        fieldProperty.setWidth(140);
+                        break;
+                    }
+                    case Types.INTEGER:
+                    case Types.BIGINT:
+                    case Types.CHAR:
+                    case Types.DOUBLE:
+                    case Types.FLOAT:
+                    case Types.NUMERIC:
+                    case Types.TINYINT: {
+                        fieldProperty.setWidth(60);
+                        fieldProperty.setAlign(EnumAlign.CENTER);
+                        break;
+                    }
+                }
+                // boolean 类型
+                if (Types.CHAR == dmMd.getColumnType(i) && dmMd.getColumnName(i).toLowerCase().startsWith("is")) {
+                    fieldProperty.setWidth(50);
+                    fieldProperty.setAlign(EnumAlign.CENTER);
+                }
+                tableProperty.getFieldProperties().add(fieldProperty);
+            }
+        } else {
+            for (String key : dataMap.keySet()) {
+                TableFieldProperty fieldProperty = new TableFieldProperty();
+                fieldProperty.setName(key);
+                fieldProperty.setDisplayName(key);
+                tableProperty.getFieldProperties().add(fieldProperty);
+            }
+        }
+
+        initUI(tableProperty);
+        table.setItems(FXCollections.observableArrayList(list));
+    }
+
+    public void initUI(final QueryResult<DataMap> result) {
+        initUI(result.getRows());
+        getPagination().setPageCount(result.getPageCount());
+        setTotalRows(result.getTotal());
+        getPagination().currentPageIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                try {
+                    QueryResult<DataMap> list = result.getDataSource().retrieve(result.getQueryBuilder(), getPagination().getCurrentPageIndex(), getPageRows());
+                    setTotalRows(list.getTotal());
+                    getPagination().setPageCount(getPageRows());
+                    table.setItems(FXCollections.observableArrayList(list.getRows()));
+                } catch (Exception e) {
+                    MUDialog.showExceptionDialog(e);
+                }
+            }
+        });
+    }
+
     private void initUI() {
         // =============== 初始化表格面板 ===========================
         // 创建工具条
@@ -131,7 +216,9 @@ public class MUTable extends StackPane {
         // 创建表格列头信息
         createTableColumns();
         // 创建分页条
-        createPagination();
+        if (isShowPaging) {
+            createPagination();
+        }
         // 绑定数据
 //        table.itemsProperty().bind(view.getMeta().dataListProperty());
         // 注册table行点击事件
@@ -296,11 +383,11 @@ public class MUTable extends StackPane {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 Meta meta = config.getMeta();
                 try {
-                    QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), newValue.intValue(), 15);
+                    QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), newValue.intValue(), getPageRows());
                     table.getItems().clear();
                     table.getItems().addAll(queryResult.getRows());
                     pagination.setPageCount(meta.getPageCount());
-                    totalLink.setText(String.format(TOTAL_FORMAT, meta.getTotalRows()));
+                    setTotalRows(meta.getTotalRows());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -426,8 +513,23 @@ public class MUTable extends StackPane {
 //        MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "查看", form, null);
     }
 
+    public int getPageRows() {
+        if (pageRowsTF == null || UString.isEmpty(pageRowsTF.getText())) {
+            return 15;
+        }
+        return UNumber.toInt(pageRowsTF.getText());
+    }
+
+    public Pagination getPagination() {
+        return pagination;
+    }
+
     public void setMultiSelect(boolean isMulti) {
         table.getSelectionModel().setSelectionMode(isMulti ? SelectionMode.MULTIPLE : SelectionMode.SINGLE);
+    }
+
+    public void setTotalRows(int totalRows) {
+        totalLink.setText(String.format(TOTAL_FORMAT, totalRows));
     }
 
     public TableProperty getConfig() {
@@ -472,6 +574,10 @@ public class MUTable extends StackPane {
 
     public ToolBar getTableToolBar() {
         return tableToolBar;
+    }
+
+    public void setShowPaging(boolean isShowPaging) {
+        this.isShowPaging = isShowPaging;
     }
 
     public void addTableButton(String metaName, Button button) {
@@ -701,7 +807,7 @@ public class MUTable extends StackPane {
             }
             // 查询数据
             Meta meta = config.getMeta();
-            QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), 0, UNumber.toInt(pageRowsTF.getText()));
+            QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), 0, getPageRows());
             table.getItems().addAll(queryResult.getRows());
             pagination.setPageCount(meta.getPageCount());
             totalLink.setText(String.format(TOTAL_FORMAT, meta.getTotalRows()));

@@ -183,6 +183,8 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         TreeItem<ITreeNode> ProfileSettingItem = new TreeItem<ITreeNode>(profileSetting);
         // 备份恢复
         MUBackupWin backupWin = new MUBackupWin();
+        // Sql控制台
+        MUSqlConsoleWin sqlConsoleWin = new MUSqlConsoleWin();
 
         tree.setRoot(navTreeItem);
         tree.setShowRoot(false);
@@ -193,15 +195,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         navTreeItem.getChildren().add(dataSourceItem);
         navTreeItem.getChildren().add(ProfileSettingItem);
         navTreeItem.getChildren().add(backupWin.getBackupTreeItem());
-
-        BaseTreeNode dsConfigTreeNode = new BaseTreeNode("SQL控制台");
-        dsConfigTreeNode.setId("SqlConsoleView");
-
-        View dsConfigView = new View();
-//        dsConfigView.setNode(new DsConfigView());
-        dsConfigTreeNode.setView(dsConfigView);
-
-        tree.getRoot().getChildren().add(new MUTreeItem(tree, dsConfigTreeNode));
+        navTreeItem.getChildren().add(sqlConsoleWin.getSqlConsoleTreeItem());
 
         Service<List<BaseTreeNode>> service = new Service<List<BaseTreeNode>>() {
             @Override

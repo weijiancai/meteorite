@@ -1,5 +1,6 @@
 package com.meteorite.core.datasource;
 
+import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.dict.QueryModel;
 import com.meteorite.core.meta.MetaDataType;
@@ -32,6 +33,13 @@ public class QueryBuilder {
     public static QueryBuilder create(String table, List<QueryCondition> conditions) {
         QueryBuilder builder = new QueryBuilder();
         builder.sql().from(table).setQueryConditions(conditions);
+        return builder;
+    }
+
+    public static QueryBuilder create(String sql, DatabaseType dbType) {
+        QueryBuilder builder = new QueryBuilder();
+        builder.sql().setQuerySql(sql);
+        builder.sql().build(dbType);
         return builder;
     }
 
