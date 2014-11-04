@@ -56,6 +56,7 @@ public class DsConfigExport {
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
         request.addDefaultValue("ds_id", targetDsId);
+//        request.addDefaultValue("analyse_id", "GUID()");
         DataSourceManager.exp(source, target, request);
     }
 
@@ -65,6 +66,7 @@ public class DsConfigExport {
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
         request.addDefaultValue("ds_id", targetDsId);
+//        request.addDefaultValue("analyse_id", "GUID()");
         DataSourceManager.exp(source, target, request);
     }
 
@@ -74,6 +76,7 @@ public class DsConfigExport {
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
         request.addDefaultValue("ds_id", targetDsId);
+        request.addDefaultValue("rowid", "GUID()");
         DataSourceManager.exp(source, target, request);
     }
 

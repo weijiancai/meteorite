@@ -23,6 +23,7 @@ import com.meteorite.core.observer.Observer;
 import com.meteorite.core.rest.PathHandler;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
+import com.meteorite.core.util.UUIDUtil;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
 import org.apache.log4j.Logger;
@@ -542,7 +543,11 @@ public class DBDataSource extends DataSource {
             }
             // 设置默认值
             for (Map.Entry<String, Object> entry : expRequest.getDefaultValues().entrySet()) {
-                dataMap.put(entry.getKey(), entry.getValue());
+                if ("GUID()".equals(entry.getValue().toString())) {
+                    dataMap.put(entry.getKey(), UUIDUtil.getUUID());
+                } else {
+                    dataMap.put(entry.getKey(), entry.getValue());
+                }
             }
             // 处理列映射
             DataMap newData = new DataMap();
