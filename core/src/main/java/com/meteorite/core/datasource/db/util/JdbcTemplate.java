@@ -247,13 +247,18 @@ public class JdbcTemplate {
             String values = "";
             int i = 0;
             for (String key : params.keySet()) {
+                Object obj = params.get(key);
                 sql.append(key);
-                values += "?";
+                if (obj != null && obj.toString().startsWith("$$")) { // 数据库函数，不解析
+                    values += obj.toString().substring(2);
+                } else {
+                    values += "?";
+                    keyList.add(key);
+                }
                 if (++i < params.size()) {
                     sql.append(",");
                     values += ",";
                 }
-                keyList.add(key);
             }
             sql.append(") VALUES (");
             // 打印输出sql语句

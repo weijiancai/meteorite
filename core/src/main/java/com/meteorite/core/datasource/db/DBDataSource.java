@@ -502,14 +502,16 @@ public class DBDataSource extends DataSource {
         }
 
         JdbcTemplate template = new JdbcTemplate(this);
-        List<DataMap> listData = new ArrayList<DataMap>();
+        List<DataMap> listData;
+        String sql = null;
         // 直接使用sql导出数据
         if (request instanceof ExpDataRequest) {
             ExpDataRequest dbRequest = (ExpDataRequest) request;
-            String sql = dbRequest.getSql();
-            if (UString.isNotEmpty(sql)) {
-                listData = template.queryForList(sql);
-            }
+            sql = dbRequest.getSql();
+        }
+
+        if (UString.isNotEmpty(sql)) {
+            listData = template.queryForList(sql);
         } else {
             Map<String, String> map = request.getPathHandler().parseForDb();
             String tableName = map.get("table");

@@ -220,7 +220,7 @@ public class MUSqlConsoleWin extends BorderPane {
             if (UString.isEmpty(sql)) {
                 return;
             }
-            sql = sql.trim().replace('\u200B', ' ');
+            sql = sql.trim().replace('\u200B', ' ').replace('\n', ' ');
             DictCode code = dataSource.getSelectedItem();
             if (code == null) {
                 MUDialog.showInformation("请选择数据源！");
@@ -268,7 +268,7 @@ public class MUSqlConsoleWin extends BorderPane {
             if (UString.isEmpty(sql)) {
                 return;
             }
-            sql = sql.trim().replace('\u200B', ' ');
+            sql = sql.trim().replace('\u200B', ' ').replace('\n', ' ');
             DictCode code = dataSource.getSelectedItem();
             if (code == null) {
                 MUDialog.showInformation("请选择数据源！");

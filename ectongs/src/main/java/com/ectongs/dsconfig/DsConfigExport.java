@@ -76,7 +76,7 @@ public class DsConfigExport {
         conditions.add(QueryCondition.create("ds_id", sourceDsId));
         request.setConditions(conditions);
         request.addDefaultValue("ds_id", targetDsId);
-        request.addDefaultValue("rowid", "GUID()");
+        request.addDefaultValue("rowid", "$$NEWID()");
         DataSourceManager.exp(source, target, request);
     }
 

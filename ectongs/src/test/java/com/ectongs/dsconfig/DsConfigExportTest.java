@@ -13,4 +13,11 @@ public class DsConfigExportTest extends TestCase {
         DsConfigExport export = new DsConfigExport(source, target);
         export.export("BAS_Send", "YwPx_Basu");
     }
+
+    public void testExport1() throws Exception {
+        DBDataSource source = new DBDataSource("yhbis", JdbcDrivers.MYSQL, "jdbc:sqlserver://192.168.0.105:1433;databaseName=yhbis", "sa", "7758521", null);
+
+        DsConfigExport export = new DsConfigExport(source, source);
+        export.export("Task", "PackTask");
+    }
 }
