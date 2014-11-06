@@ -238,6 +238,12 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
                 messageLabel.setText(newValue);
             }
         });
+        service.exceptionProperty().addListener(new ChangeListener<Throwable>() {
+            @Override
+            public void changed(ObservableValue<? extends Throwable> observable, Throwable oldValue, Throwable newValue) {
+                newValue.printStackTrace();
+            }
+        });
 
         // 启动服务
         service.start();

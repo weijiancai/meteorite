@@ -225,7 +225,10 @@ public class DBDataSource extends DataSource {
             navTree.setObjectType(DBObjectType.DATABASE);
             navTree.setName(name);
         }
-        getDbConnection().getLoader().load();
+        DBLoader loader = getDbConnection().getLoader();
+        if (loader != null) {
+            loader.load();
+        }
     }
 
     @Override

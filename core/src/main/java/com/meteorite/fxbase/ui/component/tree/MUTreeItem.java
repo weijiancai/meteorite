@@ -3,6 +3,7 @@ package com.meteorite.fxbase.ui.component.tree;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.ui.view.MUTree;
+import com.meteorite.fxbase.util.FUImage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -59,7 +60,11 @@ public class MUTreeItem extends TreeItem<ITreeNode> {
         tree.putNodeItem(value, this);
     }
 
-    @Override public ObservableList<TreeItem<ITreeNode>> getChildren() {
+    public MUTreeItem(ITreeNode value) {
+        super(value, FUImage.getImageView(value.getIcon()));
+    }
+
+    /*@Override public ObservableList<TreeItem<ITreeNode>> getChildren() {
         if (isFirstTimeChildren) {
             isFirstTimeChildren = false;
 
@@ -93,5 +98,5 @@ public class MUTreeItem extends TreeItem<ITreeNode> {
         }
 
         return FXCollections.emptyObservableList();
-    }
+    }*/
 }

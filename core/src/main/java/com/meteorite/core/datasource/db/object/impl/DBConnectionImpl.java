@@ -52,6 +52,9 @@ public class DBConnectionImpl implements DBConnection {
         Connection conn = null;
         try {
             conn = getConnection();
+            if (conn == null) {
+                return;
+            }
             DatabaseMetaData metaData = conn.getMetaData();
             String productName = metaData.getDatabaseProductName().toUpperCase();
             if (productName.contains("ORACLE")) {
@@ -107,13 +110,15 @@ public class DBConnectionImpl implements DBConnection {
                 break;
         }
 
-        ((DBSchemaImpl)currentSchema).setLoader(loader);
+        if (currentSchema != null) {
+            ((DBSchemaImpl)currentSchema).setLoader(loader);
+        }
     }
 
     @Override
     @JSONField(serialize = false)
     public Connection getConnection() throws Exception {
-        Connection conn;
+        Connection conn = null;
         try {
             Class.forName(dataSource.getDriverClass());
             conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPwd());
@@ -127,7 +132,7 @@ public class DBConnectionImpl implements DBConnection {
             }
         } catch (Exception e) {
             isAvailable = false;
-            throw e;
+            log.error("获得数据库连接失败！", e);
         }
 
         return conn;

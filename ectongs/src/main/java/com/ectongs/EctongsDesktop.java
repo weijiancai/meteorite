@@ -46,7 +46,7 @@ public class EctongsDesktop extends MUTabsDesktop {
         dsConfigView.setNode(new DsConfigView());
         dsConfigTreeNode.setView(dsConfigView);
 
-        tree.getRoot().getChildren().add(new MUTreeItem(tree, dsConfigTreeNode));
+        tree.getRoot().getChildren().add(new MUTreeItem(dsConfigTreeNode));
     }
 
     /*public void openTab(ITreeNode node) {

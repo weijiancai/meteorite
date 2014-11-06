@@ -35,6 +35,9 @@ public class DsConfigView extends BorderPane {
         TabPane tabPane = new TabPane();
         List<DataSource> dataSources = DataSourceManager.getDataSources();
         for (DataSource ds : dataSources) {
+            if (!ds.isAvailable()) {
+                continue;
+            }
             VirtualResource vr = ds.findResourceByPath("/table/bs_sys_ds_datastore");
             if (vr != null) {
                 Tab tab = new Tab(ds.getDisplayName());
