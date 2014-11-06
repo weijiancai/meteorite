@@ -190,7 +190,7 @@ public class MUTable extends StackPane {
                 try {
                     QueryResult<DataMap> list = result.getDataSource().retrieve(result.getQueryBuilder(), getPagination().getCurrentPageIndex(), getPageRows());
                     setTotalRows(list.getTotal());
-                    getPagination().setPageCount(getPageRows());
+                    getPagination().setPageCount(list.getPageCount());
                     table.setItems(FXCollections.observableArrayList(list.getRows()));
                 } catch (Exception e) {
                     MUDialog.showExceptionDialog(e);
@@ -383,6 +383,9 @@ public class MUTable extends StackPane {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 Meta meta = config.getMeta();
                 try {
+                    if (queryForm == null) {
+                        return;
+                    }
                     QueryResult<DataMap> queryResult = meta.query(queryForm.getQueryList(), newValue.intValue(), getPageRows());
                     table.getItems().clear();
                     table.getItems().addAll(queryResult.getRows());
@@ -546,6 +549,10 @@ public class MUTable extends StackPane {
 
     public ObservableList<DataMap> getItems() {
         return table.getItems();
+    }
+
+    public void setItems(List<DataMap> list) {
+        table.setItems(FXCollections.observableArrayList(list));
     }
 
     public TableSelectionModel<DataMap> getSelectionModel() {

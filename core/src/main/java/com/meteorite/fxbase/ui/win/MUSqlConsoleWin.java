@@ -281,7 +281,7 @@ public class MUSqlConsoleWin extends BorderPane {
                 DBDataSource dbDataSource = (DBDataSource) DataSourceManager.getDataSource(code.getId());
                 SqlFormat format = new SqlFormat(sql, dbDataSource);
                 setSql(format.format());
-                formatTable.getItems().addAll(format.getDataList());
+                formatTable.setItems(format.getDataList());
             } catch (Exception e) {
                 // 选中消息Tab
                 tabPane.getSelectionModel().select(0);

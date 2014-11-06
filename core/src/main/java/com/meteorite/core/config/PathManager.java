@@ -12,7 +12,6 @@ import static com.meteorite.core.config.SystemConfig.*;
  * @since 1.0.0
  */
 public class PathManager {
-    private static final Logger log = Logger.getLogger(PathManager.class);
     private static final String CONFIG_FOLDER = "config";
     private static final String SYSTEM_FOLDER = "system";
     private static final String LOG_FOLDER = "log";
@@ -46,7 +45,6 @@ public class PathManager {
             homePath = new File(USER_HOME, systemName);
         }
         if (!homePath.exists()) {
-            log.debug("创建主目录：" + homePath.getAbsolutePath());
             homePath.mkdir();
         }
 
@@ -65,7 +63,6 @@ public class PathManager {
 
         configPath = new File(getHomePath(), CONFIG_FOLDER);
         if (!configPath.exists()) {
-            log.debug("创建config目录：" + homePath.getAbsolutePath());
             configPath.mkdir();
         }
         return configPath;
@@ -83,7 +80,6 @@ public class PathManager {
 
         systemPath = new File(getHomePath(), SYSTEM_FOLDER);
         if (!systemPath.exists()) {
-            log.debug("创建system目录：" + homePath.getAbsolutePath());
             systemPath.mkdir();
         }
         return systemPath;
@@ -101,7 +97,6 @@ public class PathManager {
 
         logPath = new File(getHomePath(), LOG_FOLDER);
         if (!logPath.exists()) {
-            log.debug("创建log目录：" + homePath.getAbsolutePath());
             logPath.mkdir();
         }
         return logPath;
@@ -119,7 +114,6 @@ public class PathManager {
 
         tempPath = new File(getHomePath(), TEMP_FOLDER);
         if (!tempPath.exists()) {
-            log.debug("创建temp目录：" + homePath.getAbsolutePath());
             tempPath.mkdir();
         }
         return tempPath;
@@ -137,7 +131,6 @@ public class PathManager {
 
         backupPath = new File(getHomePath(), BACKUP_FOLDER);
         if (!backupPath.exists()) {
-            log.debug("创建temp目录：" + homePath.getAbsolutePath());
             backupPath.mkdir();
         }
         return backupPath;
