@@ -11,6 +11,8 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.List;
+
 /**
  * @author wei_jc
  * @since 1.0.0
@@ -60,8 +62,16 @@ public class MUTreeItem extends TreeItem<ITreeNode> {
         tree.putNodeItem(value, this);
     }
 
-    public MUTreeItem(ITreeNode value) {
-        super(value, FUImage.getImageView(value.getIcon()));
+    public MUTreeItem(ITreeNode treeNode) {
+        super(treeNode, FUImage.getImageView(treeNode.getIcon()));
+        // 构造子节点
+        List<? extends ITreeNode> children = treeNode.getChildren();
+        if (children != null && children.size() > 0) {
+            for (ITreeNode node : children) {
+                MUTreeItem item = new MUTreeItem(node);
+                this.getChildren().add(item);
+            }
+        }
     }
 
     /*@Override public ObservableList<TreeItem<ITreeNode>> getChildren() {

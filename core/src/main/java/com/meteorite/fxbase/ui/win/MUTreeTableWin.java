@@ -3,15 +3,10 @@ package com.meteorite.fxbase.ui.win;
 import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.QueryResult;
-import com.meteorite.core.dict.DictManager;
-import com.meteorite.core.dict.DictTreeNode;
 import com.meteorite.core.dict.EnumDataStatus;
 import com.meteorite.core.dict.FormType;
-import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.model.Meta;
-import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.model.ITreeNode;
-import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.observer.Observer;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.layout.property.FormProperty;
@@ -26,7 +21,6 @@ import com.meteorite.fxbase.ui.view.MUTree;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -135,17 +129,11 @@ public abstract class MUTreeTableWin extends BorderPane {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 mainForm.save();
-                BaseTreeNode parent = (BaseTreeNode) tree.getSelected();
+
                 ITreeNode child = createNewTreeNode(mainForm.getValueMap());
-                child.setParent(parent);
-                if (parent.getChildren().size() == 0) {
-                    parent.getChildren().add(child);
-//                    tree.setRoot(new MUTreeItem(tree, getRootTreeNode()));
-                    tree.buildTree(parent.getParent(), tree.getTreeItem(parent));
-                    tree.expandTo(child);
-                } else {
-                    tree.getTreeItem(parent).getChildren().add(new MUTreeItem(tree, child));
-                }
+                TreeItem<ITreeNode> parent = tree.getSelectionModel().getSelectedItem();
+                parent.getChildren().add(new MUTreeItem(child));
+                parent.setExpanded(true);
             }
         });
         // 删除按钮

@@ -154,10 +154,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         final TreeItem<ITreeNode> navTreeItem = new TreeItem<ITreeNode>(navTree);
         navTreeItem.setExpanded(true);
         // 数据源管理
-        BaseTreeNode dataSource = new BaseTreeNode("数据源管理");
-        dataSource.setId("DataSource");
-        dataSource.setView(View.createNodeView(new MUTable(MetaManager.getMeta("Datasource"))));
-        final TreeItem<ITreeNode> dataSourceItem = new TreeItem<ITreeNode>(dataSource);
+        MUDataSourceWin dataSourceWin = new MUDataSourceWin(messageLabel);
         // 数据字典
         BaseTreeNode dictNode = new BaseTreeNode("数据字典");
         dictNode.setId("Dict");
@@ -192,61 +189,10 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         navTreeItem.getChildren().add(metaItem);
         navTreeItem.getChildren().add(viewItem);
         navTreeItem.getChildren().add(projectItem);
-        navTreeItem.getChildren().add(dataSourceItem);
+        navTreeItem.getChildren().add(dataSourceWin.getDataSourceItem());
         navTreeItem.getChildren().add(ProfileSettingItem);
         navTreeItem.getChildren().add(backupWin.getBackupTreeItem());
         navTreeItem.getChildren().add(sqlConsoleWin.getSqlConsoleTreeItem());
-
-        Service<List<BaseTreeNode>> service = new Service<List<BaseTreeNode>>() {
-            @Override
-            protected Task<List<BaseTreeNode>> createTask() {
-                return new Task<List<BaseTreeNode>>() {
-                    @Override
-                    protected List<BaseTreeNode> call() throws Exception {
-                        List<BaseTreeNode> result = new ArrayList<BaseTreeNode>();
-                        for (final DataSource ds : DataSourceManager.getDataSources()) {
-                            ds.getLoaderSubject().registerObserver(new Observer<LoaderEventData>() {
-                                @Override
-                                public void update(LoaderEventData data) {
-                                    updateMessage(data.getMessage());
-                                }
-                            });
-                            ds.load();
-                            BaseTreeNode dsNode = new BaseTreeNode(ds.getDisplayName());
-                            for (ITreeNode node : ds.getNavTree().getChildren()) {
-                                dsNode.getChildren().add(node);
-                            }
-                            result.add(dsNode);
-                        }
-                        return result;
-                    }
-                };
-            }
-        };
-        service.valueProperty().addListener(new ChangeListener<List<BaseTreeNode>>() {
-            @Override
-            public void changed(ObservableValue<? extends List<BaseTreeNode>> observable, List<BaseTreeNode> oldValue, List<BaseTreeNode> newValue) {
-                for (BaseTreeNode node : newValue) {
-                    MUTreeItem item = new MUTreeItem(tree, node);
-                    dataSourceItem.getChildren().add(item);
-                }
-            }
-        });
-        service.messageProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                messageLabel.setText(newValue);
-            }
-        });
-        service.exceptionProperty().addListener(new ChangeListener<Throwable>() {
-            @Override
-            public void changed(ObservableValue<? extends Throwable> observable, Throwable oldValue, Throwable newValue) {
-                newValue.printStackTrace();
-            }
-        });
-
-        // 启动服务
-        service.start();
     }
 
     private void createBottom() {

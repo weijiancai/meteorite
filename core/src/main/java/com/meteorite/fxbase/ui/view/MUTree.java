@@ -27,7 +27,7 @@ public class MUTree extends TreeView<ITreeNode> {
 
     public MUTree(ITreeNode root) {
         if (root != null) {
-            MUTreeItem rootItem = new MUTreeItem(this, root);
+            MUTreeItem rootItem = new MUTreeItem(root);
             rootItem.setExpanded(true);
             this.setRoot(rootItem);
         }
@@ -41,35 +41,6 @@ public class MUTree extends TreeView<ITreeNode> {
         /*TreeItem<ITreeNode> rootItem = addTreeNode(root);*/
 //        this.setShowRoot(false);
     }
-
-    public TreeItem<ITreeNode> addTreeNode(ITreeNode node) {
-        TreeItem<ITreeNode> rootItem = new TreeItem<ITreeNode>(node);
-        setIcon(rootItem);
-        buildTree(node, rootItem);
-        return rootItem;
-    }
-
-    public void buildTree(ITreeNode treeNode, TreeItem<ITreeNode> parentItem) {
-        List<? extends ITreeNode> children = treeNode.getChildren();
-        if (children != null && children.size() > 0) {
-            for (ITreeNode node : children) {
-                TreeItem<ITreeNode> item = new TreeItem<ITreeNode>(node);
-                setIcon(item);
-                parentItem.getChildren().add(item);
-                nodeItemMap.put(node, item);
-                buildTree(node, item);
-            }
-        }
-    }
-
-    private void setIcon(TreeItem<ITreeNode> item) {
-        String iconPath = item.getValue().getIcon();
-        if (UString.isNotEmpty(iconPath)) {
-            ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(iconPath)));
-            item.setGraphic(imageView);
-        }
-    }
-
 
     public ITreeNode getSelected() {
         TreeItem<ITreeNode> item = this.getSelectionModel().getSelectedItem();
