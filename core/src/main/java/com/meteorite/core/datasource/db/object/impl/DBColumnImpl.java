@@ -185,9 +185,9 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
     }
 
     @Override
-    public String toString() {
+    public String getPresentableText() {
         StringBuilder sb =  new StringBuilder();
-        sb.append(getName().toLowerCase()).append(" - ").append(dbDataType.toLowerCase());
+        sb.append(" - ").append(dbDataType.toLowerCase());
         if (maxLength > 0) {
             sb.append("(").append(maxLength).append(")");
         } else if (precision > 0) {
@@ -201,6 +201,11 @@ public class DBColumnImpl extends DBObjectImpl implements DBColumn {
             sb.append(" ").append(getComment());
         }
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return getName() + getPresentableText();
     }
 
     @Override

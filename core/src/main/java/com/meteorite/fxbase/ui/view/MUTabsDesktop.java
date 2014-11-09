@@ -154,7 +154,7 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
         final TreeItem<ITreeNode> navTreeItem = new TreeItem<ITreeNode>(navTree);
         navTreeItem.setExpanded(true);
         // 数据源管理
-        MUDataSourceWin dataSourceWin = new MUDataSourceWin(messageLabel);
+        MUDataSourceWin dataSourceWin = new MUDataSourceWin(messageLabel, tree);
         // 数据字典
         BaseTreeNode dictNode = new BaseTreeNode("数据字典");
         dictNode.setId("Dict");

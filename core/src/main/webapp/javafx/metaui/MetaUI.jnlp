@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" codebase="http://localhost:8080/javafx/metaui/" href="MetaUI.jnlp">
+  <information>
+    <title>MetaUI</title>
+    <vendor>weijiancai</vendor>
+    <description>Sample JavaFX 2.0 application.</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <jfx:javafx-runtime version="2.0+" href="http://javadl.sun.com/webapps/download/GetFile/javafx-latest/windows-i586/javafx2.jnlp"/>
+  </resources>
+  <resources>
+    <j2se version="1.6+" java-vm-args="-Xms256m -Xmx1024m "  href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="MetaUI.jar" size="1106667" download="eager" />
+    <jar href="libs/commons-codec-1.8.jar" size="268083" download="eager" />
+    <jar href="libs/commons-logging-1.1.1.jar" size="61991" download="eager" />
+    <jar href="libs/commons-net-3.3.jar" size="284625" download="eager" />
+    <jar href="libs/controlsfx-8.0.5.jar" size="764770" download="eager" />
+    <jar href="libs/dom4j-1.6.1.jar" size="314675" download="eager" />
+    <jar href="libs/druid-1.0.9.jar" size="1865711" download="eager" />
+    <jar href="libs/hsqldb-2.3.0.jar" size="1467722" download="eager" />
+    <jar href="libs/httpclient-4.2.6.jar" size="441701" download="eager" />
+    <jar href="libs/httpcore-4.2.5.jar" size="231638" download="eager" />
+    <jar href="libs/jaxen-1.1.6.jar" size="232660" download="eager" />
+    <jar href="libs/log4j-1.2.17.jar" size="490661" download="eager" />
+    <jar href="libs/mysql-connector-java-5.1.27.jar" size="877733" download="eager" />
+    <jar href="libs/sqljdbc4.jar" size="528580" download="eager" />
+  </resources>
+<security>
+  <all-permissions/>
+</security>
+  <applet-desc  width="1000" height="1000" main-class="com.javafx.main.NoJavaFXFallback"  name="Meta UI" >
+    <param name="requiredFXVersion" value="2.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="1000" height="1000" main-class="com.meteorite.fxbase.MetaUIApp"  name="Meta UI" />
+  <update check="always"/>
+</jnlp>

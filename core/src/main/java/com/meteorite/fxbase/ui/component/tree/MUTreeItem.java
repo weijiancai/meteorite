@@ -63,13 +63,19 @@ public class MUTreeItem extends TreeItem<ITreeNode> {
     }
 
     public MUTreeItem(ITreeNode treeNode) {
+        this(treeNode, true);
+    }
+
+    public MUTreeItem(ITreeNode treeNode, boolean buildChild) {
         super(treeNode, FUImage.getImageView(treeNode.getIcon()));
         // 构造子节点
-        List<? extends ITreeNode> children = treeNode.getChildren();
-        if (children != null && children.size() > 0) {
-            for (ITreeNode node : children) {
-                MUTreeItem item = new MUTreeItem(node);
-                this.getChildren().add(item);
+        if (buildChild) {
+            List<? extends ITreeNode> children = treeNode.getChildren();
+            if (children != null && children.size() > 0) {
+                for (ITreeNode node : children) {
+                    MUTreeItem item = new MUTreeItem(node);
+                    this.getChildren().add(item);
+                }
             }
         }
     }

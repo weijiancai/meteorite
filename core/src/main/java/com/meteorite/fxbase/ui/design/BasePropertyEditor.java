@@ -15,7 +15,7 @@ public abstract class BasePropertyEditor<T, C extends Node> implements PropertyE
     private final C control;
 
     public BasePropertyEditor(PropertySheet.Item property, C control) {
-        this(property, control, !property.isEditable());
+        this(property, control, false);
     }
 
     public BasePropertyEditor(PropertySheet.Item property, C control, boolean readonly) {

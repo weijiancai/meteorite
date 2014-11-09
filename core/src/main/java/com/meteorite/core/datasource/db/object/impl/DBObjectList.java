@@ -15,22 +15,20 @@ import java.util.List;
 public class DBObjectList extends DBObjectImpl {
     public DBObjectList(String name, String icon, ArrayList<ITreeNode> children) {
         this.setName(name);
+        this.setComment(name);
         this.setIcon(icon);
         this.setChildren(children);
         setObjectType(DBObjectType.NONE);
     }
 
-    @Override
-    public List<ITreeNode> getChildren() {
-        List<ITreeNode> children =  super.getChildren();
-        if (children == null) {
-            children = new ArrayList<ITreeNode>();
-        }
-
-        return children;
+    public DBObjectList(String name, String icon, DBObjectType type) {
+        this.setName(name);
+        this.setComment(name);
+        this.setIcon(icon);
+        setObjectType(type);
     }
 
-    @Override
+    /*@Override
     public String toString() {
         StringBuilder sb = new StringBuilder(getName());
         List<ITreeNode> children = getChildren();
@@ -38,5 +36,5 @@ public class DBObjectList extends DBObjectImpl {
             sb.append(" (").append(children.size()).append(")");
         }
         return sb.toString();
-    }
+    }*/
 }

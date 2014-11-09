@@ -46,7 +46,7 @@ public abstract class BaseApp extends Application {
         System.setProperty("logs_dir", PathManager.getLogPath().getAbsolutePath());
         try {
             PropertyConfigurator.configure(UIO.getInputStream("/log4j.properties", UIO.FROM.CP));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

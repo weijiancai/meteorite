@@ -19,7 +19,6 @@ import com.meteorite.core.meta.annotation.MetaFieldElement;
 import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.model.ITreeNode;
-import com.meteorite.core.observer.Observer;
 import com.meteorite.core.rest.PathHandler;
 import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.UString;
@@ -32,7 +31,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 数据库数据源
@@ -205,6 +207,13 @@ public class DBDataSource extends DataSource {
     @Override
     @JSONField(serialize = false)
     public ITreeNode getNavTree() throws Exception {
+        if (navTree == null) {
+            navTree = new DBObjectImpl();
+            navTree.setObjectType(DBObjectType.DATABASE);
+            navTree.setName(name);
+            navTree.setComment(name);
+            navTree.setDataSource(this);
+        }
         return navTree;
     }
 
@@ -220,11 +229,6 @@ public class DBDataSource extends DataSource {
 
     @Override
     public void load() throws Exception {
-        if (navTree == null) {
-            navTree = new DBObjectImpl();
-            navTree.setObjectType(DBObjectType.DATABASE);
-            navTree.setName(name);
-        }
         DBLoader loader = getDbConnection().getLoader();
         if (loader != null) {
             loader.load();

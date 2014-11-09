@@ -81,6 +81,68 @@ public abstract class BaseDBLoader implements DBLoader {
         List<DBSchema> schemas = loadSchemas();
         DBObjectList dbSchemas = new DBObjectList("Schemas", DBIcons.DBO_SCHEMAS, new ArrayList<ITreeNode>(schemas));
         dbSchemas.setParent(navTree);
+        for (DBSchema dbSchema : schemas) {
+            DBSchemaImpl schema = (DBSchemaImpl) dbSchema;
+            // 加载Table
+            schema.setTables(loadTables(schema));
+            // 加载View
+            schema.setViews(loadViews(schema));
+            // 加载Index
+            schema.setIndexes(loadIndexes(schema));
+            // 加载Trigger
+            schema.setTriggers(loadTriggers(schema));
+            // 加载Procedure
+            schema.setProcedures(loadProcedures(schema));
+            // 加载Function
+            schema.setFunctions(loadFunctions(schema));
+            // 加载参数
+            loadParameters(schema);
+            // 加载外键约束
+            loadFkConstraints(schema);
+
+            // 设置Schema子节点
+            List<ITreeNode> children = new ArrayList<ITreeNode>();
+            // 加载表
+            DBObjectList tables = new DBObjectList("Tables", DBIcons.DBO_TABLES, new ArrayList<ITreeNode>(schema.getTables()));
+            // 加载视图
+            DBObjectList views = new DBObjectList("Views", DBIcons.DBO_VIEWS, new ArrayList<ITreeNode>(schema.getViews()));
+            // 加载索引
+            DBObjectList indexes = new DBObjectList("Indexes", DBIcons.DBO_INDEXES, new ArrayList<ITreeNode>(schema.getIndexes()));
+            // 加载触发器
+            DBObjectList triggers = new DBObjectList("Triggers", DBIcons.DBO_TRIGGERS, new ArrayList<ITreeNode>(schema.getTriggers()));
+            // 加载存储过程
+            DBObjectList procedures = new DBObjectList("Procedures", DBIcons.DBO_PROCEDURES, new ArrayList<ITreeNode>(schema.getProcedures()));
+            // 加载函数
+            DBObjectList functions = new DBObjectList("Functions", DBIcons.DBO_FUNCTIONS, new ArrayList<ITreeNode>(schema.getFunctions()));
+
+            children.add(tables);
+            children.add(views);
+            children.add(indexes);
+            children.add(triggers);
+            children.add(procedures);
+            children.add(functions);
+
+            schema.setChildren(children);
+
+            // 加载表的索引、触发器
+            for (DBTable dbTable : schema.getTables()) {
+                DBTableImpl table = (DBTableImpl) dbTable;
+                // 加载列
+                table.setColumns(loadColumns(table));
+                // 加载约束
+                table.setConstraints(loadConstraint(table));
+                // 索引
+                List<DBIndex> indexList = table.getIndexes();
+                DBObjectList indexObject = new DBObjectList("Indexes", DBIcons.DBO_INDEXES, new ArrayList<ITreeNode>(indexList));
+
+                table.getChildren().add(indexObject);
+                // 触发器
+                List<DBTrigger> triggerList = table.getTriggers();
+                DBObjectList triggerObject = new DBObjectList("Triggers", DBIcons.DBO_TRIGGERS, new ArrayList<ITreeNode>(triggerList));
+
+                table.getChildren().add(triggerObject);
+            }
+        }
 
         List<DBUser> users = loadUsers();
         DBObjectList dbUsers = new DBObjectList("Users", DBIcons.DBO_USERS, new ArrayList<ITreeNode>(users));
@@ -183,72 +245,15 @@ public abstract class BaseDBLoader implements DBLoader {
         List<DataMap> list = dbConn.getResultSet(getSchemaSql());
         for (DataMap map : list) {
             String schemaName = map.getString("SCHEMA_NAME");
-            if (!dbConn.getSchema().getName().equals(schemaName)) {
-                continue;
-            }
             notifyMessage(String.format("加载Schema：" + schemaName));
 
             DBSchemaImpl schema = new DBSchemaImpl();
             schema.setDataSource(dbConn.getDataSource());
             schema.setParent(navTree);
             schema.setName(schemaName);
-            schema.setComment(schema.getName());
-            // 加载Table
-            schema.setTables(loadTables(schema));
-            // 加载View
-            schema.setViews(loadViews(schema));
-            // 加载Index
-            schema.setIndexes(loadIndexes(schema));
-            // 加载Trigger
-            schema.setTriggers(loadTriggers(schema));
-            // 加载Procedure
-            schema.setProcedures(loadProcedures(schema));
-            // 加载Function
-            schema.setFunctions(loadFunctions(schema));
-            // 加载参数
-            loadParameters(schema);
-            // 加载外键约束
-            loadFkConstraints(schema);
+            schema.setComment(schemaName);
 
             result.add(schema);
-
-            // 设置Schema子节点
-            List<ITreeNode> children = new ArrayList<ITreeNode>();
-            // 加载表
-            DBObjectList tables = new DBObjectList("Tables", DBIcons.DBO_TABLES, new ArrayList<ITreeNode>(schema.getTables()));
-            // 加载视图
-            DBObjectList views = new DBObjectList("Views", DBIcons.DBO_VIEWS, new ArrayList<ITreeNode>(schema.getViews()));
-            // 加载索引
-            DBObjectList indexes = new DBObjectList("Indexes", DBIcons.DBO_INDEXES, new ArrayList<ITreeNode>(schema.getIndexes()));
-            // 加载触发器
-            DBObjectList triggers = new DBObjectList("Triggers", DBIcons.DBO_TRIGGERS, new ArrayList<ITreeNode>(schema.getTriggers()));
-            // 加载存储过程
-            DBObjectList procedures = new DBObjectList("Procedures", DBIcons.DBO_PROCEDURES, new ArrayList<ITreeNode>(schema.getProcedures()));
-            // 加载函数
-            DBObjectList functions = new DBObjectList("Functions", DBIcons.DBO_FUNCTIONS, new ArrayList<ITreeNode>(schema.getFunctions()));
-
-            children.add(tables);
-            children.add(views);
-            children.add(indexes);
-            children.add(triggers);
-            children.add(procedures);
-            children.add(functions);
-
-            schema.setChildren(children);
-
-            // 加载表的索引、触发器
-            for (DBTable table : schema.getTables()) {
-                // 索引
-                List<DBIndex> indexList = table.getIndexes();
-                DBObjectList indexObject = new DBObjectList("Indexes", DBIcons.DBO_INDEXES, new ArrayList<ITreeNode>(indexList));
-
-                table.getChildren().add(indexObject);
-                // 触发器
-                List<DBTrigger> triggerList = table.getTriggers();
-                DBObjectList triggerObject = new DBObjectList("Triggers", DBIcons.DBO_TRIGGERS, new ArrayList<ITreeNode>(triggerList));
-
-                table.getChildren().add(triggerObject);
-            }
         }
         return result;
     }
@@ -266,6 +271,7 @@ public abstract class BaseDBLoader implements DBLoader {
                 index = new DBIndexImpl();
                 index.setSchema(schema);
                 index.setName(indexName);
+                index.setComment(indexName);
                 index.setAsc(map.getBoolean("IS_ASC"));
                 index.setUnique(map.getBoolean("IS_UNIQUE"));
                 index.setTableName(map.getString("TABLE_NAME"));
@@ -301,6 +307,7 @@ public abstract class BaseDBLoader implements DBLoader {
             DBTriggerImpl trigger = new DBTriggerImpl();
             trigger.setSchema(schema);
             trigger.setName(map.getString("TRIGGER_NAME"));
+            trigger.setComment(trigger.getName());
             trigger.setForEachRow(map.getBoolean("IS_FOR_EACH_ROW"));
             trigger.setTriggerType(DBTriggerType.convert(map.getString("TRIGGER_TYPE")));
             trigger.setTriggerEvents(DBTriggerEvent.convertToList(map.getString("TRIGGERING_EVENT")));
@@ -325,6 +332,7 @@ public abstract class BaseDBLoader implements DBLoader {
             DBProcedureImpl procedure = new DBProcedureImpl();
             procedure.setSchema(schema);
             procedure.setName(map.getString("PROCEDURE_NAME"));
+            procedure.setComment(procedure.getName());
 
             result.add(procedure);
             notifyMessage(String.format("加载Procedure：" + procedure.getName()));
@@ -342,6 +350,7 @@ public abstract class BaseDBLoader implements DBLoader {
             DBFunctionImpl function = new DBFunctionImpl();
             function.setSchema(schema);
             function.setName(map.getString("FUNCTION_NAME"));
+            function.setComment(function.getName());
 
             result.add(function);
             notifyMessage(String.format("加载Function：" + function.getName()));
@@ -366,12 +375,13 @@ public abstract class BaseDBLoader implements DBLoader {
 
             List<ITreeNode> children = method.getChildren();
             if (children.size() == 0) {
-                children.add(new DBObjectList("Arguments", DBIcons.DBO_ARGUMENTS, null));
+                children.add(new DBObjectList("Arguments", DBIcons.DBO_ARGUMENTS, DBObjectType.ARGUMENTS));
             }
             DBArgumentImpl argument = new DBArgumentImpl();
             argument.setSchema(schema);
             argument.setMethod(method);
             argument.setName(map.getString("ARGUMENT_NAME"));
+            argument.setComment(argument.getName());
             argument.setPosition(map.getInt("POSITION"));
             argument.setSequence(map.getInt("SEQUENCE"));
             String inOut = map.getString("IN_OUT");
@@ -412,18 +422,19 @@ public abstract class BaseDBLoader implements DBLoader {
             table.setDataSource(dbConn.getDataSource());
             table.setName(UObject.toString(map.get("TABLE_NAME")));
             table.setComment(UObject.toString(map.get("TABLE_COMMENT")));
-            // 加载列
-            table.setColumns(loadColumns(table));
-            // 加载约束
-            table.setConstraints(loadConstraint(table));
+
             result.add(table);
 
             // 设置Table子节点
             List<ITreeNode> children = new ArrayList<ITreeNode>();
             // 列
-            DBObjectList columns = new DBObjectList("Columns", DBIcons.DBO_COLUMNS, new ArrayList<ITreeNode>(table.getColumns()));
+            DBObjectList columns = new DBObjectList("Columns", DBIcons.DBO_COLUMNS, DBObjectType.COLUMNS);
+            columns.setParent(table);
+            columns.setSchema(schema);
             // 约束
-            DBObjectList constraints = new DBObjectList("Constraints", DBIcons.DBO_CONSTRAINTS, new ArrayList<ITreeNode>(table.getConstraints()));
+            DBObjectList constraints = new DBObjectList("Constraints", DBIcons.DBO_CONSTRAINTS, DBObjectType.CONSTRAINTS);
+            constraints.setParent(table);
+            constraints.setSchema(schema);
 
             children.add(columns);
             children.add(constraints);
@@ -495,6 +506,7 @@ public abstract class BaseDBLoader implements DBLoader {
             constraint.setSchema(dataset.getSchema());
             constraint.setParent(dataset);
             constraint.setName(map.getString("CONSTRAINT_NAME"));
+            constraint.setComment(constraint.getName());
             constraint.setConstraintType(DBConstraintType.convert(map.getString("CONSTRAINT_TYPE")));
 
             schema.addConstraints(constraint);
@@ -532,6 +544,7 @@ public abstract class BaseDBLoader implements DBLoader {
             }
 
             constraint.setName(constraintName);
+            constraint.setComment(constraintName);
             constraint.setPkTableName(pkTableName);
             constraint.setPkColumnName(pkColName);
             constraint.setFkTableName(fkTableName);

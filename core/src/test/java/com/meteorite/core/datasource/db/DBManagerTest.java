@@ -64,4 +64,31 @@ public class DBManagerTest {
         System.out.println("==========================");
 //        System.out.println(JSON.toJSONString(schema, SerializerFeature.PrettyFormat));
     }
+
+    @Test
+    public void testBaiduMysqlConnection() throws Exception {
+        DBDataSource ds = new DBDataSource();
+        ds.setName("baidu");
+        ds.setDatabaseType(DatabaseType.MYSQL);
+        ds.setDriverClass("com.mysql.jdbc.Driver");
+        ds.setUrl("jdbc:mysql://sqld.duapp.com:4050/lfCvchGvBgeGdUEyMlry");
+        ds.setUserName("HvjFPYDWk9fi0Y0ilTvb38rE");
+        ds.setPwd("GZzSOI3Gk2oFXSeVZfOm7fnGEnrTGMcL");
+
+        /*DBConnection conn = ds.getDbConnection();
+        System.out.println(conn);
+        assertNotNull(conn);
+        assertThat(conn.getDatabaseType(), equalTo(DatabaseType.MYSQL));
+        DBSchema schema = conn.getSchema();*/
+//        String str = JAXBUtil.marshalToString(schema, DBTableImpl.class, DBColumnImpl.class, DBViewImpl.class);
+//        System.out.println(str);
+        /*for (DBSchema schema1 : conn.getSchemas()) {
+            System.out.println(schema1.getName());
+        }*/
+        System.out.println(ds.isAvailable());
+
+
+        System.out.println("==========================");
+//        System.out.println(JSON.toJSONString(schema, SerializerFeature.PrettyFormat));
+    }
 }

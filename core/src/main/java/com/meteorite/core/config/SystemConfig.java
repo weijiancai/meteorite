@@ -40,7 +40,7 @@ public class SystemConfig {
     /**
      * 系统默认目录
      */
-    public static File DIR_SYSTEM = UFile.makeDirs(PathManager.getHomePath(), SYSTEM_NAME);
+    public static File DIR_SYSTEM;
     /**
      * 类路径目录
      */
@@ -48,7 +48,7 @@ public class SystemConfig {
     /**
      * 系统默认数据库目录
      */
-    public static File DIR_SYSTEM_HSQL_DB = UFile.makeDirs(DIR_SYSTEM, DIR_NAME_SQLDB);
+    public static File DIR_SYSTEM_HSQL_DB;
     /**
      * 数据库升级脚本目录
      */
@@ -68,13 +68,4 @@ public class SystemConfig {
      * 是否是开发模式
      */
     public static final boolean isDebug = true;
-    
-    private static final Logger log = Logger.getLogger(SystemConfig.class);
-
-    static {
-        log.info("======================== 系统信息 ==========================================");
-        log.info("系统默认目录：" + DIR_SYSTEM.getAbsolutePath());
-        log.info("类路径目录：" + DIR_CLASS_PATH.getAbsolutePath());
-        log.info("==========================================================================");
-    }
 }

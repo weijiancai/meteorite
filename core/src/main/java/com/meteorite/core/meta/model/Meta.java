@@ -21,12 +21,6 @@ import com.meteorite.core.util.ftl.FreeMarkerConfiguration;
 import com.meteorite.core.util.ftl.FreeMarkerTemplateUtils;
 import com.meteorite.fxbase.ui.IValue;
 import com.meteorite.fxbase.ui.component.form.ICanQuery;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import javax.xml.bind.annotation.*;
 import java.io.File;
@@ -59,11 +53,11 @@ public class Meta {
     private Map<String, MetaField> fieldMap;
     private DataSource dataSource;
     private VirtualResource resource;
+    private List<DataMap> dataList;
 
-    private ObjectProperty<ObservableList<DataMap>> dataList = new SimpleObjectProperty<ObservableList<DataMap>>(FXCollections.observableList(new ArrayList<DataMap>()));
-    private IntegerProperty totalRows = new SimpleIntegerProperty(0); // 总行数
-    private IntegerProperty pageCount = new SimpleIntegerProperty(0); // 总页数
-    private IntegerProperty pageRows = new SimpleIntegerProperty(15); // 每页行数
+    private int totalRows; // 总行数
+    private int pageCount; // 总页数
+    private int pageRows = 15; // 每页行数
 
     private List<DataMap> insertCache = new ArrayList<DataMap>(); // 新增缓存
     private List<MUAction> actionList = new ArrayList<MUAction>(); // Action List
@@ -248,60 +242,40 @@ public class Meta {
         return null;
     }
 
-    @JSONField(serialize = false)
-    public ObjectProperty<ObservableList<DataMap>> dataListProperty() {
+    @XmlTransient
+    public List<DataMap> getDataList() {
         return dataList;
     }
 
-    @XmlTransient
-    public List<DataMap> getDataList() {
-        return dataList.get();
-    }
-
     public void setDataList(List<DataMap> list) {
-        dataList.set(FXCollections.observableList(list));
-    }
-
-    @JSONField(serialize = false)
-    public IntegerProperty totalRowsProperty() {
-        return totalRows;
+        this.dataList = list;
     }
 
     @XmlTransient
     public int getTotalRows() {
-        return totalRows.get();
+        return totalRows;
     }
 
     public void setTotalRows(int totalRows) {
-        this.totalRows.set(totalRows);
+        this.totalRows = totalRows;
     }
 
     @XmlTransient
     public int getPageCount() {
-        return pageCount.get();
-    }
-
-    @JSONField(serialize = false)
-    public IntegerProperty pageCountProperty() {
         return pageCount;
     }
 
     public void setPageCount(int pageCount) {
-        this.pageCount.set(pageCount);
+        this.pageCount = pageCount;
     }
 
     @XmlTransient
     public int getPageRows() {
-        return pageRows.get();
-    }
-
-    @JSONField(serialize = false)
-    public IntegerProperty pageRowsProperty() {
         return pageRows;
     }
 
     public void setPageRows(int pageRows) {
-        this.pageRows.set(pageRows);
+        this.pageRows = pageRows;
     }
 
     /**
@@ -311,7 +285,7 @@ public class Meta {
      * @return 返回行数据Map
      */
     public DataMap getRowData(int row) {
-        return dataList.get().get(row);
+        return dataList.get(row);
     }
 
     public QueryResult<DataMap> query(List<ICanQuery> queryList, int page, int rows) throws Exception {
@@ -340,7 +314,7 @@ public class Meta {
             values[i] = rowData.getString(field.getName());
         }
         resource.delete(this, values);
-        dataList.get().remove(row);
+        dataList.remove(row);
     }
 
     /**
@@ -427,7 +401,11 @@ public class Meta {
         }
         QueryResult<DataMap> result = resource.retrieve(builder, -1, 0);
         if (result.getTotal() == 0) {
-            throw new RuntimeException(String.format("没有此主键值【%s】", pkValues.clone()));
+            StringBuilder sb = new StringBuilder();
+            for (String pkValue : pkValues) {
+                sb.append(pkValue).append(",");
+            }
+            throw new RuntimeException(String.format("没有此主键值【%s】", sb.toString()));
         }
         if (result.getTotal() > 1) {
             throw new RuntimeException(String.format("根据主键检索，检索出多条数据！"));

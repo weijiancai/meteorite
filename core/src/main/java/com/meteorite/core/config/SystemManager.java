@@ -17,6 +17,7 @@ import com.meteorite.core.project.ProjectManager;
 import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.ui.layout.LayoutManager;
+import com.meteorite.core.util.UFile;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.apache.log4j.Logger;
 
@@ -41,6 +42,14 @@ public class SystemManager {
     private LayoutConfig layoutConfig;
 
     static {
+        DIR_SYSTEM = UFile.makeDirs(PathManager.getHomePath(), SYSTEM_NAME);
+        DIR_SYSTEM_HSQL_DB = UFile.makeDirs(DIR_SYSTEM, DIR_NAME_SQLDB);
+
+        log.info("======================== 系统信息 ==========================================");
+        log.info("系统默认目录：" + DIR_SYSTEM.getAbsolutePath());
+        log.info("类路径目录：" + DIR_CLASS_PATH.getAbsolutePath());
+        log.info("==========================================================================");
+
         // 加载系统信息
         sysInfo = new SystemInfo();
         try {

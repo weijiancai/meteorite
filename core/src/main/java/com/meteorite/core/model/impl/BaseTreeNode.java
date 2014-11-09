@@ -2,6 +2,9 @@ package com.meteorite.core.model.impl;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.observer.BaseSubject;
+import com.meteorite.core.observer.EventData;
+import com.meteorite.core.observer.Subject;
 import com.meteorite.core.ui.model.View;
 
 import java.util.ArrayList;
@@ -22,6 +25,8 @@ public class BaseTreeNode implements ITreeNode {
 
     private ITreeNode parent;
     private List<ITreeNode> children;
+
+    private Subject<EventData> presentableTextSubject = new BaseSubject<EventData>();
 
     public BaseTreeNode() {}
 
@@ -46,6 +51,11 @@ public class BaseTreeNode implements ITreeNode {
     }
 
     public void setPresentableText(String presentableText) {
+        if (!this.presentableText.equals(presentableText)) {
+            EventData eventData = new EventData();
+            eventData.setStrData(presentableText);
+            presentableTextSubject.notifyObserver(eventData);
+        }
         this.presentableText = presentableText;
     }
 
@@ -123,6 +133,11 @@ public class BaseTreeNode implements ITreeNode {
     @Override
     public boolean isVirtual() {
         return false;
+    }
+
+    @Override
+    public Subject<EventData> getPresentableTextSubject() {
+        return presentableTextSubject;
     }
 
     public void setView(View view) {

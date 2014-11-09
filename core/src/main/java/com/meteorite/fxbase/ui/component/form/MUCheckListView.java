@@ -49,7 +49,7 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
         enableAll.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
-                listView.getCheckModel().checkAll();
+                listView.getCheckModel().selectAll();
             }
         });
         Button disableAll = new Button("取消所有");
@@ -57,7 +57,7 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
             @Override
             public void doHandler(ActionEvent event) throws Exception {
                 for (int i = 0; i < data.size(); i++) {
-                    listView.getCheckModel().clearCheck(i);
+                    listView.getCheckModel().clearSelection(i);
                 }
             }
         });
@@ -66,7 +66,7 @@ public class MUCheckListView<T> extends BorderPane implements ICanInput<T> {
     }
 
     public void selectAll() {
-        listView.getCheckModel().checkAll();
+        listView.getCheckModel().selectAll();
     }
 
     public MultipleSelectionModel<T> getSelectionModel() {

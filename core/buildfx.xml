@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project name="JavaFXSample" default="fxdeploy" basedir="." xmlns:fx="javafx:com.sun.javafx.tools.ant">
+    <property file="metaui-fx.properties"/>
+
+    <path id="project.lib">
+        <fileset dir="${project.lib}">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${maven.lib}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <javac includeantruntime="false"
+               srcdir="${src.dir}"
+               destdir="${build.classes.dir}"
+               fork="yes"
+               executable="${java.sdk.path}/bin/javac"
+               source="1.8"
+               debug="on"
+               encoding="${source.encoding}">
+
+            <classpath refid="project.lib"/>
+        </javac>
+
+        <copy todir="${build.classes.dir}">
+            <fileset dir="${resources.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="fxapplication" depends="compile">
+        <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+                 uri="javafx:com.sun.javafx.tools.ant"
+                 classpath="${java.sdk.path}/lib/ant-javafx.jar"/>
+
+        <fx:application id="metaui"
+                        name="Meta UI"
+                        mainClass="${main.class}"/>
+
+        <copydir src="${project.lib}" dest="${dist.dir}/libs" includes="**/*.jar"/>
+        <copydir src="${maven.lib}" dest="${dist.dir}/libs" includes="**/*.jar"/>
+
+        <fx:resources id="appRes">
+            <fx:fileset dir="${dist.dir}">
+                <include name="${application.title}.jar"/>
+                <include name="libs/commons-codec-1.8.jar"/>
+                <include name="libs/httpclient-4.2.6.jar"/>
+                <include name="libs/httpcore-4.2.5.jar"/>
+                <include name="libs/commons-logging-1.1.1.jar"/>
+                <include name="libs/commons-net-3.3.jar"/>
+                <include name="libs/dom4j-1.6.1.jar"/>
+                <include name="libs/log4j-1.2.17.jar"/>
+                <include name="libs/mysql-connector-java-5.1.27.jar"/>
+                <!--<include name="libs/ojdbc6.jar"/>-->
+                <include name="libs/sqljdbc4.jar"/>
+                <include name="libs/druid-1.0.9.jar"/>
+                <include name="libs/hsqldb-2.3.0.jar"/>
+                <include name="libs/jaxen-1.1.6.jar"/>
+                <include name="libs/controlsfx-8.0.5.jar"/>
+            </fx:fileset>
+        </fx:resources>
+
+        <fx:jar destfile="${dist.dir}/${application.title}.jar">
+            <fx:application refid="metaui"/>
+
+            <fx:resources refid="appRes"/>
+
+            <fx:fileset dir="${build.classes.dir}"/>
+
+            <manifest>
+                <attribute name="Implementation-Vendor" value="${application.vendor}"/>
+                <attribute name="Implementation-Title" value="${application.title}"/>
+                <attribute name="Implementation-Version" value="${application.version}"/>
+            </manifest>
+        </fx:jar>
+    </target>
+
+    <target name="genkey" depends="fxapplication">
+        <echo message="genkey..."/>
+        <delete file="${build.dir}/${alias}.keystore"/>
+
+        <genkey alias="${alias}" storepass="${storepass}" keystore="${build.dir}/${alias}.keystore"
+                validity="${validity}" verbose="true" keysize="${keysize}" keyalg="${keyalg}" sigalg="${sigalg}">
+            <dname>
+                <param name="CN" value="MetaUI"/>
+                <param name="OU" value="MetaUI"/>
+                <param name="O" value="metaui"/>
+                <param name="C" value="CN"/>
+            </dname>
+        </genkey>
+
+        <echo message="genkey...ok."/>
+    </target>
+
+    <target name="signjar" depends="genkey">
+        <fx:signjar keyStore="${build.dir}/${alias}.keystore" destdir="${dist.dir}" alias="${alias}"
+                 storePass="${storepass}" keyPass="${storepass}">
+            <fileset dir="${dist.dir}">
+                <include name="${application.title}.jar"/>
+                <include name="libs/commons-codec-1.8.jar"/>
+                <include name="libs/httpclient-4.2.6.jar"/>
+                <include name="libs/httpcore-4.2.5.jar"/>
+                <include name="libs/commons-logging-1.1.1.jar"/>
+                <include name="libs/commons-net-3.3.jar"/>
+                <include name="libs/dom4j-1.6.1.jar"/>
+                <include name="libs/log4j-1.2.17.jar"/>
+                <include name="libs/mysql-connector-java-5.1.27.jar"/>
+                <!--<include name="libs/ojdbc6.jar"/>-->
+                <include name="libs/sqljdbc4.jar"/>
+                <include name="libs/druid-1.0.9.jar"/>
+                <include name="libs/hsqldb-2.3.0.jar"/>
+                <include name="libs/jaxen-1.1.6.jar"/>
+                <include name="libs/controlsfx-8.0.5.jar"/>
+            </fileset>
+        </fx:signjar>
+    </target>
+
+    <target name="fxdeploy" depends="signjar">
+        <fx:deploy width="${javafx.run.width}" height="${javafx.run.height}" outdir="${dist.dir}" embedjnlp="false" outfile="${application.title}" updatemode="always" codebase="${codeBase}">
+            <fx:application refid="metaui"/>
+            <fx:resources refid="appRes"/>
+            <fx:info title="${application.title}" vendor="${application.vendor}"/>
+            <fx:permissions elevated="true"/>
+
+            <fx:platform javafx="2.0+" j2se="1.6+">
+                <fx:jvmarg value="-Xms256m"/>
+                <fx:jvmarg value="-Xmx1024m"/>
+            </fx:platform>
+
+            <fx:template file="${javafx.html.template}" tofile="${dist.dir}/${application.title}.html"/>
+        </fx:deploy>
+    </target>
+
+    <target name="runjar" depends="fxdeploy">
+        <java jar="${dist.dir}/${application.title}.jar" fork="true"/>
+    </target>
+
+    <target name="runjnlp" depends="fxdeploy">
+        <echo message="&quot;${java.sdk.path}/bin/javaws&quot; &quot;${dist.dir}/${application.title}.jnlp&quot;"/>
+        <exec executable="cmd" failonerror="true">
+            <arg line="${java.sdk.path}/bin/javaws"/>
+        </exec>
+    </target>
+
+    <target name="deploy" depends="fxdeploy">
+        <delete dir="${deploy.dir}"/>
+        <mkdir dir="${deploy.dir}"/>
+
+        <!--<copydir src="${dist.dir}" dest="${deploy.dir}">
+            <include name="${application.title}.jar"/>
+            <include name="${application.title}.jnlp"/>
+        </copydir>-->
+        <copydir src="${dist.dir}" dest="${deploy.dir}">
+            <!--<include name="ik-expression.jar"/>
+            <include name="javabase3.03.jar"/>-->
+            <exclude name="libs/servlet-api-3.0-alpha-1.jar"/>
+        </copydir>
+    </target>
+
+    <target name="baidu">
+
+    </target>
+</project>

@@ -1,6 +1,7 @@
 package com.meteorite.core.datasource;
 
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.ui.model.View;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author wei_jc
  * @since 1.0.0
  */
-public class ResourceTreeAdapter implements ITreeNode {
+public class ResourceTreeAdapter extends BaseTreeNode {
     private VirtualResource resource;
     private List<ITreeNode> children;
     private ResourceTreeAdapter parent;

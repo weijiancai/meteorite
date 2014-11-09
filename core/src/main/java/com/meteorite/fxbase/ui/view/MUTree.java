@@ -2,11 +2,14 @@ package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.util.UString;
+import com.meteorite.fxbase.ui.component.tree.BaseTreeCell;
 import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Callback;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,12 +35,12 @@ public class MUTree extends TreeView<ITreeNode> {
             this.setRoot(rootItem);
         }
 
-        /*this.setCellFactory(new Callback<TreeView<ITreeNode>, TreeCell<ITreeNode>>() {
+        this.setCellFactory(new Callback<TreeView<ITreeNode>, TreeCell<ITreeNode>>() {
             @Override
             public TreeCell<ITreeNode> call(TreeView<ITreeNode> param) {
                 return new BaseTreeCell();
             }
-        });*/
+        });
         /*TreeItem<ITreeNode> rootItem = addTreeNode(root);*/
 //        this.setShowRoot(false);
     }

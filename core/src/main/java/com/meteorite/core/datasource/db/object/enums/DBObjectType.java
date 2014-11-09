@@ -75,7 +75,23 @@ public enum DBObjectType {
 
     UNKNOWN(null, null),
     NONE(null, null),
-    ANY(null, null);
+    ANY(null, null),
+
+    // 列表对象
+    SCHEMAS(null, null),
+    USERS(null, null),
+    PRIVILEGES(null, null),
+    CHARSETS(null, null),
+    ARGUMENTS(null, null),
+    TABLES(null, null),
+    VIEWS(null, null),
+    INDEXES(null, null),
+    TRIGGERS(null, null),
+    PROCEDURES(null, null),
+    FUNCTIONS(null, null),
+    COLUMNS(null, null),
+    CONSTRAINTS(null, null)
+    ;
 
     private String icon;
     private String listIcon;

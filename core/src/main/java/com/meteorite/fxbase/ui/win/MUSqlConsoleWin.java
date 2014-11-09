@@ -7,7 +7,6 @@ import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.sql.SqlFormat;
-import com.meteorite.core.datasource.db.util.JdbcTemplate;
 import com.meteorite.core.datasource.eventdata.SqlExecuteEventData;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.dict.DictManager;
@@ -19,7 +18,6 @@ import com.meteorite.core.ui.layout.property.TableFieldProperty;
 import com.meteorite.core.ui.layout.property.TableProperty;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UFile;
-import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.UString;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.component.form.MuComboBox;
@@ -27,20 +25,12 @@ import com.meteorite.fxbase.ui.view.MUDialog;
 import com.meteorite.fxbase.ui.view.MUTable;
 import com.sun.javafx.webkit.Accessor;
 import com.sun.webkit.WebPage;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
-import org.glassfish.jersey.server.internal.BackgroundScheduler;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * SQL控制台

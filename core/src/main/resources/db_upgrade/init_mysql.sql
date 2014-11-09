@@ -1,3 +1,4 @@
+/*
 DELIMITER $$
 
 DROP PROCEDURE IF EXISTS del_idx $$
@@ -19,4 +20,4 @@ CREATE PROCEDURE del_idx(IN p_tableName VARCHAR(200), IN p_idxName VARCHAR(200))
 
   END $$
 
-DELIMITER ;
+DELIMITER ;*/

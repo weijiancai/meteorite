@@ -19,7 +19,7 @@ public class SystemFilter implements javax.servlet.Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpReq = ((HttpServletRequest)req);
         String ipAddr = UHttp.getIpAddr(httpReq);
-        log.debug("Request URL: " + ipAddr + " == " + httpReq.getRequestURL());
+//        log.debug("Request URL: " + ipAddr + " == " + httpReq.getRequestURL());
         req.setCharacterEncoding("UTF-8");
 //        resp.setCharacterEncoding("UTF-8");
         chain.doFilter(req, resp);

@@ -1,5 +1,7 @@
 package com.meteorite.core.model;
 
+import com.meteorite.core.observer.EventData;
+import com.meteorite.core.observer.Subject;
 import com.meteorite.core.ui.model.View;
 
 import java.util.List;
@@ -92,4 +94,12 @@ public interface ITreeNode {
      * @since 1.0.0
      */
     boolean isVirtual();
+
+    /**
+     * 获得此节点的PresentableText主题
+     *
+     * @return 返回此节点的PresentableText主题
+     * @since 1.0.0
+     */
+    Subject<EventData> getPresentableTextSubject();
 }

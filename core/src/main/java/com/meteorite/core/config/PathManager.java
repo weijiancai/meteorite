@@ -1,9 +1,9 @@
 package com.meteorite.core.config;
 
-import org.apache.log4j.Logger;
-
 import java.io.File;
-import static com.meteorite.core.config.SystemConfig.*;
+
+import static com.meteorite.core.config.SystemConfig.SYSTEM_NAME;
+import static com.meteorite.core.config.SystemConfig.SYSTEM_TYPE;
 
 /**
  * 系统相关路径

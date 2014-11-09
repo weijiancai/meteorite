@@ -1,6 +1,7 @@
 package com.meteorite.core.project;
 
 import com.meteorite.core.model.ITreeNode;
+import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.ui.model.View;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
  * @author wei_jc
  * @since 1.0.0
  */
-public class NavMenuTreeNode implements ITreeNode {
+public class NavMenuTreeNode extends BaseTreeNode {
     private NavMenu navMenu;
     private List<ITreeNode> children;
 
