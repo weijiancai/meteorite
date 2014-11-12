@@ -136,7 +136,12 @@ public class MUSearchBox extends VBox {
         });
         this.setMinWidth(700);
 
-        this.getChildren().addAll(textField, listView);
+        HBox hBox = new HBox();
+        Button btnFilter = new Button();
+        btnFilter.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("/img/filter.png"))));
+        hBox.getChildren().addAll(textField, btnFilter);
+
+        this.getChildren().addAll(hBox, listView);
     }
 
     private void updateResults(String searchText) {
