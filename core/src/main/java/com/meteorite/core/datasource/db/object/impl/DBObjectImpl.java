@@ -369,7 +369,7 @@ public class DBObjectImpl implements DBObject {
     @Override
     public View getView() {
         if(objectType == DBObjectType.TABLE || objectType == DBObjectType.VIEW) {
-            View view = ViewManager.getViewByName(UString.tableNameToClassName(name) + "CrudView");
+            View view = ViewManager.getViewByName(UString.tableNameToClassName(name) + "TableView");
             if (view == null) {
                 JdbcTemplate template = new JdbcTemplate();
                 try {

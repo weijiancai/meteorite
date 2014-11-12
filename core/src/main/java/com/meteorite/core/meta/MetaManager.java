@@ -421,20 +421,20 @@ public class MetaManager {
         int fieldSortNum = 0;
         // Sql语句 查询列
         StringBuilder queryColumns = new StringBuilder("");
-        List<VirtualResource> columns = table.getDataSource().findResourcesByPath(String.format("/table/%s/columns", table.getName()));
-        for (VirtualResource resource : columns) {
-            DBColumn column = (DBColumn) resource.getOriginalObject();
+        DBTable dbTable = (DBTable) table.getOriginalObject();
+        List<DBColumn> columns = dbTable.getColumns();
+        for (DBColumn column : columns) {
             field = new MetaField();
             field.setMeta(meta);
             field.setOriginalName(table.getName() + "." + column.getName());
-            String columnComment = resource.getDisplayName();
+            String columnComment = column.getComment();
             if (UString.isEmpty(columnComment)) {
-                columnComment = resource.getName().toLowerCase();
+                columnComment = column.getName().toLowerCase();
             }
             field.setDisplayName(columnComment);
-            field.setName(UString.columnNameToFieldName(resource.getName()));
-            field.setDescription(resource.getDisplayName());
-            if (resource.getName().toLowerCase().startsWith("is_")) {
+            field.setName(UString.columnNameToFieldName(column.getName()));
+            field.setDescription(column.getDisplayName());
+            if (column.getName().toLowerCase().startsWith("is_")) {
                 field.setDataType(MetaDataType.BOOLEAN);
                 field.setDictId(EnumBoolean.class.getSimpleName());
             } else if(column.isPk() && column.getMaxLength() == 32) {
@@ -484,7 +484,7 @@ public class MetaManager {
         if (queryColumns.charAt(queryColumns.length() - 1) == ',') {
             queryColumns.deleteCharAt(queryColumns.length() - 1);
         }
-        String sqlText = String.format("SELECT %s FROM %s", queryColumns.toString(), table.getName());
+        String sqlText = String.format("SELECT %s FROM %s.%s", queryColumns.toString(), dbTable.getSchema().getName(), table.getName());
         Map<String, Object> sqlMap = new HashMap<String, Object>();
         sqlMap.put("meta_id", meta.getId());
         sqlMap.put("sql_text", sqlText);

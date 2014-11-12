@@ -262,25 +262,44 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     }
 
     private Tab getGenCodeTab(final ITreeNode node) {
-        Meta meta = node.getView().getMeta();
+        final Meta meta = node.getView().getMeta();
 
         Tab tab = new Tab("生成代码");
         tab.setClosable(false);
 
-        TabPane tabPane = new TabPane();
-
-        for (Tab aTab : getGenCodeTabs(meta)) {
-            tabPane.getTabs().addAll(aTab);
-        }
-        /*tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+        BorderPane borderPane = new BorderPane();
+        // 中央代码
+        final TextArea codeTA = new TextArea();
+        borderPane.setCenter(codeTA);
+        // 头部工具条
+        ToolBar toolBar = new ToolBar();
+        // 模板choice
+        final ChoiceBox<String> choiceBox = new ChoiceBox<String>();
+        List<String> list = Arrays.asList("JavaBean", "RowMapper", "PDB");
+        choiceBox.getItems().addAll(list);
+        // 生成代码按钮
+        Button btnGenCode = new Button("生成代码");
+        btnGenCode.setOnAction(new MuEventHandler<ActionEvent>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if(newValue.intValue() == 0) {
-                    javaBeanTa.setText(meta.genJavaBeanCode());
+            public void doHandler(ActionEvent event) throws Exception {
+                String choice = choiceBox.getValue();
+                if (UString.isEmpty(choice)) {
+                    MUDialog.showInformation("请选择模板！");
+                    return;
+                }
+                if ("JavaBean".equals(choice)) {
+                    codeTA.setText(meta.genJavaBeanCode());
+                } else if ("RowMapper".equals(choice)) {
+                    codeTA.setText(meta.genRowMapperCode());
+                } else if ("PDB".equals(choice)) {
+                    codeTA.setText(meta.getPDBCode());
                 }
             }
-        });*/
-        tab.setContent(tabPane);
+        });
+        toolBar.getItems().addAll(choiceBox, btnGenCode);
+        borderPane.setTop(toolBar);
+
+        tab.setContent(borderPane);
 
         return tab;
     }
@@ -293,30 +312,5 @@ public class MUTabsDesktop extends BorderPane implements IDesktop {
     @Override
     public MUTree getNavTree() {
         return tree;
-    }
-
-    protected List<Tab> getGenCodeTabs(Meta meta) {
-        // 生成JavaBean代码
-        Tab javaBeanTab = new Tab("JavaBean");
-        TextArea javaBeanTa = new TextArea();
-        javaBeanTab.setContent(javaBeanTa);
-        javaBeanTa.setText(meta.genJavaBeanCode());
-        // 生成RowMapper代码
-        Tab rowMapperTab = new Tab("RowMapper");
-        TextArea rowMapperTa = new TextArea();
-        rowMapperTab.setContent(rowMapperTa);
-        rowMapperTa.setText(meta.genRowMapperCode());
-        // 生成PDB代码
-        Tab pdbTab = new Tab("PDB");
-        TextArea pdbTa = new TextArea();
-        pdbTab.setContent(pdbTa);
-        pdbTa.setText(meta.getPDBCode());
-
-        List<Tab> result = new ArrayList<Tab>();
-        result.add(javaBeanTab);
-        result.add(rowMapperTab);
-        result.add(pdbTab);
-
-        return result;
     }
 }

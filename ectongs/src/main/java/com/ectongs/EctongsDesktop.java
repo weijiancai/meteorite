@@ -78,13 +78,4 @@ public class EctongsDesktop extends MUTabsDesktop {
             tabPane.getSelectionModel().select(tab);
         }
     }*/
-
-    @Override
-    protected List<Tab> getGenCodeTabs(Meta meta) {
-        List<Tab> result =  super.getGenCodeTabs(meta);
-
-        //
-
-        return result;
-    }
 }
