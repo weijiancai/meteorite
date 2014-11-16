@@ -96,4 +96,11 @@ public interface DBConnection {
      * @return 返回执行Sql主题
      */
     Subject<SqlExecuteEventData> getSqlExecuteSubject();
+
+    /**
+     * 设置当前Schema
+     *
+     * @param currentSchema 当前Schema
+     */
+    void setCurrentSchema(DBSchema currentSchema);
 }

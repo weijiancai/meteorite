@@ -121,7 +121,12 @@ public class DBConnectionImpl implements DBConnection {
         Connection conn = null;
         try {
             Class.forName(dataSource.getDriverClass());
-            conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPwd());
+            if (currentSchema != null) {
+                conn = DriverManager.getConnection(getDatabaseUrl(dataSource.getUrl(), currentSchema.getName()), dataSource.getUserName(), dataSource.getPwd());
+            } else {
+                conn = DriverManager.getConnection(dataSource.getUrl(), dataSource.getUserName(), dataSource.getPwd());
+            }
+
             /*if (dbType == DatabaseType.HSQLDB && UString.isNotEmpty(dataSource.getFilePath())) {
                 conn = DriverManager.getConnection("jdbc:hsqldb:file:" + dataSource.getFilePath(), dataSource.getUserName(), dataSource.getPwd());
             } else {
@@ -137,6 +142,30 @@ public class DBConnectionImpl implements DBConnection {
 
         return conn;
     }
+
+    public String getDatabaseUrl(String url, String schemaName) throws Exception {
+        StringBuilder sb = new StringBuilder();
+        if (DatabaseType.SQLSERVER == dbType) {
+            sb.append("jdbc:sqlserver://");
+            url = url.substring("jdbc:sqlserver://".length());
+            if (url.contains(";")) {
+                url = url.substring(0, url.indexOf(";"));
+            }
+            sb.append(url).append(";databaseName=").append(schemaName);
+        } else if (DatabaseType.MYSQL == dbType) {
+            sb.append("jdbc:mysql://");
+            url = url.substring("jdbc:mysql://".length());
+            if (url.contains("/")) {
+                url = url.substring(0, url.indexOf("/"));
+            }
+            sb.append(url).append("/").append(schemaName);
+        } else {
+            sb.append(url);
+        }
+
+        return sb.toString();
+    }
+
 
     @Override
     public List<DataMap> getResultSet(String sql) {
@@ -193,6 +222,9 @@ public class DBConnectionImpl implements DBConnection {
     @Override
     @JSONField(serialize = false)
     public List<DBSchema> getSchemas() throws Exception {
+        if (schemas == null) {
+            schemas = loader.loadSchemas();
+        }
         return schemas;
     }
 

@@ -252,6 +252,7 @@ public abstract class BaseDBLoader implements DBLoader {
             schema.setParent(navTree);
             schema.setName(schemaName);
             schema.setComment(schemaName);
+            schema.setLoader(dbConn.getLoader());
 
             result.add(schema);
         }

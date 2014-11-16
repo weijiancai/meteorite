@@ -5,6 +5,7 @@ import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.classpath.ClassPathDataSource;
 import com.meteorite.core.datasource.db.DBDataSource;
+import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.db.util.JdbcTemplate;
@@ -484,7 +485,12 @@ public class MetaManager {
         if (queryColumns.charAt(queryColumns.length() - 1) == ',') {
             queryColumns.deleteCharAt(queryColumns.length() - 1);
         }
-        String sqlText = String.format("SELECT %s FROM %s.%s", queryColumns.toString(), dbTable.getSchema().getName(), table.getName());
+        String sqlText;
+        if (DatabaseType.SQLSERVER == dbTable.getDataSource().getDatabaseType()) {
+            sqlText = String.format("SELECT %s FROM %s.dbo.%s", queryColumns.toString(), dbTable.getSchema().getName(), table.getName());
+        } else {
+            sqlText = String.format("SELECT %s FROM %s.%s", queryColumns.toString(), dbTable.getSchema().getName(), table.getName());
+        }
         Map<String, Object> sqlMap = new HashMap<String, Object>();
         sqlMap.put("meta_id", meta.getId());
         sqlMap.put("sql_text", sqlText);

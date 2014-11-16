@@ -155,6 +155,10 @@ public class MuComboBox extends BaseFormField implements IValue {
         return comboBox.getSelectionModel().getSelectedItem();
     }
 
+    public SingleSelectionModel<DictCode> getSelectionModel() {
+        return comboBox.getSelectionModel();
+    }
+
     class DictCodeConverter extends StringConverter<DictCode> {
 
         @Override

@@ -11,6 +11,7 @@ import com.meteorite.core.datasource.VirtualResource;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.object.DBColumn;
+import com.meteorite.core.datasource.db.object.DBSchema;
 import com.meteorite.core.datasource.db.object.DBTable;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class SqlFormat {
         return JdbcUtils.MYSQL;
     }
 
-    public String format() throws Exception {
+    public String format(DBSchema schema) throws Exception {
         dataList = new ArrayList<DataMap>();
         // parser得到AST
         SQLStatementParser parser = SQLParserUtils.createSQLStatementParser(sql, dbType);
@@ -71,6 +72,7 @@ public class SqlFormat {
                 SQLSelect sqlselect = sstmt.getSelect();
                 SQLSelectQueryBlock query = (SQLSelectQueryBlock)sqlselect.getQuery();
 
+
                 for(SQLSelectItem item : query.getSelectList()) {
                     DataMap dataMap = new DataMap();
                     String colName = item.toString().split(" ")[0];
@@ -81,8 +83,7 @@ public class SqlFormat {
             } else if (stmt instanceof SQLInsertStatement) {
                 SQLInsertStatement insertStatement = (SQLInsertStatement) stmt;
                 String tableName = insertStatement.getTableName().getSimpleName();
-                VirtualResource tableVR = dataSource.findResourceByPath("/table/" + tableName);
-                DBTable table = (DBTable) tableVR.getOriginalObject();
+                DBTable table = schema.getTable(tableName);
 
                 for (int i = 0; i < insertStatement.getColumns().size(); i++) {
                     DataMap dataMap = new DataMap();
@@ -105,8 +106,7 @@ public class SqlFormat {
             } else if (stmt instanceof SQLUpdateStatement) {
                 SQLUpdateStatement updateStatement = (SQLUpdateStatement) stmt;
                 String tableName = updateStatement.getTableName().getSimpleName();
-                VirtualResource tableVR = dataSource.findResourceByPath("/table/" + tableName);
-                DBTable table = (DBTable) tableVR.getOriginalObject();
+                DBTable table = schema.getTable(tableName);
 
                 for (SQLUpdateSetItem item : updateStatement.getItems()) {
                     DataMap dataMap = new DataMap();

@@ -5,7 +5,10 @@ import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.QueryBuilder;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.QueryResult;
+import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBConnection;
+import com.meteorite.core.datasource.db.object.DBSchema;
+import com.meteorite.core.datasource.db.object.DBTable;
 import com.meteorite.core.datasource.db.sql.SqlFormat;
 import com.meteorite.core.datasource.eventdata.SqlExecuteEventData;
 import com.meteorite.core.dict.DictCode;
@@ -25,12 +28,16 @@ import com.meteorite.fxbase.ui.view.MUDialog;
 import com.meteorite.fxbase.ui.view.MUTable;
 import com.sun.javafx.webkit.Accessor;
 import com.sun.webkit.WebPage;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebView;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * SQL控制台
@@ -42,6 +49,7 @@ public class MUSqlConsoleWin extends BorderPane {
     private TreeItem<ITreeNode> sqlConsoleTreeItem;
     private TabPane tabPane;
     private MuComboBox dataSource;
+    private ChoiceBox<DBSchema> schemas;
     private WebPage webPage;
     private TextArea messageTA;
     private MUTable formatTable;
@@ -52,6 +60,9 @@ public class MUSqlConsoleWin extends BorderPane {
     private String sqlModeJs;
     private String fullScreenJs;
     private String fullScreenCss;
+    private String showHintJs;
+    private String sqlHintJs;
+    private String showHintCss;
 
     public MUSqlConsoleWin() {
         initUI();
@@ -69,6 +80,9 @@ public class MUSqlConsoleWin extends BorderPane {
             sqlModeJs = UFile.readStringFromCP("/codemirror/mode/sql/sql.js");
             fullScreenJs = UFile.readStringFromCP("/codemirror/addon/display/fullscreen.js");
             fullScreenCss = UFile.readStringFromCP("/codemirror/addon/display/fullscreen.css");
+            showHintJs = UFile.readStringFromCP("/codemirror/addon/hint/show-hint.js");
+            sqlHintJs = UFile.readStringFromCP("/codemirror/addon/hint/sql-hint.js");
+            showHintCss = UFile.readStringFromCP("/codemirror/addon/hint/show-hint.css");
         } catch (IOException e) {
             MUDialog.showExceptionDialog(e);
         }
@@ -76,6 +90,8 @@ public class MUSqlConsoleWin extends BorderPane {
         createTopBar();
         createCenter();
         createBottom();
+
+        registEvent();
     }
 
     private void createTopBar() {
@@ -83,6 +99,9 @@ public class MUSqlConsoleWin extends BorderPane {
         // 数据源
         dataSource = new MuComboBox(DictManager.getDict(DictManager.DICT_DB_DATA_SOURCE));
         dataSource.setPrefWidth(120);
+        // 数据库
+        schemas = new ChoiceBox<DBSchema>();
+        schemas.setPrefWidth(80);
         // 执行Sql
         Button btnExec = new Button("执行");
         btnExec.setOnAction(new ExecSqlEventHandler());
@@ -90,7 +109,7 @@ public class MUSqlConsoleWin extends BorderPane {
         Button btnFormat = new Button("格式化");
         btnFormat.setOnAction(new SqlFormatEventHandler());
 
-        toolBar.getItems().addAll(new Label("数据源"), dataSource, btnExec, btnFormat);
+        toolBar.getItems().addAll(new Label("数据源"), dataSource, schemas, btnExec, btnFormat);
         this.setTop(toolBar);
     }
 
@@ -128,6 +147,33 @@ public class MUSqlConsoleWin extends BorderPane {
         this.setBottom(tabPane);
     }
 
+    private void registEvent() {
+        dataSource.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (newValue != null && schemas != null) {
+                    DictCode code = dataSource.getSelectedItem();
+                    DBDataSource dbDataSource = (DBDataSource) DataSourceManager.getDataSource(code.getId());
+                    try {
+                        List<DBSchema> schemaList = dbDataSource.getSchemas();
+                        schemas.setItems(FXCollections.observableArrayList(schemaList));
+                        schemas.getSelectionModel().select(0);
+                    } catch (Exception e) {
+                        MUDialog.showExceptionDialog(e);
+                    }
+                }
+            }
+        });
+
+        schemas.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DBSchema>() {
+            @Override
+            public void changed(ObservableValue<? extends DBSchema> observable, DBSchema oldValue, DBSchema newValue) {
+                setSql(getSql());
+            }
+        });
+        dataSource.getSelectionModel().select(0);
+    }
+
     private void setSql(String sql) {
         webPage.load(webPage.getMainFrame(), convertToHtml(sql), "text/html");
     }
@@ -146,11 +192,17 @@ public class MUSqlConsoleWin extends BorderPane {
         html.append(sqlModeJs);
         html.append("\n");
         html.append(fullScreenJs);
+        html.append("\n");
+        html.append(showHintJs);
+        html.append("\n");
+        html.append(sqlHintJs);
         html.append("    </script>\n");
         html.append("    <style>\n");
         html.append(codeMirrorCss);
         html.append('\n');
         html.append(fullScreenCss);
+        html.append('\n');
+        html.append(showHintCss);
         html.append('\n');
 
         html.append("        body {background-color: #f4f4f4;}\n");
@@ -159,7 +211,10 @@ public class MUSqlConsoleWin extends BorderPane {
         html.append("<body contenteditable=\"true\">\n");
         html.append("\n");
         html.append("    <script type=\"text/javascript\"> " +
-                "var myCodeMirror = CodeMirror(document.body, {mode:  'text/x-sql',fullScreen:true}); " +
+                "CodeMirror.commands.autocomplete = function(cm) {\n" +
+                "    CodeMirror.showHint(cm, CodeMirror.hint.sql, " + getSqlHintOptions() + ");\n" +
+                "};" +
+                "var myCodeMirror = CodeMirror(document.body, {mode:'text/x-sql',fullScreen:true,extraKeys: {'Alt-/': 'autocomplete'}}); " +
                 (UString.isEmpty(source) ? "" : String.format("myCodeMirror.setValue(\"%s\");", source.replace("\n", "\\n"))) +
                 "</script>\n");
         html.append("</body>\n");
@@ -200,6 +255,36 @@ public class MUSqlConsoleWin extends BorderPane {
         return tableProperty;
     }
 
+    public String getSqlHintOptions() {
+        DBSchema schema = schemas.getValue();
+        if (schema == null) {
+            return "{}";
+        }
+
+        StringBuilder sb = new StringBuilder("{tables:{");
+        // tables
+        try {
+            for (DBTable table : schema.getTables()) {
+                sb.append(table.getName()).append(":[");
+                for (DBColumn column : table.getColumns()) {
+                    sb.append("'").append(column.getName()).append("',");
+                }
+                if (sb.charAt(sb.length() - 1) == ',') {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
+                sb.append("],");
+            }
+            if (sb.charAt(sb.length() - 1) == ',') {
+                sb.deleteCharAt(sb.length() - 1);
+            }
+        } catch (Exception e) {
+            MUDialog.showExceptionDialog(e);
+        }
+
+        sb.append("}}");
+        return sb.toString();
+    }
+
     class ExecSqlEventHandler extends MuEventHandler<ActionEvent> {
 
         @Override
@@ -218,6 +303,8 @@ public class MUSqlConsoleWin extends BorderPane {
             }
 
             DBDataSource dbDataSource = (DBDataSource) DataSourceManager.getDataSource(code.getId());
+            DBSchema schema = schemas.getValue();
+            dbDataSource.getDbConnection().setCurrentSchema(schema);
 
             if (sql.toLowerCase().startsWith("select")) { // 查询
                 // 选中查询结果Tab
@@ -269,8 +356,10 @@ public class MUSqlConsoleWin extends BorderPane {
 
             try {
                 DBDataSource dbDataSource = (DBDataSource) DataSourceManager.getDataSource(code.getId());
+                DBSchema schema = schemas.getValue();
+                dbDataSource.getDbConnection().setCurrentSchema(schema);
                 SqlFormat format = new SqlFormat(sql, dbDataSource);
-                setSql(format.format());
+                setSql(format.format(schema));
                 formatTable.setItems(format.getDataList());
             } catch (Exception e) {
                 // 选中消息Tab
