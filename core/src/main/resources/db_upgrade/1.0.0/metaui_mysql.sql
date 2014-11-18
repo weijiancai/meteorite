@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/11/1 15:50:35                           */
+/* Created on:     2014/11/18 11:06:19                          */
 /*==============================================================*/
 
 
@@ -11,6 +11,8 @@ drop table if exists mu_db_datasource;
 drop table if exists mu_db_mobile_number;
 
 drop table if exists mu_db_version;
+
+drop table if exists mu_dbms_object;
 
 drop index iux_dzCategory_name on mu_dz_category;
 
@@ -130,6 +132,32 @@ create table mu_db_version
 );
 
 alter table mu_db_version comment '系统版本信息';
+
+/*==============================================================*/
+/* Table: mu_dbms_object                                        */
+/*==============================================================*/
+create table mu_dbms_object
+(
+   id                   varchar(32) not null comment 'ID',
+   name                 varchar(128) not null comment '名称',
+   comment              varchar(1024) comment '注释',
+   db_type              varchar(64) not null comment '对象类型',
+   pid                  varchar(32) comment '父ID',
+   data_type            varchar(64) comment '数据类型',
+   position             int comment '位置',
+   default_value        varchar(128) comment '默认值',
+   is_nullable          char(1) comment '可空',
+   max_length           int comment '最大长度',
+   numeric_precision    int comment '数值总长度',
+   numeric_scale        int comment '数值小数位数',
+   is_pk                char(1) not null comment '是否主键',
+   is_fk                char(1) not null comment '是否外键',
+   fk_column_id         varchar(32) comment '外键列ID',
+   input_date           datetime not null comment '录入时间',
+   primary key (id)
+);
+
+alter table mu_dbms_object comment '数据库对象';
 
 /*==============================================================*/
 /* Table: mu_dz_category                                        */

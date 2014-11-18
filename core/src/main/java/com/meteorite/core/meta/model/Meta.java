@@ -234,7 +234,7 @@ public class Meta {
      */
     public MetaField getFieldByOriginalName(String originalName) {
         for (MetaField field : fields) {
-            if (originalName.equals(field.getOriginalName())) {
+            if (originalName.equalsIgnoreCase(field.getOriginalName())) {
                 return field;
             }
         }

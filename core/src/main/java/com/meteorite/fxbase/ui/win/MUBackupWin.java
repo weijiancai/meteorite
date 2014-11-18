@@ -3,6 +3,7 @@ package com.meteorite.fxbase.ui.win;
 import com.meteorite.core.backup.BackupManager;
 import com.meteorite.core.backup.BackupSetting;
 import com.meteorite.core.config.PathManager;
+import com.meteorite.core.config.SystemManager;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.ui.model.View;
@@ -127,7 +128,17 @@ public class MUBackupWin extends BorderPane {
             }
         });
 
-        toolBar.getItems().addAll(btnBackup, btnRestore);
+        // 恢复到出厂设置
+        Button btnRestoreBorn = new Button("恢复到出厂设置");
+        btnRestoreBorn.setOnAction(new MuEventHandler<ActionEvent>() {
+            @Override
+            public void doHandler(ActionEvent event) throws Exception {
+                SystemManager.resetToDefaultSetting();
+                MUDialog.showInformation("恢复成功！");
+            }
+        });
+
+        toolBar.getItems().addAll(btnBackup, btnRestore, btnRestoreBorn);
         this.setTop(toolBar);
     }
 

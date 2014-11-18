@@ -35,7 +35,7 @@ public interface DBColumn extends DBObject {
     String getDbDataType(DatabaseType type);
 
     /**
-     * 获得PRECISION
+     * 获得PRECISION，数值总长度
      *
      * @return 返回PRECISION
      * @since 1.0.0
@@ -43,15 +43,25 @@ public interface DBColumn extends DBObject {
     int getPrecision();
 
     /**
-     * 获得Scale
+     * 获得Scale，数值小数位数
      *
      * @return 返回Scale
      * @since 1.0.0
      */
     int getScale();
 
+    /**
+     * 是否主键
+     *
+     * @return 如果是主键 返回true
+     */
     boolean isPk();
 
+    /**
+     * 是否外键
+     *
+     * @return 如果是外键，返回true
+     */
     boolean isFk();
 
     /**

@@ -109,10 +109,10 @@ public class MetaManager {
                 // 初始化元数据引用
                 for (DBConstraint constraint : schema.getFkConstraints()) {
                     MetaReference metaRef = new MetaReference();
-                    Meta pkMeta = rsIdMap.get(dataSource.getName() + "://table/" + constraint.getPkTableName());
+                    Meta pkMeta = rsIdMap.get(dataSource.getName() + "://schema/" + dataSource.getDbConnection().getSchema().getName() + "/table/" + constraint.getPkTableName());
                     metaRef.setPkMeta(pkMeta);
                     metaRef.setPkMetaField(pkMeta.getFieldByOriginalName(constraint.getPkTableName() + "." + constraint.getPkColumnName()));
-                    Meta fkMeta = rsIdMap.get(dataSource.getName() + "://table/" + constraint.getFkTableName());
+                    Meta fkMeta = rsIdMap.get(dataSource.getName() + "://schema/" + dataSource.getDbConnection().getSchema().getName() + "/table/" + constraint.getFkTableName());
                     metaRef.setFkMeta(fkMeta);
                     metaRef.setFkMetaField(fkMeta.getFieldByOriginalName(constraint.getFkTableName() + "." + constraint.getFkColumnName()));
 

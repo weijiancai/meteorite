@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBIcons;
+import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.*;
 import com.meteorite.core.datasource.db.object.enums.*;
@@ -631,6 +632,9 @@ public abstract class BaseDBLoader implements DBLoader {
         try {
             for (DBConstraint constraint : getExportedKeys(tableName)) {
                 sql = String.format("ALTER TABLE %s DROP FOREIGN KEY %s", constraint.getFkTableName(), constraint.getFkName());
+                if (DatabaseType.HSQLDB == dbConn.getDatabaseType()) {
+                    sql = String.format("ALTER TABLE %s DROP CONSTRAINT %s", constraint.getFkTableName(), constraint.getFkName());
+                }
                 template.update(sql);
             }
 
@@ -659,7 +663,7 @@ public abstract class BaseDBLoader implements DBLoader {
         Connection conn = dataSource.getDbConnection().getConnection();
         try {
             DatabaseMetaData dbMetaData = conn.getMetaData();
-            ResultSet rs = dbMetaData.getExportedKeys(conn.getCatalog(), conn.getSchema(), table);
+            ResultSet rs = dbMetaData.getExportedKeys(conn.getCatalog(), conn.getSchema(), table.toUpperCase());
             while (rs.next()) {
                 DBConstraintImpl constraint = new DBConstraintImpl();
                 constraint.setPkCatalog(rs.getString("PKTABLE_CAT"));
