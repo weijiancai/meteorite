@@ -1,9 +1,12 @@
 package com.meteorite.core.datasource.db.sql;
 
 import com.meteorite.core.datasource.db.DatabaseType;
+import com.meteorite.core.meta.model.MetaField;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -351,7 +354,7 @@ public class SqlBuilderTest {
                 .where("enable='T'")
                 .or("personId = 5")
                 .desc("name")
-                .getPageSql(start, end);
+                .getPageSql(start, end, new ArrayList<MetaField>());
 
         assertThat(actual, equalTo(page));
     }

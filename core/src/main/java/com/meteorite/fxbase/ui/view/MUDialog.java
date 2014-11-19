@@ -1,13 +1,13 @@
 package com.meteorite.fxbase.ui.view;
 
 import com.meteorite.fxbase.BaseApp;
+import com.meteorite.fxbase.ui.dialog.AbstractDialogAction;
+import com.meteorite.fxbase.ui.dialog.Dialog;
+import com.meteorite.fxbase.ui.dialog.Dialogs;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.util.Callback;
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.AbstractDialogAction;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
 
 /**
  * JavaFx 对话框
@@ -35,7 +35,7 @@ public class MUDialog extends Dialog {
         }
         final MUDialog dialog = new MUDialog(owner, title);
         dialog.setContent(content);
-        dialog.getActions().add(new AbstractDialogAction("确定", ActionTrait.CLOSING, ActionTrait.CANCEL) {
+        dialog.getActions().add(new AbstractDialogAction("确定") {
             @Override
             public void execute(ActionEvent event) {
                 if (callback != null) {

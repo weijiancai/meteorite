@@ -1,16 +1,22 @@
 package com.meteorite.fxbase.ui.win;
 
+import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSource;
 import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.DataSourceType;
+import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.object.enums.DBObjectType;
 import com.meteorite.core.datasource.db.object.impl.DBObjectImpl;
 import com.meteorite.core.datasource.eventdata.LoaderEventData;
+import com.meteorite.core.meta.MetaAdapter;
 import com.meteorite.core.meta.MetaManager;
+import com.meteorite.core.meta.model.Meta;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.observer.Observer;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.fxbase.ui.component.tree.MUTreeItem;
+import com.meteorite.fxbase.ui.view.MUDialog;
 import com.meteorite.fxbase.ui.view.MUTable;
 import com.meteorite.fxbase.ui.view.MUTree;
 import javafx.beans.value.ChangeListener;
@@ -65,56 +71,6 @@ public class MUDataSourceWin extends BorderPane {
 
         }
 
-        Service<List<BaseTreeNode>> service = new Service<List<BaseTreeNode>>() {
-            @Override
-            protected Task<List<BaseTreeNode>> createTask() {
-                return new Task<List<BaseTreeNode>>() {
-                    @Override
-                    protected List<BaseTreeNode> call() throws Exception {
-                        List<BaseTreeNode> result = new ArrayList<BaseTreeNode>();
-                        for (final DataSource ds : DataSourceManager.getDataSources()) {
-                            ds.getLoaderSubject().registerObserver(new Observer<LoaderEventData>() {
-                                @Override
-                                public void update(LoaderEventData data) {
-                                    updateMessage(data.getMessage());
-                                }
-                            });
-                            ds.load();
-                            BaseTreeNode dsNode = new BaseTreeNode(ds.getDisplayName());
-                            for (ITreeNode node : ds.getNavTree().getChildren()) {
-                                dsNode.getChildren().add(node);
-                            }
-                            result.add(dsNode);
-                        }
-                        return result;
-                    }
-                };
-            }
-        };
-        service.valueProperty().addListener(new ChangeListener<List<BaseTreeNode>>() {
-            @Override
-            public void changed(ObservableValue<? extends List<BaseTreeNode>> observable, List<BaseTreeNode> oldValue, List<BaseTreeNode> newValue) {
-                for (BaseTreeNode node : newValue) {
-                    MUTreeItem item = new MUTreeItem(node);
-                    dataSourceItem.getChildren().add(item);
-                }
-            }
-        });
-        service.messageProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                messageLabel.setText(newValue);
-            }
-        });
-        service.exceptionProperty().addListener(new ChangeListener<Throwable>() {
-            @Override
-            public void changed(ObservableValue<? extends Throwable> observable, Throwable oldValue, Throwable newValue) {
-                newValue.printStackTrace();
-            }
-        });
-
-        // 启动服务
-//        service.start();
 
         // 导航树节点选中事件
         navTree.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<ITreeNode>>() {
@@ -196,9 +152,75 @@ public class MUDataSourceWin extends BorderPane {
             }
         });
 
+        addDataSourceAddListener();
     }
 
     public TreeItem<ITreeNode> getDataSourceItem() {
         return dataSourceItem;
+    }
+
+    public void addDataSourceAddListener() {
+        // 数据源，新增，后台执行作业，添加到缓存表中
+        MetaManager.addMetaListener(new MetaAdapter() {
+            @Override
+            public void addEnd(Meta meta, DataMap rowData) {
+                if ("Datasource".equals(meta.getName())) {
+                    DataSourceType type = DataSourceType.valueOf(String.valueOf(rowData.get("type")));
+                    if (DataSourceType.DATABASE == type) {
+                        final DBDataSource ds = rowData.toClass(DBDataSource.class);
+                        Service<List<BaseTreeNode>> service = new Service<List<BaseTreeNode>>() {
+                            @Override
+                            protected Task<List<BaseTreeNode>> createTask() {
+                                return new Task<List<BaseTreeNode>>() {
+                                    @Override
+                                    protected List<BaseTreeNode> call() throws Exception {
+                                        List<BaseTreeNode> result = new ArrayList<BaseTreeNode>();
+
+                                        ds.getLoaderSubject().registerObserver(new Observer<LoaderEventData>() {
+                                            @Override
+                                            public void update(LoaderEventData data) {
+                                                updateMessage(data.getMessage());
+                                            }
+                                        });
+                                        ds.load();
+                                        BaseTreeNode dsNode = new BaseTreeNode(ds.getDisplayName());
+                                        for (ITreeNode node : ds.getNavTree().getChildren()) {
+                                            dsNode.getChildren().add(node);
+                                        }
+                                        result.add(dsNode);
+
+                                        return result;
+                                    }
+                                };
+                            }
+                        };
+                        service.valueProperty().addListener(new ChangeListener<List<BaseTreeNode>>() {
+                            @Override
+                            public void changed(ObservableValue<? extends List<BaseTreeNode>> observable, List<BaseTreeNode> oldValue, List<BaseTreeNode> newValue) {
+                                for (BaseTreeNode node : newValue) {
+                                    MUTreeItem item = new MUTreeItem(node);
+                                    dataSourceItem.getChildren().add(item);
+                                }
+                            }
+                        });
+                        service.messageProperty().addListener(new ChangeListener<String>() {
+                            @Override
+                            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                                messageLabel.setText(newValue);
+                            }
+                        });
+                        service.exceptionProperty().addListener(new ChangeListener<Throwable>() {
+                            @Override
+                            public void changed(ObservableValue<? extends Throwable> observable, Throwable oldValue, Throwable newValue) {
+                                MUDialog.showExceptionDialog(newValue);
+                            }
+                        });
+
+                        // 启动服务
+                        service.start();
+                    }
+                }
+            }
+        });
     }
 }

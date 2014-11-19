@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2014/11/18 11:06:19                          */
+/* Created on:     2014/11/19 23:25:20                          */
 /*==============================================================*/
 
 
@@ -140,8 +140,8 @@ create table mu_dbms_object
 (
    id                   varchar(32) not null comment 'ID',
    name                 varchar(128) not null comment '名称',
-   comment              varchar(1024) comment '注释',
-   db_type              varchar(64) not null comment '对象类型',
+   db_comment           varchar(1024) comment '注释',
+   db_obj_type          varchar(64) not null comment '对象类型',
    pid                  varchar(32) comment '父ID',
    data_type            varchar(64) comment '数据类型',
    position             int comment '位置',

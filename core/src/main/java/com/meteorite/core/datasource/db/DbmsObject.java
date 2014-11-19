@@ -1,5 +1,11 @@
 package com.meteorite.core.datasource.db;
 
+import com.meteorite.core.datasource.DataSourceManager;
+import com.meteorite.core.datasource.db.object.DBSchema;
+import com.meteorite.core.datasource.db.object.enums.DBObjectType;
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.datasource.persist.MetaPDBFactory;
+
 import java.util.Date;
 
 /**
@@ -14,9 +20,9 @@ public class DbmsObject {
     /** 名称 */
     private String name;
     /** 注释 */
-    private String comment;
+    private String dbComment;
     /** 对象类型 */
-    private String dbType;
+    private DBObjectType dbObjType;
     /** 父ID */
     private String pid;
     /** 数据类型 */
@@ -58,20 +64,20 @@ public class DbmsObject {
         this.name = name;
     }
 
-    public String getComment() {
-        return comment;
+    public String getDbComment() {
+        return dbComment;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setDbComment(String dbComment) {
+        this.dbComment = dbComment;
     }
 
-    public String getDbType() {
-        return dbType;
+    public DBObjectType getDbObjType() {
+        return dbObjType;
     }
 
-    public void setDbType(String dbType) {
-        this.dbType = dbType;
+    public void setDbObjType(DBObjectType dbObjType) {
+        this.dbObjType = dbObjType;
     }
 
     public String getPid() {
@@ -170,4 +176,12 @@ public class DbmsObject {
         this.inputDate = inputDate;
     }
 
+    public static DbmsObject from(DBSchema schema) throws Exception {
+        DbmsObject obj = new DbmsObject();
+        obj.setId(schema.getId());
+        obj.setName(schema.getName());
+        obj.setDbObjType(schema.getObjectType());
+        obj.setInputDate(new Date());
+        return obj;
+    }
 }

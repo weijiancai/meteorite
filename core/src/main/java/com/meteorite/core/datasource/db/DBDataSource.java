@@ -338,12 +338,16 @@ public class DBDataSource extends DataSource {
     @Override
     public VirtualResource findResourceByPath(String path) {
         try {
-            String tableStart = "/table/";
+            /*String tableStart = "/table/";
             if (path.startsWith(tableStart)) {
                 DBObject table = getDbConnection().getLoader().getTable(path.substring(tableStart.length()));
                 if (table != null) {
                     return new DBResource(this, table);
                 }
+            }*/
+            DBObject dbObject = DBRestHandler.getDBObject(path, this);
+            if (dbObject != null) {
+                return new DBResource(this, dbObject);
             }
         } catch (Exception e) {
             throw new NotFoundResourceException(path);
@@ -416,6 +420,15 @@ public class DBDataSource extends DataSource {
 
     public void setUrl(String url) {
         properties.setFieldValue(URL, url);
+        if (UString.isNotEmpty(url)) {
+            if (url.startsWith("jdbc:mysql")) {
+                setDriverClass(JdbcDrivers.MYSQL);
+            } else if (url.startsWith("jdbc:sqlserver")) {
+                setDriverClass(JdbcDrivers.SQL_SERVER);
+            } else if (url.startsWith("jdbc:hsqldb")) {
+                setDriverClass(JdbcDrivers.HSQLDB);
+            }
+        }
     }
 
     public void setPwd(String password) {
@@ -441,7 +454,7 @@ public class DBDataSource extends DataSource {
                 .build(getDatabaseType());
 
         DBConnection conn = getDbConnection();
-        if(this.findResourceByPath("/table/" + SystemConfig.SYS_DB_VERSION_TABLE_NAME) != null) {
+        if(this.findResourceByPath("metaui://schema/metaui/table/" + SystemConfig.SYS_DB_VERSION_TABLE_NAME) != null) {
             List<DataMap> result = conn.getResultSet(sql);
             if (result.size() > 0) {
                 return result.get(0).getString("max_db_version");
@@ -661,5 +674,20 @@ public class DBDataSource extends DataSource {
         }
 
         return response;
+    }
+
+    /**
+     * 根据Schema名称获得DBSchema对象
+     *
+     * @param schemaName schema名称
+     * @return 返回DBSchema对象
+     */
+    public DBSchema getSchema(String schemaName) throws Exception {
+        for (DBSchema schema : getSchemas()) {
+            if (schema.getName().equalsIgnoreCase(schemaName)) {
+                return schema;
+            }
+        }
+        return null;
     }
 }

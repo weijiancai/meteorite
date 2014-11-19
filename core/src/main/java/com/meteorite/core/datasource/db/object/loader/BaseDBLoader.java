@@ -4,6 +4,7 @@ import com.meteorite.core.datasource.DataMap;
 import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.DBDataSource;
 import com.meteorite.core.datasource.db.DBIcons;
+import com.meteorite.core.datasource.db.DBObjCache;
 import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.*;
@@ -256,6 +257,8 @@ public abstract class BaseDBLoader implements DBLoader {
             schema.setLoader(dbConn.getLoader());
 
             result.add(schema);
+            // 添加缓存
+            DBObjCache.addCache(schema);
         }
         return result;
     }
@@ -301,7 +304,7 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     @Override
-    public List<DBTrigger> loadTriggers(DBSchema schema) {
+    public List<DBTrigger> loadTriggers(DBSchema schema) throws Exception {
         List<DBTrigger> result = new ArrayList<DBTrigger>();
         List<DataMap> list = dbConn.getResultSet(String.format(getTriggersSql(), schema.getName()));
 
@@ -500,7 +503,6 @@ public abstract class BaseDBLoader implements DBLoader {
     }
 
     public List<DBConstraint> loadConstraint(DBDataset dataset) {
-        DBSchemaImpl schema = (DBSchemaImpl) dataset.getSchema();
         List<DBConstraint> result = new ArrayList<DBConstraint>();
         List<DataMap> list = dbConn.getResultSet(String.format(getConstraintsSql(), dataset.getSchema().getName(), dataset.getName()));
         for (DataMap map : list) {
@@ -510,8 +512,6 @@ public abstract class BaseDBLoader implements DBLoader {
             constraint.setName(map.getString("CONSTRAINT_NAME"));
             constraint.setComment(constraint.getName());
             constraint.setConstraintType(DBConstraintType.convert(map.getString("CONSTRAINT_TYPE")));
-
-            schema.addConstraints(constraint);
 
             result.add(constraint);
             notifyMessage(String.format("加载Constraint：" + constraint.getName()));
