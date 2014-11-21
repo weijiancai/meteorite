@@ -94,9 +94,16 @@ public class MUFormLayout extends BorderPane {
             }
 
             formField = getFormField(field);
-            // 查询表单，TextArea不显示
-            if (FormType.QUERY == formConfig.getFormType() && (formField instanceof MuTextArea || field.getMaxLength() > 200)) {
-                continue;
+            // 查询表单
+            if (FormType.QUERY == formConfig.getFormType()) {
+                // TextArea不显示
+                if ((formField instanceof MuTextArea || field.getMaxLength() > 200)) {
+                    continue;
+                }
+                // 查询表单，查询条件，至显示3行
+                if (idxRow > 3) {
+                    break;
+                }
             }
 
             // 显示文本

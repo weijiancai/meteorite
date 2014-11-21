@@ -8,6 +8,8 @@ import com.meteorite.core.datasource.db.connection.ConnectionUtil;
 import com.meteorite.core.datasource.db.object.DBConnection;
 import com.meteorite.core.datasource.db.sql.SqlBuilder;
 import com.meteorite.core.datasource.persist.IPDB;
+import com.meteorite.core.meta.model.Meta;
+import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.util.Callback;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggerFactory;
@@ -102,7 +104,12 @@ public class JdbcTemplate {
         System.out.println(builder.sql().toLog());
         SqlBuilder sqlBuilder = builder.sql();
         if (page >= 0) {
-            return queryForList(sqlBuilder.getPageSql(page, rows), builder.sql().getParamsValue());
+            Meta meta = builder.getMeta();
+            List<MetaField> pkFields = new ArrayList<MetaField>();
+            if (meta != null) {
+                pkFields = meta.getPkFields();
+            }
+            return queryForList(sqlBuilder.getPageSql(page, rows, pkFields), builder.sql().getParamsValue());
         } else {
             return queryForList(sqlBuilder.getSql(), builder.sql().getParamsValue());
         }

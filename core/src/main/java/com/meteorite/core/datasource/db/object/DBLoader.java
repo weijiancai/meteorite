@@ -23,7 +23,7 @@ public interface DBLoader extends ILoader {
 
     List<DBIndex> loadIndexes(DBSchema schema) throws Exception;
 
-    List<DBTrigger> loadTriggers(DBSchema schema);
+    List<DBTrigger> loadTriggers(DBSchema schema) throws Exception;
 
     List<DBProcedure> loadProcedures(DBSchema schema);
 

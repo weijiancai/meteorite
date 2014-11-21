@@ -44,6 +44,7 @@ public class MetaManager {
     private static List<MetaField> metaFieldList = new ArrayList<MetaField>();
     private static Map<String, Map<String, String>> metaFieldConfigs = new HashMap<String, Map<String, String>>();
     private static List<MetaReference> referenceList;
+    private static List<MetaListener> listeners = new ArrayList<MetaListener>();
 
     static {
         try {
@@ -528,5 +529,25 @@ public class MetaManager {
      */
     public static List<MetaReference> getMetaReferenceList() {
         return referenceList;
+    }
+
+    /**
+     * 添加元数据监听器
+     *
+     * @param listener 元数据监听器
+     * @since 1.0.0
+     */
+    public static void addMetaListener(MetaListener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * 获得元数据监听器列表
+     *
+     * @return 返回元数据监听器列表
+     * @since 1.0.0
+     */
+    public static List<MetaListener> getListeners() {
+        return listeners;
     }
 }

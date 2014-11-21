@@ -40,13 +40,13 @@ public interface DBSchema extends DBObject {
 
     List<DBPackage> getPackages();
 
-    List<DBTrigger> getTriggers();
+    List<DBTrigger> getTriggers() throws Exception;
 
-    List<DBConstraint> getConstraints();
+    List<DBConstraint> getConstraints() throws Exception;
 
     List<DBConstraint> getFkConstraints() throws Exception;
 
-    DBTable getTable(String name);
+    DBTable getTable(String name) throws Exception;
 
     DBView getView(String name);
 
@@ -54,5 +54,5 @@ public interface DBSchema extends DBObject {
 
     DBFunction getFunction(String name);
 
-    DBConstraint getConstraint(String name);
+    DBConstraint getConstraint(String name) throws Exception;
 }

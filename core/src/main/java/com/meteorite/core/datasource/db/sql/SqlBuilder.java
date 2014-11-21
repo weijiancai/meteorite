@@ -12,6 +12,7 @@ import com.meteorite.core.datasource.db.DatabaseType;
 import com.meteorite.core.datasource.db.util.SqlUtil;
 import com.meteorite.core.dict.QueryModel;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.meta.model.MetaField;
 import com.meteorite.core.util.UObject;
 import com.meteorite.core.util.UString;
 
@@ -558,9 +559,10 @@ public class SqlBuilder {
      *
      * @param page 记录开始数
      * @param rows   记录结束数
+     * @param pkFields
      * @return 返回Oracle分页数
      */
-    public String getPageSql(int page, int rows) {
+    public String getPageSql(int page, int rows, List<MetaField> pkFields) {
         int start = page * rows;
         int end = (page + 1) * rows;
         if(dbType == DatabaseType.ORACLE) {
@@ -570,9 +572,17 @@ public class SqlBuilder {
         } else if (dbType == DatabaseType.MYSQL) {
             return String.format("%s LIMIT %d,%d ", sql, start, rows);
         } else if (dbType == DatabaseType.SQLSERVER) {
-//            return String.format("SELECT TOP %d * FROM ()");
-            // TODO SqlServer 分页
-            return sql;
+            String pkName;
+            if (pkFields.size() == 1) {
+                String colName = pkFields.get(0).getOriginalName();
+                String[] strs = colName.split(".");
+                String tableName = strs[0];
+                pkName = strs[1];
+                return String.format("SELECT t2.n, t1.* FROM (%s) t1, (SELECT TOP %d row_number() OVER (ORDER BY %s) n, %s FROM %s) t2 WHERE t1.%s=t2.%s AND t2.n > %d ORDER BY t2.n",
+                        tableName, rows, pkName, pkName, tableName, pkName, pkName, start);
+            } else {
+                return String.format("SELECT TOP 1000 t.* FROM (%s) t", sql);
+            }
         }
 
         return "";

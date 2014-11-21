@@ -2,6 +2,7 @@ package com.meteorite.core.datasource.persist;
 
 import com.meteorite.core.config.ProfileSetting;
 import com.meteorite.core.datasource.DataSource;
+import com.meteorite.core.datasource.db.DbmsObject;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
@@ -518,6 +519,38 @@ public class MetaPDBFactory {
                 map.put("input_date", codeTpl.getInputDate());
 
                 result.put("mu_code_tpl", map);
+
+                return result;
+            }
+        };
+    }
+
+    public static IPDB getDbmsObject(final DbmsObject dbmsObject) {
+        return new IPDB() {
+            @Override
+            public Map<String, Map<String, Object>> getPDBMap() {
+                Map<String, Map<String, Object>> result = new HashMap<String, Map<String, Object>>();
+
+                Map<String, Object> map = new HashMap<String, Object>();
+
+                map.put("id", UString.getValue(dbmsObject.getId(), UUIDUtil.getUUID()));
+                map.put("name", dbmsObject.getName());
+                map.put("db_comment", dbmsObject.getDbComment());
+                map.put("db_obj_type", dbmsObject.getDbObjType().name());
+                map.put("pid", dbmsObject.getPid());
+                map.put("data_type", dbmsObject.getDataType());
+                map.put("position", dbmsObject.getPosition());
+                map.put("default_value", dbmsObject.getDefaultValue());
+                map.put("is_nullable", dbmsObject.isNullable() ? "T" : "F");
+                map.put("max_length", dbmsObject.getMaxLength());
+                map.put("numeric_precision", dbmsObject.getNumericPrecision());
+                map.put("numeric_scale", dbmsObject.getNumericScale());
+                map.put("is_pk", dbmsObject.isPk() ? "T" : "F");
+                map.put("is_fk", dbmsObject.isFk() ? "T" : "F");
+                map.put("fk_column_id", dbmsObject.getFkColumnId());
+                map.put("input_date", dbmsObject.getInputDate());
+
+                result.put("mu_dbms_object", map);
 
                 return result;
             }

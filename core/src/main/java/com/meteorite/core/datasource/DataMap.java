@@ -30,6 +30,11 @@ public class DataMap extends HashMap<String,Object> {
         uid = UUIDUtil.getUUID();
     }
 
+    public DataMap(Map<? extends String, ?> map) {
+        super(map);
+        uid = UUIDUtil.getUUID();
+    }
+
     public STATUS getStatus() {
         return status;
     }

@@ -3,6 +3,8 @@ package com.meteorite.core.datasource.persist;
 import com.meteorite.core.config.ProfileSetting;
 import com.meteorite.core.datasource.*;
 import com.meteorite.core.datasource.db.*;
+import com.meteorite.core.datasource.db.object.enums.DBObjectType;
+import com.meteorite.core.datasource.db.object.impl.DBDataType;
 import com.meteorite.core.dict.DictCategory;
 import com.meteorite.core.dict.DictCode;
 import com.meteorite.core.meta.MetaDataType;
@@ -37,17 +39,7 @@ public class MetaRowMapperFactory {
                 String url = rs.getString("url");
 
                 if (DataSourceType.DATABASE == type) {
-                    DBDataSource dbDataSource = new DBDataSource();
-                    if (UString.isNotEmpty(url)) {
-                        if (url.startsWith("jdbc:mysql")) {
-                            dbDataSource.setDriverClass(JdbcDrivers.MYSQL);
-                        } else if (url.startsWith("jdbc:sqlserver")) {
-                            dbDataSource.setDriverClass(JdbcDrivers.SQL_SERVER);
-                        } else if (url.startsWith("jdbc:hsqldb")) {
-                            dbDataSource.setDriverClass(JdbcDrivers.HSQLDB);
-                        }
-                    }
-                    dataSource = dbDataSource;
+                    dataSource = new DBDataSource();
                 } else {
                     dataSource = new DefaultDataSource();
                 }
@@ -404,6 +396,34 @@ public class MetaRowMapperFactory {
                 codeTpl.setTplFile(rs.getString("tpl_file"));
 
                 return codeTpl;
+            }
+        };
+    }
+
+    public static RowMapper<DbmsObject> getDbmsObject() {
+        return new RowMapper<DbmsObject>() {
+            @Override
+            public DbmsObject mapRow(ResultSet rs) throws SQLException {
+                DbmsObject dbmsObject = new DbmsObject();
+
+                dbmsObject.setId(rs.getString("id"));
+                dbmsObject.setName(rs.getString("name"));
+                dbmsObject.setDbComment(rs.getString("db_comment"));
+                dbmsObject.setDbObjType(DBObjectType.valueOf(rs.getString("db_obj_type")));
+                dbmsObject.setPid(rs.getString("pid"));
+                dbmsObject.setDataType(rs.getString("data_type"));
+                dbmsObject.setPosition(rs.getInt("position"));
+                dbmsObject.setDefaultValue(rs.getString("default_value"));
+                dbmsObject.setNullable("T".equals(rs.getString("is_nullable")));
+                dbmsObject.setMaxLength(rs.getInt("max_length"));
+                dbmsObject.setNumericPrecision(rs.getInt("numeric_precision"));
+                dbmsObject.setNumericScale(rs.getInt("numeric_scale"));
+                dbmsObject.setPk("T".equals(rs.getString("is_pk")));
+                dbmsObject.setFk("T".equals(rs.getString("is_fk")));
+                dbmsObject.setFkColumnId(rs.getString("fk_column_id"));
+                dbmsObject.setInputDate(rs.getDate("input_date"));
+
+                return dbmsObject;
             }
         };
     }

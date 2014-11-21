@@ -9,6 +9,8 @@ import com.meteorite.core.datasource.db.QueryResult;
 import com.meteorite.core.datasource.persist.IPDB;
 import com.meteorite.core.exception.MessageException;
 import com.meteorite.core.meta.MetaDataType;
+import com.meteorite.core.meta.MetaListener;
+import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.meta.action.MUAction;
 import com.meteorite.core.meta.annotation.MetaElement;
 import com.meteorite.core.meta.annotation.MetaFieldElement;
@@ -486,6 +488,11 @@ public class Meta {
             }
         }
 
+        // 通知新增前监听
+        for (MetaListener listener : MetaManager.getListeners()) {
+            listener.addPrep(this, new DataMap(valueMap));
+        }
+
         Map<String, Map<String, Object>> map = new HashMap<String, Map<String, Object>>();
         map.put(resource.getName(), paramMap);
 
@@ -493,6 +500,11 @@ public class Meta {
         DataMap dataMap = new DataMap();
         dataMap.putAll(valueMap);
         getDataList().add(dataMap);
+
+        // 通知新增后监听
+        for (MetaListener listener : MetaManager.getListeners()) {
+            listener.addEnd(this, dataMap);
+        }
 
         return dataMap;
     }

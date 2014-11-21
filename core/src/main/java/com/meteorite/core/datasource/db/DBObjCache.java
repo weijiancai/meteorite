@@ -1,7 +1,11 @@
 package com.meteorite.core.datasource.db;
 
+import com.meteorite.core.datasource.DataSourceManager;
 import com.meteorite.core.datasource.db.object.DBColumn;
 import com.meteorite.core.datasource.db.object.DBObject;
+import com.meteorite.core.datasource.db.object.DBSchema;
+import com.meteorite.core.datasource.db.util.JdbcTemplate;
+import com.meteorite.core.datasource.persist.MetaPDBFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +21,7 @@ import java.util.Map;
 public class DBObjCache {
     private static DBObjCache cache;
     private Map<String, DBObject> dbObjectMap = new HashMap<String, DBObject>();
+    private static Map<String, DbmsObject> dbmsObjectMap = new HashMap<String, DbmsObject>();
 
     private DBObjCache() {
 
@@ -72,5 +77,14 @@ public class DBObjCache {
 
     public Collection<DBObject> getAllDBObject() {
         return dbObjectMap.values();
+    }
+
+    public static void addCache(DBSchema schema) throws Exception {
+        persist(DbmsObject.from(schema));
+    }
+
+    private static void persist(DbmsObject obj) throws Exception {
+        JdbcTemplate.save(DataSourceManager.getSysDataSource(), MetaPDBFactory.getDbmsObject(obj));
+        dbmsObjectMap.put(obj.getId(), obj);
     }
 }

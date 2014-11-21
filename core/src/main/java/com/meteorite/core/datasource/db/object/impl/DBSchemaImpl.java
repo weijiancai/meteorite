@@ -79,9 +79,12 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     }
 
     @Override
-    public DBTable getTable(String name) {
+    public DBTable getTable(String name) throws Exception {
         if (UString.isEmpty(name)) {
             return null;
+        }
+        if (tables == null) {
+            setTables(getTables());
         }
         return tableMap.get(name.toLowerCase());
     }
@@ -102,7 +105,10 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     }
 
     @Override
-    public DBConstraint getConstraint(String name) {
+    public DBConstraint getConstraint(String name) throws Exception {
+        if (constraints == null) {
+            setConstraints(getConstraints());
+        }
         return constraintMap.get(name);
     }
 
@@ -130,7 +136,7 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     }
 
     @Override
-    public List<DBTrigger> getTriggers() {
+    public List<DBTrigger> getTriggers() throws Exception {
         if (triggers == null) {
             triggers = loader.loadTriggers(this);
         }
@@ -138,9 +144,12 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
     }
 
     @Override
-    public List<DBConstraint> getConstraints() {
+    public List<DBConstraint> getConstraints() throws Exception {
         if (constraints == null) {
             constraints = new ArrayList<DBConstraint>();
+            for (DBTable table : getTables()) {
+                constraints.addAll(loader.loadConstraint(table));
+            }
         }
         return constraints;
     }
@@ -197,7 +206,7 @@ public class DBSchemaImpl extends DBObjectImpl implements DBSchema {
         }
     }
 
-    public void addConstraints(DBConstraint constraint) {
+    public void addConstraints(DBConstraint constraint) throws Exception {
         getConstraints().add(constraint);
         constraintMap.put(constraint.getName(), constraint);
     }

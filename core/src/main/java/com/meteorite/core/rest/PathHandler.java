@@ -23,6 +23,13 @@ public class PathHandler {
 
     public Map<String, String> parseForDb() {
         Map<String, String> result = new HashMap<String, String>();
+        // 解析数据源
+        int idx = path.indexOf("://");
+        if (idx >= 0) {
+            result.put("datasource", path.substring(0, idx));
+            path = path.substring(idx + 3);
+        }
+
         StringBuilder sb = new StringBuilder();
         String key = null;
         for(String str : path.split("/")) {
