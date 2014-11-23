@@ -15,6 +15,22 @@ import java.io.InputStream;
  * @since 1.0.0
  */
 public class UImage {
+    /**
+     * 将已有图片按给定的宽、高重新生成图片，写到目标文件中
+     *
+     * @param imageFile 原始图片
+     * @param width 宽
+     * @param height 高
+     * @param targetFile 目标图片
+     * @throws IOException
+     */
+    public static void zoomImage(File imageFile, int width, int height, File targetFile) throws IOException {
+        byte[] bytes = getImageBytes(imageFile, width, height);
+        if (bytes != null) {
+            UFile.write(bytes, targetFile);
+        }
+    }
+
 	/**
 	 * 将已有的图片按百分比进行缩放
 	 * 

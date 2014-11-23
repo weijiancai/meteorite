@@ -32,6 +32,10 @@ import static com.meteorite.core.config.SystemConfig.*;
  * @version 1.0
  */
 public class SystemManager {
+    static {
+        // 设置日志目录属性
+        System.setProperty("logs_dir", PathManager.getLogPath().getAbsolutePath());
+    }
     private static final Logger log = Logger.getLogger(SystemManager.class);
 
     private static SystemManager instance;

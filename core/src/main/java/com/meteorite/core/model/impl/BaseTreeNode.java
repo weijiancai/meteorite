@@ -19,7 +19,7 @@ public class BaseTreeNode implements ITreeNode {
     private String pid;
     private String name;
     private String displayName;
-    private String presentableText;
+    private String presentableText = "";
     private int sortNum;
     private View view;
 

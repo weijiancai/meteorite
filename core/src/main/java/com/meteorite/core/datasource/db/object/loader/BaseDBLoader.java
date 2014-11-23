@@ -258,7 +258,7 @@ public abstract class BaseDBLoader implements DBLoader {
 
             result.add(schema);
             // 添加缓存
-            DBObjCache.addCache(schema);
+//            DBObjCache.addCache(schema);
         }
         return result;
     }

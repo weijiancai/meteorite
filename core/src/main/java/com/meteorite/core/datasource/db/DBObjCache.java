@@ -84,6 +84,9 @@ public class DBObjCache {
     }
 
     private static void persist(DbmsObject obj) throws Exception {
+        if (dbmsObjectMap.containsKey(obj.getId())) {
+            return;
+        }
         JdbcTemplate.save(DataSourceManager.getSysDataSource(), MetaPDBFactory.getDbmsObject(obj));
         dbmsObjectMap.put(obj.getId(), obj);
     }
