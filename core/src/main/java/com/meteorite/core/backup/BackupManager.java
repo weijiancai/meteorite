@@ -29,7 +29,9 @@ import com.meteorite.core.util.UString;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 备份管理
@@ -84,6 +86,14 @@ public class BackupManager {
 
         File file = UFile.createFile(PathManager.getBackupPath(), "backup" + UDate.dateToString(new Date(), "yyyyMMddHHmmss") + ".xml");
         JAXBUtil.marshalToFile(info, file, BackupInfo.class, DictCategory.class, DictCode.class, ProjectDefine.class, NavMenu.class, CodeTpl.class, Meta.class, MetaField.class, MetaItem.class);
+    }
+
+    public void backupSystemSetting() {
+        BackupInfo info = new BackupInfo();
+        // 备份元数据
+        List<Meta> metaList = new ArrayList<Meta>();
+
+//        info.setMetaReferenceList(MetaManager.getMetaReferenceList());
     }
 
     public void restore(BackupSetting setting, File file) throws Exception {

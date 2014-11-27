@@ -365,8 +365,38 @@ public class MetaManager {
         return metaFieldList;
     }
 
+    /**
+     * 获得元数据列表
+     *
+     * @return 返回所有元数据列表
+     * @since 1.0.0
+     */
     public static List<Meta> getMetaList() {
         return new ArrayList<Meta>(metaMap.values());
+    }
+
+    public static List<Meta> getSystemMetaList() {
+        List<Meta> metaList = new ArrayList<Meta>();
+        metaList.add(getMeta("Category"));
+        metaList.add(getMeta("Code"));
+        metaList.add(getMeta("CodeTpl"));
+        metaList.add(getMeta("DBDataSource"));
+        metaList.add(getMeta("Datasource"));
+        metaList.add(getMeta("DbmsObject"));
+        metaList.add(getMeta("Layout"));
+        metaList.add(getMeta("LayoutProp"));
+        metaList.add(getMeta("Meta"));
+        metaList.add(getMeta("MetaField"));
+        metaList.add(getMeta("MetaItem"));
+        metaList.add(getMeta(""));
+        metaList.add(getMeta(""));
+        metaList.add(getMeta(""));
+        metaList.add(getMeta(""));
+        metaList.add(getMeta(""));
+        metaList.add(getMeta(""));
+        metaList.add(getMeta(""));
+        metaList.add(getMeta(""));
+        return metaList;
     }
 
     private static int metaSortNum = 10;
@@ -528,6 +558,10 @@ public class MetaManager {
      * @return 返回元数据引用列表
      */
     public static List<MetaReference> getMetaReferenceList() {
+        return referenceList;
+    }
+
+    public static List<MetaReference> getSystemMetaReferenceList() {
         return referenceList;
     }
 
