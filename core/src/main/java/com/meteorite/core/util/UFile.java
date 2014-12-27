@@ -264,4 +264,16 @@ public class UFile {
 
         return result.replace(".00", "");
     }
+
+    /**
+     * 获得文件名称，没有扩展名
+     *
+     * @param file 文件
+     * @return 返回没有扩展名的文件名称
+     * @since 1.0.0
+     */
+    public static String getFileNameNoExt(File file) {
+        String fileName = file.getName();
+        return fileName.substring(0, fileName.length() - getFileExt(fileName).length() + 1);
+    }
 }

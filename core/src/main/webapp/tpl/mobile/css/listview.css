@@ -1,0 +1,9 @@
+.listview {
+    margin: -1em;
+}
+
+.listview, .listview > li {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
