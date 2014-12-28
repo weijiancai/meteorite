@@ -85,15 +85,23 @@ public class BackupManager {
         }
 
         File file = UFile.createFile(PathManager.getBackupPath(), "backup" + UDate.dateToString(new Date(), "yyyyMMddHHmmss") + ".xml");
-        JAXBUtil.marshalToFile(info, file, BackupInfo.class, DictCategory.class, DictCode.class, ProjectDefine.class, NavMenu.class, CodeTpl.class, Meta.class, MetaField.class, MetaItem.class);
+        saveToFile(file);
     }
 
-    public void backupSystemSetting() {
+    public void backupSystemSetting() throws Exception {
         BackupInfo info = new BackupInfo();
         // 备份元数据
-        List<Meta> metaList = new ArrayList<Meta>();
+        info.setMetaList(MetaManager.getSystemMetaList());
+        info.setMetaReferenceList(MetaManager.getSystemMetaReferenceList());
+        // 备份视图
+        info.setViewList(ViewManager.getSystemViewList());
 
-//        info.setMetaReferenceList(MetaManager.getMetaReferenceList());
+    }
+
+    public void saveToFile(File file) throws Exception {
+        if (file != null) {
+            JAXBUtil.marshalToFile(this, file, BackupInfo.class, DictCategory.class, DictCode.class, ProjectDefine.class, NavMenu.class, CodeTpl.class, Meta.class, MetaField.class, MetaItem.class);
+        }
     }
 
     public void restore(BackupSetting setting, File file) throws Exception {

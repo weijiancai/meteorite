@@ -122,6 +122,7 @@ public class TableExportGuide extends BaseGuide {
             listView1 = new MUListView<String>();
             listView1.setName("fileType");
             listView1.getItems().add("文本文件");
+            listView1.getItems().add("单行逗号分隔");
             this.setContent(listView1);
         }
 

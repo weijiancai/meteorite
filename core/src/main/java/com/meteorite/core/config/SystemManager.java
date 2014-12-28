@@ -18,8 +18,10 @@ import com.meteorite.core.ui.ViewManager;
 import com.meteorite.core.ui.config.LayoutConfig;
 import com.meteorite.core.ui.layout.LayoutManager;
 import com.meteorite.core.util.UFile;
+import com.meteorite.core.util.UIO;
 import com.meteorite.core.util.jaxb.JAXBUtil;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -32,31 +34,38 @@ import static com.meteorite.core.config.SystemConfig.*;
  * @version 1.0
  */
 public class SystemManager {
-    static {
-        // 设置日志目录属性
-        System.setProperty("logs_dir", PathManager.getLogPath().getAbsolutePath());
-    }
-    private static final Logger log = Logger.getLogger(SystemManager.class);
+    private static Logger log;
 
     private static SystemManager instance;
     private static SystemInfo sysInfo;
     private static Map<String, ProjectConfig> cache = new HashMap<String, ProjectConfig>();
     private static Map<String, String> settingMap = new HashMap<String, String>();
     private static List<ProfileSetting> settingList = new ArrayList<ProfileSetting>();
+    public static Properties metaProp = new Properties();
     private LayoutConfig layoutConfig;
 
     static {
-        DIR_SYSTEM = UFile.makeDirs(PathManager.getHomePath(), SYSTEM_NAME);
-        DIR_SYSTEM_HSQL_DB = UFile.makeDirs(DIR_SYSTEM, DIR_NAME_SQLDB);
-
-        log.info("======================== 系统信息 ==========================================");
-        log.info("系统默认目录：" + DIR_SYSTEM.getAbsolutePath());
-        log.info("类路径目录：" + DIR_CLASS_PATH.getAbsolutePath());
-        log.info("==========================================================================");
-
-        // 加载系统信息
-        sysInfo = new SystemInfo();
         try {
+            // 设置日志目录属性
+            System.setProperty("logs_dir", PathManager.getLogPath().getAbsolutePath());
+            PropertyConfigurator.configure(UIO.getInputStream("/log4j.properties", UIO.FROM.CP));
+
+            log = Logger.getLogger(SystemManager.class);
+            DIR_SYSTEM = UFile.makeDirs(PathManager.getHomePath(), SYSTEM_NAME);
+            DIR_SYSTEM_HSQL_DB = UFile.makeDirs(DIR_SYSTEM, DIR_NAME_SQLDB);
+
+            log.info("======================== 系统信息 ==========================================");
+            log.info("系统默认目录：" + DIR_SYSTEM.getAbsolutePath());
+            log.info("类路径目录：" + DIR_CLASS_PATH.getAbsolutePath());
+            log.info("日志目录：" + PathManager.getLogPath().getAbsolutePath());
+            log.info("==========================================================================");
+
+            // 加载系统信息
+            sysInfo = new SystemInfo();
+
+            // 加载系统属性
+            metaProp.load(UIO.getInputStream("/meta.properties", UIO.FROM.CP));
+            // 加载系统信息
             sysInfo.load();
             // 加载项目
             loadProjectConfig();
@@ -309,5 +318,9 @@ public class SystemManager {
         JdbcTemplate template = new JdbcTemplate();
         template.clearTable("mu_db_version", "mu_profile_setting");
         template.commit();
+    }
+
+    public static String getSystemProperty(String propName) {
+        return metaProp.getProperty(propName);
     }
 }

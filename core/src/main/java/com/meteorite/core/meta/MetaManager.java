@@ -375,27 +375,16 @@ public class MetaManager {
         return new ArrayList<Meta>(metaMap.values());
     }
 
+    /**
+     * 获得系统信息的元数据列表
+     *
+     * @return 返回系统信息的元数据列表
+     */
     public static List<Meta> getSystemMetaList() {
         List<Meta> metaList = new ArrayList<Meta>();
-        metaList.add(getMeta("Category"));
-        metaList.add(getMeta("Code"));
-        metaList.add(getMeta("CodeTpl"));
-        metaList.add(getMeta("DBDataSource"));
-        metaList.add(getMeta("Datasource"));
-        metaList.add(getMeta("DbmsObject"));
-        metaList.add(getMeta("Layout"));
-        metaList.add(getMeta("LayoutProp"));
-        metaList.add(getMeta("Meta"));
-        metaList.add(getMeta("MetaField"));
-        metaList.add(getMeta("MetaItem"));
-        metaList.add(getMeta(""));
-        metaList.add(getMeta(""));
-        metaList.add(getMeta(""));
-        metaList.add(getMeta(""));
-        metaList.add(getMeta(""));
-        metaList.add(getMeta(""));
-        metaList.add(getMeta(""));
-        metaList.add(getMeta(""));
+        for (String metaName : SystemManager.getSystemProperty("metaList").split(",")) {
+            metaList.add(getMeta(metaName));
+        }
         return metaList;
     }
 
@@ -561,8 +550,19 @@ public class MetaManager {
         return referenceList;
     }
 
+    /**
+     * 获得系统信息元数据引用列表
+     *
+     * @return 返回系统信息元数据引用列表
+     */
     public static List<MetaReference> getSystemMetaReferenceList() {
-        return referenceList;
+        Set<MetaReference> set = new HashSet<MetaReference>();
+        for (Meta meta : getSystemMetaList()) {
+            if (meta != null && meta.getReferences() != null) {
+                set.addAll(meta.getReferences());
+            }
+        }
+        return new ArrayList<MetaReference>(set);
     }
 
     /**

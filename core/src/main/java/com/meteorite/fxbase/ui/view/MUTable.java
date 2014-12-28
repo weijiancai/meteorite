@@ -29,6 +29,7 @@ import com.meteorite.core.util.group.GroupModel;
 import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.component.form.MUListView;
+import com.meteorite.fxbase.ui.component.form.MuComboBox;
 import com.meteorite.fxbase.ui.component.table.TableExportGuide;
 import com.meteorite.fxbase.ui.component.table.cell.SortNumTableCell;
 import com.meteorite.fxbase.ui.component.table.column.BaseTableColumn;
@@ -181,6 +182,9 @@ public class MUTable extends StackPane {
     }
 
     public void initUI(final QueryResult<DataMap> result) {
+        if(result.getTotal() == 0) {
+            return;
+        }
         initUI(result.getRows());
         getPagination().setPageCount(result.getPageCount());
         setTotalRows(result.getTotal());
@@ -324,11 +328,14 @@ public class MUTable extends StackPane {
         // 导出数据
         Button btnExport = new Button("导出");
         btnExport.setOnAction(new TableExportEventHandler());
-        // 复制数据
-        Button btnCopy = new Button("复制");
+        // 复制行数据
+        Button btnCopy = new Button("复制行");
         btnCopy.setOnAction(new TableRowCopyEventHandler());
+        // 复制列数据
+        Button btnCopyCol = new Button("复制列");
+        btnCopyCol.setOnAction(new TableColumnCopyEventHandler());
 
-        tableToolBar.getItems().addAll(btnCol, btnGroup, btnAdd, btnDelete, btnLook, btnExport, btnCopy);
+        tableToolBar.getItems().addAll(btnCol, btnGroup, btnAdd, btnDelete, btnLook, btnExport, btnCopy, btnCopyCol);
         if (isShowQueryForm) {
             // 查询
             Button btnQuery = new Button("查询");
@@ -884,7 +891,7 @@ public class MUTable extends StackPane {
             final MUForm form = new MUForm(formProperty);
             form.setAdd(true);
             form.setValues(result);
-            MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "复制", form, new Callback<Void, Void>() {
+            MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "复制行", form, new Callback<Void, Void>() {
                 @Override
                 public Void call(Void param) {
                     try {
@@ -895,6 +902,51 @@ public class MUTable extends StackPane {
                     return null;
                 }
             });
+        }
+    }
+
+    class TableColumnCopyEventHandler extends MuEventHandler<ActionEvent> {
+
+        @Override
+        public void doHandler(ActionEvent event) throws Exception {
+            VBox vBox = new VBox();
+            vBox.setSpacing(5);
+
+            HBox hBox = new HBox();
+            hBox.setSpacing(10);
+            final ComboBox<TableFieldProperty> fieldsCB = new ComboBox<TableFieldProperty>();
+            fieldsCB.setItems(FXCollections.observableArrayList(config.getFieldProperties()));
+            Button btnCopy = new Button("复制");
+            final CheckBox cb = new CheckBox("选中行");
+            cb.setSelected(true);
+            hBox.getChildren().addAll(fieldsCB, btnCopy, cb);
+
+            final TextArea ta = new TextArea();
+            btnCopy.setOnAction(new MuEventHandler<ActionEvent>() {
+                @Override
+                public void doHandler(ActionEvent event) throws Exception {
+                    TableFieldProperty field = fieldsCB.getValue();
+                    if (field == null) {
+                        return;
+                    }
+
+                    StringBuilder sb = new StringBuilder();
+                    List<DataMap> list = table.getSelectionModel().getSelectedItems();
+                    if (cb.isSelected() || UList.isEmpty(list)) {
+                        list = table.getItems();
+                    }
+                    for (DataMap data : list) {
+                        sb.append(data.get(field.getName())).append(",");
+                    }
+                    if (sb.charAt(sb.length() - 1) == ',') {
+                        sb.deleteCharAt(sb.length() - 1);
+                    }
+                    ta.setText(sb.toString());
+                }
+            });
+
+            vBox.getChildren().addAll(hBox, ta);
+            MUDialog.showCustomDialog(BaseApp.getInstance().getStage(), "复制列数据", vBox, null);
         }
     }
 

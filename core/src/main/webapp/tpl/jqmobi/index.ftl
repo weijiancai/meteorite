@@ -228,7 +228,7 @@
 
     <div id="navbar">
     <#list project.getNavMenusByLevel(1) as navMenu>
-        <a href="#${navMenu.name}">${navMenu.displayName}</a>
+        <a href="#${navMenu.name}" class="icon home">${navMenu.displayName}</a>
     </#list>
         <#--<a href="#main/1/3" id='navbar_home' class='icon home'>home <span class='af-badge lr'>3</span></a>
         <a href="#af" id='navbar_js' class="icon target">selectors</a>

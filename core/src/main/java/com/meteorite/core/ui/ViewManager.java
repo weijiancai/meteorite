@@ -136,14 +136,14 @@ public class ViewManager {
 //            template.save(MetaPDBFactory.getViewProperty(property));
         }
 
-        System.out.println(String.format("创建%sCrudView", meta.getName()));
+        /*System.out.println(String.format("创建%sCrudView", meta.getName()));
         View crudView = CrudProperty.createCrudView(meta, formView, tableView, queryView);
         crudView.setMeta(meta);
         addView(crudView, template);
 
         for (ViewProperty property : crudView.getViewProperties()) {
 //            template.save(MetaPDBFactory.getViewProperty(property));
-        }
+        }*/
 
         System.out.println(String.format("创建视图完成"));
         System.out.println("--------------------------------------------------------------------------------");
@@ -249,11 +249,25 @@ public class ViewManager {
     }
 
     /**
-     * 获得所有视图信息
+     * 获得所有视图列表
      *
      * @return 返回视图列表
      */
     public static List<View> getViewList() {
         return viewList;
+    }
+
+    /**
+     * 获得系统视图列表
+     *
+     * @return 返回视图列表
+     */
+    public static List<View> getSystemViewList() {
+        List<View> list = new ArrayList<View>();
+        for (String viewName : SystemManager.getSystemProperty("viewList").split(",")) {
+            list.add(getViewByName(viewName));
+        }
+
+        return list;
     }
 }

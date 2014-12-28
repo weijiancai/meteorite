@@ -9,6 +9,7 @@ import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.ui.model.View;
 import com.meteorite.core.util.UDate;
 import com.meteorite.core.util.UFile;
+import com.meteorite.fxbase.BaseApp;
 import com.meteorite.fxbase.MuEventHandler;
 import com.meteorite.fxbase.ui.component.form.MUCheckListView;
 import com.meteorite.fxbase.ui.component.form.MUListView;
@@ -22,6 +23,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 
 import java.io.File;
@@ -137,8 +139,20 @@ public class MUBackupWin extends BorderPane {
                 MUDialog.showInformation("恢复成功！");
             }
         });
+        // 备份系统设置
+        Button btnBackupSystem = new Button("备份系统设置");
+        btnBackupSystem.setOnAction(new MuEventHandler<ActionEvent>() {
+            @Override
+            public void doHandler(ActionEvent event) throws Exception {
+                BackupManager manager = BackupManager.getInstance();
+                manager.backupSystemSetting();
+                FileChooser chooser = new FileChooser();
+                File file = chooser.showSaveDialog(BaseApp.getInstance().getStage());
+                manager.saveToFile(file);
+            }
+        });
 
-        toolBar.getItems().addAll(btnBackup, btnRestore, btnRestoreBorn);
+        toolBar.getItems().addAll(btnBackup, btnRestore, btnRestoreBorn, btnBackupSystem);
         this.setTop(toolBar);
     }
 

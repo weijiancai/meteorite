@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -274,6 +275,29 @@ public class UFile {
      */
     public static String getFileNameNoExt(File file) {
         String fileName = file.getName();
-        return fileName.substring(0, fileName.length() - getFileExt(fileName).length() + 1);
+        return fileName.substring(0, fileName.length() - (getFileExt(fileName).length() + 1));
+    }
+
+    /**
+     * 获得此目录下的所有图片，包括子目录
+     *
+     * @param baseDir
+     * @return
+     */
+    public static List<File> getAllImages(File baseDir) {
+        List<File> list = new ArrayList<File>();
+        File[] files = baseDir.listFiles();
+        if (files != null) {
+            for(File file : files) {
+                if(file.isDirectory()) {
+                    list.addAll(getAllImages(file));
+                } else {
+                    if (file.getName().endsWith("png") || file.getName().endsWith("jpg") || file.getName().endsWith("gif")) {
+                        list.add(file);
+                    }
+                }
+            }
+        }
+        return list;
     }
 }

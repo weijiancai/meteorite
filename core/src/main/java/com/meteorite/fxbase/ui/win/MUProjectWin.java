@@ -1,5 +1,6 @@
 package com.meteorite.fxbase.ui.win;
 
+import com.meteorite.core.meta.MetaManager;
 import com.meteorite.core.model.ITreeNode;
 import com.meteorite.core.model.impl.BaseTreeNode;
 import com.meteorite.core.project.ProjectDefine;
@@ -26,7 +27,7 @@ public class MUProjectWin extends BorderPane {
     }
 
     private void initUI() {
-        this.setCenter(new MUTable(ViewManager.getViewByName("ProjectDefineCrudView")));
+        this.setCenter(new MUTable(MetaManager.getMeta(ProjectDefine.class)));
         // 初始化项目树
         initProjectTree();
     }
