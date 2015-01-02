@@ -33,8 +33,8 @@
                 for (File file : UFile.getAllImages(screenshotDir)) {
                     String path = file.getAbsolutePath().substring(screenshotDir.getAbsolutePath().length()).replace('\\', '/');
             %>
-                <a href="resource/airport/screenshot/<%= path%>">
-                    <img src="resource/airport/screenshot/<%= path%>" title="<%= file.getName()%>" class="img-thumbnail" style="width: 200px;height: 300px;"/>
+                <a href="resource/airport/screenshot/<%= path%>"  style="width: 200px;height: 300px;">
+                    <img src="resource/airport/screenshot/<%= path%>" title="<%= file.getName()%>" class="img-thumbnail"/>
                 </a>
             <%
                 }

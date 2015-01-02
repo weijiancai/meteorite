@@ -1,0 +1,3 @@
+function loadAirTicket() {
+    //alert('loadAirTicket');
+}

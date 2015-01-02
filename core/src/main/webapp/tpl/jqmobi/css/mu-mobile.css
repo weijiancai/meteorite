@@ -1,0 +1,63 @@
+/*
+ * 使用font-awesome字体图标
+ */
+.fa:before {
+    speak:none;
+    font-style:normal;
+    font-weight:normal !important;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1;
+    color:inherit;
+    position:relative;
+    font-size:1em;
+    left:-3px; top:2px;
+}
+li .fa:before {
+    position:relative;
+    width:24px; height:100%;
+    top:2px;
+    line-height:0 !important;
+    margin-right:4px;
+}
+
+#afui footer>a.fa:not(.button):before {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    font-size: 25px;
+    margin: auto;
+    width: 100%;
+}
+
+/*
+ * 使用iconfont字体图标
+ */
+.iconfont:before {
+    speak:none;
+    font-style:normal;
+    font-weight:normal !important;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1;
+    color:inherit;
+    position:relative;
+    font-size:1em;
+    left:-3px; top:2px;
+}
+li .iconfont:before {
+    position:relative;
+    width:24px; height:100%;
+    top:2px;
+    line-height:0 !important;
+    margin-right:4px;
+}
+
+#afui footer>a.iconfont:not(.button):before {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    font-size: 25px;
+    margin: auto;
+    width: 100%;
+}
