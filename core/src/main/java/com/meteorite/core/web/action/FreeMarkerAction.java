@@ -17,7 +17,7 @@ import java.io.IOException;
 public class FreeMarkerAction extends FreemarkerServlet {
     @Override
     protected boolean preTemplateProcess(HttpServletRequest request, HttpServletResponse response, Template template, TemplateModel data) throws ServletException, IOException {
-        request.setAttribute("project", ProjectManager.getProjectByName("NnAirport"));
+//        request.setAttribute("project", ProjectManager.getProjectByName("NnAirport"));
         return true;
     }
 }

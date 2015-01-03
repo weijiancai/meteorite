@@ -61,3 +61,23 @@ li .iconfont:before {
     margin: auto;
     width: 100%;
 }
+
+/*
+ * 修正样式，使bootstrap和jqmobi样式兼容
+ */
+#afui h1 {
+    margin: 0;
+    padding: 0;
+}
+*:before, *:after {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.btn.block {
+    display: block;
+}
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top: 1px solid #aaa;
+}
