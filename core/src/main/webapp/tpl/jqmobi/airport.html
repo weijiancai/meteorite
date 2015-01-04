@@ -114,32 +114,23 @@
 
             <table>
                 <tr>
-                    <td>
-                        <h5>出发地</h5>
-                        <h3>吉隆坡</h3>
+                    <td id="startLocation">
+                        <a href="#panel_Location">
+                            <h5>出发地</h5>
+                            <h3>吉隆坡</h3>
+                        </a>
                     </td>
-                    <td style="padding: 0 10px;">
-                        <i class="iconfont icon-jiaohuan" style="font-size: 30px;color: #0000ff"></i>
+                    <td id="changeLocation">
+                        <i class="iconfont icon-jiaohuan"></i>
                     </td>
-                    <td>
-                        <h5>到达地</h5>
-                        <h3>上海虹桥</h3>
+                    <td id="endLocation">
+                        <a href="#panel_Location">
+                            <h5>到达地</h5>
+                            <h3>上海虹桥</h3>
+                        </a>
                     </td>
                 </tr>
             </table>
-            <!--<div class="row">
-                <div class="col-xs-5">
-                    <h3>出发地</h3>
-                    <h1>吉隆坡</h1>
-                </div>
-                <div class="col-xs-2 center-block">
-                    <i class="iconfont icon-jiaohuan"></i>
-                </div>
-                <div class="col-xs-5">
-                    <h3>到达地</h3>
-                    <h1>上海虹桥</h1>
-                </div>
-            </div>-->
             <hr/>
 
             <ul>
@@ -152,10 +143,36 @@
 
             <a class="btn btn-primary block"><span class="fa fa-search"></span>搜索</a>
         </div>
+
+        <div id="panel_Location" class="panel" title="请搜索机场">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                <input type="search" placeholder="请输入城市中文或拼音">
+            </div>
+
+            <ul class="list">
+                <li class="divider">附近</li>
+                <li><a href="javascript:void(0);">北京首都</a></li>
+                <li class="divider">最近搜索</li>
+                <li><a href="javascript:void(0);">香港 <span class="text-muted">香港地区</span></a></li>
+                <li><a href="javascript:void(0);">新加坡 <span class="text-muted">新加坡</span></a></li>
+                <li class="divider">国内热门</li>
+                <li><a href="javascript:void(0);">北京 <span class="text-muted">(所有机场)</span></a></li>
+                <li><a href="javascript:void(0);">广州</a></li>
+                <li><a href="javascript:void(0);">上海 <span class="text-muted">(所有机场)</span></a></li>
+                <li><a href="javascript:void(0);">深圳</a></li>
+                <li><a href="javascript:void(0);">成都</a></li>
+                <li><a href="javascript:void(0);">昆明</a></li>
+                <li><a href="javascript:void(0);">西安</a></li>
+                <li><a href="javascript:void(0);">重庆 <span class="text-muted">(所有机场)</span></a></li>
+                <li><a href="javascript:void(0);">杭州</a></li>
+                <li><a href="javascript:void(0);">厦门</a></li>
+            </ul>
+        </div>
     </div>
 
     <div id="navbar">
-        <a href="#airTicket" class="iconfont icon-feijipiao pressed">飞机票</a>
+        <a href="javascript:void(0);" class="iconfont icon-feijipiao pressed">飞机票</a>
         <a href="#" class="iconfont icon-hangbandongtai">航班动态</a>
         <a href="#" class="iconfont icon-gongwenbao">行程服务</a>
         <a href="#" class="iconfont icon-gerenzhongxin">个人中心</a>

@@ -14,6 +14,12 @@
     color: #000;
     font-weight: bold;
 }
+#startLocation {
+    text-align: left;
+}
+#endLocation {
+    text-align: right;
+}
 /* 出发日期*/
 #airTicket ul {
     padding-left: 20px;
@@ -40,4 +46,19 @@
 #airTicket a span {
     font-size: 16px;
     margin-right: 10px;
+}
+/* 交换 */
+#changeLocation {
+    padding: 0 10px;
+}
+#changeLocation i {
+    font-size: 30px;color: #0000ff
+}
+/* 搜索机场 */
+#panel_Location ul span {
+    font-size: .8em;
+}
+#afui #panel_Location .input-group {
+    margin-top: .2em;
+    padding: 0;
 }
