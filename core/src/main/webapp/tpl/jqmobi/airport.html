@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
 
     <link rel="stylesheet" type="text/css" href="css/mu-mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="css/airport.css"/>
 
     <!--
   <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
@@ -40,12 +41,7 @@
     <link rel="stylesheet" type="text/css" href="css/badges.css"/>
     <link rel="stylesheet" type="text/css" href="css/grid.css"/>
 
-    <link rel="stylesheet" type="text/css" href="css/android.css"/>
-    <link rel="stylesheet" type="text/css" href="css/win8.css"/>
-    <link rel="stylesheet" type="text/css" href="css/bb.css"/>
-    <link rel="stylesheet" type="text/css" href="css/ios.css"/>
     <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
-    <link rel="stylesheet" type="text/css" href="css/tizen.css"/>
 
     <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
     <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
@@ -107,7 +103,7 @@
 
     <div id="content">
         <!-- 飞机票 -->
-        <div title="飞机票" id="main" class="panel" selected="true" data-load="loadAirTicket">
+        <div title="飞机票" id="airTicket" class="panel" selected="true" data-load="loadAirTicket">
             <div style="text-align: center">
                 <div class="button-grouped flex tabbed">
                     <a class="button pressed">单程机票</a>
@@ -119,15 +115,15 @@
             <table>
                 <tr>
                     <td>
-                        <h3>出发地</h3>
-                        <h1>吉隆坡</h1>
+                        <h5>出发地</h5>
+                        <h3>吉隆坡</h3>
                     </td>
                     <td style="padding: 0 10px;">
                         <i class="iconfont icon-jiaohuan" style="font-size: 30px;color: #0000ff"></i>
                     </td>
                     <td>
-                        <h3>到达地</h3>
-                        <h1>上海虹桥</h1>
+                        <h5>到达地</h5>
+                        <h3>上海虹桥</h3>
                     </td>
                 </tr>
             </table>
@@ -146,19 +142,20 @@
             </div>-->
             <hr/>
 
-            <div>
-                <h3>出发日期</h3>
-                <h1>12/29</h1>
-                <h5>明天</h5>
-            </div>
+            <ul>
+                <li>出发日期</li>
+                <li>12/29</li>
+                <li>明天</li>
+            </ul>
+
             <hr/>
 
-            <a class="btn btn-primary block">搜索</a>
+            <a class="btn btn-primary block"><span class="fa fa-search"></span>搜索</a>
         </div>
     </div>
 
     <div id="navbar">
-        <a href="#main" class="iconfont icon-feijipiao pressed">飞机票</a>
+        <a href="#airTicket" class="iconfont icon-feijipiao pressed">飞机票</a>
         <a href="#" class="iconfont icon-hangbandongtai">航班动态</a>
         <a href="#" class="iconfont icon-gongwenbao">行程服务</a>
         <a href="#" class="iconfont icon-gerenzhongxin">个人中心</a>

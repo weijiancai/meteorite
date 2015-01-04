@@ -1,0 +1,43 @@
+/* 机票 */
+#airTicket table {
+    width: 100%;
+    text-align: center;
+}
+#airTicket h5 {
+    margin: 0;
+    padding: 10px;
+    color: #777;
+}
+#airTicket h3 {
+    margin: 0;
+    padding: 10px;
+    color: #000;
+    font-weight: bold;
+}
+/* 出发日期*/
+#airTicket ul {
+    padding-left: 20px;
+    list-style: none;
+}
+#airTicket ul li {
+    padding-top: 6px;
+}
+#airTicket ul li:first-child {
+    font-size: 14px;
+    color: #777;
+}
+#airTicket ul li:nth-child(2) {
+    font-size: 26px;
+    color: #000;
+}
+#airTicket ul li:last-child {
+    font-size: 12px;
+    color: #f0ad4e;
+}
+#airTicket a {
+    font-size: 14px;
+}
+#airTicket a span {
+    font-size: 16px;
+    margin-right: 10px;
+}
