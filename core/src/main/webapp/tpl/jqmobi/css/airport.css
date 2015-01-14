@@ -62,3 +62,14 @@
     margin-top: .2em;
     padding: 0;
 }
+
+/* 文章 */
+.article {
+
+}
+.article p {
+    text-indent: 2em;
+}
+.article ol {
+    padding-left: 40px;
+}
