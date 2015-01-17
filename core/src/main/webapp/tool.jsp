@@ -1,6 +1,5 @@
 <%@ page import="java.io.*" %>
 <%@ page import="java.util.Locale" %>
-<%@ page import="static java.lang.String.format" %>
 
 <%!
     public class FileUpload {
@@ -146,6 +145,28 @@
     </label>
     <button type="submit">上传</button>
 </form>
+<hr/>
+<form>
+    <label>tomcat目录<input type="text" name="tomcatDir"></label>
+    <button type="submit">设置</button>
+</form>
+<ul>
+<%
+    String tomcatDirStr = request.getParameter("tomcatDir");
+    System.out.println(tomcatDirStr);
+    if (tomcatDirStr != null) {
+        File tomcatDir = new File(tomcatDirStr);
+        if (tomcatDir.exists()) {
+            File logDir = new File(tomcatDir, "logs");
+            for (File aFile : logDir.listFiles()) {
+%>
+                <li><%= aFile.getName() %> <span><%= aFile.length() %></span></li>
+<%
+            }
+        }
+    }
+%>
+</ul>
 
 <script type="text/javascript">
 
