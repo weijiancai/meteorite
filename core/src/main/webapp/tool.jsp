@@ -105,7 +105,6 @@
 
             InputStream in = request.getInputStream();
             FileOutputStream fos = new FileOutputStream(tmpFile);
-            PrintWriter pw = new PrintWriter()
 
             byte[] b = new byte[1024];
             int n;
