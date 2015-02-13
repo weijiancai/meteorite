@@ -82,8 +82,13 @@
     <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
     <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
     <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
-
-    <script type="text/javascript" charset="utf-8" src="airport.js"></script>
+    
+    <style type="text/css">
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
 <div id="afui" class="ios7">
@@ -98,80 +103,11 @@
     <div id="header">
         <a id="backButton" href="javascript:;" class="button">返回</a>
         <h1 id="pageTitle">桂林机场</h1>
-        <a id='menubadge' onclick='af.ui.toggleSideMenu()' class='menuButton'></a>
     </div>
 
     <div id="content">
-        <!-- 飞机票 -->
-        <div title="飞机票" id="airTicket" class="panel" selected="true" data-load="loadAirTicket">
-            <div style="text-align: center">
-                <div class="button-grouped flex tabbed">
-                    <a class="button pressed">单程机票</a>
-                    <a class="button">往返机票</a>
-                </div>
-            </div>
-            <hr/>
 
-            <table>
-                <tr>
-                    <td id="startLocation">
-                        <a href="#panel_Location">
-                            <h5>出发地</h5>
-                            <h3>吉隆坡</h3>
-                        </a>
-                    </td>
-                    <td id="changeLocation">
-                        <i class="iconfont icon-jiaohuan"></i>
-                    </td>
-                    <td id="endLocation">
-                        <a href="#panel_Location">
-                            <h5>到达地</h5>
-                            <h3>上海虹桥</h3>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-            <hr/>
-
-            <ul>
-                <li>出发日期</li>
-                <li>12/29</li>
-                <li>明天</li>
-            </ul>
-
-            <hr/>
-
-            <a class="btn btn-primary block"><span class="fa fa-search"></span>搜索</a>
-        </div>
-
-        <div id="panel_Location" class="panel" title="请搜索机场">
-            <div class="input-group">
-                <div class="input-group-addon"><span class="fa fa-search"></span></div>
-                <input type="search" placeholder="请输入城市中文或拼音">
-            </div>
-
-            <ul class="list">
-                <li class="divider">附近</li>
-                <li><a href="javascript:void(0);">北京首都</a></li>
-                <li class="divider">最近搜索</li>
-                <li><a href="javascript:void(0);">香港 <span class="text-muted">香港地区</span></a></li>
-                <li><a href="javascript:void(0);">新加坡 <span class="text-muted">新加坡</span></a></li>
-                <li class="divider">国内热门</li>
-                <li><a href="javascript:void(0);">北京 <span class="text-muted">(所有机场)</span></a></li>
-                <li><a href="javascript:void(0);">广州</a></li>
-                <li><a href="javascript:void(0);">上海 <span class="text-muted">(所有机场)</span></a></li>
-                <li><a href="javascript:void(0);">深圳</a></li>
-                <li><a href="javascript:void(0);">成都</a></li>
-                <li><a href="javascript:void(0);">昆明</a></li>
-                <li><a href="javascript:void(0);">西安</a></li>
-                <li><a href="javascript:void(0);">重庆 <span class="text-muted">(所有机场)</span></a></li>
-                <li><a href="javascript:void(0);">杭州</a></li>
-                <li><a href="javascript:void(0);">厦门</a></li>
-            </ul>
-        </div>
-
-        <!--------------------------------------------------------------- 交通指南 ----------------------------------------------------------------------------->
-        <div id="airportInfo" class="panel" title="机场信息">
+        <div id="airportInfo" class="panel" selected="true" title="机场信息">
             <ul class="list">
                 <li>
                     <a href="#aboutUs">关于我们</a>
@@ -197,76 +133,13 @@
                 <li>
                     <a href="#Message">客户留言</a>
                 </li>
-            </ul>
-        </div>
-
-        <div id="airportPhone" class="panel" title="机场常用电话">
-            <ul>
                 <li>
-                    机场问讯处
-                    <ol>
-                        <li><a href="">0773-2845297，2845303</a>航班信息、航班起飞、到达时间，以及一般乘机事项</li>
-                    </ol>
-                </li>
-                <li>
-                    机场售票处
-                    <ol>
-                        <li><a href="">0773-2845297</a>购买机票、购买航空保险</li>
-                        <li><a href="">0773-2844555</a>异地订票</li>
-                    </ol>
-                </li>
-                <li>
-                    机场安检
-                    <ol>
-                        <li><a href="">0773-2845486</a>安全检查、相关托运和携带行李等规定</li>
-                    </ol>
-                </li>
-                <li>
-                    机场派出所
-                    <ol>
-                        <li><a href="">0773-2845110，2845338</a>办理临时乘机证明或丢失物品等</li>
-                    </ol>
-                </li>
-                <li>
-                    机场逸飞祥贵宾厅
-                    <ol>
-                        <li><a href="">0773-2845184，2845188</a> vip,逸飞祥贵宾厅会员,航空公司金银卡,逸飞祥合作银行金银卡等客户</li>
-                    </ol>
-                </li>
-                <li>
-                    桂林机场航发物流
-                    <ol>
-                        <li><a href="">0773-2845311</a>货运发货或接受货物出港问询</li>
-                        <li><a href="">0773-2845097</a>货运发货或接受货物进港问询</li>
-                    </ol>
-                </li>
-                <li>
-                    机场宾馆
-                    <ol>
-                        <li><a href="">0773-2844488</a></li>
-                    </ol>
-                </li>
-                <li>
-                    行李查询
-                    <ol>
-                        <li><a href="">0773-2845299</a></li>
-                    </ol>
-                </li>
-                <li>
-                    机场运输公司
-                    <ol>
-                        <li><a href="">0773-2845355</a></li>
-                    </ol>
-                </li>
-                <li>
-                    机场投诉电话
-                    <ol>
-                        <li><a href="">0773-2844488</a>0773-2834067</li>
-                    </ol>
+                    <a href="#contactPhone">联系我们</a>
                 </li>
             </ul>
         </div>
 
+        <!--------------------------------------------------------------- 关于我们 ----------------------------------------------------------------------------->
         <div id="aboutUs" class="panel" title="关于我们">
             <ul class="list">
                 <li><a href="#CompanyProfile">公司简介</a></li>
@@ -291,6 +164,7 @@
             <img style="" src="http://www.airport-gl.com.cn/aboutus/images/桂林机场航线图.png" alt="">
         </div>
 
+        <!--------------------------------------------------------------- 客运服务 ----------------------------------------------------------------------------->
         <div id="passengerService" class="panel" title="客运服务">
             <ul class="list">
                 <li><a href="#TheBoardingProcess">登机流程</a></li>
@@ -541,6 +415,7 @@
             <p>票价：3230</p>
         </div>
 
+        <!--------------------------------------------------------------- 货运服务 ----------------------------------------------------------------------------->
         <div id="freightService" class="panel" title="货运服务">
             <ul class="list">
                 <li><a href="#freightIntroduction">货运简介</a></li>
@@ -988,6 +863,7 @@
             <p>注 ：以上运价仅限普通货物。大批量货物，价格面议。</p>
         </div>
 
+        <!--------------------------------------------------------------- 地面服务 ----------------------------------------------------------------------------->
         <div id="groundService" class="panel" title="地面服务">
             <ul class="list">
                 <li><a href="#dining">餐饮</a></li>
@@ -1123,6 +999,7 @@
             <img style="" src="http://www.airport-gl.com.cn/groundservice/images/pingmiantu.jpg" alt="">
         </div>
 
+        <!--------------------------------------------------------------- 旅游指南 ----------------------------------------------------------------------------->
         <div id="TravelGuides" class="panel" title="旅游指南">
             <ul class="list">
                 <li><a href="#guilinScenery">桂林风光</a></li>
@@ -1264,8 +1141,7 @@
             <p>9、其它损害旅游者利益的。</p>
         </div>
 
-
-
+        <!--------------------------------------------------------------- 民航百科 ----------------------------------------------------------------------------->
         <div id="CivilAviationEncyclopedia" title="民航百科">
             <ul class="list">
                 <li><a href="#civilRegulation">民航法规</a></li>
@@ -2476,17 +2352,81 @@
         </div>
     </div>
 
-    <div id="navbar">
-        <a href="javascript:void(0);" class="iconfont icon-feijipiao pressed">飞机票</a>
-        <a href="#" class="iconfont icon-hangbandongtai">交通指南</a>
-        <a href="#" class="iconfont icon-gongwenbao">行程服务</a>
-        <a href="#airportInfo" class="iconfont icon-gerenzhongxin">个人中心</a>
+    <!--------------------------------------------------------------- 联系我们 ----------------------------------------------------------------------------->
+    <div id="airportPhone" class="panel" title="联系我们">
+        <ul>
+            <li>
+                机场问讯处
+                <ol>
+                    <li><a href="">0773-2845297，2845303</a>航班信息、航班起飞、到达时间，以及一般乘机事项</li>
+                </ol>
+            </li>
+            <li>
+                机场售票处
+                <ol>
+                    <li><a href="">0773-2845297</a>购买机票、购买航空保险</li>
+                    <li><a href="">0773-2844555</a>异地订票</li>
+                </ol>
+            </li>
+            <li>
+                机场安检
+                <ol>
+                    <li><a href="">0773-2845486</a>安全检查、相关托运和携带行李等规定</li>
+                </ol>
+            </li>
+            <li>
+                机场派出所
+                <ol>
+                    <li><a href="">0773-2845110，2845338</a>办理临时乘机证明或丢失物品等</li>
+                </ol>
+            </li>
+            <li>
+                机场逸飞祥贵宾厅
+                <ol>
+                    <li><a href="">0773-2845184，2845188</a> vip,逸飞祥贵宾厅会员,航空公司金银卡,逸飞祥合作银行金银卡等客户</li>
+                </ol>
+            </li>
+            <li>
+                桂林机场航发物流
+                <ol>
+                    <li><a href="">0773-2845311</a>货运发货或接受货物出港问询</li>
+                    <li><a href="">0773-2845097</a>货运发货或接受货物进港问询</li>
+                </ol>
+            </li>
+            <li>
+                机场宾馆
+                <ol>
+                    <li><a href="">0773-2844488</a></li>
+                </ol>
+            </li>
+            <li>
+                行李查询
+                <ol>
+                    <li><a href="">0773-2845299</a></li>
+                </ol>
+            </li>
+            <li>
+                机场运输公司
+                <ol>
+                    <li><a href="">0773-2845355</a></li>
+                </ol>
+            </li>
+            <li>
+                机场投诉电话
+                <ol>
+                    <li><a href="">0773-2844488</a>0773-2834067</li>
+                </ol>
+            </li>
+        </ul>
     </div>
 
-    <nav id="main_nav">
-        <div class="title">Home</div>
-    </nav>
 </div>
+
+<script type="text/javascript">
+    $.ui.ready(function () {
+        $.ui.removeFooterMenu();
+    });
+</script>
 </body>
 </html>
 

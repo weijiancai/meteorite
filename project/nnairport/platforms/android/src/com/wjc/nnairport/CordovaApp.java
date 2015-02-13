@@ -20,6 +20,8 @@
 package com.wjc.nnairport;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import org.apache.cordova.*;
 
 public class CordovaApp extends CordovaActivity
@@ -31,6 +33,29 @@ public class CordovaApp extends CordovaActivity
         super.init();
         // Set by <content src="index.html" /> in config.xml
 //        loadUrl(launchUrl);
-        loadUrl("http://metaui.duapp.com/tpl/jqmobi/airport.html");
+        loadUrl("http://metaui.duapp.com/tpl/jqmobi/nanning.html");
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, Menu.FIRST + 1, 1, "南宁机场");
+        menu.add(Menu.NONE, Menu.FIRST + 2, 1, "桂林机场");
+        return true;
+    }
+
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        switch (item.getItemId()) {
+            case Menu.FIRST + 1 : {
+                loadUrl("http://metaui.duapp.com/tpl/jqmobi/nanning.html");
+                break;
+            }
+            case Menu.FIRST + 2 : {
+                loadUrl("http://metaui.duapp.com/tpl/jqmobi/guilin.html");
+                break;
+            }
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
+
 }
