@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+<head>
+    <script>
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
+    </script>
+
+    <title>桂林机场 - 关于我们</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/icons.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/mu-mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="css/airport.css"/>
+
+    <!--
+  <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/appframework.css"/>
+    <link rel="stylesheet" type="text/css" href="css/lists.css"/>
+    <link rel="stylesheet" type="text/css" href="css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/badges.css"/>
+    <link rel="stylesheet" type="text/css" href="css/grid.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
+
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"/>
+    <!-- uncomment for intel.xdk apps
+    <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+    <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+    -->
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <!-- include af.desktopBrowsers.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "plugins/af.desktopBrowsers.js";
+            var tag = $("head").append(script);
+            //$.os.desktop=true;
+        }
+
+        //  $.feat.nativeTouchScroll=true;
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+
+    <style type="text/css">
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="afui" class="ios7">
+    <!-- this is the splashscreen you see. -->
+    <div id="splashscreen" class='ui-loader heavy'>
+        桂林机场
+        <br>
+        <br> <span class='ui-icon ui-icon-loading spin'></span>
+        <h1>正在启动......</h1>
+    </div>
+
+    <div id="header">
+        <a id="backButton" href="javascript:;" class="button">返回</a>
+        <h1 id="pageTitle">桂林机场</h1>
+    </div>
+
+
+        <!--------------------------------------------------------------- 关于我们 ----------------------------------------------------------------------------->
+       <div id="aboutUs" class="panel" selected="true" title="关于我们">
+            <ul class="list">
+                <li><a href="#CompanyProfile">公司简介</a></li>
+                <li><a href="#Theroutenetworkmap">航线网络图</a></li>
+            </ul>
+        </div>
+
+        <div id="CompanyProfile" class="panel article" title="公司简介">
+            <img style="" src="http://www.airport-gl.com.cn/aboutus/images/gsjj-1.jpg" alt="">
+            <p>桂林两江国际机场位于广西桂林市西南方向的临桂县两江镇，距市中心约28公里，面积406平方公顷。</p>
+            <img style="" src="http://www.airport-gl.com.cn/aboutus/images/gsjj-2.jpg" alt="">
+            <p>桂林两江国际机场是国家“八 · 五”期间重点工程项目，总投资18.5亿元，1991年9月，经国务院、中央军委正式批准立项，并于1993年7月开工建设，1996年10月1日建成通航。</p>
+            <p>桂林两江国际机场建有一条长3200米，宽45米的4E级南北向跑道，1条平行滑行道，15万平方米的机坪，共有20个机位，以及一个A380停机坪，货运库面积达6200多平方米，同时，装备有导航、通讯、监视和后勤保障等系统，能提供24小时全天候服务。机场候机楼为2层结构，面积达5万多平方米，登机桥8座，到港行李输送带8条；候机楼内的商业餐饮和其他出租服务设施面积达6086平方米。</p>
+            <p>目前，桂林两江国际机场日均起降航班达172架次左右，通航桂林机场的中外航空公司已达9家，开通航线81条，覆盖60个国际（地区）城市、48个国内城市。</p>
+            <img style="" src="http://www.airport-gl.com.cn/aboutus/images/gsjj-3.jpg" alt="">
+            <p>桂林两江国际机场先后投入近2000万元，对机场进行了绿化和美化，努力创建“花园式空港”，2003年，被国家绿化委评为“全国绿化模范单位”。1997年和2007年，机场两次获得全国民航“文明机场”称号。机场还于1997、1998年连续2年蝉联“全国旅客话民航”评比活动年旅客吞吐量200万人次以下机场的第一名，2001年再度荣获“全国旅客话民航”评比活动年旅客吞吐量200万至400万人次机场的第一名。2014年11月3日，桂林两江国际机场旅客吞吐突破600万人次，随着航空运输量继续高速增长，桂林机场将更加灿烂辉煌，为桂林市的经济发展与全国的民航事业作出应用的贡献。</p>
+            <p>美丽的桂林山水欢迎您！腾飞的两江国际机场欢迎您！我们将热情为各界人士提供诚信、安全、快捷、温馨的服务，随时恭候您的光临！<p>
+            <img style="" src="http://www.airport-gl.com.cn/aboutus/images/1.jpg" alt="">
+        </div>
+
+        <div id="Theroutenetworkmap" class="panel article" title="航线网络图">
+            <img style="" src="http://www.airport-gl.com.cn/aboutus/images/桂林机场航线图.png" alt="">
+        </div>
+</div>
+
+
+<script type="text/javascript">
+    $.ui.ready(function () {
+        $.ui.removeFooterMenu();
+    });
+</script>
+</body>
+</html>
+
+
+
+

@@ -109,7 +109,7 @@ public class FetchWebSite {
         } catch (Exception e) {
             pw.println(url);
             pw.flush();
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             return;
         }
         Map<String, List<String>> headerMap = httpConn.getHeaderFields();

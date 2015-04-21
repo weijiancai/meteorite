@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+<head>
+    <script>
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
+    </script>
+
+    <title>南宁机场</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/icons.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/mu-mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="css/airport.css"/>
+
+    <!--
+  <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/appframework.css"/>
+    <link rel="stylesheet" type="text/css" href="css/lists.css"/>
+    <link rel="stylesheet" type="text/css" href="css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/badges.css"/>
+    <link rel="stylesheet" type="text/css" href="css/grid.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
+
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"/>
+    <!-- uncomment for intel.xdk apps
+    <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+    <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+    -->
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <!-- include af.desktopBrowsers.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "plugins/af.desktopBrowsers.js";
+            var tag = $("head").append(script);
+            //$.os.desktop=true;
+        }
+
+        //  $.feat.nativeTouchScroll=true;
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="airport.js"></script>
+</head>
+<body>
+<div id="afui" class="ios7">
+    <!-- this is the splashscreen you see. -->
+    <div id="splashscreen" class='ui-loader heavy'>
+        南宁机场
+        <br>
+        <br> <span class='ui-icon ui-icon-loading spin'></span>
+        <h1>正在启动......</h1>
+    </div>
+
+    <div id="header">
+        <a id="backButton" href="javascript:;" class="button">返回</a>
+        <h1 id="pageTitle">南宁机场</h1>
+        <a id='menubadge' onclick='af.ui.toggleSideMenu()' class='menuButton'></a>
+    </div>
+
+    <div id="content">
+        <!-- 飞机票 -->
+        <div title="飞机票" id="airTicket" class="panel" selected="true" data-load="loadAirTicket">
+            <div style="text-align: center">
+                <div class="button-grouped flex tabbed">
+                    <a class="button pressed">单程机票</a>
+                    <a class="button">往返机票</a>
+                </div>
+            </div>
+            <hr/>
+
+            <table>
+                <tr>
+                    <td id="startLocation">
+                        <a href="#panel_Location">
+                            <h5>出发地</h5>
+                            <h3>北京首都</h3>
+                        </a>
+                    </td>
+                    <td id="changeLocation">
+                        <i class="iconfont icon-jiaohuan"></i>
+                    </td>
+                    <td id="endLocation">
+                        <a href="#panel_Location">
+                            <h5>到达地</h5>
+                            <h3>长沙</h3>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <hr/>
+
+            <ul>
+                <li>出发日期</li>
+                <li>02/26</li>
+                <li>明天</li>
+            </ul>
+
+            <hr/>
+
+            <a class="btn btn-primary block" href="#panel_searchResult"><span class="fa fa-search"></span>搜索</a>
+        </div>
+
+        <div id="panel_Location" class="panel" title="请搜索机场">
+            <div class="input-group">
+                <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                <input type="search" placeholder="请输入城市中文或拼音">
+            </div>
+
+            <ul class="list">
+                <li class="divider">附近</li>
+                <li><a href="javascript:void(0);">北京首都</a></li>
+                <li class="divider">最近搜索</li>
+                <li><a href="javascript:void(0);">香港 <span class="text-muted">香港地区</span></a></li>
+                <li><a href="javascript:void(0);">新加坡 <span class="text-muted">新加坡</span></a></li>
+                <li class="divider">国内热门</li>
+                <li><a href="javascript:void(0);">北京 <span class="text-muted">(所有机场)</span></a></li>
+                <li><a href="javascript:void(0);">广州</a></li>
+                <li><a href="javascript:void(0);">上海 <span class="text-muted">(所有机场)</span></a></li>
+                <li><a href="javascript:void(0);">深圳</a></li>
+                <li><a href="javascript:void(0);">成都</a></li>
+                <li><a href="javascript:void(0);">昆明</a></li>
+                <li><a href="javascript:void(0);">西安</a></li>
+                <li><a href="javascript:void(0);">重庆 <span class="text-muted">(所有机场)</span></a></li>
+                <li><a href="javascript:void(0);">杭州</a></li>
+                <li><a href="javascript:void(0);">厦门</a></li>
+            </ul>
+        </div>
+
+        <div id="panel_searchResult" class="panel" title="北京首都-长沙黄花">
+            <div>
+                <h3>2015-02-26 星期四</h3>
+            </div>
+
+            <ul class="list">
+                <li>
+                    <a href="#xiahang-MF8658">
+                    <div>
+                        <span class="time">06:25 - 08:50</span>
+                        <span class="price">￥480</span>
+                    </div>
+                    <div>
+                        <span class="hangban">厦航MF8658</span>
+                        <span class="discount">经济舱T 4折</span>
+                    </div>
+                    <div>
+                        <span class="gray_15">738(中)</span>
+                    </div>
+                    </a>
+                </li>
+                <li>
+                    <div>
+                        <span>06:25 - 08:50</span>
+                        <span style="float: right;">￥480</span>
+                    </div>
+                    <div>
+                        <span>厦航MF8658</span>
+                        <span style="float: right;">经济舱T 4折</span>
+                    </div>
+                    <div>
+                        <span>738(中)</span>
+                        <span style="float: right;">仅剩7张</span>
+                    </div>
+                </li>
+            </ul>
+        </div>a
+
+        <div id="xiahang-MF8658" class="panel" title="厦航MF8658">
+            <div>
+                <div>
+                    <span>2015-02-26 明天</span>
+                    <span style="float: right;">厦航MF8658</span>
+                </div>
+                <div>
+                    <span>06:25</span>
+                    <span style="float: right;">08:50</span>
+                </div>
+                <div>
+                    <span>（PEK）北京首都T2</span>
+                    <span style="float: right;">（CSX）长沙黄花</span>
+                </div>
+                <div style="text-align: center;">
+                    <span style="float: left;">有餐食</span>
+                    <span>准点率81%</span>
+                    <span style="float: right;">机型738</span>
+                </div>
+            </div>
+
+            <ul class="list">
+                <li class="divider">&nbsp;</li>
+                <li>
+                    <div style="min-height: 50px;">
+                        <div style="float: left;" onclick="showInfo()">
+                            <p><span>经济舱T</span><span>3.8折</span></p>
+                            <span>仅剩3张</span>
+                        </div>
+                        <div style="float: right;vertical-align: middle"><span style="line-height: 50px;">￥460</span><button type="button" class="button">预定</button></div>
+                    </div>
+                </li>
+                <li>
+                    <div style="min-height: 50px;">
+                        <div style="float: left;">
+                            <p><span>经济舱V</span><span>5折</span></p>
+                            <span>仅剩3张</span>
+                        </div>
+                        <div style="float: right;vertical-align: middle"><span style="line-height: 50px;">￥603</span><button type="button" class="button">预定</button></div>
+                    </div>
+                </li>
+                <li>
+                    <div style="min-height: 50px;">
+                        <div style="float: left;">
+                            <p><span>超值公务舱D</span><span>6折</span></p>
+                            <span>仅剩8张</span>
+                        </div>
+                        <div style="float: right;vertical-align: middle"><span style="line-height: 50px;">￥1820</span><button type="button" class="button">预定</button></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="navbar">
+        <a href="javascript:void(0);" class="iconfont icon-feijipiao pressed">飞机票</a>
+        <a href="#" class="iconfont icon-hangbandongtai">航班动态</a>
+        <a href="#" class="iconfont icon-gongwenbao">行程服务</a>
+        <a href="#" class="iconfont icon-gerenzhongxin">个人中心</a>
+    </div>
+
+    <nav id="main_nav">
+        <div class="title">Home</div>
+    </nav>
+</div>
+
+<script type="text/javascript">
+    function showInfo() {
+        $.ui.popup("I'm replacing an alert box");
+    }
+</script>
+</body>
+</html>

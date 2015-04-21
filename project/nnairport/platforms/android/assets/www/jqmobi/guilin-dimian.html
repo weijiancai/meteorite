@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+<head>
+    <script>
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
+    </script>
+
+    <title>桂林机场 - 地面服务</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/icons.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/mu-mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="css/airport.css"/>
+
+    <!--
+  <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/appframework.css"/>
+    <link rel="stylesheet" type="text/css" href="css/lists.css"/>
+    <link rel="stylesheet" type="text/css" href="css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/badges.css"/>
+    <link rel="stylesheet" type="text/css" href="css/grid.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
+
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"/>
+    <!-- uncomment for intel.xdk apps
+    <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+    <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+    -->
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <!-- include af.desktopBrowsers.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "plugins/af.desktopBrowsers.js";
+            var tag = $("head").append(script);
+            //$.os.desktop=true;
+        }
+
+        //  $.feat.nativeTouchScroll=true;
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+
+    <style type="text/css">
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="afui" class="ios7">
+    <!-- this is the splashscreen you see. -->
+    <div id="splashscreen" class='ui-loader heavy'>
+        桂林机场
+        <br>
+        <br> <span class='ui-icon ui-icon-loading spin'></span>
+        <h1>正在启动......</h1>
+    </div>
+
+    <div id="header">
+        <a id="backButton" href="javascript:;" class="button">返回</a>
+        <h1 id="pageTitle">桂林机场</h1>
+    </div>
+
+    <!--------------------------------------------------------------- 地面服务 ----------------------------------------------------------------------------->
+    <div id="groundService" class="panel" selected="true" title="地面服务">
+        <ul class="list">
+            <li><a href="#dining">餐饮</a></li>
+            <li><a href="#accommodation">住宿</a></li>
+            <li><a href="#leisure">休闲</a></li>
+            <li><a href="#shopping">购物</a></li>
+            <li><a href="#OtherServices">其他服务</a></li>
+            <li><a href="#TheTerminalBuildingPlans">候机楼平面图</a></li>
+        </ul>
+    </div>
+
+    <div id="dining" class="panel article" title="餐饮">
+        <h3>紫悦餐厅</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/ziyue.jpg" alt="">
+        <p>位置：候机楼二楼</p>
+        <p>简介：候机楼内最大的餐厅，总经营面积2447平方米，可同时容纳近千人用餐，可接待团体、散客订餐并提供包厢服务。主要经营：桂林特色米粉、手工面食、精美小炒、烟、酒、茶水、咖啡、小吃等，为旅客提供多元化选择。</p>
+        <p>营业时间： 06:00-航班结束</p>
+        <p>联系电话： 0773-2845895   18977399539/刘先生</p>
+        <h3>KFC</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/kfc.jpg" alt="">
+        <p>位置：候机楼一楼到达厅</p>
+        <p>简介：经营面积360平方米，主要经营快餐类产品，像汉堡、肉卷、鸡翅、薯条等，欢迎个人或团体前来就餐。</p>
+        <p>营业时间： 06:00-24:00</p>
+        <p>联系电话： 0773-2845010</p>
+    </div>
+
+    <div id="accommodation" class="panel article" title="住宿">
+        桂林机场旅业公司
+        <h3>桂林机场旅业公司可为旅客提供机场和市区的住宿服务</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/images/binguan.jpg" alt="">
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/images/canting.jpg" alt="">
+        <p>机场内：机场宾馆     总机： 0773-2844488</p>
+        <p>市区：民航大厦南楼     总机： 0773-3806888</p>
+        <p>旅游：荔浦度假村    总机： 0773-7128198</p>
+        <h3>机场宾馆介绍</h3>
+        <p>机场宾馆距离候机楼 400 米，按三星级标准建成，距离市区 25 公里，乘车 25 分钟可到。宾馆高六层，有豪华套间，标准双人房 136 间，内设餐厅，大小会议室，中央空调等，并有独立的大型餐厅一座。可为您提供钟点房服务，代购机票，餐饮，旅游，疗养，组织会议，车辆接送及为您提供到市内各宾馆，酒店，旅游，住宿的一条龙服务。是您来桂林旅游，开会，疗养，转乘飞机，候机小憩的最佳场所。机场宾馆全体员工将为您提供热情周到的服务。欢迎您下榻桂林两江国际机场宾馆。</p>
+    </div>
+
+    <div id="leisure" class="panel article" title="休闲">
+        <h3>空港美容美发中心</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/meirong.jpg" alt="">
+        <p>位置：国内到达出口右侧</p>
+        <p>简介：经营面积50平方米，主要经营美容、美发、足浴</p>
+        <p>营业时间： 10 ： 00-- 22:00</p>
+        <p>联系电话： 15295951780</p>
+    </div>
+
+    <div id="shopping" class="panel article" title="购物">
+        <h3>建荣烟行</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/images/gouwu-1.jpg" alt="">
+        <p>位置：国内出发和国内到达肯德基旁</p>
+        <p>简介：经营总面积196平方米，主要经营广西真龙香烟以及类名牌香烟，欢迎前来选购。</p>
+        <p>营业时间： 07 ： 00- 22:30</p>
+        <p>电话：0773-2845984</p>
+        <h3>伊莱雅</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/yilaiya.jpg" alt="">
+        <p>位置：候机楼国内出发厅，隔离区</p>
+        <p>简介：总经营面积达1188平方米，主要经营工艺品、字画、首饰、土特产、百货、丝绸服装、针织品、箱包、玉器、鲜果等。</p>
+        <p>营业时间： 06 ： 30- 航班结束</p>
+        <p>联系电话： 18677300883</p>
+        <h3>空港花店</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/huadian.jpg" alt="">
+        <p>位置：9号登机口</p>
+        <p>简介：经营面积20平方米，主要经营压花制品、香包、鲜桂花香水、工艺品、民族挂件工艺品以及盆栽零售。</p>
+        <p>营业时间： 07 ： 00- 22:30</p>
+        <p>联系电话：13387736236 黎先生</p>
+        <h3>新奇特</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/xinqite.jpg" alt="">
+        <p>位置：3、7、9号登机口</p>
+        <p>简介：经营面积35平方米。主要经营按摩器材、电子小商品、办公用品、日用百货零售。</p>
+        <p>营业时间： 07 ： 00-- 23:00</p>
+        <p>联系电话： 18577314516 高先生</p>
+        <h3>飞亚达</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/feiyada.jpg" alt="">
+        <p>位置：5号厅</p>
+        <p>简介：经营面积26平方米，主要经营各种男女式精美手表，欢迎广大旅客前来选购。</p>
+        <p>营业时间： 08 ： 30-- 21:00</p>
+        <p>联系电话： 0773-2844226</p>
+        <h3>刻章柜台</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/kezhang.jpg" alt="">
+        <p>位置：9号登机口</p>
+        <p>简介：金石篆刻印章，文豪书法墨迹。为旅客提供专业的印章刻制，销售刻章成品及书法作品。</p>
+        <p>营业时间： 08 ： 30- 20:30</p>
+        <p>联系电话： 18653737418 杜先生</p>
+        <h3>烟具专卖柜</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/yanju.jpg" alt="">
+        <p>位置：吸烟室门口</p>
+        <p>简介：经营面积2平方米，主要经营烟具和鸡血石，欢迎各位旅客前来选购。</p>
+        <p>营业时间： 08 ： 30- 21:30</p>
+        <p>联系电话： 18977328155 黄先生</p>
+        <h3>赛炜百货</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/../images/baihuo.jpg" alt="">
+        <p>位置：候机楼一楼</p>
+        <p>简介：总经营面积461平方米，主要经营日用百货、茶叶、预包装食品、国内包装酒、定型包装食品、休闲吧、奶茶、销售卤制熟食、玩具以及精品红木家具，欢迎广大旅客前来选购。并经营候机楼一、二楼的“空港数码”，为旅客提供便捷的上网服务。</p>
+        <p>营业时间：09:00-24:00</p>
+        <p>联系电话： 15777399566</p>
+        <h3>万润桂林鲜米粉专卖店</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/images/mifen.jpg" alt="">
+        <p>位置：候机楼二楼登机区安检斜对面</p>
+        <p>简介：主要经营桂林米粉和柳州螺蛳粉</p>
+        <p>营业时间： 07 ： 00- 23:00</p>
+        <p>联系电话： 13788635588</p>
+        <h3>快活林水果店</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/images/shuiguo.jpg" alt="">
+        <p>位置：国内出发厅</p>
+        <p>简介：经营沙田柚、芋头、百香果、人参果、鸡蛋果等各类桂林本地、广西各地及东南亚等地区特产热带水果，品种齐全，绝对新鲜</p>
+        <p>营业时间：07:00-22:00</p>
+        <p>联系电话： 13878853675</p>
+    </div>
+
+    <div id="OtherServices" class="panel article" title="其他服务">
+        <h3>北京神州汽车租赁</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/images/zuche.jpg" alt="">
+        <p>位置：候机楼2楼办公区L05室</p>
+        <p>简介：经营面积20平方米，主要经营汽车租赁、短租自驾、长租服务、顺风车站。门店由办公室及停车场组成，办公室办理租还手续，停车场办理取还车业务。</p>
+        <p>营业时间： 24小时服务</p>
+        <p>电话：4006166666/0773-2844041</p>
+        <h3>联合货币</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/images/huobi.jpg" alt="">
+        <p>位置：候机楼一楼到达出口处</p>
+        <p>简介：经营面积17平方米，主要经营多国货币兑换，P2P理财，欧洲购物退税，贵金属，IC电话卡以及打印复印等</p>
+        <p>营业时间： 09 ： 00- 21:30</p>
+        <p>联系电话： 0773-2844972</p>
+        <h3>中国银行桂林分行机场支行</h3>
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/images/yinhang.jpg" alt="">
+        <p>位置：候机楼一楼国内到达左侧</p>
+        <p>简介：主要经营银行相关业务，如存取款、理财、基金、保险、信用卡等</p>
+        <p>营业时间： 9:00-17:00</p>
+        <p>电话：0773-2844021</p>
+    </div>
+
+    <div id="TheTerminalBuildingPlans" class="panel article" title="候机楼平面图">
+        <img style="" src="http://www.airport-gl.com.cn/groundservice/images/pingmiantu.jpg" alt="">
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.ui.ready(function () {
+        $.ui.removeFooterMenu();
+    });
+</script>
+</body>
+</html>
+
+
+
+

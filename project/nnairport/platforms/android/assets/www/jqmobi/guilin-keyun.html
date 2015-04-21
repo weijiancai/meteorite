@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+<head>
+    <script>
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
+    </script>
+
+    <title>桂林机场 - 客运服务</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/icons.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/mu-mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="css/airport.css"/>
+
+    <!--
+  <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/appframework.css"/>
+    <link rel="stylesheet" type="text/css" href="css/lists.css"/>
+    <link rel="stylesheet" type="text/css" href="css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/badges.css"/>
+    <link rel="stylesheet" type="text/css" href="css/grid.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
+
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"/>
+    <!-- uncomment for intel.xdk apps
+    <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+    <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+    -->
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <!-- include af.desktopBrowsers.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "plugins/af.desktopBrowsers.js";
+            var tag = $("head").append(script);
+            //$.os.desktop=true;
+        }
+
+        //  $.feat.nativeTouchScroll=true;
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+
+    <style type="text/css">
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="afui" class="ios7">
+    <!-- this is the splashscreen you see. -->
+    <div id="splashscreen" class='ui-loader heavy'>
+        桂林机场
+        <br>
+        <br> <span class='ui-icon ui-icon-loading spin'></span>
+        <h1>正在启动......</h1>
+    </div>
+
+    <div id="header">
+        <a id="backButton" href="javascript:;" class="button">返回</a>
+        <h1 id="pageTitle">桂林机场</h1>
+    </div>
+
+    <!--------------------------------------------------------------- 客运服务 ----------------------------------------------------------------------------->
+    <div id="passengerService" class="panel" selected="true" title="客运服务">
+        <ul class="list">
+            <li><a href="#TheBoardingProcess">登机流程</a></li>
+            <li><a href="#BuyTickets">购票</a></li>
+            <li><a href="#traffic">交通</a></li>
+            <li><a href="#securityCheck">安检</a></li>
+            <li><a href="#luggage">行李</a></li>
+            <li><a href="#PassengerPriceList">客运价格表</a></li>
+            <li><a href="#flightInformation">航班信息</a></li>
+            <li><a href="#Today'sPostInformation ">今日离岗信息</a></li>
+            <li><a href="#TodayTheArrivalInformation">今日进港信息</a></li>
+            <li><a href="#FlightScheduleQuery">航班计划查询</a></li>
+        </ul>
+    </div>
+
+    <div id="TheBoardingProcess" class="panel article" title="登机流程">
+        <h3>桂林两江国际机场乘机流程</h3>
+        <p>国内出发旅客流程</p>
+        <p>办理乘机手续 - 行李托运－ 换登机牌 － 安全检查 － 进入候机区域登机</p>
+        <p>国内到达旅客流程</p>
+        <p>领取交运行李 － 进入到达接客大厅</p>
+        <p>国际出发旅客流程</p>
+        <p>办理乘机手续 - 行李托运 － 换登机牌 －检验检疫检查 －海关申报与海关检查 － 边防检查 － 安全检查 － 进入候机区域登机</p>
+        <p>桂国际到达旅客流程</p>
+        <p>卫生检疫 － 边防检查 － 领取交运行李 － 海关申报与海关检查 － 进入到达接客大厅</p>
+        <img style="" src="http://www.airport-gl.com.cn/guestservice/images/国内出发流程图.jpg" alt="">
+        <img style="" src="http://www.airport-gl.com.cn/guestservice/images/国际登机流程图.jpg" alt="">
+        <h3>具体说明</h3>
+        <p>普通旅客</p>
+        <p>A ）旅客应当在承运人规定的时限内到达机场，并且凭客票及本人有效身份证件按时办理客票查验、托运行李、领取登机牌等乘机手续。</p>
+        <p>B ）办理乘机手续的时间一般不迟于客票列明的航班规定离站时间前 90 分钟，截止办理乘机手续时间为航班规定离站时间前 30 分钟。</p>
+        <p>C ）乘机前，旅客及行李和免费随身携带物品必须经过安全检查。</p>
+        <img style="" src="http://www.airport-gl.com.cn/guestservice/images/djlc-1.jpg" alt="">
+        <p>特殊旅客</p>
+        <p>A ）重要旅客、老人、小孩、残疾人乘坐飞机，应遵守承运人 “ 特殊旅客乘机规定 ” ，在购买飞机票时，向售票部门提出申请，并填写 “ 特殊旅客服务单 ” 。</p>
+        <p>B ）机场单独设立柜台为特殊旅客办理乘机手续；并视具体情况安排专人接待。</p>
+        <p>C ）航班登机时，服务人员将特殊旅客送上飞机</p>
+        <img style="" src="http://www.airport-gl.com.cn/guestservice/images/djlc-2.jpg" alt="">
+    </div>
+
+    <div id="BuyTickets" class="panel article" title="购票">
+        <p>公司售票处为国际航协一类代理，可为阁下办理国内、地区及国际机票业务，代理包机航班机票销售业务。竭诚为您提供优质服务，让您得到满意。</p>
+        <p>民航桂林售票处、城市侯机楼地点：上海路 安新洲 民航大厦一楼</p>
+        <p>桂林市24小时售票、桂林市区免费送票服务热线：96321</p>
+        <p>异地购票，两江机场取票热线：0773-2845297</p>
+        <p>机场售票窗口： 地址：桂林两江国际机场侯机楼</p>
+        <p>电话： 0773-2845297 传真： 2844555</p>
+        <img style="" src="http://www.airport-gl.com.cn/guestservice/images/goupiao.jpg" alt="">
+        <h3 align="center">购票须知</h3>
+        <p>购票及相关业务（国内）</p>
+        <p>1 ． 客票：客票是承运人与客票上所列姓名的旅客之间的运输契约的凭证，也是旅客乘机交运行李的凭证，客票只限客票上所列姓名的旅客本人使用，客票不得转让或涂改，经转让或涂改的客票无效。</p>
+        <p>2 ． 定座：已经定妥座位的旅客在承运人规定或预先约定的时间内购买客票，如未在购买时限内购票，航空公司可以取消所定座位。如旅客自愿取消或更改座位，应及时向航空公司提出。不定期客票应在向承运人定妥座位后才能使用，旅客凭该定妥座位的客票乘机。</p>
+        <p>3 ． 购票：旅客应在承运人或其销售代理人的售票处购票，旅客购票凭有效身份证件或公安机关出具的其它身份证件，并填写《旅客定座单》。购买儿童票、婴儿票，应提供儿童、婴儿出生年月的有效证明。</p>
+        <p>4 ． 座位再证实：旅客持有定妥座位的联程或来回程客票，如在该联程或回程地点停留 72 小时以上，须在联程或回程航班离站前两天中午 12 点以前，办理座位再证实手续，否则原定座位不予保留。如旅客到达联程或回程地点时间离航班规定离站时间不超过 72 小时，则无需办理座位再证实手续。</p>
+        <p>5 ． 客票有效期：自旅客开始旅行之日起，一年内运输有效。如客票全部未使用，则从客票填开之日起，一年内运输有效。特种票价的客票按照承运人规定的该特种票价的有效期计算。</p>
+        <p>6 ． 儿童票：已满 2 周岁未满 12 周岁的儿童按成人全票价的 50% 购买儿童票，未满 2 周岁的婴儿按成人全票价的 10% 购买婴儿票，不提供座位。如需要单独占用座位，应购买儿童票。每一成人携带婴儿超过一名时，超过的人数应购买儿童票。 </p>
+        <p>7 ． 签转、变更：按承运人的有关规定办理。</p>
+        <p>8 ． 退票：按承运人的有关规定办理，只限在原购票地点或经承运人同意的地点办理。</p>
+        <p>购票及相关业务（国际）</p>
+        <p>1 ． 客票：客票是承运人与客票上所列姓名的旅客之间的运输契约的凭证，也是旅客乘机交运行李的凭证，客票只限客票上所列姓名的旅客本人使用，客票不得转让或涂改，经转让或涂改的客票无效。</p>
+        <p>2 ． 定座：已经定妥国际、地区航班座位的旅客，应按航空公司规定的出票时限办理购票手续，如未在购买时限内购票，所定座位即被取消。如旅客自愿取消或更改座位，应及时向航空公司提出。不定期客票应在向承运人定妥座位后才能使用，旅客凭该定妥座位的客票乘机。</p>
+        <p>3 ． 购票：旅客应在承运人或其销售代理人的售票处购票，旅客购票凭有效护照及签证，并填写《旅客定座单》。</p>
+        <p>4 ． 座位再证实：旅客持有定妥座位的联程或来回程国际、地区航班的客票，如在该联程或回程地点停留 72 小时以上，须在联程或回程航班离站前 72 小时以前，办理座位再证实手续，否则原定座位不予保留。如旅客到达联程或回程地点时间离航班规定离站时间不超过 72 小时，则不需办理座位再证实手续。</p>
+        <p>5 ． 客票有效期：自旅客开始旅行之日起，一年内运输有效。如客票全部未使用，则从客票填开之日起，一年内运输有效。特种票价的客票按照承运人规定的该特种票价的有效期计算。</p>
+        <p>6 ． 儿童票：已满 2 周岁未满 12 周岁的儿童按成人票价的 75% 购买儿童票，未满 2 周岁的婴儿按成人全票价的 10% 购买婴儿票，不提供座位。如需要单独占用座位，应购买儿童票。每一成人携带婴儿超过一名时，超过的人数应购买儿童票。</p>
+        <p>7 ． 签转、变更：按承运人的有关规定办理。</p>
+        <p>8 ． 退票：按承运人的有关规定办理，只限在原购票地点或经承运人同意的地点办理。</p>
+    </div>
+
+    <div id="traffic" class="panel article" title="交通">
+        <img style="" src="http://www.airport-gl.com.cn/guestservice/images/kgbs_2.png" alt="">
+        <h3 align="center">空港巴士线路一览表</h3>
+        <p align="center">出入机场旅客班车首末车时间和发车间隔</p>
+        <p align="center">民航大厦=桂林机场</p>
+        <p>线路：桂林机场—民航大厦</p>
+        <p>价格：20元/人</p>
+        <p>发车时刻：根据航班动态滚动发车</p>
+        <p>线路：民航大厦—桂林机场</p>
+        <p>价格：20元/人</p>
+        <p>发车时刻：6:00-21:30每半小时一班</p>
+        <p>旅客运输大巴咨询电话：0773-2845355</p>
+        <p align="center">旅客班车线路图</p>
+        <img style="" src="http://www.airport-gl.com.cn/guestservice/images/kgbs_1.png" alt="">
+        <p align="center">各新开班线及时刻表</p>
+        <p align="center">贺州市区=桂林机场</p>
+        <p>线路：桂林机场—贺州国际大酒店</p>
+        <p>价格：100元/人</p>
+        <p>发车时刻：09:30  12:00  18:00</p>
+        <p>线路：贺州国际大酒店—桂林机场</p>
+        <p>价格：70元/人</p>
+        <p>发车时刻：08:00  14:00  16:30</p>
+        <p>贺州地区 旅客运输大巴咨询电话：0774-5100303</p>
+        <p align="center">宜州市区=桂林机场</p>
+        <p>线路：桂林机场—宜州东正国际大酒店</p>
+        <p>价格：120元/人</p>
+        <p>发车时刻：10:00  18:00</p>
+        <p>线路：宜州东正国际大酒店—桂林机场</p>
+        <p>价格：100元/人</p>
+        <p>发车时刻：08:00  15:30</p>
+        <p>宜州地区 旅客运输大巴咨询电话：0778-3266666</p>
+        <p align="center">柳州市区=桂林机场</p>
+        <p>线路：桂林机场—柳州国泰大厦（文慧桥）</p>
+        <p>价格：50元/人</p>
+        <p>发车时刻：09:00——23:00滚动发车 </p>
+        <p>线路：柳州国泰大厦（文慧桥）—桂林机场</p>
+        <p>价格：50元/人</p>
+        <p>发车时刻：06:00——20:00每小时1班</p>
+        <p>柳州地区 旅客运输大巴咨询电话：0772-3810000</p>
+        <p align="center">阳朔=桂林机场</p>
+        <p>线路：桂林机场—阳朔汽车站</p>
+        <p>价格：50元/人</p>
+        <p>发车时刻：09:30  11:30  13:30  15:30  17:00  18:30  20:00  22:30</p>
+        <p>线路：阳朔汽车站—桂林机场</p>
+        <p>价格：50元/人</p>
+        <p>发车时刻：08:00  10:00  12:00  13:30  15:30  17:30  19:30  20:30</p>
+        <p>阳朔地区 旅客运输大巴咨询电话：0773-8881002</p>
+        <p align="center">北站=桂林机场</p>
+        <p>线路：桂林机场—火车北站豪庭酒店 </p>
+        <p>价格：20元/人</p>
+        <p>发车时刻：10:30  16:30  21:30</p>
+        <p>线路：火车北站豪庭酒店—桂林机场</p>
+        <p>价格：20元/人</p>
+        <p>发车时刻：7:30  12:30  18:30</p>
+        <p>火车北站 旅客运输大巴咨询电话：0773-2672777</p>
+        <h3>火车北站 旅客运输大巴咨询电话：0773-2672777</h3>
+        <p>机场候机楼车站介绍</p>
+        <p>9月27日，桂林机场空港汽车站正式启用通车，车站南与桂柳高速相邻，东与包茂高速相接，可直达柳州，阳朔等县市。</p>
+        <p>车站投入使用后，日可接送旅客3000余人。车站旅客候车室位于候机楼一楼东南角（国内到达处右侧），站场内有12个发车位。目前桂林机场已开通柳州、贺州、宜州、阳朔4条长途直达班线，逐步开通全州、荔浦班线，来宾、永州及桂林周边各县也排上了开通计划议程。</p>
+        <p>为了满足旅客增长需求，桂林机场将以长途汽车站为中心点，以点带线，由线展面，辐射到桂林周边各县市，建立一个完善的运输网络，让旅客体验到便捷旅游，促成桂林机场达到国家重要旅游枢纽机场目标。</p>
+        <img style="" src="http://www.airport-gl.com.cn/guestservice/images/kgbs_3.png" alt="">
+    </div>
+
+    <div id="securityCheck" class="panel article" title="安检">
+        <img style="" src="http://www.airport-gl.com.cn/guestservice/images/anjian.jpg" alt="">
+        <h3 align="center">安检指南</h3>
+        <p>1 、在值机柜台处办理登机手续，托运行李。</p>
+        <p>2 、购买机场建设管理费和保险。</p>
+        <p>3 、经过人身和手提物品的安全检查后，进入候机隔离区等候登机通知。</p>
+        <p>4 、登机。</p>
+        <p>为维护民用航空治安秩序，保障飞机和旅客的安全，遵照国务院《关于保障民用航空安全的通告》，依据国家有关法律、规定，特通告如下：</p>
+        <p>一、严禁旅客将枪支（含各种仿真玩具枪、枪型打火机及其它各种类型的带有攻击性的武器）、弹药、军械、警械、管制刀具、爆炸物品、易燃易爆物品、剧毒物品、放射性物品、腐蚀性物品、危险溶液及国家规定的其他禁运物品带上飞机或夹在行李、货物中托运。凡携带或夹带上述危险品的，一经查出，即交公安机关依法处理。</p>
+        <p>二、旅客乘坐飞机时，管制刀具以外的利器、钝器（如菜刀、水果刀、餐刀、工艺品刀、手术刀、剪刀等各类刀具，以及钢锉、铁锥、斧子、短棍、锤子等）一律放入行李中托运，不得随身携带。对故意隐匿的，一经查出，即交公安机关处理，误机损失由旅客自行负责。</p>
+        <p>三、除国家规定的免检人员外，所有乘坐民航飞机的旅客必须接受安全检查。民航工作人员，驻机场检查、检验单位工作人员进入旅客隔离区，必须持有民航总局或机场公安机关统一制发的隔离区通行证。上述工作人员乘坐飞机时，必须按普通旅客接受安全检查。</p>
+        <p>四、旅客乘坐国内航班时，必须经过指定的安检通道接受安全检查。</p>
+        <p>五、旅客乘坐国内航班必须按规定时间提前到达机场，凭客票及本人身份证件办理乘机手续。头等舱旅客可随身携带两件手提行李，普通舱旅客只准随身携带一件手提行李。体积不超过２０ × ４０ × ５５厘米，重量不得超过５公斤，超过上述件数、体积、重量的，按规定作为行李或货物办理托运。拒绝托运的，机场、航空公司有关工作人员有权拒绝其登机。</p>
+        <p>六、严禁伪造身份证件或冒用他人身份证件购票、登机。</p>
+        <p>七、严禁乘机旅客利用机票为他人交运行李物品，严禁为素不相识的人捎带物品。</p>
+        <p>八、严禁以任何理由干扰机组工作，破坏机舱内正常秩序，危害飞行安全。飞行中全体旅客必须服从机组管理。</p>
+        <p>九、任何人不得以任何借口妨碍民航安检、公安和其他工作人员执行公务。对于违反通告规定的，由公安机关根据《中华人民共和国治安管理处罚条例》和中国民用航空总局发布的有关民用航空安全的规章查处；构成犯罪的，依法追究刑事责任。</p>
+    </div>
+
+    <div id="luggage" class="panel article" title="行李">
+        <h3 align="center">行李指南</h3>
+        <p>A 、旅客必须凭有效客票办理托运行李；交运行李必须通过安全检查。</p>
+        <p>B 、托运行李必须包装完善、锁扣完好、捆扎牢固，能承受一定的压力，能够在正常的操作条件下安全装卸和运输并符合下列条件：</p>
+        <p>1 ） 旅行箱、旅行袋和手提包等必须加锁；</p>
+        <p>2 ） 两件以上的包件、不能捆为一件；</p>
+        <p>3 ） 行李上不能附插其他物品；</p>
+        <p>4 ） 竹篮、网兜、草绳、草袋不能作为行李的外包装物；</p>
+        <p>5 ） 行李上应写明旅客的姓名、详细地址、电话号玛；</p>
+        <p>C 、国家规定的禁运物品、限制运输物品、危险物品以及具有异味或容易污染飞机的其他物品，不能作为行李或夹入行李内托运。</p>
+        <p>D 、重要文件和资料、证券、货币、汇票、珠宝、贵重金属及其他需要专人照顾的物品，不得夹入行李内托运。</p>
+        <p>E 、托运行李的重量不能超过 50 公斤，体积不能超过 40*60*100 厘米。</p>
+        <p>随身行李</p>
+        <p>A 、每位旅客只限携带一件自理行李，其重量不能超过 10 公斤，体积不超过 20*40*55 厘米；</p>
+        <p>B 、每位旅客免费随身携带物品的重量以 5 公斤为限。持头等舱客票的旅客，每人可随身携带两件物品；持公务舱或经济舱客票的旅客，每人只能随身携带一件物品。每件随身携带物品的体积不得超过 20*40*55 厘米。</p>
+    </div>
+
+    <div id="PassengerPriceList" class="panel article" title="客运价格表">
+        <h3 align="center">客 运 价 格 表</h3>
+        <p>目的地：北京</p>
+        <p>票价：1790</p>
+        <p>目的地：南京</p>
+        <p>票价：1110</p>
+        <p>目的地：昆明</p>
+        <p>票价：840</p>
+        <p>目的地：兰州</p>
+        <p>票价：1560</p>
+        <p>目的地：海口</p>
+        <p>票价：780</p>
+        <p>目的地：青岛</p>
+        <p>票价：1730</p>
+        <p>目的地：天津</p>
+        <p>票价：1560</p>
+        <p>目的地：哈尔滨</p>
+        <p>票价：2380</p>
+        <p>目的地：温州</p>
+        <p>票价：1200</p>
+        <p>目的地：北海</p>
+        <p>票价：710</p>
+        <p>目的地：上海</p>
+        <p>票价：1300</p>
+        <p>目的地：杭州</p>
+        <p>票价：1210</p>
+        <p>目的地：武汉</p>
+        <p>票价：780</p>
+        <p>目的地：银川</p>
+        <p>票价：1580</p>
+        <p>目的地：三亚</p>
+        <p>票价：980</p>
+        <p>目的地：沈阳</p>
+        <p>票价：2060</p>
+        <p>目的地：贵阳</p>
+        <p>票价：630</p>
+        <p>目的地：宁波</p>
+        <p>票价：1060</p>
+        <p>目的地：合肥</p>
+        <p>票价：1040</p>
+        <p>目的地：南宁</p>
+        <p>票价：800</p>
+        <p>目的地：广州</p>
+        <p>票价：660</p>
+        <p>目的地：深圳</p>
+        <p>票价：660</p>
+        <p>目的地：郑州</p>
+        <p>票价：1200</p>
+        <p>目的地：厦门</p>
+        <p>票价：860</p>
+        <p>目的地：汕头</p>
+        <p>票价：790</p>
+        <p>目的地：太原</p>
+        <p>票价：1660</p>
+        <p>目的地：成都</p>
+        <p>票价：980</p>
+        <p>目的地：西宁</p>
+        <p>票价：2030</p>
+        <p>目的地：福州</p>
+        <p>票价：1040</p>
+        <p>目的地：济南</p>
+        <p>票价：1690</p>
+        <p>目的地：重庆</p>
+        <p>票价：730</p>
+        <p>目的地：西安</p>
+        <p>票价：1090</p>
+        <p>目的地：曼谷</p>
+        <p>票价：1930</p>
+        <p>目的地：高雄</p>
+        <p>票价：2800</p>
+        <p>目的地：首尔</p>
+        <p>票价：6150</p>
+        <p>目的地：釜山</p>
+        <p>票价：6600</p>
+        <p>目的地：香港</p>
+        <p>票价：1810</p>
+        <p>目的地：吉隆坡</p>
+        <p>票价：7540</p>
+        <p>目的地：台北</p>
+        <p>票价：3230</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.ui.ready(function () {
+        $.ui.removeFooterMenu();
+    });
+</script>
+</body>
+</html>
+
+
+
+

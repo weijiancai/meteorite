@@ -1,0 +1,122 @@
+/*
+ * 使用font-awesome字体图标
+ */
+.fa:before {
+    speak:none;
+    font-style:normal;
+    font-weight:normal !important;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1;
+    color:inherit;
+    position:relative;
+    font-size:1em;
+    left:-3px; top:2px;
+}
+li .fa:before {
+    position:relative;
+    width:24px; height:100%;
+    top:2px;
+    line-height:0 !important;
+    margin-right:4px;
+}
+
+#afui footer>a.fa:not(.button):before {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    font-size: 25px;
+    margin: auto;
+    width: 100%;
+}
+
+/*
+ * 使用iconfont字体图标
+ */
+.iconfont:before {
+    speak:none;
+    font-style:normal;
+    font-weight:normal !important;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1;
+    color:inherit;
+    position:relative;
+    font-size:1em;
+    left:-3px; top:2px;
+}
+li .iconfont:before {
+    position:relative;
+    width:24px; height:100%;
+    top:2px;
+    line-height:0 !important;
+    margin-right:4px;
+}
+
+#afui footer>a.iconfont:not(.button):before {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    font-size: 25px;
+    margin: auto;
+    width: 100%;
+}
+
+/*
+ * 使用bootstrap字体图标
+ */
+.glyphicon:before {
+    speak:none;
+    font-style:normal;
+    font-weight:normal !important;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1;
+    color:inherit;
+    position:relative;
+    font-size:1em;
+    left:-3px; top:2px;
+}
+li .glyphicon:before {
+    position:relative;
+    width:24px; height:100%;
+    top:2px;
+    line-height:0 !important;
+    margin-right:4px;
+}
+
+#afui footer>a.glyphicon:not(.button):before {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    font-size: 25px;
+    margin: auto;
+    width: 100%;
+}
+
+/*
+ * 修正样式，使bootstrap和jqmobi样式兼容
+ */
+#afui h1 {
+    margin: 0;
+    padding: 0;
+}
+*:before, *:after {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.btn.block {
+    display: block;
+}
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top: 1px solid #aaa;
+}
+
+/*
+ * 自定义样式
+ */
+.text-dark {
+    color: #000000;
+}

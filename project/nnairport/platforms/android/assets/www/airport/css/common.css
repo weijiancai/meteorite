@@ -1,0 +1,39 @@
+/*
+ * 修正样式，使bootstrap和jqmobi样式兼容
+ */
+header h1 {
+    margin: 0;
+    padding: 0;
+}
+*:before, *:after {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+.btn.block {
+    display: block;
+}
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top: 1px solid #aaa;
+}
+
+/* 粗体15号 */
+.bold_15 {
+    font-weight: bold;
+    font-size: 15px;
+}
+/* 粗体20号 */
+.bold_20 {
+    font-weight: bold;
+    font-size: 20px;
+}
+/* 灰色888 */
+.gray_888 {
+    color: #888;
+}
+.gray_888_f18 {
+    color: #888;
+    font-size: 18px;
+    font-weight: bold;
+}

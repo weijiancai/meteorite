@@ -69,8 +69,8 @@ public class FetchWebSiteTest {
     @Test
     public void testFetchImages() throws IOException {
 //        String baseUrl = "http://www.7-zhou.com/qizhoujkys/yangsheng_1.html?ext=MjQz3NCwzMjIzLHNpbmthLDI4ODAsMzg0NiwzODQ2LA==";
-        String baseUrl = "http://www.9lmm.com:1111/index.htm";
-        File dir = new File("D:\\fetch\\fit120");
+        String baseUrl = "http://xixilu.org/";
+        File dir = new File("D:\\fetch\\xixilu");
         FetchWebSite fetchWebSite = new FetchWebSite(dir);
         fetchWebSite.fetchImages(baseUrl);
     }
@@ -81,5 +81,13 @@ public class FetchWebSiteTest {
         File dir = new File("D:\\fetch\\metronic");
         FetchWebSite fetchWebSite = new FetchWebSite(dir);
         fetchWebSite.fetch(baseUrl, 20);
+    }
+
+    @Test
+    public void testIYueSai() throws IOException {
+        String baseUrl = "http://www.iyuesai.com/game/416";
+        File dir = new File("D:\\fetch\\iyuesai");
+        FetchWebSite fetchWebSite = new FetchWebSite(dir);
+        fetchWebSite.fetch(baseUrl, 1);
     }
 }

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+<head>
+    <script>
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
+    </script>
+
+    <title>南宁机场 - 旅客服务</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/icons.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/mu-mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="css/airport.css"/>
+
+    <!--
+  <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/appframework.css"/>
+    <link rel="stylesheet" type="text/css" href="css/lists.css"/>
+    <link rel="stylesheet" type="text/css" href="css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/badges.css"/>
+    <link rel="stylesheet" type="text/css" href="css/grid.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
+
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"/>
+    <!-- uncomment for intel.xdk apps
+    <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+    <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+    -->
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <!-- include af.desktopBrowsers.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "plugins/af.desktopBrowsers.js";
+            var tag = $("head").append(script);
+            //$.os.desktop=true;
+        }
+
+        //  $.feat.nativeTouchScroll=true;
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+
+    <style type="text/css">
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="afui" class="ios7">
+    <!-- this is the splashscreen you see. -->
+    <div id="splashscreen" class='ui-loader heavy'>
+        南宁机场
+        <br>
+        <br> <span class='ui-icon ui-icon-loading spin'></span>
+        <h1>正在启动......</h1>
+    </div>
+
+    <div id="header">
+        <a id="backButton" href="javascript:;" class="button">返回</a>
+        <h1 id="pageTitle">南宁机场</h1>
+    </div>
+
+    <!--------------------------------------------------------------- 旅客服务 ----------------------------------------------------------------------------->
+    <div id="passengerService" class="panel" selected="true" title="旅客服务">
+        <ul class="list">
+            <li><a href="#TicketingInformation">购票须知</a></li>
+            <li><a href="#TicketSalesCenter">客票销售中心</a></li>
+            <li><a href="#airportService">机场服务</a></li>
+        </ul>
+    </div>
+
+    <div id="TicketingInformation" class="panel" title="购票须知">
+        <ul class="list">
+            <li><a href="#a7">客票有效期有多久</a></li>
+            <li><a href="#b7">旅客怎样购票</a></li>
+            <li><a href="#c7">团体旅客自愿退票须知</a></li>
+            <li><a href="#d7">自愿、非自愿退票须知</a></li>
+            <li><a href="#e7">如何退票？</a></li>
+            <li><a href="#f7">旅客遗失客票怎么办？</a></li>
+            <li><a href="#g7">怎么购买儿童票？</a></li>
+            <li><a href="#h7">购买飞机票需要什么证件？</a></li>
+            <li><a href="#i7">办理乘机手续的时间须知</a></li>
+            <li><a href="#j7">您知道如何办理临时登机身份证件吗?</a></li>
+            <li><a href="#k7">什么叫座位再证实？</a></li>
+            <li><a href="#l7">退票要交多少费用？</a></li>
+            <li><a href="#m7">怎样才能退票？</a></li>
+            <li><a href="#n7">旅客误机怎么办？</a></li>
+        </ul>
+    </div>
+
+    <div id="a7" class="panel article" title="客票有效期有多久">
+        <p>国内客票的有效期一般为一年</p>
+        <p>定期客票自旅客开始旅行之次日零时算起</p>
+        <p>不定期客票自填开客票之次日零时算起</p>
+    </div>
+
+    <div id="b7" class="panel article" title="旅客怎样购票">
+        <p>客票为记名式，只限客票上所列姓名的旅客本人使用,不得转让和涂改，否则客票无效，票款不退。</p>
+        <p>旅客应在客票有效期内，完成客票上列明的全部航程。</p>
+        <p>旅客使用客票时，应交验有效客票，包括乘机航段的乘机联和全部未使用并保留在客票上的其他乘机联和旅客联，缺少上述任何一联，客票即为无效。客票的乘机联须按照客票所列明的航程，从始发地点开始顺序使用。</p>
+        <p>国内航空运输必须使用国内客票。旅客在我国境外购买的用于纯国内航空运输的国际客票，应换开成国内客票后才能使用。</p>
+        <p>含有国内航段的国际联程客票，其国内航段的乘机联可直接使用，不需换成国内客票。</p>
+        <p>定期客票只适用于客票上列明的乘机日期和航班。</p>
+    </div>
+
+    <div id="c7" class="panel article" title="团体旅客自愿退票须知">
+        <h3>团体旅客购票后自愿要求退票，一般按下列规定收取退票费：</h3>
+        <p>在航班规定离站时间 72 小时（含）以前，收取客票价 10% 的退票费；</p>
+        <p>在航班规定离站时间前 72 小时以内至航班规定离站时间前一日中午 12 点（含）以前，收取客票价 30% 的退票费；</p>
+        <p>在航班规定离站时间前一日中午 12 点以后至航班规定离站时间以前，收取客票价 50% 的退票费；</p>
+        <p>在航班规定离站时间以后，客票作废，票款不退。</p>
+        <p>持特殊折扣或特种票价机票的团体旅客自愿要求退票，按航空公司具体退票规定办理。</p>
+    </div>
+
+    <div id="d7" class="panel article" title="自愿、非自愿退票须知">
+        <h3>退票的一般规定</h3>
+        <p>由于随运人或旅客原因，旅客不能在客票有效期内完成部分或全部航程，可以在客票有效期内要求退票。</p>
+        <p>旅客要求退票，应凭客票或客票未使用部分的“乘机联”和“旅客联”办理。</p>
+        <p>退票只限在出票地、航班始发地、终止旅行地的随运人或其销售代理人售票处办理。</p>
+        <p>票款只能退给客票上列明的旅客本人或客票的付款人。</p>
+        <h3>自愿退票的规定</h3>
+        <p>旅客自愿退票，除凭有效客票外，还应提供旅客本人的有效身份证件，一般按下列条款办理:</p>
+        <p>旅客在航班离站时间24小时以前要求退票，收取客票价5%的退票费；</p>
+        <p>在航班离站时间24小时以内、两小时以前要求退票，收取客票价10%的退票费；</p>
+        <p>在航班规定离站时间前两小时以内要求退票，收取客票价20%的退票费；</p>
+        <p>在航班规定离站时间后要求退票，收取客票价50%的退票费。</p>
+        <p>持联程、来回程客票的旅客要求退票，按上条规定办理。</p>
+        <p>持革命残废军人或因公致残的人民警察客票的旅客要求退票，按各航空公司具体退票规定办理。</p>
+        <p>持婴儿客票的旅客要求退票，免收退票费。</p>
+        <p>持不定期客票的旅客要求退票，应在客票的有效期内到原购票地点办理退票手续。</p>
+        <p>旅客在航班经停地自行终止旅行，该航班未使用航段的票款不退。</p>
+        <h3>非自愿退票的规定</h3>
+        <p>航班取消、提前、延误、航程改变或承运人不能提供原定航班座位的，旅客要求退票，始发站应退还全部票款，经停地应退还未使用航段的全部票款，但不得超过原付票款金额，均不收取退票费。</p>
+        <p>旅客因病要求退票，须提供县级（含）以上医疗单位出具的医生诊断证明，免收退票费。患病旅客的陪伴人员要求退票，应与患病旅客同时办理退票手续，免收退票费。</p>
+    </div>
+
+    <div id="e7" class="panel article" title="如何退票？">
+        <h3>因承运人的原因，旅客退票，票款全部退还。</h3>
+        <h3>因旅客原因，申请退票的一般规定为：在航班规定起飞时间。</h3>
+        <p>24小时以前，应支付原票款5%的退票费；</p>
+        <p>24小时以内，2小时以前，应支付原票款10%的退票费；</p>
+        <p>2小时以内，应支付原票款20%的退票费；</p>
+        <p>误机，应支付原票款50%的退票费；</p>
+        <p>对于折扣机票或特种票价机票退票，按各航空公司的具体退票规定办理。</p>
+    </div>
+
+    <div id="f7" class="panel article" title="旅客遗失客票怎么办？">
+        <p> 旅客遗失客票，应以书面形式，向承运人或其代理人申请挂失，并需提供足够的证明。在申请挂失前，客票如已被冒用或冒退，承运人不承担责任。</p>
+    </div>
+
+    <div id="g7" class="panel article" title="怎么购买儿童票？">
+        <p>已满两周岁未满12周岁的儿童按成人适用正常票价的50%购票，提供座位。</p>
+        <p>未满两周岁的婴儿按成人适用正常票价的10%购票，不提供座位；</p>
+        <p>如需要单独占用座位时，应购买儿童票。</p>
+        <p>每一成人旅客携带婴儿超过一名时，超过的人数应购买儿童票。</p>
+    </div>
+
+    <div id="h7" class="panel article" title="购买飞机票需要什么证件？">
+        <p>中国旅客购票，须提供本人居民身份证，并填写《旅客定座单》</p>
+        <p>法定不予颁发或尚未领取居民身份证的人民解放军、人民武装警察官兵及其文职干部和离退休干部分别使用军官证、警官证、士兵证、文职干部证或离退休干部证件。</p>
+        <p>尚未领取居民身份证和士兵证的，可使用当地公安机关或在部队出具的临时身份证，临时身份证应贴有本人近期像片，写明姓名、性别、年龄、工作单位、有效日期并加盖公章。</p>
+        <p>十六岁以下未成年人购票乘机时，可使用学生证、户口薄或暂住证；年满16周岁未满18周岁尚未领取身份证件的，可凭户籍所在地派出所出具的临时身份证明购买机票。</p>
+        <p>外国游客，华侨，港，澳，台胞购票，须出示有效护照，回乡证，台胞证，居留证，旅行证或公安机关出示的其它有效身份证件，并填写《旅客定座单》；一般航空公司可提前15天购票。</p>
+        <p>购买儿童票（两周岁－12周岁）、婴儿票（两周岁以内），应提供儿童、婴儿出生年月的有效证明；</p>
+        <p>重病旅客购票，须持有医疗单位出具的适于乘机的证明，经承运人同意后方可购票。购买承运人规定的优惠票，应提供规定的证明。</p>
+        <p>全国人民代表大会代表、全国政协委员，凭本届全国人民代表大会代表证、全国政协委员证。</p>
+    </div>
+
+    <div id="i7" class="panel article" title="办理乘机手续的时间须知">
+        <p>200个座位（含200）以上的客机在离站前120分钟开始输手续，在离站时间前30分钟停止办理手续。</p>
+        <p>90个座位（含90）至200个座位的客机在站离时间前90分钟开始办理手续，在离站时间前30分钟停止办理手续。</p>
+        <p>90个座位以下的客机在离站时间前60分钟开始办理手续。</p>
+    </div>
+
+    <div id="j7" class="panel article" title="您知道如何办理临时登机身份证件吗?">
+        <p>如果您的有效身份证件遗失、破损、过期，请凭您户籍所在地派出所出具的户籍证明原件或传真件(解放军武警部队凭所在单位政治部门出具的介绍信原件或传真件;学生凭学生证)及本人近期一寸免冠照片两张办理相关手续。</p>
+    </div>
+
+    <div id="k7" class="panel article" title="什么叫座位再证实？">
+        <p>旅客持有定妥座位的联程或来回程客票，如在该联程或回程地点停留72小时以上，须在该联程或回程航班离站前两天中午12时以前，办理座位再证实手续。否则，原定座位不予保留。</p>
+    </div>
+
+    <div id="l7" class="panel article" title="退票要交多少费用？">
+        <p>旅客（团体旅客另行规定）在客票上注明的航班起飞时间24小时以前申请退票,应支付原票款5%的退票费。</p>
+        <p>在起飞前2小时至24小时内申请退票,应支付原票款10%退票费。</p>
+        <p>在起飞前2小时以内申请退票,应支付原票款20%的退票款。</p>
+        <p>持婴儿客票的旅客要求退票，免收退票费。</p>
+        <p>因航班取消、提前、延误、航程变更或承运人不能提供原定座位，旅客退票免收退票费。</p>
+    </div>
+
+    <div id="m7" class="panel article" title="怎样才能退票？">
+        <p>由于承运人或旅客的原因，旅客不能在客票有效期内完成部分或全部航程，可以在客票有效期内要求退票。</p>
+        <p>旅客要求退票，应凭客票或客票未使用部分的“乘机联”、“旅客联”及客票上列明姓名旅客的有效身份证件办理。</p>
+        <p>如退票受款人不是客票上所列明的旅客本人，还应出示退票受款人的有效身份证件。</p>
+        <p>退票只限在出票地、航班始发地、终止旅行地的承运人或其销售代理人售票处办理。</p>
+    </div>
+
+    <div id="n7" class="panel article" title="旅客误机怎么办？">
+        <p>因旅客未按规定时间办妥乘机手续或因其旅行证件不符合规定而未能乘机称为误机。</p>
+        <p>旅客误机如要求退票，收取客票价50%的退票费。</p>
+    </div>
+
+    <div id="TicketSalesCenter" class="panel" title="客票销售中心">
+        <ul class="list">
+            <li><a href="#a8">销售服务与联系</a></li>
+        </ul>
+    </div>
+
+    <div id="a8" class="panel article" title="销售服务与联系">
+        <h3>南宁民航客票销售中心</h3>
+        <p>是南宁吴圩国际机场的下属公司，主要业务是从事国际、国内航空客票销售，为国际航协一类代理人、南宁地区最大型的专业票务公司，并为各航空公司在南宁航线开发和航班销售的主要合作伙伴。</p>
+        <h3>特色服务项目包括</h3>
+        <p>市内免费送票、电话订座机场取票、VIP旅客服务、特殊旅客（轮椅、无人陪伴儿童等）服务、电子客票服务、超大超重行李的货物运输及航空快递服务等。</p>
+        <h4>欢迎拨打24小时服务电话 0771-2426688 2431459 </h4>
+        <img style="width: 250px; height: 500px" src="http://www.nnairport.com/upload/200911/F200911120230258.jpg" alt="">
+        <p>友情提示：</p>
+        <p>每个航班安排车辆接送旅客往返于南宁市区与机场之间接送车辆停靠点：</p>
+        <p>1、朝阳售票处--南宁吴圩机场</p>
+        <p>2、五象广场--南宁吴圩机场</p>
+        <p>车辆停靠点发车时间:</p>
+        <p>１、朝阳售票处的车辆发车时间为5：30---21：00（每天）</p>
+        <p>发车频率：半小时/班车</p>
+        <p>2、五象广场的车辆发车时间为 6：30--21：00（每天）</p>
+        <p>发车频率：6：30开始发车，7：00--21：00为每小时/班车</p>
+        <p>联系电话：0771--2095307</p>
+        <p>传真：0771--2095308</p>
+    </div>
+
+    <div id="airportService" class="panel article" title="机场服务">
+        <p>特殊旅客服务方案</p>
+        <p>押解犯人的接送</p>
+        <p>到达航班：若是远机位到达航班有押解犯人时，接机员尽可能通知勤务部单独安排车辆给予乘坐，并让其后下。若是停在廊桥的航班，让其后下，并做好引导工作。</p>
+        <p>出发航班：若是出发航班有押解犯人时,提前告知机组,并让押解犯人先登机后再组织其它旅客登机。远机位的航班登机单独为押解犯人安排车辆，不要与其它旅客乘坐同一辆摆渡车。若是出发航班有VIP时，不允许承运押解犯人。</p>
+        <p>无陪（儿童、高龄）、孕妇旅客的接送</p>
+        <p>到达航班:接机员在所负责的航班开启舱门后，询问乘务员有无特殊旅客服务，如有无陪儿童、高龄老人、孕妇时，认真做好无陪单、随身携带行李等相关交接工作后，签字确认，将《特殊旅客通知单》留存。如有托运行李，应协助领取，引导无陪儿童、高龄老人到达出口与前来迎接的亲人交接。</p>
+        <p>出发航班:</p>
+        <p>1、登机前送机人员到综合服务台，与综合服务台服务员交接无陪旅客及随身携带行李，如由特殊旅客服务员引领无陪儿童、高龄、孕妇前往登机口登机时，除了送机员在备注栏签名确认相关信息后，均必须与无陪儿童、高龄、孕妇确认姓名、核对无陪标识上的无陪儿童姓名、托运行李、手提行李件数；无陪儿童登机牌、无陪儿童交接单上等信息一致后，方可将无陪等特殊旅客引导到登机口。</p>
+        <p>2、送机员视情况安排无陪旅客、高龄老人、孕妇提前或稍后登机，登机时认真与乘务员交接，并在《特殊旅客通知单》上签字确认，副联留存备查。</p>
+        <p>轮椅旅客的接送</p>
+        <p>到达轮椅：若停靠廊桥的航班到达有旅客需要轮椅时，送机员告知机组让轮椅旅客稍后下，并通知候管部门打开升降残梯等候。若是轮椅旅有托运的轮椅坐时，待其拿到托运的。.应将其送至出口处与接待亲属交接。</p>
+        <p>出发轮椅：</p>
+        <p>1、接到有担架旅客通知后， 服务员将轮椅推到值机柜台等候。</p>
+        <p>2、值机员与服务员交接《特殊旅乘机服务单》、登机牌等相关特殊旅客资料，并签字确认。</p>
+        <p>3、服务员将轮椅旅客引导至安检进入候机隔离区，把旅客安排在便于照顾的位置上，并按照残疾旅客的要求，做好服务工作。尽力满足旅客的其他要求。</p>
+        <p>4、根据特殊旅客的要求安排最先或最后登机，负责与乘务员做好当面交接工作，请乘务员在《特殊旅客乘机申请书》上签字，一式两份，给乘务员一份，留存一份备查。</p>
+        <p>5.航班不正常时应主动向特殊旅客做好解释工作，妥善安排好特殊旅客的善后工作。</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.ui.ready(function () {
+        $.ui.removeFooterMenu();
+    });
+</script>
+</body>
+</html>

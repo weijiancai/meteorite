@@ -1,0 +1,505 @@
+/*
+ * 使用font-awesome字体图标
+ */
+.fa:before {
+    speak:none;
+    font-style:normal;
+    font-weight:normal !important;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1;
+    color:inherit;
+    position:relative;
+    font-size:1em;
+    left:-3px; top:2px;
+}
+li .fa:before {
+    position:relative;
+    width:24px; height:100%;
+    top:2px;
+    line-height:0 !important;
+    margin-right:4px;
+}
+li .fa.big:before {
+    font-size: 1.5em;
+}
+
+footer>a.fa:not(.button):before {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    font-size: 25px;
+    margin: auto;
+    width: 100%;
+}
+
+/*
+ * 使用iconfont字体图标
+ */
+.iconfont:before {
+    speak:none;
+    font-style:normal;
+    font-weight:normal !important;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1;
+    color:inherit;
+    position:relative;
+    font-size:1em;
+    left:-3px; top:2px;
+}
+li .iconfont:before {
+    position:relative;
+    width:24px; height:100%;
+    top:2px;
+    line-height:0 !important;
+    margin-right:4px;
+}
+li .iconfont.big:before {
+    font-size: 1.5em;
+}
+
+footer>a.iconfont:not(.button):before {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    font-size: 25px;
+    margin: auto;
+    width: 100%;
+}
+
+/*
+ * 使用bootstrap字体图标
+ */
+.glyphicon:before {
+    speak:none;
+    font-style:normal;
+    font-weight:normal !important;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1;
+    color:inherit;
+    position:relative;
+    font-size:1em;
+    left:-3px; top:2px;
+}
+li .glyphicon:before {
+    position:relative;
+    width:24px; height:100%;
+    top:2px;
+    line-height:0 !important;
+    margin-right:4px;
+}
+li .glyphicon.big:before {
+    font-size: 1.5em;
+    top: 7px;
+}
+
+footer>a.glyphicon:not(.button):before {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    font-size: 25px;
+    margin: auto;
+    width: 100%;
+}
+
+#afui .list > li > a:after {
+    right: 20px;
+}
+
+#afui .list li {
+    margin-right: 10px;
+}
+
+#afui .input-group {
+    margin-top: .2em;
+    padding: 0;
+}
+#afui .input-group-addon {
+    background: none;
+    border: none;
+}
+
+table {
+    width: 100%;
+}
+
+/* 首页 */
+#main .iconfont:before {
+    font-size: 40px;
+    margin-right: 10px;
+    color: #18b1d0;
+}
+/* 导航 */
+#afui.ios7 #menu .list a {
+    color: gray;
+}
+#main_nav .iconfont:before {
+    font-size: 22px;
+    margin-right: 5px;
+}
+
+/* 分类卡片 */
+.category_card {
+    margin: 10px 0;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+    -webkit-appearance: none;
+    box-sizing: border-box;
+    -webkit-transition: 0ms cubic-bezier(0.1, 0.57, 0.1, 1);
+    transform: translate(0px, 0px) translateZ(0px);
+    padding: 15px 10px;
+}
+.category_card tr a {
+    display: block;
+    border-right: 1px solid #ccc;
+    color: #444;
+    font-weight: 600;
+}
+.category_card tr:first-child td:last-child a {
+    border-right: none;
+}
+.category_card tr:last-child td:last-child a {
+    border-right: none;
+}
+.category_card tr:first-child td {
+    padding: 0 0 10px 0;
+    width: 25%;
+    overflow: hidden;
+}
+.category_card tr:last-child td {
+    padding: 10px 0 0 0;
+    border-top: 1px solid #ccc;
+}
+.category_card .more {
+    color: #004E92;
+}
+.category_card .important {
+    color: darkorange;
+}
+
+/* list 两行 */
+#afui ul.list p {
+    color: #A6A6A6;
+    font-size: 12px;
+}
+#afui ul.list a p {
+    margin: 5px 0 0 25px;
+}
+/* list 两行带图片 */
+#afui ul.list.img li {
+    height: 90px;
+}
+#afui ul.list.img li a {
+    height: 90px;
+}
+#afui ul.list.img li a img {
+    width: 80px;
+    height: 50px;
+    position: absolute;
+}
+#afui ul.list.img li a div.desc {
+    position: absolute;
+    left: 100px;
+}
+#afui ul.list.img li a div.desc p {
+    margin-left: 0;
+}
+
+/* 航班动态 */
+#hbdtPanel h3 {
+    font-size: 18px;
+}
+#hbdtPanel h3 span {
+    color: darkorange;
+}
+
+#hbdtPanel .inset i {
+    font-size: 20px;
+    color: #3994db;
+    margin-right: 10px;
+}
+#hbdtPanel .list.inset a {
+    margin: -30px -20px -30px -10px;
+}
+
+#days {
+    margin-top: 25px;
+    text-align: center;
+    height: 100px;
+}
+#days li{
+
+}
+
+.yesterday, .today, .tomorrow {
+    width: 32%;
+    border-radius: 5px;
+    display: inline-block;
+    border: 1px solid #b5b5b5;
+    list-style: none;
+    text-align: center;
+}
+.yesterday {
+    float: left;
+}
+.tomorrow {
+    float: right;
+}
+.yesterday li:last-child, .today li:last-child, .tomorrow li:last-child {
+    padding: 5px 0;
+    color: gray;
+}
+.today li:last-child {
+    background-color: #1e90ce;
+    color: #fff;
+}
+
+.day {
+    font-size: 25px;
+    font-weight: bold;
+    color: #000;
+    text-align: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #b5b5b5;
+}
+
+#btnQuery {
+    background-color: #1e90ce;
+}
+
+
+/* 查询列表 */
+#queryListPanel table {
+    width: 100%;
+}
+
+#queryListPanel table h5 {
+    margin-top: 8px;
+}
+#queryListPanel table h5 i {
+    margin-right: 3px;
+    font-size: 18px;
+    color: #3994db;
+}
+#queryListPanel table div {
+    text-align: justify;
+}
+#queryListPanel .split_line {
+    margin: 0 20px;
+    display: inline-block;
+}
+
+#queryListPanel td:first-child {
+    width: 30%
+}
+#queryListPanel td:nth-child(2) {
+    width: 50%
+}
+#queryListPanel td:last-child {
+    width: 20%;
+    text-align: right;
+    padding-right: 5px;
+}
+
+/* 航班动态详细 */
+#hbdtPanel_detail .buttons {
+    text-align: center;
+}
+#hbdtPanel_detail .buttons a {
+    border: 1px solid #b5b5b5;
+    color: #292929;
+    width: 30%;
+    margin: 8px 3px;
+}
+#hbdtPanel_detail .buttons i {
+    margin-right: 15px;
+    color: #bdbdbd;
+    font-size: 18px;
+}
+
+#hbdtPanel_detail {
+    padding: 1px;
+}
+#hbdtPanel_detail table {
+    width: 100%;
+    text-align: center;
+}
+#hbdtPanel_detail .fist-line {
+    border: 1px solid #2d9fd1;
+    background-color: #1E90FF; /* Old browsers */
+    background-image: -moz-linear-gradient(top,#1E90FF 0%, #3A5FCD 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1E90FF), color-stop(100%,#3A5FCD)); /* Chrome,Safari4+ */
+    background-image: -o-linear-gradient(top,#1E90FF 0%, #3A5FCD 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top,#1E90FF 0%, #3A5FCD 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom,#1E90FF 0%, #3A5FCD 100%); /* W3C */
+    color: #ebfffe;
+    font-size: 17px;
+    font-weight: bold;
+}
+#hbdtPanel_detail td {
+    padding: 10px 0;
+}
+#hbdtPanel_detail .fist-line td:first-child {
+    font-size: 20px;
+}
+#hbdtPanel_detail .fist-line img {
+    width: 48px;
+    height: 48px;
+}
+#hbdtPanel_detail .phone {
+    width: 55px;
+    height: 55px;
+    line-height: 75px;
+    text-align: center;
+    border-radius: 55px;
+    background-color: white;
+    display: inline-block;
+}
+#hbdtPanel_detail .fist-line i {
+    font-size: 30px;
+    color: #666;
+}
+#hbdtPanel_detail .gray_888_f18 i {
+    font-size: 40px;
+}
+#hbdtPanel_detail .three_line td {
+    border: 1px solid #b5b5b5;
+    font-size: 15px;
+    font-weight: bold;
+}
+#hbdtPanel_detail .three_line i {
+    font-size: 20px;
+    color: #1f8bc9;
+}
+#hbdtPanel_detail .dark_30 {
+    font-size: 30px;
+    font-weight: bold;
+}
+#hbdtPanel_detail .dark_30_1 {
+    font-size: 30px;
+    font-weight: bold;
+    color: #555;
+}
+#hbdtPanel_detail .blue_30 {
+    color: #0ca7d5;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+#hbdtPanel_detail .four_line {
+    margin-top: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #b5b5b5;
+    background-color: white;
+}
+#hbdtPanel_detail .four_line > table {
+    border-radius: 5px;
+    border: 1px solid #b5b5b5;
+}
+#hbdtPanel_detail .four_line td > table td {
+    vertical-align: top;
+    padding: 0;
+}
+#hbdtPanel_detail .four_line tr:first-child {
+    background-color: #2b353e; /* Old browsers */
+    background-image: -moz-linear-gradient(top,#2b353e 0%, #1f2732 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2b353e), color-stop(100%,#1f2732)); /* Chrome,Safari4+ */
+    background-image: -o-linear-gradient(top,#2b353e 0%, #1f2732 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top,#2b353e 0%, #1f2732 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom,#2b353e 0%, #1f2732 100%); /* W3C */
+}
+#hbdtPanel_detail .four_line tr:last-child {
+    background-color: #343c47; /* Old browsers */
+    background-image: -moz-linear-gradient(top,#343c47 0%, #262f36 100%); /* FF3.6+ */
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#343c47), color-stop(100%,#262f36)); /* Chrome,Safari4+ */
+    background-image: -o-linear-gradient(top,#343c47 0%, #262f36 100%); /* Opera 11.10+ */
+    background-image: -ms-linear-gradient(top,#343c47 0%, #262f36 100%); /* IE10+ */
+    background-image: linear-gradient(to bottom,#343c47 0%, #262f36 100%); /* W3C */
+}
+#hbdtPanel_detail .four_line > div {
+    position: absolute;
+    padding-left: 25px;
+    line-height: 30px;
+    margin-top: 15px;
+}
+
+#hbdtPanel_detail .rectangle_long {
+    display: inline-block;
+    width: 20px;
+    height: 5px;
+    background-color: white;
+    border: 1px solid white;
+    margin-right: 7px;
+    margin-bottom: 17px;
+}
+#hbdtPanel_detail .rectangle_short {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border: 1px solid white;
+    margin-right: 10px;
+}
+
+/* 添加关注 */
+#addFocusPanel hr {
+    display: inline-block;
+    width: 20px;
+}
+
+#addFocusPanel table {
+    width: 100%;
+}
+
+#addFocusPanel td:first-child {
+    width: 85%;
+    border-right: 1px solid #b5b5b5;
+    padding-right: 5px;
+}
+#addFocusPanel td:last-child {
+    width: 15%;
+    text-align: right;
+    color: #1571b0;
+}
+#addFocusPanel td:first-child div:nth-child(2) {
+    padding: 8px 0;
+}
+#addFocusPanel td:first-child div:nth-child(4) {
+    margin-top: 28px;
+    clear: both;
+    font-weight: bold;
+    font-size: 16px;
+}
+#addFocusPanel td:last-child i {
+    font-size: 35px;
+}
+
+#addFocusPanel .time {
+    line-height: 30px;
+    vertical-align: middle;
+    text-align: center;
+}
+#addFocusPanel .time i {
+    border: 1px solid cyan;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-style: normal;
+    color: darkcyan;
+}
+#addFocusPanel .time hr {
+    margin: 17px 0 0 0;
+}
+#addFocusPanel .time em {
+    border-top: 1px solid cyan;
+    width: 35px;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+        

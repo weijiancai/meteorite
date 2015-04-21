@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+<head>
+    <script>
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
+    </script>
+
+    <title>桂林机场 - 货运服务</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/icons.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/mu-mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="css/airport.css"/>
+
+    <!--
+  <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/appframework.css"/>
+    <link rel="stylesheet" type="text/css" href="css/lists.css"/>
+    <link rel="stylesheet" type="text/css" href="css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/badges.css"/>
+    <link rel="stylesheet" type="text/css" href="css/grid.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
+
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"/>
+    <!-- uncomment for intel.xdk apps
+    <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+    <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+    -->
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <!-- include af.desktopBrowsers.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "plugins/af.desktopBrowsers.js";
+            var tag = $("head").append(script);
+            //$.os.desktop=true;
+        }
+
+        //  $.feat.nativeTouchScroll=true;
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+
+    <style type="text/css">
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="afui" class="ios7">
+    <!-- this is the splashscreen you see. -->
+    <div id="splashscreen" class='ui-loader heavy'>
+        桂林机场
+        <br>
+        <br> <span class='ui-icon ui-icon-loading spin'></span>
+        <h1>正在启动......</h1>
+    </div>
+
+    <div id="header">
+        <a id="backButton" href="javascript:;" class="button">返回</a>
+        <h1 id="pageTitle">桂林机场</h1>
+    </div>
+
+    <!--------------------------------------------------------------- 货运服务 ----------------------------------------------------------------------------->
+    <div id="freightService" class="panel" selected="true" title="货运服务">
+        <ul class="list">
+            <li><a href="#freightIntroduction">货运简介</a></li>
+            <li><a href="#freightNotice">货运须知</a></li>
+            <li><a href="#ServiceProject">服务项目</a></li>
+            <li><a href="#FreightPriceList">货运价格表</a></li>
+            <li><a href="#WorkPersonnelLanding">工作人员登陆</a></li>
+        </ul>
+    </div>
+
+    <div id="freightIntroduction" class="panel article" title="货运简介">
+        <h3 align="center">货运简介</h3>
+        <img style="" src="http://www.airport-gl.com.cn/goodsservice/images/fyfw-1.jpg" alt="">
+        <p>公司货运部是各家航空公司在桂北地区货物运输的总代理，也是民航快递的网络成员。主要经营国内国际货物、邮件及民航特快专递的收运、发送业务。</p>
+        <p>货运部本部在机场有着3000平方米的库房，并设有保鲜库。有专门从事收发货物、快件运输的车辆。为了方便从事鲜活货物运输的货主工作、生活，在机场内建有面积达1850平方米的“货主之家”大楼。“方便、准确、安全”的服务宗旨，以较完善的硬件设施和热情周到的服务组合，加之桂林机场在江南地区适中的地理位置，多条航线和充足的运力、优惠的运价为各位货主提供了良好的需求条件。</p>
+    </div>
+
+    <div id="freightNotice" class="panel" title="货运须知">
+        <ul class="list">
+            <li><a href="#InternationalCargoDeliveryNotice">国际货物提货须知</a></li>
+            <li><a href="#DomesticCargoDeliveryNotice">国内货物提货须知</a></li>
+            <li><a href="#InternationalGoodsConsignmentNotes">国际货物托运须知</a></li>
+            <li><a href="#DomesticGoodsConsignmentNotes">国内货物托运须知</a></li>
+            <li><a href="#SpecialCargoTransportationInstructions">特种货物运输须知</a></li>
+        </ul>
+    </div>
+
+    <div id="InternationalCargoDeliveryNotice" class="panel article" title="国际货物提货须知">
+        <p>一、收货人在办妥海关、检验检疫等手续后，凭单位证明和本人居民身份证或其它有效证件提货。</p>
+        <p>运费到付货物，提货人需付清所有的运费及手续费后，方可提取货物。</p>
+        <p>二、收货人提货时，对货物外包装状态或重量如有异议，应当场提出查验或者重新过秤核对。</p>
+        <p>收货人提取货物后并在货运单上签收而未提出异议，则视为货物已完好交付。</p>
+        <p>三、货物自发出到货通知的次日起免费保管三天，逾期不提，每日每公斤收取保管费0.15元，保管期不满一天按一天计算。</p>
+        <p>每份货运单最低收取保管费5.00元。</p>
+        <p>满90天不提取，民航按无法交付货物处理。</p>
+        <p>贵重物品、危险品、鲜活易腐品等特种货物，如在货物到达当日未提取者，保管费按相关规定核收。</p>
+    </div>
+
+    <div id="DomesticCargoDeliveryNotice" class="panel article" title="国内货物提货须知">
+        <p>一、收货人凭到货通知单和本人居民身份证或其它有效身份证件提货，委托他人提货时，凭到货通知单和货运单指定的收货人及提货人的居民身份证或其它有效身份证件提货。</p>
+        <p>二、收货人提货时，对货物外包装状态或重量如有异议，应当场提出查验或者重新过秤核对。收货人提取货物后并在货运单上签收而未提出异议，则视为货物已经完好交付。</p>
+        <p>三、货物自发出到货通知的次日起免费保管三天（市外五天），超过保管期限的按标准收取货物仓储费。满 90 天不提取，民航按无法交付货物处理。</p>
+        <p>四、贵重物品、危险品、鲜活易腐品等特种货物，如在货物到达当日未提者，保管费按普通货物的标准加倍核收。</p>
+    </div>
+
+    <div id="InternationalGoodsConsignmentNotes" class="panel article" title="国际货物托运须知">
+        <p>一、 托运条件</p>
+        <p>托运人所交运的货物必须符合有关始发、中转、和到达国家的法令和规定以及中国民航各有关航空公司的一切运输规章。</p>
+        <p>凡中国及有关国家政府和空运企业规定禁运和不承运的货物不得接受。</p>
+        <p>托运人必须办妥始发海关、检验检疫等出境手续。</p>
+        <p>托运人在交运货物时，应填写“国际货物托运书”和提供与运输有关的文件，托运人应对托运书上所填内容及所提供与运输有关文件的正确性和完备性负责。</p>
+        <p>有关运输文件如下：</p>
+        <p>1.进出口和过海关所需文件；</p>
+        <p>2.货物的内容清单及商业发票；</p>
+        <p>3.托运危险品、动物证明；</p>
+        <p>运输条件不同或者根据货物性质不能在一起托运的货物，托运人应当分别填写不同的托运书。</p>
+        <p>二、货物包装</p>
+        <p>货物包装应当保证货物在正常的运输过程中不致损坏、散失、渗漏、不致损坏和污染飞机设备及其它物品。</p>
+        <p>托运人应当根据货物的性质及重量、运输环境条件和承运的要求，采用适当的内、外包装材料和包装形式，严禁使用草袋包装或草绳捆扎。</p>
+        <p>托运人托运的货物包装内不得夹带禁止运输或者限制运输的物品、危险品、贵重物品、保密文件和资料及其它与所交运物品品名不符的物品。</p>
+        <p>三、标志的地址</p>
+        <p>货物的外包装上必须粘贴（或栓挂）有写明货物的件数、毛重和目的地的标签，并根据需要帖、挂运输指示标帖，同时在货物的侧面应写明收货人的姓名和详细地址。</p>
+        <p>四、重量及体积</p>
+        <p>每件货物的最大重量和最大体积根据承运货物的不同机型以及始发站、中转站及到达站的机场设备确定，货物的最小体积长、宽、高之和不得少与40厘米，最小的一边不得少于5厘米。</p>
+        <p>货物重量按毛重计算，实际毛重以0.1公斤为计算单位，计费重量以0.5公斤为计算单位。</p>
+        <p>每公斤货物体积超过6000立方厘米的，为轻泡货物。轻泡货物以每6000立方厘米折合1公斤计重。</p>
+        <p>五、声明价值</p>
+        <p>货物毛重每公斤价值在20美元或者等值货币以上的，可以办理货物声明价值，按规定交纳声明价值附加费。</p>
+        <p>每张货运单的声明价值一般不超过10万美元或等值货币，已办理托运手续的货物要求变更时，声明价值附加费不退。</p>
+    </div>
+
+    <div id="DomesticGoodsConsignmentNotes" class="panel article" title="国内货物托运须知">
+        <p>1.托运：托运人交运货物时请填报货物确指品名，严禁谎报或瞒报、严禁夹带危险品、禁运物品和易损、易腐物品。对限运货物、动植物及其制品及其它需要办理审批、检验等手续的，托运人须自行办理有关手续并提供有效证明。因违反本条规定所造成的一切经济损失由托运人负责。</p>
+        <p>2.贵重物品托运：贵重货物（每公斤价值超过人民币2000元以上的），要主动声明，并参加保价运输，每份货单声明价值不得超过50万元。</p>
+        <p>3.索赔时限：对不正常货物运输，货物损坏的应在托运之日起14天内提出；货物延误的应在收货之日起21日内提出，货物丢失的应在托运之日起120日内提出。索赔人应以书面形式并随付货运单、货物运输事故记录、货物发票、装箱清单、货物损失详细情况、商检报告、索赔金额及其它必要资料提出索赔要求，如超出上述期限未提出，则本公司不再受理。如向保险公司投保的，应由保险公司或其代理检验处理，并在保险规定期限内向保险公司提出索赔。</p>
+        <p>4.赔偿限额：因航空公司或本公司原因造成货物损失、丢失，已投保的，按保险公司规定赔偿；（已办理货物声明价值的，以其声明价值为最高赔偿限额，如能证明声明价值高于货物实际价值的，按实际价值赔偿；）未投保或办理声明价值的，按最高不超过20元/公斤进行赔偿。</p>
+        <p>5.免责条款：对下列原因造成的货物毁灭、遗失、损坏，我公司不承担责任：</p>
+        <p>a.不可抗力或政府行为；</p>
+        <p>b.货物本身的自然属性、质量或缺陷所引起的变质、减量、破损或毁灭；</p>
+        <p>c.托运人自行包装且货物包装不良；</p>
+        <p>d.货物包装完好，封志无异状，而内件短少或损坏；</p>
+        <p>e.货物合理损耗；</p>
+        <p>f.托运人或收货人的过错（包括收货人将货物提回后发现的货物短少、损坏、变质等）；</p>
+        <p>g.因货物毁灭、遗失、损坏或延误等造成的间接损失。</p>
+        <p>6.货物提取期限：货物到达目的地后，普通货物从发出到货通知后三日内提取；鲜活易腐及其他需冷藏、冰冻的货物自航班到达后6小时内提取；贵重物品到达当日内提取，逾期按到达站规定交付仓储保管费。超过14天无人提取或拒绝接受的货物，按无人提取货物处理；超过60天的按无法交付货物处理。由于收货人姓名、电话、地址不详或不正确的，一切后果由托运人承担。</p>
+        <p>7.提货：每张货单只能有一个收货人，到达货物凭收货人身份证提取，他人代替提货需同时出具收货人及提货人两人的身份证方可办理提货手续。</p>
+        <p>8.到付：到付的运费由托运人担保，收货人不付原定运费及由于不领货物所产生的运费由托运人承担。</p>
+    </div>
+
+    <div id="SpecialCargoTransportationInstructions" class="panel article" title="特种货物运输须知">
+        <p>特种货物是指在收运、储存、保管、运输及交付过程中，因货物本身的性质、价值、体积或重量等条件需要特别处理的货物。包括：急件、生物制品、植物和植物产品、骨灰和灵柩、危险物品、活体动物、鲜活易腐物品、贵重物品、枪械弹药、押运货物等。</p>
+        <p>一、急件</p>
+        <p>托运人要求急运的货物，经承运人同意，可以办理急件运输，并按照规定收取急件运输。</p>
+        <p>二、生物制品</p>
+        <p>1 、凡人体、动植物有害的菌种、带菌培养基等微生物制品，非经中国民用航空总局特殊批准不得承运。</p>
+        <p>2 、凡经人工制造提炼，进行无菌处理的疫苗、菌苗抗菌素血清等生物制品，如果托运人提供无菌证明可以按照普通货物承运。</p>
+        <p>3 、托运人应在货运单上注明最大允许运输时限和有关注意事项。</p>
+        <p>4 、大批托运或包机运输的生物制品，应请托运人或收货人到机场办理托运或提货手续，以减少在地面的停留时间。</p>
+        <p>三、植物和植物产品</p>
+        <p>1 、为了防止危害农业、林业植物的危害性病、虫、杂草传播、蔓延，保护国家农业、林业生产安全，根据国家《植物检疫条例》规定，种子、苗木、繁殖材料、植物产品托运前必须实施检疫。</p>
+        <p>2 、托运人托运植物和植物产品，须持有所在地县级（含）以上的植物检疫部门出具的植物检疫证书。</p>
+        <p>3 、托运人托运政府规定的濒危植物及其产品或国家保护植物，必须提供省级林业部门或濒危动植物管理办公室出具的准运证明。</p>
+        <p>四、骨灰、灵柩</p>
+        <p>1 、骨灰</p>
+        <p>（ 1 ）托运人应凭医院出具的死亡证明和殡仪馆出具的火化证明办理骨灰托运手续。</p>
+        <p>（ 2 ）骨灰应当装在密封的塑料袋或其他密封的容器内外加木盒，最外层用布包裹。</p>
+        <p>2 、灵柩</p>
+        <p>（ 1 ）托运人凭医院出具的死亡证明，殡葬部门出具的入硷证明及有关部门出具的准运证明办理托运手续。</p>
+        <p>（ 2 ）尸体必须无传染性。</p>
+        <p>（ 3 ）尸体经过防腐处理，并在防腐期内。</p>
+        <p>（ 4 ）尸体以铁质棺材或木质棺材为内包装，外加铁皮箱和便于装卸的环扣。棺内敷设木屑或木炭等吸附材料。棺材应当钉牢、焊封、无漏缝。确保气味及液体不致外漏。除死者遗物外，灵柩不能与其它货物使用同一份货运单托运。</p>
+        <p>五、危险物品</p>
+        <p>危险物品的运输必须遵守中国民用航空总局有关危险品航空安全运输的管理规定。</p>
+        <p>六、活体动物</p>
+        <p>1 、活体动物运输必须符合国家和承运人的有关规定，并出具当地县级（含）以上的检疫部门的免疫注射证明信和检疫证书。</p>
+        <p>2 、托运属于国家保护的动物，应提供国家有关部门出具的准运证明；托运属于市场管理范围的动物，应提供市场管理部门出具的证明。</p>
+        <p>3 、托运人必须填写活体动物国内运输托运申明书。</p>
+        <p>4 、包装</p>
+        <p>（ 1 ）包装既要便于装卸又要适合动物的特性和航空运输的要求。</p>
+        <p>（ 2 ）包装能防止动物破坏、逃逸或接触外界。</p>
+        <p>（ 3 ）包装底部应设置有防止动物粪便散溢的设施。</p>
+        <p>（ 4 ）包装应能保证通风，防止动物窒息。</p>
+        <p>（ 5 ）包装上应当标明照料和运输的注意事项。</p>
+        <p>（ 6 ）托运人和收货人应当在机场托运和提取活体动物，并负责活体动物在运输前和到达后的保管。</p>
+        <p>七、鲜活易腐物品</p>
+        <p>1 、托运人应当提高最长允许运输时限和运输注意事项。</p>
+        <p>2 、托运人必须预先向承运人定妥舱位，并按照与承运人约定的时间在机场办理货物托运手续。</p>
+        <p>3 、托运人托运政府规定需要进行检疫的鲜活易腐物品，应当具有有关部门的检疫证明。</p>
+        <p>4 、鲜活易腐物品的包装应当适合货物的特性，确保货物在运输过程中不致污染或损坏飞机或其它货物。</p>
+        <p>5 、需要特别照料的鲜活易腐物品，承运人应当自备必要的设施，必要时由托运人派押运员押运。</p>
+        <p>6 、鲜活易腐物品在运输过程中，承运人因采取必要的防护措施所发生的费用，由托运人或收货人支付。</p>
+        <p>八、贵重物品</p>
+        <p>1 、贵重物品包括：黄金、白金等稀贵金属及其制品；各类宝石、玉器、钻石、珍珠及其制品；珍贵文物（包括书、画、古玩等）；现钞、有价证卷以及毛重每千克价值在人民币 2000 元以上的物品。</p>
+        <p>2 、贵重物品应使用坚固、严密的包装箱包装，外面加“井”字金属包装带加固。</p>
+        <p>3 、贵重物品的包装箱接缝处必须有封志、封志要完好。</p>
+        <p>九、枪械、弹药</p>
+        <p>1 、枪械（包括枪支、警械）是特种管制物品，弹药是特种管制的危险物品。</p>
+        <p>2 、托运人托运各类枪械弹药必须提始发站或目的站县、市级公安局核发的准运证或国家有关部委出具的许可证明。</p>
+        <p>3 、进、出境的各类枪械、弹药的国内运输必须出具边防检察站核发的携运证。</p>
+        <p>4 、枪械、警械及军用器材的包装应当是原出厂包装，非原出厂的包装必须保证坚固、严密、有封志。</p>
+        <p>5 、枪械与弹药必须分开包装。</p>
+        <p>十、押运货物</p>
+        <p>1 、根据货物的性质，在运输过程中专门照料、监护的货物，托运人应当派人押运。否则，承运人有权不予承运。</p>
+        <p>2 、托运人应当实现订妥舱位。</p>
+        <p>3 、押运员应当履行承运人对押运货物的要求并对货物的安全运输负责。</p>
+    </div>
+
+
+    <div id="ServiceProject" class="panel article" title="服务项目">
+        <h3 align="center">货运销售代理简介</h3>
+        <img style="" src="http://www.airport-gl.com.cn/goodsservice/images/fwxm-1.jpg" alt="">
+        <p>公司货运部是各家航空公司在桂北地区货物运输的总代理，也是民航快递的网络成员。主要经营国内国际货物、邮件及民航特快专递的收运、发送业务。</p>
+        <p>货运部本部在机场有着 3000 平方米的库房，并设有保鲜库。有专门从事收发货物、快件运输的车辆。为了方便从事鲜活货物运输的货主工作、生活，在机场内建有面积达 1850 平方米的“货主之家”大楼。“方便、准确、安全”的服务宗旨，以较完善的硬件设施和热情周到的服务组合，加之桂林机场在江南地区适中的地理位置，多条航线和充足的运力、优惠的运价为各位货主提供了良好的需求条件。</p>
+        <h3 align="center">服务项目</h3>
+        <img style="" src="http://www.airport-gl.com.cn/goodsservice/images/fwxm-2.jpg" alt="">
+        <p>直达、中转航空运输；一级城市中转二、三级县市运输；货物派送；免费上门取货；</p>
+        <p>国内出港收运：0773-2845311   传真：0773-2845783</p>
+        <p>国内货物中转：0773-2845782   传真：0773-2845783</p>
+        <p>国内出港舱位预定：0773-2845102/2844301</p>
+        <p>国内出港舱位预定：0773-2845102/2844301</p>
+        <p>国际货运进出港：0773-2845325   传真:0773-2844286</p>
+        <p>市内营业部（桂林市瓦窑西二巷20号）    电话：0773-5809999    传真：0773-5809090 </p>
+        <p>上门收货： 13977325312 </p>
+        <p>柳州：</p>
+        <p>直达、中转航空运输；货物派送；免费上门取货；</p>
+        <p>机场货运：0772-32201086  传真：0772-3201086</p>
+        <p>国内货物中转：0772-3201086   传真：0772-3201086</p>
+        <p>国内出港舱位预定：0772-3201086   传真：0772-3201086</p>
+        <p>国内进港查询：0772-3201086   传真：0772-3201086</p>
+        <p>市内营业部：（柳州市航二路28 号）      上门收货、电话：0772-3211520    传真：0772-3211998</p>
+        <p>市内货物派送：0772-3211520   传真：0772-3211998</p>
+    </div>
+
+    <div id="FreightPriceList" class="panel article" title="货运价格表">
+        <h3>目的地：北京</h3>
+        <p>最低运费：50.00</p>
+        <p>N：8.40</p>
+        <p>45：6.70</p>
+        <p>100：5.90</p>
+        <p>300：5.00</p>
+        <h3>目的地：长春</h3>
+        <p>最低运费：50.00</p>
+        <p>N：10.80</p>
+        <p>45：8.60</p>
+        <p>100：7.60</p>
+        <p>300：6.50</p>
+        <h3>目的地：长沙</h3>
+        <p>最低运费：50.00</p>
+        <p>N：3.10</p>
+        <p>45：2.50</p>
+        <p>100：2.20</p>
+        <p>300：1.90</p>
+        <h3>目的地：常州</h3>
+        <p>最低运费：50.00</p>
+        <p>N：6.40</p>
+        <p>45：5.10</p>
+        <p>100：4.50</p>
+        <p>300：3.80</p>
+        <h3>目的地：成都</h3>
+        <p>最低运费：50.00</p>
+        <p>N：5.20</p>
+        <p>45：4.20</p>
+        <p>100：3.60</p>
+        <p>300：3.10</p>
+        <h3>目的地：重庆</h3>
+        <p>最低运费：50.00</p>
+        <p>N：4.00</p>
+        <p>45：3.20</p>
+        <p>100：2.80</p>
+        <p>300：2.40</p>
+        <h3>目的地：大连</h3>
+        <p>最低运费：50.00</p>
+        <p>N：10.20</p>
+        <p>45：8.20</p>
+        <p>100：7.10</p>
+        <p>300：6.10</p>
+        <h3>目的地：福州</h3>
+        <p>最低运费：50.00</p>
+        <p>N：5.60</p>
+        <p>45：4.50</p>
+        <p>100：3.90</p>
+        <p>300：3.40</p>
+        <h3>目的地：广州</h3>
+        <p>最低运费：50.00</p>
+        <p>N：3.10</p>
+        <p>45：2.50</p>
+        <p>100：2.20</p>
+        <p>300：1.90</p>
+        <h3>目的地：贵阳</h3>
+        <p>最低运费：50.00</p>
+        <p>N：3.00</p>
+        <p>45：2.40</p>
+        <p>100：2.10</p>
+        <p>300：1.80</p>
+        <h3>目的地：海口</h3>
+        <p>最低运费：50.00</p>
+        <p>N：4.40</p>
+        <p>45：3.50</p>
+        <p>100：3.10</p>
+        <p>300：2.60</p>
+        <h3>目的地：杭州</h3>
+        <p>最低运费：50.00</p>
+        <p>N：6.10</p>
+        <p>45：4.90</p>
+        <p>100：4.30</p>
+        <p>300：3.70</p>
+        <h3>目的地：合肥</h3>
+        <p>最低运费：50.00</p>
+        <p>N：5.50</p>
+        <p>45：4.40</p>
+        <p>100：3.90</p>
+        <p>300：3.30</p>
+        <h3>目的地：黄山</h3>
+        <p>最低运费：50.00</p>
+        <p>N：5.60</p>
+        <p>45：4.50</p>
+        <p>100：3.90</p>
+        <p>300：3.40</p>
+        <h3>目的地：济南</h3>
+        <p>最低运费：50.00</p>
+        <p>N：8.10</p>
+        <p>45：6.50</p>
+        <p>100：5.70</p>
+        <p>300：4.90</p>
+        <h3>目的地：昆明</h3>
+        <p>最低运费：50.00</p>
+        <p>N：4.70</p>
+        <p>45：3.80</p>
+        <p>100：3.30</p>
+        <p>300：2.80</p>
+        <h3>目的地：兰州</h3>
+        <p>最低运费：50.00</p>
+        <p>N：7.60</p>
+        <p>45：6.10</p>
+        <p>100：5.30</p>
+        <p>300：4.60</p>
+        <h3>目的地：南昌</h3>
+        <p>最低运费：50.00</p>
+        <p>N：4.60</p>
+        <p>45：3.70</p>
+        <p>100：3.20</p>
+        <p>300：2.80</p>
+        <h3>目的地：南京</h3>
+        <p>最低运费：50.00</p>
+        <p>N：6.00</p>
+        <p>45：4.80</p>
+        <p>100：4.20</p>
+        <p>300：3.60</p>
+        <h3>目的地：南宁</h3>
+        <p>最低运费：50.00</p>
+        <p>N：2.80</p>
+        <p>45：2.20</p>
+        <p>100：2.00</p>
+        <p>300：1.70</p>
+        <h3>目的地：宁波</h3>
+        <p>最低运费：50.00</p>
+        <p>N：6.50</p>
+        <p>45：5.20</p>
+        <p>100：4.60</p>
+        <p>300：3.90</p>
+        <h3>目的地：青岛</h3>
+        <p>最低运费：50.00</p>
+        <p>N：8.30</p>
+        <p>45：6.60</p>
+        <p>100：5.80</p>
+        <p>300：5.00</p>
+        <h3>目的地：上海</h3>
+        <p>最低运费：50.00</p>
+        <p>N：6.70</p>
+        <p>45：5.40</p>
+        <p>100：4.70</p>
+        <p>300：4.00</p>
+        <h3>目的地：汕头</h3>
+        <p>最低运费：50.00</p>
+        <p>N：4.50</p>
+        <p>45：3.60</p>
+        <p>100：3.20</p>
+        <p>300：2.70</p>
+        <h3>目的地：沈阳</h3>
+        <p>最低运费：50.00</p>
+        <p>N：10.00</p>
+        <p>45：8.00</p>
+        <p>100：7.00 </p>
+        <p>300：6.00</p>
+        <h3>目的地：深圳</h3>
+        <p>最低运费：50.00</p>
+        <p>N：3.40</p>
+        <p>45：2.70</p>
+        <p>100：2.40</p>
+        <p>300：2.00</p>
+        <h3>目的地：太原</h3>
+        <p>最低运费：50.00</p>
+        <p>N：8.10</p>
+        <p>45：6.50</p>
+        <p>100：5.10</p>
+        <p>300：4.90</p>
+        <h3>目的地：天津</h3>
+        <p>最低运费：50.00</p>
+        <p>N：8.10</p>
+        <p>45：6.50</p>
+        <p>100：5.10</p>
+        <p>300：4.90</p>
+        <h3>目的地：温州</h3>
+        <p>最低运费：50.00</p>
+        <p>N：6.30</p>
+        <p>45：5.00</p>
+        <p>100：4.40</p>
+        <p>300：3.80</p>
+        <h3>目的地：武汉</h3>
+        <p>最低运费：50.00</p>
+        <p>N：4.50</p>
+        <p>45：3.60</p>
+        <p>100：3.20</p>
+        <p>300：2.70</p>
+        <h3>目的地：乌市</h3>
+        <p>最低运费：50.00</p>
+        <p>N：13.30</p>
+        <p>45：10.60</p>
+        <p>100：9.30</p>
+        <p>300：8.00</p>
+        <h3>目的地：厦门</h3>
+        <p>最低运费：50.00</p>
+        <p>N：4.80</p>
+        <p>45：3.80</p>
+        <p>100：3.40</p>
+        <p>300：2.90</p>
+        <h3>目的地：西安</h3>
+        <p>最低运费：50.00</p>
+        <p>N：5.60</p>
+        <p>45：4.50</p>
+        <p>100：3.90</p>
+        <p>300：3.40</p>
+        <h3>目的地：湛江</h3>
+        <p>最低运费：50.00</p>
+        <p>N：3.50</p>
+        <p>45：2.80</p>
+        <p>100：2.50</p>
+        <p>300：2.10</p>
+        <h3>目的地：郑州</h3>
+        <p>最低运费：50.00</p>
+        <p>N：6.10</p>
+        <p>45：4.90</p>
+        <p>100：4.30</p>
+        <p>300：3.70</p>
+        <h3>目的地：珠海</h3>
+        <p>最低运费：50.00</p>
+        <p>N：3.70</p>
+        <p>45：3.00</p>
+        <p>100：2.60</p>
+        <p>300：2.20</p>
+        <h3>目的地：思茅</h3>
+        <p>最低运费：50.00</p>
+        <p>N：7.20</p>
+        <p>45：5.80</p>
+        <p>100：5.10</p>
+        <p>300：4.30</p>
+        <h3>目的地：芒市</h3>
+        <p>最低运费：50.00</p>
+        <p>N：7.90</p>
+        <p>45：6.40</p>
+        <p>100：5.90</p>
+        <p>300：4.70</p>
+        <h3>目的地：西双版纳</h3>
+        <p>最低运费：50.00</p>
+        <p>N：8.80</p>
+        <p>45：6.30</p>
+        <p>100：5.50</p>
+        <p>300：4.70</p>
+        <h3>目的地：烟台</h3>
+        <p>最低运费：50.00</p>
+        <p>N：10.10</p>
+        <p>45：8.00</p>
+        <p>100：7.10</p>
+        <p>300：6.10</p>
+        <h3>目的地：哈尔滨</h3>
+        <p>最低运费：50.00</p>
+        <p>N：13.70</p>
+        <p>45：10.90</p>
+        <p>100：9.60</p>
+        <p>300：8.20</p>
+        <h3>目的地：齐齐哈尔</h3>
+        <p>最低运费：50.00</p>
+        <p>N：16.00</p>
+        <p>45：12.70</p>
+        <p>100：11.20</p>
+        <p>300：9.60</p>
+        <h3>目的地：呼和浩特</h3>
+        <p>最低运费：50.00</p>
+        <p>N：10.90</p>
+        <p>45：8.70</p>
+        <p>100：7.70</p>
+        <p>300：6.60</p>
+        <h3>目的地：北海</h3>
+        <p>最低运费：50.00</p>
+        <p>N：3.00</p>
+        <p>45：2.40</p>
+        <p>100：2.10</p>
+        <p>300：1.80</p>
+        <h3>目的地：哈尔滨</h3>
+        <p>最低运费：50.00</p>
+        <p>N：13.70</p>
+        <p>45：10.90</p>
+        <p>100：9.60</p>
+        <p>300：8.20</p>
+        <p>注 ：以上运价仅限普通货物。大批量货物，价格面议。</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.ui.ready(function () {
+        $.ui.removeFooterMenu();
+    });
+</script>
+</body>
+</html>
+
+
+
+

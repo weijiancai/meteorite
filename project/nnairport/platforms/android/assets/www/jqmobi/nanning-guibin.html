@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+<head>
+    <script>
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
+    </script>
+
+    <title>南宁机场 - 贵宾服务</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/icons.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/mu-mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="css/airport.css"/>
+
+    <!--
+  <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/appframework.css"/>
+    <link rel="stylesheet" type="text/css" href="css/lists.css"/>
+    <link rel="stylesheet" type="text/css" href="css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/badges.css"/>
+    <link rel="stylesheet" type="text/css" href="css/grid.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
+
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"/>
+    <!-- uncomment for intel.xdk apps
+    <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+    <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+    -->
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <!-- include af.desktopBrowsers.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "plugins/af.desktopBrowsers.js";
+            var tag = $("head").append(script);
+            //$.os.desktop=true;
+        }
+
+        //  $.feat.nativeTouchScroll=true;
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+
+    <style type="text/css">
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="afui" class="ios7">
+    <!-- this is the splashscreen you see. -->
+    <div id="splashscreen" class='ui-loader heavy'>
+        南宁机场
+        <br>
+        <br> <span class='ui-icon ui-icon-loading spin'></span>
+        <h1>正在启动......</h1>
+    </div>
+
+    <div id="header">
+        <a id="backButton" href="javascript:;" class="button">返回</a>
+        <h1 id="pageTitle">南宁机场</h1>
+    </div>
+
+    <!--------------------------------------------------------------- 贵宾服务 ----------------------------------------------------------------------------->
+    <div id="VIPService" class="panel" selected="true" title="贵宾服务">
+        <ul class="list">
+            <li><a href="#ServiceIntroduction">服务介绍</a></li>
+            <li><a href="#CompanyIntroduction">公司介绍</a></li>
+        </ul>
+    </div>
+
+    <div id="ServiceIntroduction" class="panel" title="服务介绍">
+        <ul class="list">
+            <li><a href="#a9">顺旅公司服务介绍</a></li>
+        </ul>
+    </div>
+
+    <div id="a9" class="panel article" title="顺旅公司服务介绍">
+        <p>尊贵随行，顺利之旅</p>
+        <p>南宁，古称邕州，广西壮族自治区首府，位于广西西南部，与东南亚诸国毗邻，是红豆的故乡，也是一座历史悠久的边陲古城，具有深厚的文化积淀。这是一个以壮族为主的多民族和睦相处的现代化城市。</p>
+        <p>南宁吴圩国际机场是我国面向东盟的国际门户枢纽机场，广西机场集团管辖下的第一大机场，广西壮族自治区首府南宁市的窗口和城市亮点。南宁吴圩国际机场顺旅航空商务服务业有限公司致力于为每一位进出港的旅客提供尊贵的服务，免去繁琐的值机手续，告别人山人海的安检，抛开无聊的漫长等待，体验“尊贵随行，顺利之旅”。</p>
+        <p>南宁顺旅航空商务服务有限责任公司是南宁吴圩国际机场专门从事航空商务贵宾和重要旅客地面服务的部门。顺旅公司在南宁吴圩国际机场候机楼内拥有近4000平方米的“商务贵宾厅”及“头等舱休息室”、“豪华贵宾楼”。内设会议室、豪华舒适大厅、十多个商务贵宾休息室，拥有专用安检通道、专用电梯、专用贵宾车及电子商务设施。</p>
+        <p>公司于2004年2月成立至今，员工从七十多人已发展一百七十多人。公司始终坚持以“服务为先”的理念和“细微之中显品质，贴心之处现真情”的服务方针，以服务对象满意为首要标准，不断完善服务方式和服务措施。她们秉承着“青春与文明同行，爱心浇铸服务精品”的理念，致力于打造南宁空港的服务精品样板，为进出港的重要旅客和商务贵宾提供舒适、温馨、和谐、周到的优质服务。</p>
+        <p>2004年—2011年，中国—东盟博览会连续8年在南宁举办， 顺旅公司以此为契机，积极地参与到文明机场创建活动及服务博览会的工作中，顺旅公司作为机场要客服务保障的一线单位，担负着博览会期间所有进出港航班要客和贵宾的迎送服务工作。八年来公司都因为在“中国—东盟博览会”服务工作中成绩突出，得到自治区领导肯定及中外各界贵宾的一致好评，每年都被自治区博览局评为先进服务单位。</p>
+        <p>具体提供的贵宾服务项目：</p>
+        <p>1、代办预订机票；</p>
+        <p>2、专人协助办理出港乘机及行李托运手续，优先选择机上坐位；</p>
+        <p>3、使用国内出港贵宾专用安检通道，从容过检；</p>
+        <p>4、使用贵宾专用休息室，提供冷热饮品、精致茶点及报刊、杂志、互联网、电视等服务；</p>
+        <p>5、专人引领贵宾至登机口乘机；</p>
+        <p>6、提供进出港航班及到达站天气信息；</p>
+        <p>7、远机位航班提供专用贵宾车辆送机。</p>
+        <p>办卡流程：</p>
+        <p>填写申请表（提供相关资料）、市场部审批、客户付款开通服务</p>
+        <p>出港流程：</p>
+        <p>电话/传真预约、贵宾厅休息、代办登记手续、贵宾专用安检通道、远机位贵宾车摆渡、登机</p>
+        <p>进港流程：</p>
+        <p>电话/传真预约、登机口迎接、贵宾车摆渡、协助提取行李</p>
+        <p>注：</p>
+        <p>1、送机：提前电话预约告知乘机日期、到达机场时间、航班号、人数、车牌号、相关手续办理要求等</p>
+        <p>2、接机：提前电话预约告知到达日期、航班号、客人姓名、人数、车牌号</p>
+        <p>3、预约电话：0771-2095366、传真：0771-2095369</p>
+        <p>凡具有独立民事行为的所有境内外合法公民和法人，都可以成为我们的会员。</p>
+        <p>服务热线：</p>
+        <p>会员卡办理：0771-2095472（FAX）</p>
+        <p>贵宾服务预约：0771-2095366、2095369（FAX）</p>
+        <p>贵宾商务服务：0771-2095472（FAX）</p>
+        <p>贵宾厅宣传服务：0771-2095472</p>
+        <p>会员章程：</p>
+        <p>1、会员持会员卡使用贵宾服务时，应保证遵守民航及联检单位之边防、海关、安检、卫检等有关规定，严禁携带爆炸品、易燃物体、有毒物体、放射性、腐蚀性物质及各类杂项危险品，一经发现违背上述相关规定，本公司有权取消其会员资格，由此所产生的一切后果，由会员自行负责。</p>
+        <p>2、会员持会员卡在机场享受会员服务时，遇有重要勤务、重大政治活动或突发事件，应服从本公司工作人员安排，主动避让。如遇该类事件，本公司有权临时终止提供贵宾服务。</p>
+        <p>3、会员卡作为会员身份的凭证限持卡人使用，不得出租、转让或转借。否则，本公司有权拒绝向使用人提供服务，并保留没收该会员卡和取消会员资格的权利，由此产生的风险损失和法律责任由会员本人承担。</p>
+        <p>4、申请成为本公司会员的个人或单位，应确保使用该卡的任何个人或单位遵守本章程和本公司相关规定，如用卡人违背章程或规定的有关条款，本公司有权取消该卡会员的会员资格，相关经济损失和法律责任由会员承担。</p>
+        <p>5、会员如发生身份证件、联系地址、联系电话、工作单位等变更应及时通知本公司。如未及时通知而影响为会员提供服务，本公司将不承担责任。</p>
+        <p>6、会员违背章程有关条款，本公司有权拒绝提供部分或全部服务，直至取消会员之会籍资格，相关经济损失和法律责任由会员本人承担。</p>
+    </div>
+
+    <div id="CompanyIntroduction" class="panel" title="公司介绍">
+        <ul class="list">
+            <li><a href="#a10">顺旅公司网站</a></li>
+            <li><a href="#b10">文字宣传介绍</a></li>
+            <li><a href="#c10">影片宣传展示</a></li>
+        </ul>
+    </div>
+
+    <div id="a10" class="panel article" title="顺旅公司网站">
+        <p>顺旅公司网站：www.nnslvip.com</p>
+        <p>不用跑机场、不用打电话、手机一点，就能了解南宁吴圩国际机场（以下称南宁机场）顺旅贵宾公司的所有。这是南宁机场顺旅贵宾公司为顺应时代发展，方便旅客咨询而推出的便民服务举措。</p>
+        <p>在信息化发展的时代，为充分运用信息化的手段服务于航空运输窗口，方便旅客咨询，提高南宁机场贵宾服务质量。南宁机场顺旅贵宾公司经过两个多月的准备、申请、认证、编辑等一系列筹备，于2013年9月22日已正式开通南宁顺旅公司官方微信（nnslvip）平台信号，目前巳处于试用阶段。</p>
+        <p>该平台集系统自动应答及人工服务为一体。贵宾客户可以通过微信平台查看南宁机场顺旅贵宾公司会员卡类型，会员卡办理流程，贵宾预约方式，贵宾服务内容，商务旅客服务电话；也可通过编辑信息关键词的方式查询可享受贵宾服务卡类，让贵宾客户对自己的切身利益更加明了。加入南宁顺旅公司官方微信后，只要输入“移动” 两字，就会收到“南宁机场顺旅贵宾公司可接待全国移动公司钻石卡、金卡、广西银卡（并可显示卡里的积分和随身携带随行人数）等。</p>
+        <p>该微信平台试用正常后，南宁机场顺旅贵宾公司将根据客户对微信的使用情况进一步添加服务应答内容（如：加強航空安全、航空运输常识等内容），实现官方微信平台的智能应答，方便贵宾旅客快捷全面了解相关事宜，扫描二维码，加南宁顺旅贵宾官方微信即可。</p>
+    </div>
+
+    <div id="b10" class="panel article" title="文字宣传介绍">
+        <p>尊贵随行，顺利之旅</p>
+        <p>南宁，古称邕州，广西壮族自治区首府，位于广西西南部，与东南亚诸国毗邻，是红豆的故乡，也是一座历史悠久的边陲古城，具有深厚的文化积淀。这是一个以壮族为主的多民族和睦相处的现代化城市。</p>
+        <p>南宁吴圩国际机场是我国面向东盟的国际门户枢纽机场，广西机场集团管辖下的第一大机场，广西壮族自治区首府南宁市的窗口和城市亮点。南宁吴圩国际机场顺旅航空商务服务业有限公司致力于为每一位进出港的旅客提供尊贵的服务，免去繁琐的值机手续，告别人山人海的安检，抛开无聊的漫长等待，体验“尊贵随行，顺利之旅”。</p>
+        <p>南宁顺旅航空商务服务有限责任公司是南宁吴圩国际机场专门从事航空商务贵宾和重要旅客地面服务的部门。顺旅公司在南宁吴圩国际机场候机楼内拥有近4000平方米的“商务贵宾厅”及“头等舱休息室”、“豪华贵宾楼”。内设会议室、豪华舒适大厅、十多个商务贵宾休息室，拥有专用安检通道、专用电梯、专用贵宾车及电子商务设施。</p>
+        <p>公司于2004年2月成立至今，员工从七十多人已发展一百七十多人。公司始终坚持以“服务为先”的理念和“细微之中显品质，贴心之处现真情”的服务方针，以服务对象满意为首要标准，不断完善服务方式和服务措施。她们秉承着“青春与文明同行，爱心浇铸服务精品”的理念，致力于打造南宁空港的服务精品样板，为进出港的重要旅客和商务贵宾提供舒适、温馨、和谐、周到的优质服务。</p>
+        <p>2004年—2011年，中国—东盟博览会连续8年在南宁举办， 顺旅公司以此为契机，积极地参与到文明机场创建活动及服务博览会的工作中，顺旅公司作为机场要客服务保障的一线单位，担负着博览会期间所有进出港航班要客和贵宾的迎送服务工作。八年来公司都因为在“中国—东盟博览会”服务工作中成绩突出，得到自治区领导肯定及中外各界贵宾的一致好评，每年都被自治区博览局评为先进服务单位。</p>
+        <p>具体提供的贵宾服务项目：</p>
+        <p>1、代办预订机票；</p>
+        <p>2、专人协助办理出港乘机及行李托运手续，优先选择机上坐位；</p>
+        <p>3、使用国内出港贵宾专用安检通道，从容过检；</p>
+        <p>4、使用贵宾专用休息室，提供冷热饮品、精致茶点及报刊、杂志、互联网、电视等服务；</p>
+        <p>5、专人引领贵宾至登机口乘机；</p>
+        <p>6、提供进出港航班及到达站天气信息；</p>
+        <p>7、远机位航班提供专用贵宾车辆送机。</p>
+        <p>办卡流程：</p>
+        <p>填写申请表（提供相关资料）、市场部审批、客户付款开通服务</p>
+        <p>出港流程：</p>
+        <p>电话/传真预约、贵宾厅休息、代办登记手续、贵宾专用安检通道、远机位贵宾车摆渡、登机</p>
+        <p>进港流程：</p>
+        <p>电话/传真预约、登机口迎接、贵宾车摆渡、协助提取行李</p>
+        <p>注：</p>
+        <p>1、送机：提前电话预约告知乘机日期、到达机场时间、航班号、人数、车牌号、相关手续办理要求等</p>
+        <p>2、接机：提前电话预约告知到达日期、航班号、客人姓名、人数、车牌号</p>
+        <p>3、预约电话：0771-2095366、传真：0771-2095369</p>
+        <img style="width: 250px; height: 250px" src="http://www.nnairport.com/upload_files/article/111/1_1366160949_2218323.gif" alt="">
+        <p>凡具有独立民事行为的所有境内外合法公民和法人，都可以成为我们的会员。</p>
+        <p>服务热线：</p>
+        <p>会员卡办理：0771-2095472（FAX）</p>
+        <p>贵宾服务预约：0771-2095366、2095369（FAX）</p>
+        <p>贵宾商务服务：0771-2095472（FAX）</p>
+        <p>贵宾厅宣传服务：0771-2095472</p>
+        <p>会员章程：</p>
+        <p>1、会员持会员卡使用贵宾服务时，应保证遵守民航及联检单位之边防、海关、安检、卫检等有关规定，严禁携带爆炸品、易燃物体、有毒物体、放射性、腐蚀性物质及各类杂项危险品，一经发现违背上述相关规定，本公司有权取消其会员资格，由此所产生的一切后果，由会员自行负责。</p>
+        <p>2、会员持会员卡在机场享受会员服务时，遇有重要勤务、重大政治活动或突发事件，应服从本公司工作人员安排，主动避让。如遇该类事件，本公司有权临时终止提供贵宾服务。</p>
+        <p>3、会员卡作为会员身份的凭证限持卡人使用，不得出租、转让或转借。否则，本公司有权拒绝向使用人提供服务，并保留没收该会员卡和取消会员资格的权利，由此产生的风险损失和法律责任由会员本人承担。</p>
+        <p>4、申请成为本公司会员的个人或单位，应确保使用该卡的任何个人或单位遵守本章程和本公司相关规定，如用卡人违背章程或规定的有关条款，本公司有权取消该卡会员的会员资格，相关经济损失和法律责任由会员承担。</p>
+        <p>5、会员如发生身份证件、联系地址、联系电话、工作单位等变更应及时通知本公司。如未及时通知而影响为会员提供服务，本公司将不承担责任。</p>
+        <p>6、会员违背章程有关条款，本公司有权拒绝提供部分或全部服务，直至取消会员之会籍资格，相关经济损失和法律责任由会员本人承担。</p>
+    </div>
+
+    <div id="c10" class="panel article" title="影片宣传展示">
+        <img style="width: 250px; height: 250px" src="http://www.nnairport.com/upload_files/article/111/1_1366532962_7946167.jpg" alt="顺旅">
+    </div>
+</div>
+
+<script type="text/javascript">
+    $.ui.ready(function () {
+        $.ui.removeFooterMenu();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,2549 @@
+<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+<head>
+    <script>
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
+    </script>
+
+    <title>南宁机场 - 交通指南</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/icons.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/font-awesome.css"/>
+    <link rel="stylesheet" type="text/css" href="iconfont/iconfont.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/mu-mobile.css"/>
+    <link rel="stylesheet" type="text/css" href="css/airport.css"/>
+
+    <!--
+  <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/appframework.css"/>
+    <link rel="stylesheet" type="text/css" href="css/lists.css"/>
+    <link rel="stylesheet" type="text/css" href="css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/badges.css"/>
+    <link rel="stylesheet" type="text/css" href="css/grid.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
+
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"/>
+    <!-- uncomment for intel.xdk apps
+    <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+    <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+    -->
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <!-- include af.desktopBrowsers.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "plugins/af.desktopBrowsers.js";
+            var tag = $("head").append(script);
+            //$.os.desktop=true;
+        }
+
+        //  $.feat.nativeTouchScroll=true;
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+
+    <style type="text/css">
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="afui" class="ios7">
+    <!-- this is the splashscreen you see. -->
+    <div id="splashscreen" class='ui-loader heavy'>
+        南宁机场
+        <br>
+        <br> <span class='ui-icon ui-icon-loading spin'></span>
+        <h1>正在启动......</h1>
+    </div>
+
+    <div id="header">
+        <a id="backButton" href="javascript:;" class="button">返回</a>
+        <h1 id="pageTitle">南宁机场</h1>
+    </div>
+
+        <!--------------------------------------------------------------- 交通指南 ----------------------------------------------------------------------------->
+        <div id="transportGuide" class="panel" selected="true" title="交通指南">
+            <ul class="list">
+                <li><a href="#airportBigBus">机场大巴</a></li>
+                <li><a href="#parkingLot">机场停车场</a></li>
+                <li><a href="#airportBus">公交车</a></li>
+                <li><a href="#passengerStation">长途客车</a></li>
+                <li><a href="#airportTax">出租车</a></li>
+            </ul>
+        </div>
+
+        <div id="airportBigBus" class="panel" title="机场大巴">
+            <h3>咨询电话：0771-2881666</h3>
+            <ul>
+                <li>
+                    <h3>1号线</h3>
+                    <h5>票价: 20元/人</h5>
+                    <p>机场-火车站（维也纳酒店）往返直达</p>
+                    <p>机场发车时间：首班到达至航班结束</p>
+                    <p>火车站发车时间：5:30—22:30（30分钟/班）</p>
+                </li>
+                <li>
+                    <h3>2号线</h3>
+                    <h5>票价: 20元/人</h5>
+                    <p>机场-江南客运站-万象城城市候机楼-金旺角国际大酒店（埌东汽车站旁）</p>
+                    <p>机场发车时间：首班到达至22:00</p>
+                    <hr/>
+                    <p>金旺角国际大酒店（埌东汽车站旁）-万象城城市候机楼-江南客运站-机场</p>
+                    <p>发车时间：<br/>①金旺角国际大酒店（埌东汽车站旁）至机场09:10-19:10（1小时/班）<br/>②万象城城市候机楼至机场5:30-21:00（30分钟/班）</p>
+                </li>
+                <li>
+                    <h3>专线</h3>
+                    <h5>票价: 100元/人</h5>
+                    <p>机场-玉林（东郊汽车站）往返直达</p>
+                    <p>机场发车时间：10:50, 12:20,13:40,15:20,16:30,18:00,19:30,20:30,22:00</p>
+                </li>
+                <li>
+                    <h3>专线</h3>
+                    <h5>票价: 80元/人、85元/人、90元/人</h5>
+                    <p>机场-防城、港口、东兴城市候机楼（往返）</p>
+                    <p>机场发车时间：10:30，11:30，12:30，14:00，16:00，17:30，18:30，19:30，20:30，22:30</p>
+                </li>
+                <li>
+                    <h3>专线</h3>
+                    <h5>票价: 60元/人</h5>
+                    <p>机场-钦州城市候机楼（往返直达）</p>
+                    <p>机场发车时间：09:00,10:00,11:00,12:00,13:00,14:00,15:00,16:00,17:30,18:30,19:30,20:30,22:00,23:00</p>
+                </li>
+                <li>
+                    <h3>专线</h3>
+                    <h5>票价: 75元/人、95元/人</h5>
+                    <p>机场-来宾、柳州城市候机（往返）</p>
+                    <p>机场发车时间：13:50，15:50</p>
+                </li>
+                <li>
+                    <h3>专线</h3>
+                    <h5>票价: 90元/人、80元/人</h5>
+                    <p>机场-浦北、灵山（往返）</p>
+                    <p>机场发车时间：12:00，17:30</p>
+                </li>
+            </ul>
+        </div>
+
+        <div id="parkingLot" class="panel article" title="机场停车场">
+            <div>
+                <p>经自治区物价局批准，应于2011年7月20日开始执行的南宁吴圩国际机场停车场停车保管服务费收费标准，由于机场停车场设备安装等特殊原因，延至9月20日开始正式执行。</p>
+                <p>新的停车保管服务费收费标准为计时收费，以往的按次收费标准同时取消，具体如下：</p>
+                <p>(一)临时停放停车场：7座及其以下的小汽车（含营运出租车）由原来的每辆4元/次，改为现行的1小时内4元/辆·次，超过1小时后每1小时加收2元/辆(不足1小时的按1小时计算)，每天(24小时) 由原来的每辆20元，更改为最高不超过30元/辆；8座(含) 至19座(含) 的车辆, 由原来的每辆5元/次，改为停1小时内5元/辆·次, 超过1小时后每1小时加收2元/辆(不足1小时的按1小时计算)， 每天(24小时) 由原20元更改为最高不超过40元/辆；20座(含) 以上的车辆由原来的每辆6元/次改为1小时内8元/辆·次, 超过1小时后每1小时加收2元/辆(不足1小时的按1小时计算)，每天(24小时) 由原来每辆20元, 更改为最高不超50元/辆。</p>
+                <p>货车准载重量2吨(含) 以下的按7座及其以下小汽车收费标准执行，准载重量2吨至5吨(含) 的按8座(含) 至19座(含) 车辆收费标准执行，准载重量5吨以上的按20座(含) 以上车辆收费标准执行。</p>
+                <p>(二) 过夜停车场: 一天(24小时) 以内收费30元/辆, 超过一天(24小时) 后, 每半天(12小时) 收费15元/辆(不足12小时按12小时计算）。</p>
+                <p>(三)营运出租车自愿购买月票的，月票收费标准为300元/月·辆。<br>
+                    机场停车场图示：<br>
+                    <img style="width: 676px; height: 539px" src="http://www.nnairport.com/upload_files/article/83/1_1347104635_5904846.jpg" alt=""><br>
+                    <br>
+                    机场停车图说明：<br>
+                    <img style="width: 291px; height: 260px" src="http://www.nnairport.com/upload_files/article/83/1_1347104700_7034607.jpg" alt=""><br>
+                </p>
+            </div>
+        </div>
+
+        <div id="airportBus" class="panel" title="公交车">
+            <ul class="list">
+                <li>公交客运线路 <span class="label label-success pull-right">朝阳广场---吴圩机场(36.5公里)</span></li>
+                <li>运行时间<span class="label label-success pull-right">6:00-19:00</span></li>
+                <li>票价<span class="label label-success pull-right">3.00元/人次</span></li>
+                <li>班次<span class="label label-success pull-right">30分钟一班,周末20分钟,到达机场50分钟左右</span></li>
+                <li class="divider">上行[16站]</li>
+                <li> 朝阳广场 - 星光福建路口 - 亭洪星光路口 - 南建白沙路口 - 新塘桥 - 高岭 - 良凤江 - 先锋农场 - 铁二局 - 新营房 - 那丹桥 - 狮子口 - 七坡林场 - 吴圩 - 吴圩桥 - 吴圩机场</li>
+                <li class="divider">下行[16站]</li>
+                <li>吴圩机场 - 吴圩桥 - 吴圩 - 七坡林场 - 狮子口 - 那丹桥 - 新营房 - 铁二局 - 先锋农场 - 良凤江 - 高岭 - 新塘桥 - 南建白沙路口 - 亭洪星光路口 - 星光福建路口 - 朝阳广场</li>
+            </ul>
+        </div>
+
+        <div id="passengerStation" class="panel" title="长途客运">
+            <ul class="list">
+                <li><a href="#jinqiaoStation">金桥客运站</a></li>
+                <li><a href="#jiangnanStation">江南客运站</a></li>
+                <li><a href="#anjiStation">安吉客运站</a></li>
+                <li><a href="#langdongStation">琅东客运站</a></li>
+                <li><a href="#nanningbeidaStation">南宁北大客运中心</a></li>
+            </ul>
+        </div>
+
+        <div id="jinqiaoStation" class="panel" title="金桥客运站">
+            <h2 class="expanded" onclick="$('#jinqiaoStationInfo').toggle();">南宁金桥客运站</h2>
+            <p id="jinqiaoStationInfo">&nbsp;&nbsp;&nbsp;&nbsp;南宁金桥客运站位于南梧二级公路与邕宾旧公路之间、城市快速环道附近。核定项目总用地面积92294平方米，实际用地面积66667平方米，总建筑面积15405平方米，项目总投资8200万元。建成后的金桥客运站不仅是南宁市，还是我国西南地区目前最大的汽车客运站。</p>
+            <ul class="list">
+                <li>联系电话<span class="label label-success pull-right">(0771)2020330</span></li>
+                <li>联系地址<span class="label label-success pull-right">广西省南宁市市辖区</span></li>
+                <li class="divider">发车时刻表</li>
+                <li>宾阳<span class="label label-info pull-right">早上07:10至晚上20:10每隔20分钟发一班</span></li>
+                <li>上林<span class="label label-info pull-right">早上07:00至晚上20:40每隔30分钟发一班</span></li>
+                <li style="line-height: 2.5em">贵港<span class="label label-info pull-right" style="max-width: 380px;">08:00 08:40 09:20 10:00 10:40 11:20<br/> 12:00 12:40 13:20 14:00 14:40 15:20<br/> 16:00 16:40 17:20 18:00 18:40 19:40</span></li>
+                <li style="line-height: 2.5em">桂平<span class="label label-info pull-right" style="max-width: 380px;">08:20 09:00 09:40 10:20 10:50 11:20<br/> 11:50 12:20 12:50 13:20 13:50 14:20<br/> 14:50 15:20 16:20 17:20 18:20 19:30</span></li>
+                <li>大洋<span class="label label-info pull-right">10:20 14:20</span></li>
+                <li>江口<span class="label label-info pull-right">13:00</span></li>
+                <li>罗秀<span class="label label-info pull-right">14:30</span></li>
+                <li style="line-height: 2.5em">玉林<span class="label label-info pull-right">06:30 08:10 08:40 09:10 10:30<br/> 12:2012:50 13:50 16:00 16:40<br/> 17:30 18:3019:40 20:10 22:30</span></li>
+                <li>北流<span class="label label-info pull-right">07:30 10:00 14:00</span></li>
+                <li>新丰<span class="label label-info pull-right">08:20</span></li>
+                <li>六靖<span class="label label-info pull-right">12:20 15:00</span></li>
+                <li>六麻<span class="label label-info pull-right">13:20</span></li>
+                <li>陆川<span class="label label-info pull-right">07:10 08:10 09:20 10:00 11:20<br/> 12:20 13:30 14:30 16:40 19:30</span></li>
+                <li>清湖<span class="label label-info pull-right">06:50 09:00 12:40 14:40 15:30</span></li>
+                <li>乌石<span class="label label-info pull-right">18:20</span></li>
+                <li>岑溪<span class="label label-info pull-right">09:00 10:20 15:40</span></li>
+                <li>八步<span class="label label-info pull-right">12:30 18:00 20:00 22:10</span></li>
+                <li>容县<span class="label label-info pull-right">11:40 14:20</span></li>
+                <li>钟山<span class="label label-info pull-right">12:30 18:00 20:00 22:10</span></li>
+                <li>荔浦<span class="label label-info pull-right">09:00</span></li>
+                <li>忻城<span class="label label-info pull-right">08:30 12:10 12:50 13:10 14:30</span></li>
+                <li>柳州<span class="label label-info pull-right">07:50 08:30 12:30 13:50<br/> 14:50 15:50 17:10 18:00</span></li>
+                <li>来宾<span class="label label-info pull-right">12:20 13:00 18:20 19:00</span></li>
+                <li style="line-height: 2.5em">桂林<span class="label label-info pull-right">07:20 08:20 09:20 11:20<br/> 12:40 13:50 15:10 16:50<br/> 20:30 20:50 21:10 22:30</span></li>
+                <li>兴安<span class="label label-info pull-right">08:50 09:20 10:30 11:50 12:40<br/> 16:50 20:50 21:10 22:30</span></li>
+                <li>全州<span class="label label-info pull-right">08:50 09:30 11:50 12:40<br/> 16:50 20:50 21:10 22:30</span></li>
+                <li style="line-height: 2.5em">金城江<span class="label label-info pull-right">07:00 09:00 09:30 10:00<br/> 11:00 11:30 12:40 13:00<br/> 14:00 15:00 16:30 19:00</span></li>
+                <li>南丹<span class="label label-info pull-right">08:00 11:50</span></li>
+                <li>小平阳<span class="label label-info pull-right">13:50 14:30</span></li>
+                <li>宜州<span class="label label-info pull-right">11:50 13:50 16:00 22:30</span></li>
+                <li>罗城<span class="label label-info pull-right">09:10 17:10 21:50</span></li>
+                <li>都安<span class="label label-info pull-right">06:10 06:50 07:30<br/> 07:50 08:00 10:00</span></li>
+                <li>田阳<span class="label label-info pull-right">09:30</span></li>
+                <li>天峨<span class="label label-info pull-right">10:00 17:00</span></li>
+                <li>龙州<span class="label label-info pull-right">09:30</span></li>
+                <li>环江<span class="label label-info pull-right">08:00 09:30 14:30 17:00</span></li>
+                <li>北海<span class="label label-info pull-right">12:20</span></li>
+                <li>巴马<span class="label label-info pull-right">10:00 16:00</span></li>
+                <li>凤山<span class="label label-info pull-right">16:00</span></li>
+                <li>靖西<span class="label label-info pull-right">06:50 07:20 09:30</span></li>
+                <li>凌云<span class="label label-info pull-right">20:00</span></li>
+                <li>宁明<span class="label label-info pull-right">07:50 12:00</span></li>
+                <li>融水<span class="label label-info pull-right">08:30 15:10 17:10</span></li>
+                <li>崇左<span class="label label-info pull-right">08:00 09:30</span></li>
+                <li>凭祥<span class="label label-info pull-right">07:50 12:00</span></li>
+                <li>百色<span class="label label-info pull-right">06:10 06:50 07:30 09:00 11:00<br/> 12:10 13:00 15:00 17:30</span></li>
+                <li>梧州<span class="label label-info pull-right">07:30 08:10 09:30 12:30 17:00<br/> 19:30 21:10 22:10 22:50</span></li>
+                <li style="line-height: 2.5em">黎塘<span class="label label-info pull-right">08:30 09:10 09:50 10:30 10:50<br/> 11:50 13:50 14:50 15:30 16:10<br/> 16:50 17:30 18:30</span></li>
+                <li>乔贤<span class="label label-info pull-right">09:30 11:10 16:30</span></li>
+                <li>西燕<span class="label label-info pull-right">14:50</span></li>
+                <li>塘红<span class="label label-info pull-right">10:30</span></li>
+                <li>三里<span class="label label-info pull-right">09:10 15:50</span></li>
+                <li>木山<span class="label label-info pull-right">10:10</span></li>
+                <li>中可<span class="label label-info pull-right">10:50</span></li>
+                <li>加芳<span class="label label-info pull-right">12:10</span></li>
+                <li>金钗<span class="label label-info pull-right">12:30</span></li>
+                <li style="line-height: 3.0em">平南<span class="label label-info pull-right">07:00 07:50 08:40 09:20 10:00 10:40<br/> 11:20 12:00 12:20 13:00 13:40 14:20<br/> 15:00 15:50 16:30 17:10 17:50 18:30<br/> 19:30 20:30</span></li>
+                <li>藤县<span class="label label-info pull-right">07:50 18:30</span></li>
+                <li>桐林<span class="label label-info pull-right">09:30</span></li>
+                <li>天平<span class="label label-info pull-right">08:10 15:30</span></li>
+                <li>武宣<span class="label label-info pull-right">09:10 14:10 14:50</span></li>
+                <li>象州<span class="label label-info pull-right">15:30</span></li>
+                <li>合山<span class="label label-info pull-right">09:00 09:10 10:10 11:10 12:10<br/> 13:00 16:10 17:10 18:30</span></li>
+                <li>恭城<span class="label label-info pull-right">15:50 16:50</span></li>
+                <li>平阳<span class="label label-info pull-right">13:30</span></li>
+                <li>古蓬<span class="label label-info pull-right">08:50 13:50</span></li>
+                <li>廖平<span class="label label-info pull-right">15:10</span></li>
+                <li>糖厂<span class="label label-info pull-right">12:10</span></li>
+                <li>灌阳<span class="label label-info pull-right">10:30 15:50</span></li>
+                <li>文桥<span class="label label-info pull-right">09:50</span></li>
+                <li>平乐<span class="label label-info pull-right">18:50</span></li>
+                <li>广州<span class="label label-info pull-right">10:30 15:10 15:50 17:50 18:00 18:30<br/> 18:50 19:00 20:00 20:20 21:30</span></li>
+                <li>深圳<span class="label label-info pull-right">13:30 16:10 16:50 19:15 20:00 21:00</span></li>
+                <li>太平<span class="label label-info pull-right">19:50</span></li>
+                <li>银湖<span class="label label-info pull-right">17:30</span></li>
+                <li>东莞总站<span class="label label-info pull-right">09:30 14:10 15:30 15:50 16:50 17:10<br/> 17:30 18:30</span></li>
+                <li>龙岗<span class="label label-info pull-right">13:10 13:50 14:50 15:10 15:40 16:30<br/> 17:30 18:30</span></li>
+                <li>珠海<span class="label label-info pull-right">19:00 19:20</span></li>
+                <li>上海<span class="label label-info pull-right">13:00</span></li>
+                <li>中山<span class="label label-info pull-right">14:50 16:10 16:30 16:50 17:30 18:30</span></li>
+                <li>蛇口<span class="label label-info pull-right">18:50</span></li>
+                <li>龙华<span class="label label-info pull-right">14:10 16:30</span></li>
+                <li>大朗<span class="label label-info pull-right">16:10</span></li>
+                <li>东莞长安<span class="label label-info pull-right">12:10 16:30</span></li>
+                <li>桥头<span class="label label-info pull-right">14:30</span></li>
+                <li>常平<span class="label label-info pull-right">15:10 17:50</span></li>
+                <li>石排<span class="label label-info pull-right">13:00</span></li>
+                <li>宝安<span class="label label-info pull-right">17:50</span></li>
+                <li>顺德<span class="label label-info pull-right">15:40</span></li>
+                <li>惠州<span class="label label-info pull-right">17:30</span></li>
+                <li>花都<span class="label label-info pull-right">19:30</span></li>
+                <li>罗定<span class="label label-info pull-right">17:30</span></li>
+                <li>海安<span class="label label-info pull-right">17:10</span></li>
+                <li>小榄镇<span class="label label-info pull-right">18:10</span></li>
+                <li>番禺<span class="label label-info pull-right">18:50</span></li>
+                <li>汕头<span class="label label-info pull-right">08:30 13:10</span></li>
+                <li>信宜<span class="label label-info pull-right">21:30</span></li>
+                <li>潮州<span class="label label-info pull-right">12:10</span></li>
+                <li>揭阳<span class="label label-info pull-right">15:10</span></li>
+                <li>漳州<span class="label label-info pull-right">13:50</span></li>
+                <li>厦门<span class="label label-info pull-right">10:50</span></li>
+                <li>石狮<span class="label label-info pull-right">12:10</span></li>
+                <li>莆田<span class="label label-info pull-right">10:10</span></li>
+                <li>福州<span class="label label-info pull-right">12:50</span></li>
+                <li>福鼎<span class="label label-info pull-right">09:30</span></li>
+                <li>道县<span class="label label-info pull-right">16:50</span></li>
+                <li>永州<span class="label label-info pull-right">20:50</span></li>
+                <li>涟源<span class="label label-info pull-right">15:00</span></li>
+                <li>衡阳<span class="label label-info pull-right">15:00</span></li>
+                <li>新化<span class="label label-info pull-right">12:50</span></li>
+                <li>文山<span class="label label-info pull-right">10:00 11:00 15:00</span></li>
+                <li>富宁<span class="label label-info pull-right">07:10</span></li>
+                <li>南昌<span class="label label-info pull-right">16:00</span></li>
+                <li>重庆<span class="label label-info pull-right">18:00</span></li>
+                <li>海口<span class="label label-info pull-right">17:00</span></li>
+                <li>南阳<span class="label label-info pull-right">14:00</span></li>
+                <li>义乌<span class="label label-info pull-right">15:00</span></li>
+            </ul>
+        </div>
+
+        <div id="jiangnanStation" class="panel" title="江南客运站">
+            <h2 class="expanded" onclick="$('#jiangnanStationInfo').toggle();">南宁江南客运站</h2>
+            <div id="jiangnanStationInfo" class="article">
+                <p>市区可乘坐公交线路11、21、23、25、31、41、55、68、81、207、607路、大沙田专线到达。</p>
+                <p>途径江南客运站公交线路：11路、15路、21路、23路、25路、29路、31路、41路、55路、68路、81路、86路、207路、501路、607路、705路、801路、802路、火车站至大沙田专线</p>
+            </div>
+            <ul class="list">
+                <li>咨询、订票热线<span class="label label-success pull-right">96336、4518200、8050530、8050531</span></li>
+                <li>包车电话<span class="label label-success pull-right">4518202、8050519</span></li>
+                <li>行包托运<span class="label label-success pull-right">4518222</span></li>
+                <li>地址<span class="label label-success pull-right">广西南宁市星光大道236</span></li>
+                <li class="divider">发车时刻表</li>
+                <li>
+                    <h3>南宁-梧州</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：梧州市金辉汽车站</p>
+                    <p>发车时间：08:30-23：30，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-柳州</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：柳州市汽车南站</p>
+                    <p>发车时间：08:30-21：00，平均每40分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-桂林</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：桂林市汽车总站</p>
+                    <p>发车时间：09:00-21:20，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-恭城</h3>
+                    <h5>票价: 120元</h5>
+                    <p>终点站：恭城县汽车总站</p>
+                    <p>发车时间：10:00</p>
+                </li>
+                <li>
+                    <h3>南宁-全州</h3>
+                    <h5>票价: 118元</h5>
+                    <p>终点站：全州县汽车总站</p>
+                    <p>发车时间：13:30</p>
+                </li>
+                <li>
+                    <h3>南宁-全州</h3>
+                    <h5>票价: 110元</h5>
+                    <p>终点站：全州县汽车总站</p>
+                    <p>发车时间：21:20</p>
+                </li>
+                <li>
+                    <h3>南宁-兴安</h3>
+                    <h5>票价: 108元</h5>
+                    <p>终点站：兴安县汽车总站</p>
+                    <p>发车时间：13:30</p>
+                </li>
+                <li>
+                    <h3>南宁-兴安</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：兴安县汽车总站</p>
+                    <p>发车时间：21:20</p>
+                </li>
+                <li>
+                    <h3>南宁-阳朔</h3>
+                    <h5>票价: 0元</h5>
+                    <p>终点站：阳朔县汽车总站</p>
+                    <p>发车时间：10:00</p>
+                </li>
+                <li>
+                    <h3>南宁-防城</h3>
+                    <h5>票价: 48元</h5>
+                    <p>终点站：防城区汽车总站</p>
+                    <p>发车时间：06:50-22:40，平均每20分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-东兴</h3>
+                    <h5>票价: 58元</h5>
+                    <p>终点站：东兴市汽车总站</p>
+                    <p>发车时间：07:20        08:00        08:40        09:20        10:00        10:30        11:00        11:31        12:10        12:30        12:50        13:00        13:10        13:30        13:55        14:30        15:00        15:30        16:00        16:30        17:00        17:30        18:10        18:40        19:20          20:00           20:50          21:30           22:30</p>
+                </li>
+                <li>
+                    <h3>南宁-东兴</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：东兴市汽车总站</p>
+                    <p>发车时间：2:00           2:40            3:20           4:00            4:30           5:00
+                        5:25           5:50            6:30           7:00            7:30           8:05
+                        8:30           9:00            9:30           10:00           10:30         11:00
+                        11:35          12:05          12:30           13:35           14:05         14:35
+                        16:10</p>
+                </li>
+                <li>
+                    <h3>南宁-防城港</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：防城港市港口汽车客运站</p>
+                    <p>发车时间：07:40        09:40        10:20        11:10        12:10        12:40        13:20        14:40        16:20        16:50        17:20        17:50        19:00          19:40           21:00</p>
+                </li>
+                <li>
+                    <h3>南宁-防城港</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：防城港市港口汽车客运站</p>
+                    <p>发车时间：06:50        08:30        09:10        11:40        15:10        15:50        18:20</p>
+                </li>
+                <li>
+                    <h3>南宁-防城港</h3>
+                    <h5>票价: 45元</h5>
+                    <p>终点站：防城港市港口汽车客运站</p>
+                    <p>发车时间：12:50</p>
+                </li>
+                <li>
+                    <h3>南宁-钦州</h3>
+                    <h5>票价: 40元</h5>
+                    <p>终点站：钦州市汽车总站</p>
+                    <p>发车时间：07:20        08:00        08:40        09:00        09:20        09:30        10:00        10:30        12:00        12:15        13:00        13:40        14:30        15:00        15:30        15:40        16:00        16:30        17:00          17:10           17:40          18:20</p>
+                </li>
+                <li>
+                    <h3>南宁-钦州港</h3>
+                    <h5>票价: 48元</h5>
+                    <p>终点站：钦州港区汽车站</p>
+                    <p>发车时间：09:00  15:40</p>
+                </li>
+                <li>
+                    <h3>南宁-三娘湾</h3>
+                    <h5>票价: 44元</h5>
+                    <p>终点站：钦州市三娘湾景区站</p>
+                    <p>发车时间：14:00</p>
+                </li>
+                <li>
+                    <h3>南宁-上思</h3>
+                    <h5>票价: 35元</h5>
+                    <p>终点站：上思县汽车总站</p>
+                    <p>发车时间：06:40-19:40，每40分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-浦北</h3>
+                    <h5>票价: 35元</h5>
+                    <p>终点站：浦北县汽车总站</p>
+                    <p>发车时间：08:20        10:10        11:10        11:50        12:20        13:50        14:50          15:30           16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-浦北</h3>
+                    <h5>票价: 68元</h5>
+                    <p>终点站：浦北县汽车总站</p>
+                    <p>发车时间：09:40   14:40</p>
+                </li>
+                <li>
+                    <h3>南宁-灵山</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：灵山县汽车总站</p>
+                    <p>发车时间：08:00        09:20        10:20        11:30        12:50        13:50        15:00          16:30           18:30          20:00</p>
+                </li>
+                <li>
+                    <h3>南宁-北海</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：北海市汽车总站</p>
+                    <p>发车时间：07:30        08:15        09:00        09:30        10:00        10:20        10:50        11:50        12:20        12:50        13:20        13:50        14:10        14:40        15:10        15:30        16:00        16:20        17:00        18:00        18:30        19:00        19:30        20:00        20:30        21:00</p>
+                </li>
+                <li>
+                    <h3>南宁-合浦</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：合浦县汽车总站</p>
+                    <p>发车时间：08:20-19:30，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-山口</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：合浦县山口镇站</p>
+                    <p>发车时间：11:30   13:15</p>
+                </li>
+                <li>
+                    <h3>南宁-公馆</h3>
+                    <h5>票价: 68元</h5>
+                    <p>终点站：合浦县公馆镇站</p>
+                    <p>发车时间：12:10        12:30        13:00        13:20        15:30</p>
+                </li>
+                <li>
+                    <h3>南宁-扶绥</h3>
+                    <h5>票价: 23元</h5>
+                    <p>终点站：扶绥县汽车总站</p>
+                    <p>发车时间：06:50-20:00，平均每14分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-崇左</h3>
+                    <h5>票价: 40元</h5>
+                    <p>终点站：崇左市客运站</p>
+                    <p>发车时间：08:20        09:00        09:30        10:00        10:30        11:00        11:30        12:15        13:00        13:50        14:30        15:00        15:30          16:00          16:30          17:30          18:30         19:30</p>
+                </li>
+                <li>
+                    <h3>南宁-龙州</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：龙州县汽车总站</p>
+                    <p>发车时间：07:40        09:00        10:00        11:00        12:00        12:40        13:30        14:30        15:10        15:50        16:40        18:00        17:30</p>
+                </li>
+                <li>
+                    <h3>南宁-水口</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：龙州县水口镇站</p>
+                    <p>发车时间：09:00        11:00        12:00        14:30        19:30</p>
+                </li>
+                <li>
+                    <h3>南宁-宁明</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：宁明县汽车总站</p>
+                    <p>发车时间：06:55-17:20，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-凭祥</h3>
+                    <h5>票价: 33元</h5>
+                    <p>终点站：凭祥市汽车总站</p>
+                    <p>发车时间：07:30-20:00，平均每40分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-左州</h3>
+                    <h5>票价: 38元</h5>
+                    <p>终点站：崇左市左州镇站</p>
+                    <p>发车时间：10:00        11:30        13:30        15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-那隆</h3>
+                    <h5>票价: 36元</h5>
+                    <p>终点站：崇左市那隆镇站</p>
+                    <p>发车时间：07:50        10:40        12:10        13:50        15:30</p>
+                </li>
+                <li>
+                    <h3>南宁-百色</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：百色市汽车总站</p>
+                    <p>发车时间：07:00        09:30        11:20        12:30        13:30        15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-百色</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：百色市汽车总站</p>
+                    <p>发车时间：09:00        10:30        11:30        14:30</p>
+                </li>
+                <li>
+                    <h3>南宁-靖西</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：靖西县汽车总站</p>
+                    <p>发车时间：07:10        09:00        10:20        11:40        18:00        20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-都安</h3>
+                    <h5>票价: 48元</h5>
+                    <p>终点站：都安县汽车总站</p>
+                    <p>发车时间：10:30        12:10        13:10        14:30        16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-拉烈</h3>
+                    <h5>票价: 0元</h5>
+                    <p>终点站：都安县拉烈乡站</p>
+                    <p>发车时间：09:20        11:50</p>
+                </li>
+                <li>
+                    <h3>南宁-宜州</h3>
+                    <h5>票价: 110元</h5>
+                    <p>终点站：宜州市汽车总站</p>
+                    <p>发车时间：11:30        12:30        16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-环江</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：环江县汽车总站</p>
+                    <p>发车时间：07:40        16:50</p>
+                </li>
+                <li>
+                    <h3>南宁-天峨</h3>
+                    <h5>票价: 120元</h5>
+                    <p>终点站：天峨县汽车总站</p>
+                    <p>发车时间：07:00        08:30        16:40</p>
+                </li>
+                <li>
+                    <h3>南宁-巴马</h3>
+                    <h5>票价: 90元</h5>
+                    <p>终点站：巴马县汽车总站</p>
+                    <p>发车时间：06:30        07:40        09:40        12:50        13:40</p>
+                </li>
+                <li>
+                    <h3>南宁-河池金城江</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：河池金城江区城东客运站</p>
+                    <p>发车时间：07:00        09:40        11:30        15:40        16:50</p>
+                </li>
+                <li>
+                    <h3>南宁-玉林</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：玉林市汽车总站</p>
+                    <p>发车时间：07:40-18:30，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-北流</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：北流市汽车总站</p>
+                    <p>发车时间：09:40        10:40        11:50        12:40        13:40        15:00        16:00          17:30           18:30</p>
+                </li>
+                <li>
+                    <h3>南宁-陆川</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：陆川县汽车总站</p>
+                    <p>发车时间：08:50        10:20        14:00</p>
+                </li>
+                <li>
+                    <h3>南宁-沙坡</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：陆川县沙坡镇站</p>
+                    <p>发车时间：10:20</p>
+                </li>
+                <li>
+                    <h3>南宁-容县</h3>
+                    <h5>票价: 70元</h5>
+                    <p>终点站：容县汽车总站</p>
+                    <p>发车时间：16:00        09:50</p>
+                </li>
+                <li>
+                    <h3>南宁-博白</h3>
+                    <h5>票价: 78元</h5>
+                    <p>终点站：博白县汽车总站</p>
+                    <p>发车时间：07:40-16:00，平均每50分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-大伦</h3>
+                    <h5>票价: 70元</h5>
+                    <p>终点站：北流市大伦镇站</p>
+                    <p>发车时间：14:40</p>
+                </li>
+                <li>
+                    <h3>南宁-深圳龙岗</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：深圳龙岗区汽车总站</p>
+                    <p>发车时间：18:50        22:00</p>
+                </li>
+                <li>
+                    <h3>南宁-广州</h3>
+                    <h5>票价: 188元</h5>
+                    <p>终点站：广州市广东省汽车客运站</p>
+                    <p>发车时间：09:00        11:00        12:30        15:30        17:30        20:40        21:00</p>
+                </li>
+                <li>
+                    <h3>南宁-湛江</h3>
+                    <h5>票价: 98元</h5>
+                    <p>终点站：湛江市汽车客运总站</p>
+                    <p>发车时间：09:00        11:30        14:00        15:30        17:00</p>
+                </li>
+                <li>
+                    <h3>南宁-三亚</h3>
+                    <h5>票价: 250元</h5>
+                    <p>终点站：广州市广东省汽车客运站</p>
+                    <p>发车时间：19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-长沙</h3>
+                    <h5>票价: 270元</h5>
+                    <p>终点站：长沙市汽车站</p>
+                    <p>发车时间：16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-吴川</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：吴川市汽车站</p>
+                    <p>发车时间：09:20        13:40        17:20</p>
+                </li>
+                <li>
+                    <h3>南宁-茂名</h3>
+                    <h5>票价: 120元</h5>
+                    <p>终点站：茂名市汽车总站</p>
+                    <p>发车时间：11:30        15:00        18:00</p>
+                </li>
+                <li>
+                    <h3>南宁-电白</h3>
+                    <h5>票价: 125元</h5>
+                    <p>终点站：电白县汽车站</p>
+                    <p>发车时间：09:40        12:20        15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-阳江</h3>
+                    <h5>票价: 140元</h5>
+                    <p>终点站：阳江市汽车总站</p>
+                    <p>发车时间：09:30        10:30        12:30        16:00        18:00        20:00</p>
+                </li>
+                <li>
+                    <h3>南宁-江门</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：江门市长途汽车站</p>
+                    <p>发车时间：09:30        10:30        18:50</p>
+                </li>
+                <li>
+                    <h3>南宁-中山</h3>
+                    <h5>票价: 168元</h5>
+                    <p>终点站：中山市汽车总站</p>
+                    <p>发车时间：9:30        10:30        15:00        16:00        17:30        20:00        20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-番禺</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：广州番禺区汽车客运站</p>
+                    <p>发车时间：10:40        16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-肇庆</h3>
+                    <h5>票价: 150元</h5>
+                    <p>终点站：肇庆市汽车站</p>
+                    <p>发车时间：09:30</p>
+                </li>
+                <li>
+                    <h3>南宁-越秀南</h3>
+                    <h5>票价: 188元</h5>
+                    <p>终点站：越秀南区汽车站</p>
+                    <p>发车时间：09:00        11:00        12:30        15:30        18:00        18:30        19:00        19:40        20:00        20:30        21:00        21:30        22:00          22:30</p>
+                </li>
+                <li>
+                    <h3>南宁-南阳</h3>
+                    <h5>票价: 300元</h5>
+                    <p>终点站：南阳市汽车站</p>
+                    <p>发车时间：11:00</p>
+                </li>
+                <li>
+                    <h3>南宁-福州</h3>
+                    <h5>票价: 390元</h5>
+                    <p>终点站：福州市汽车西站</p>
+                    <p>发车时间：14:00        15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-昆明</h3>
+                    <h5>票价: 220元</h5>
+                    <p>终点站：昆明市汽车客运站</p>
+                    <p>发车时间：20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-上海</h3>
+                    <h5>票价: 488元</h5>
+                    <p>终点站：上海市长途汽车客运总站</p>
+                    <p>发车时间：16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-成都</h3>
+                    <h5>票价: 330元</h5>
+                    <p>终点站：成都市汽车站</p>
+                    <p>发车时间：13:50</p>
+                </li>
+                <li>
+                    <h3>南宁-重庆</h3>
+                    <h5>票价: 230元</h5>
+                    <p>终点站：重庆市菜园坝汽车站</p>
+                    <p>发车时间：17:00    17:45</p>
+                </li>
+                <li>
+                    <h3>南宁-义乌</h3>
+                    <h5>票价: 330元</h5>
+                    <p>终点站：义乌市江东汽车站</p>
+                    <p>发车时间：14:40</p>
+                </li>
+                <li>
+                    <h3>南宁-贵阳</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：贵阳市汽车站</p>
+                    <p>发车时间：19:00        20:10</p>
+                </li>
+                <li>
+                    <h3>南宁-金滩</h3>
+                    <h5>票价: 53元</h5>
+                    <p>终点站：东兴市金滩景区站</p>
+                    <p>发车时间：09:10        11:50        17:50</p>
+                </li>
+                <li>
+                    <h3>南宁-香港</h3>
+                    <h5>票价: 230元</h5>
+                    <p>终点站：香港区站</p>
+                    <p>发车时间：21:10</p>
+                </li>
+                <li>
+                    <h3>南宁-佛山</h3>
+                    <h5>票价: 188元</h5>
+                    <p>终点站：佛山市长途汽车站</p>
+                    <p>发车时间：20:50</p>
+                </li>
+                <li>
+                    <h3>南宁-凤岗</h3>
+                    <h5>票价: 208元</h5>
+                    <p>终点站：东莞市凤岗镇站</p>
+                    <p>发车时间：17:11        16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-顺德</h3>
+                    <h5>票价: 158元</h5>
+                    <p>终点站：顺德区汽车站</p>
+                    <p>发车时间：09:30        20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-株洲</h3>
+                    <h5>票价: 220元</h5>
+                    <p>终点站：株洲市长途汽车站</p>
+                    <p>发车时间：17:00</p>
+                </li>
+                <li>
+                    <h3>南宁-安乡</h3>
+                    <h5>票价: 250元</h5>
+                    <p>终点站：安乡县汽车站</p>
+                    <p>发车时间：14:30</p>
+                </li>
+                <li>
+                    <h3>南宁-湛江霞山</h3>
+                    <h5>票价: 108元</h5>
+                    <p>终点站：湛江霞山区汽车客运总站</p>
+                    <p>发车时间：18：00</p>
+                </li>
+                <li>
+                    <h3>南宁-中山小榄</h3>
+                    <h5>票价: 168元</h5>
+                    <p>终点站：中山小榄镇车站</p>
+                    <p>发车时间：09:30        10:30        15:00        16:40        17:30        20:00        20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-襄樊</h3>
+                    <h5>票价: 348元</h5>
+                    <p>终点站：襄樊站</p>
+                    <p>发车时间：12：00</p>
+                </li>
+                <li>
+                    <h3>南宁-常州</h3>
+                    <h5>票价: 450元</h5>
+                    <p>终点站：常州站</p>
+                    <p>发车时间：09：30</p>
+                </li>
+                <li>
+                    <h3>南宁-靖江</h3>
+                    <h5>票价: 450元</h5>
+                    <p>终点站：靖江市汽车站</p>
+                    <p>发车时间：12:05</p>
+                </li>
+                <li>
+                    <h3>南宁-瑞安</h3>
+                    <h5>票价: 500元</h5>
+                    <p>终点站：瑞安市汽车站</p>
+                    <p>发车时间：10:30</p>
+                </li>
+                <li>
+                    <h3>南宁-合肥</h3>
+                    <h5>票价: 388元</h5>
+                    <p>终点站：合肥市汽车站</p>
+                    <p>发车时间：11:30</p>
+                </li>
+                <li>
+                    <h3>南宁-珠海上冲</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：珠海上冲站</p>
+                    <p>发车时间：10:19    14:20</p>
+                </li>
+                <li>
+                    <h3>南宁-珠海上冲</h3>
+                    <h5>票价: 180元</h5>
+                    <p>终点站：珠海上冲站</p>
+                    <p>发车时间：20:00</p>
+                </li>
+                <li>
+                    <h3>南宁-东莞</h3>
+                    <h5>票价: 150元</h5>
+                    <p>终点站：东莞市汽车总站</p>
+                    <p>发车时间：08:30</p>
+                </li>
+                <li>
+                    <h3>南宁-广州</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：广州市越秀南客运站</p>
+                    <p>发车时间：18:00    19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-福州</h3>
+                    <h5>票价: 360元</h5>
+                    <p>终点站：福州市汽车西站</p>
+                    <p>发车时间：13:00</p>
+                </li>
+                <li>
+                    <h3>南宁-三亚</h3>
+                    <h5>票价: 250元</h5>
+                    <p>终点站：三亚市汽车站</p>
+                    <p>发车时间：16:00</p>
+                </li>
+            </ul>
+        </div>
+
+        <div id="anjiStation" class="panel" title="安吉客运站">
+            <h2 class="expanded" onclick="$('#anjiStationInfo').toggle();">南宁安吉客运站</h2>
+            <div id="anjiStationInfo" class="article">
+                <p>市区可乘坐2、32、36、41、54、67、80、206、222、603、610路到达。</p>
+            </div>
+            <ul class="list">
+                <li>安吉客运站订票电话<span class="label label-success pull-right">0771-3109661　 3109662</span></li>
+                <li>货物托运<span class="label label-success pull-right">0771-3110939</span></li>
+                <li>地址<span class="label label-success pull-right">广西南宁市安吉大道42号</span></li>
+                <li class="divider">发车时刻表</li>
+                <li>
+                    <h3>南宁-梧州</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：梧州市金辉汽车站</p>
+                    <p>发车时间：08:30-23：30，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-柳州</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：柳州市汽车南站</p>
+                    <p>发车时间：08:30-21：00，平均每40分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-桂林</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：桂林市汽车总站</p>
+                    <p>发车时间：09:00-21:20，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-恭城</h3>
+                    <h5>票价: 120元</h5>
+                    <p>终点站：恭城县汽车总站</p>
+                    <p>发车时间：10:00</p>
+                </li>
+                <li>
+                    <h3>南宁-全州</h3>
+                    <h5>票价: 118元</h5>
+                    <p>终点站：全州县汽车总站</p>
+                    <p>发车时间：13:30</p>
+                </li>
+                <li>
+                    <h3>南宁-全州</h3>
+                    <h5>票价: 110元</h5>
+                    <p>终点站：全州县汽车总站</p>
+                    <p>发车时间：21:20</p>
+                </li>
+                <li>
+                    <h3>南宁-兴安</h3>
+                    <h5>票价: 108元</h5>
+                    <p>终点站：兴安县汽车总站</p>
+                    <p>发车时间：13:30</p>
+                </li>
+                <li>
+                    <h3>南宁-兴安</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：兴安县汽车总站</p>
+                    <p>发车时间：21:20</p>
+                </li>
+                <li>
+                    <h3>南宁-阳朔</h3>
+                    <h5>票价: 0元</h5>
+                    <p>终点站：阳朔县汽车总站</p>
+                    <p>发车时间：10:00</p>
+                </li>
+                <li>
+                    <h3>南宁-防城</h3>
+                    <h5>票价: 48元</h5>
+                    <p>终点站：防城区汽车总站</p>
+                    <p>发车时间：06:50-22:40，平均每20分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-东兴</h3>
+                    <h5>票价: 58元</h5>
+                    <p>终点站：东兴市汽车总站</p>
+                    <p>发车时间：07:20        08:00        08:40        09:20        10:00        10:30        11:00        11:31        12:10        12:30        12:50        13:00        13:10        13:30        13:55        14:30        15:00        15:30        16:00        16:30        17:00        17:30        18:10        18:40        19:20          20:00           20:50          21:30           22:30</p>
+                </li>
+                <li>
+                    <h3>南宁-东兴</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：东兴市汽车总站</p>
+                    <p>发车时间：2:00           2:40            3:20           4:00            4:30           5:00
+                        5:25           5:50            6:30           7:00            7:30           8:05
+                        8:30           9:00            9:30           10:00           10:30         11:00
+                        11:35          12:05          12:30           13:35           14:05         14:35
+                        16:10</p>
+                </li>
+                <li>
+                    <h3>南宁-防城港</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：防城港市港口汽车客运站</p>
+                    <p>发车时间：07:40        09:40        10:20        11:10        12:10        12:40        13:20        14:40        16:20        16:50        17:20        17:50        19:00          19:40           21:00</p>
+                </li>
+                <li>
+                    <h3>南宁-防城港</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：防城港市港口汽车客运站</p>
+                    <p>发车时间：06:50        08:30        09:10        11:40        15:10        15:50        18:20</p>
+                </li>
+                <li>
+                    <h3>南宁-防城港</h3>
+                    <h5>票价: 45元</h5>
+                    <p>终点站：防城港市港口汽车客运站</p>
+                    <p>发车时间：12:50</p>
+                </li>
+                <li>
+                    <h3>南宁-钦州</h3>
+                    <h5>票价: 40元</h5>
+                    <p>终点站：钦州市汽车总站</p>
+                    <p>发车时间：07:20        08:00        08:40        09:00        09:20        09:30        10:00        10:30        12:00        12:15        13:00        13:40        14:30        15:00        15:30        15:40        16:00        16:30        17:00          17:10           17:40          18:20</p>
+                </li>
+                <li>
+                    <h3>南宁-钦州港</h3>
+                    <h5>票价: 48元</h5>
+                    <p>终点站：钦州港区汽车站</p>
+                    <p>发车时间：09:00  15:40</p>
+                </li>
+                <li>
+                    <h3>南宁-三娘湾</h3>
+                    <h5>票价: 44元</h5>
+                    <p>终点站：钦州市三娘湾景区站</p>
+                    <p>发车时间：14:00</p>
+                </li>
+                <li>
+                    <h3>南宁-上思</h3>
+                    <h5>票价: 35元</h5>
+                    <p>终点站：上思县汽车总站</p>
+                    <p>发车时间：06:40-19:40，每40分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-浦北</h3>
+                    <h5>票价: 35元</h5>
+                    <p>终点站：浦北县汽车总站</p>
+                    <p>发车时间：08:20        10:10        11:10        11:50        12:20        13:50        14:50          15:30           16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-浦北</h3>
+                    <h5>票价: 68元</h5>
+                    <p>终点站：浦北县汽车总站</p>
+                    <p>发车时间：09:40   14:40</p>
+                </li>
+                <li>
+                    <h3>南宁-灵山</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：灵山县汽车总站</p>
+                    <p>发车时间：08:00        09:20        10:20        11:30        12:50        13:50        15:00          16:30           18:30          20:00</p>
+                </li>
+                <li>
+                    <h3>南宁-北海</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：北海市汽车总站</p>
+                    <p>发车时间：07:30        08:15        09:00        09:30        10:00        10:20        10:50        11:50        12:20        12:50        13:20        13:50        14:10        14:40        15:10        15:30        16:00        16:20        17:00        18:00        18:30        19:00        19:30        20:00        20:30        21:00</p>
+                </li>
+                <li>
+                    <h3>南宁-合浦</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：合浦县汽车总站</p>
+                    <p>发车时间：08:20-19:30，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-山口</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：合浦县山口镇站</p>
+                    <p>发车时间：11:30   13:15</p>
+                </li>
+                <li>
+                    <h3>南宁-公馆</h3>
+                    <h5>票价: 68元</h5>
+                    <p>终点站：合浦县公馆镇站</p>
+                    <p>发车时间：12:10        12:30        13:00        13:20        15:30</p>
+                </li>
+                <li>
+                    <h3>南宁-扶绥</h3>
+                    <h5>票价: 23元</h5>
+                    <p>终点站：扶绥县汽车总站</p>
+                    <p>发车时间：06:50-20:00，平均每14分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-崇左</h3>
+                    <h5>票价: 40元</h5>
+                    <p>终点站：崇左市客运站</p>
+                    <p>发车时间：08:20        09:00        09:30        10:00        10:30        11:00        11:30        12:15        13:00        13:50        14:30        15:00        15:30          16:00          16:30          17:30          18:30         19:30</p>
+                </li>
+                <li>
+                    <h3>南宁-龙州</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：龙州县汽车总站</p>
+                    <p>发车时间：07:40        09:00        10:00        11:00        12:00        12:40        13:30        14:30        15:10        15:50        16:40        18:00        17:30</p>
+                </li>
+                <li>
+                    <h3>南宁-水口</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：龙州县水口镇站</p>
+                    <p>发车时间：09:00        11:00        12:00        14:30        19:30</p>
+                </li>
+                <li>
+                    <h3>南宁-宁明</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：宁明县汽车总站</p>
+                    <p>发车时间：06:55-17:20，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-凭祥</h3>
+                    <h5>票价: 33元</h5>
+                    <p>终点站：凭祥市汽车总站</p>
+                    <p>发车时间：07:30-20:00，平均每40分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-左州</h3>
+                    <h5>票价: 38元</h5>
+                    <p>终点站：崇左市左州镇站</p>
+                    <p>发车时间：10:00        11:30        13:30        15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-那隆</h3>
+                    <h5>票价: 36元</h5>
+                    <p>终点站：崇左市那隆镇站</p>
+                    <p>发车时间：07:50        10:40        12:10        13:50        15:30</p>
+                </li>
+                <li>
+                    <h3>南宁-百色</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：百色市汽车总站</p>
+                    <p>发车时间：07:00        09:30        11:20        12:30        13:30        15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-百色</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：百色市汽车总站</p>
+                    <p>发车时间：09:00        10:30        11:30        14:30</p>
+                </li>
+                <li>
+                    <h3>南宁-靖西</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：靖西县汽车总站</p>
+                    <p>发车时间：07:10        09:00        10:20        11:40        18:00        20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-都安</h3>
+                    <h5>票价: 48元</h5>
+                    <p>终点站：都安县汽车总站</p>
+                    <p>发车时间：10:30        12:10        13:10        14:30        16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-拉烈</h3>
+                    <h5>票价: 0元</h5>
+                    <p>终点站：都安县拉烈乡站</p>
+                    <p>发车时间：09:20        11:50</p>
+                </li>
+                <li>
+                    <h3>南宁-宜州</h3>
+                    <h5>票价: 110元</h5>
+                    <p>终点站：宜州市汽车总站</p>
+                    <p>发车时间：11:30        12:30        16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-环江</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：环江县汽车总站</p>
+                    <p>发车时间：07:40        16:50</p>
+                </li>
+                <li>
+                    <h3>南宁-天峨</h3>
+                    <h5>票价: 120元</h5>
+                    <p>终点站：天峨县汽车总站</p>
+                    <p>发车时间：07:00        08:30        16:40</p>
+                </li>
+                <li>
+                    <h3>南宁-巴马</h3>
+                    <h5>票价: 90元</h5>
+                    <p>终点站：巴马县汽车总站</p>
+                    <p>发车时间：06:30        07:40        09:40        12:50        13:40</p>
+                </li>
+                <li>
+                    <h3>南宁-河池金城江</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：河池金城江区城东客运站</p>
+                    <p>发车时间：07:00        09:40        11:30        15:40        16:50</p>
+                </li>
+                <li>
+                    <h3>南宁-玉林</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：玉林市汽车总站</p>
+                    <p>发车时间：07:40-18:30，平均每小时发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-北流</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：北流市汽车总站</p>
+                    <p>发车时间：09:40        10:40        11:50        12:40        13:40        15:00        16:00          17:30           18:30</p>
+                </li>
+                <li>
+                    <h3>南宁-陆川</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：陆川县汽车总站</p>
+                    <p>发车时间：08:50        10:20        14:00</p>
+                </li>
+                <li>
+                    <h3>南宁-沙坡</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：陆川县沙坡镇站</p>
+                    <p>发车时间：10:20</p>
+                </li>
+                <li>
+                    <h3>南宁-容县</h3>
+                    <h5>票价: 70元</h5>
+                    <p>终点站：容县汽车总站</p>
+                    <p>发车时间：16:00        09:50</p>
+                </li>
+                <li>
+                    <h3>南宁-博白</h3>
+                    <h5>票价: 78元</h5>
+                    <p>终点站：博白县汽车总站</p>
+                    <p>发车时间：07:40-16:00，平均每50分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-大伦</h3>
+                    <h5>票价: 70元</h5>
+                    <p>终点站：北流市大伦镇站</p>
+                    <p>发车时间：14:40</p>
+                </li>
+                <li>
+                    <h3>南宁-深圳龙岗</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：深圳龙岗区汽车总站</p>
+                    <p>发车时间：18:50        22:00</p>
+                </li>
+                <li>
+                    <h3>南宁-广州</h3>
+                    <h5>票价: 188元</h5>
+                    <p>终点站：广州市广东省汽车客运站</p>
+                    <p>发车时间：09:00        11:00        12:30        15:30        17:30        20:40        21:00</p>
+                </li>
+                <li>
+                    <h3>南宁-湛江</h3>
+                    <h5>票价: 98元</h5>
+                    <p>终点站：湛江市汽车客运总站</p>
+                    <p>发车时间：09:00        11:30        14:00        15:30        17:00</p>
+                </li>
+                <li>
+                    <h3>南宁-三亚</h3>
+                    <h5>票价: 250元</h5>
+                    <p>终点站：广州市广东省汽车客运站</p>
+                    <p>发车时间：19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-长沙</h3>
+                    <h5>票价: 270元</h5>
+                    <p>终点站：长沙市汽车站</p>
+                    <p>发车时间：16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-吴川</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：吴川市汽车站</p>
+                    <p>发车时间：09:20        13:40        17:20</p>
+                </li>
+                <li>
+                    <h3>南宁-茂名</h3>
+                    <h5>票价: 120元</h5>
+                    <p>终点站：茂名市汽车总站</p>
+                    <p>发车时间：11:30        15:00        18:00</p>
+                </li>
+                <li>
+                    <h3>南宁-电白</h3>
+                    <h5>票价: 125元</h5>
+                    <p>终点站：电白县汽车站</p>
+                    <p>发车时间：09:40        12:20        15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-阳江</h3>
+                    <h5>票价: 140元</h5>
+                    <p>终点站：阳江市汽车总站</p>
+                    <p>发车时间：09:30        10:30        12:30        16:00        18:00        20:00</p>
+                </li>
+                <li>
+                    <h3>南宁-江门</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：江门市长途汽车站</p>
+                    <p>发车时间：09:30        10:30        18:50</p>
+                </li>
+                <li>
+                    <h3>南宁-中山</h3>
+                    <h5>票价: 168元</h5>
+                    <p>终点站：中山市汽车总站</p>
+                    <p>发车时间：9:30        10:30        15:00        16:00        17:30        20:00        20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-番禺</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：广州番禺区汽车客运站</p>
+                    <p>发车时间：10:40        16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-肇庆</h3>
+                    <h5>票价: 150元</h5>
+                    <p>终点站：肇庆市汽车站</p>
+                    <p>发车时间：09:30</p>
+                </li>
+                <li>
+                    <h3>南宁-越秀南</h3>
+                    <h5>票价: 188元</h5>
+                    <p>终点站：越秀南区汽车站</p>
+                    <p>发车时间：09:00        11:00        12:30        15:30        18:00        18:30        19:00        19:40        20:00        20:30        21:00        21:30        22:00          22:30</p>
+                </li>
+                <li>
+                    <h3>南宁-南阳</h3>
+                    <h5>票价: 300元</h5>
+                    <p>终点站：南阳市汽车站</p>
+                    <p>发车时间：11:00</p>
+                </li>
+                <li>
+                    <h3>南宁-福州</h3>
+                    <h5>票价: 390元</h5>
+                    <p>终点站：福州市汽车西站</p>
+                    <p>发车时间：14:00        15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-昆明</h3>
+                    <h5>票价: 220元</h5>
+                    <p>终点站：昆明市汽车客运站</p>
+                    <p>发车时间：20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-上海</h3>
+                    <h5>票价: 488元</h5>
+                    <p>终点站：上海市长途汽车客运总站</p>
+                    <p>发车时间：16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-成都</h3>
+                    <h5>票价: 330元</h5>
+                    <p>终点站：成都市汽车站</p>
+                    <p>发车时间：13:50</p>
+                </li>
+                <li>
+                    <h3>南宁-重庆</h3>
+                    <h5>票价: 230元</h5>
+                    <p>终点站：重庆市菜园坝汽车站</p>
+                    <p>发车时间：17:00    17:45</p>
+                </li>
+                <li>
+                    <h3>南宁-义乌</h3>
+                    <h5>票价: 330元</h5>
+                    <p>终点站：义乌市江东汽车站</p>
+                    <p>发车时间：14:40</p>
+                </li>
+                <li>
+                    <h3>南宁-贵阳</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：贵阳市汽车站</p>
+                    <p>发车时间：19:00        20:10</p>
+                </li>
+                <li>
+                    <h3>南宁-金滩</h3>
+                    <h5>票价: 53元</h5>
+                    <p>终点站：东兴市金滩景区站</p>
+                    <p>发车时间：09:10        11:50        17:50</p>
+                </li>
+                <li>
+                    <h3>南宁-香港</h3>
+                    <h5>票价: 230元</h5>
+                    <p>终点站：香港区站</p>
+                    <p>发车时间：21:10</p>
+                </li>
+                <li>
+                    <h3>南宁-佛山</h3>
+                    <h5>票价: 188元</h5>
+                    <p>终点站：佛山市长途汽车站</p>
+                    <p>发车时间：20:50</p>
+                </li>
+                <li>
+                    <h3>南宁-凤岗</h3>
+                    <h5>票价: 208元</h5>
+                    <p>终点站：东莞市凤岗镇站</p>
+                    <p>发车时间：17:11        16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-顺德</h3>
+                    <h5>票价: 158元</h5>
+                    <p>终点站：顺德区汽车站</p>
+                    <p>发车时间：09:30        20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-株洲</h3>
+                    <h5>票价: 220元</h5>
+                    <p>终点站：株洲市长途汽车站</p>
+                    <p>发车时间：17:00</p>
+                </li>
+                <li>
+                    <h3>南宁-安乡</h3>
+                    <h5>票价: 250元</h5>
+                    <p>终点站：安乡县汽车站</p>
+                    <p>发车时间：14:30</p>
+                </li>
+                <li>
+                    <h3>南宁-湛江霞山</h3>
+                    <h5>票价: 108元</h5>
+                    <p>终点站：湛江霞山区汽车客运总站</p>
+                    <p>发车时间：18：00</p>
+                </li>
+                <li>
+                    <h3>南宁-中山小榄</h3>
+                    <h5>票价: 168元</h5>
+                    <p>终点站：中山小榄镇车站</p>
+                    <p>发车时间：09:30        10:30        15:00        16:40        17:30        20:00        20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-襄樊</h3>
+                    <h5>票价: 348元</h5>
+                    <p>终点站：襄樊站</p>
+                    <p>发车时间：12：00</p>
+                </li>
+                <li>
+                    <h3>南宁-常州</h3>
+                    <h5>票价: 450元</h5>
+                    <p>终点站：常州站</p>
+                    <p>发车时间：09：30</p>
+                </li>
+                <li>
+                    <h3>南宁-靖江</h3>
+                    <h5>票价: 450元</h5>
+                    <p>终点站：靖江市汽车站</p>
+                    <p>发车时间：12:05</p>
+                </li>
+                <li>
+                    <h3>南宁-瑞安</h3>
+                    <h5>票价: 500元</h5>
+                    <p>终点站：瑞安市汽车站</p>
+                    <p>发车时间：10:30</p>
+                </li>
+                <li>
+                    <h3>南宁-合肥</h3>
+                    <h5>票价: 388元</h5>
+                    <p>终点站：合肥市汽车站</p>
+                    <p>发车时间：11:30</p>
+                </li>
+                <li>
+                    <h3>南宁-珠海上冲</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：珠海上冲站</p>
+                    <p>发车时间：10:19    14:20</p>
+                </li>
+                <li>
+                    <h3>南宁-珠海上冲</h3>
+                    <h5>票价: 180元</h5>
+                    <p>终点站：珠海上冲站</p>
+                    <p>发车时间：20:00</p>
+                </li>
+                <li>
+                    <h3>南宁-东莞</h3>
+                    <h5>票价: 150元</h5>
+                    <p>终点站：东莞市汽车总站</p>
+                    <p>发车时间：08:30</p>
+                </li>
+                <li>
+                    <h3>南宁-广州</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：广州市越秀南客运站</p>
+                    <p>发车时间：18:00    19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-福州</h3>
+                    <h5>票价: 360元</h5>
+                    <p>终点站：福州市汽车西站</p>
+                    <p>发车时间：13:00</p>
+                </li>
+                <li>
+                    <h3>南宁-三亚</h3>
+                    <h5>票价: 250元</h5>
+                    <p>终点站：三亚市汽车站</p>
+                    <p>发车时间：16:00</p>
+                </li>
+            </ul>
+        </div>
+
+        <div id="langdongStation" class="panel" title="琅东客运站">
+            <h2 class="expanded" onclick="$('#langdongStationInfo').toggle();">南宁琅东客运站</h2>
+            <div id="langdongStationInfo" class="article">
+                <p>701路、704路、706路、6路、25路、42路、52路、39路、76 路、45路、206路、87路、213路、89路、90路、609路、 603路</p>
+            </div>
+            <ul class="list">
+                <li>订票电话<span class="label label-success pull-right">0771-5508333 2102334 2102445</span></li>
+                <li class="divider">发车时刻表</li>
+                <li class="divider">跨国班线</li>
+                <li>越南 越南河内<span class="label label-info pull-right">08:20</span></li>
+                <li>越南海防<span class="label label-info pull-right">08:40  09:40</span></li>
+                <li>越南宁平<span class="label label-info pull-right">07:50  08:20</span></li>
+                <li>越南下龙湾<span class="label label-info pull-right">08:20</span></li>
+
+                <li class="divider">跨省班线</li>
+                <li>北京市 北京<span class="label label-info pull-right">10:30</span></li>
+                <li>上海市 上海<span class="label label-info pull-right">12:30</span></li>
+                <li>重庆市 重庆<span class="label label-info pull-right">14:30     15:30    16:30    17:30     18:00</span></li>
+                <li>重庆市 万州<span class="label label-info pull-right">14:30</span></li>
+                <li>重庆市 融水<span class="label label-info pull-right">08:30     14:00</span></li>
+                <li>特别行政区 香港<span class="label label-info pull-right">20:30</span></li>
+                <li>特别行政区 澳门<span class="label label-info pull-right">09:00     20:30    21:30    22:00</span></li>
+                <li style="line-height: 3em">广东省 广州<span class="label label-info pull-right">09:00   10:30   11:30  14:00  18:00<br/>  19:30  20:00  20:30   21:00  21:30<br/>   22:00   22:30   23:00</span></li>
+                <li style="line-height: 3em">广东省 深圳<span class="label label-info pull-right">09:30   11:00  18:30    19:00   19:30<br/>    20:00    20:30    21:00   21:30   22:00<br/>   22:30   23:00   23:30</span></li>
+                <li>广东省 龙岗<span class="label label-info pull-right">18:30    20:30    21:30</span></li>
+                <li>广东省 宝安<span class="label label-info pull-right">09:30    11:00    19:30   20:00    20:30<br/> 22:30   23:30</span></li>
+                <li>广东省 珠海<span class="label label-info pull-right">09:00    20:30   21:30    22:00</span></li>
+                <li>广东省 中山<span class="label label-info pull-right">20:00    21:00   22:30</span></li>
+                <li>广东省 惠州<span class="label label-info pull-right">19:30</span></li>
+                <li>广东省 惠阳<span class="label label-info pull-right">18:30</span></li>
+                <li>广东省 东莞<span class="label label-info pull-right">19:00     20:00    20:30    21:00</span></li>
+                <li>广东省 东莞长安<span class="label label-info pull-right">20:00</span></li>
+                <li>广东省 东莞太平<span class="label label-info pull-right">20:30</span></li>
+                <li>广东省 东莞凤岗<span class="label label-info pull-right">21:30</span></li>
+                <li>广东省 佛山<span class="label label-info pull-right">19:30     20:20    22:30</span></li>
+                <li>广东省 肇庆<span class="label label-info pull-right">10:00     20:20</span></li>
+                <li>广东省 江门<span class="label label-info pull-right">10:30     19:40    20:00     21:00</span></li>
+                <li>广东省 电白<span class="label label-info pull-right">15:30     17:00</span></li>
+                <li>广东省 茂名<span class="label label-info pull-right">08:40     11:30     13:15     14:10     15:30<br/>  17:00</span></li>
+                <li>广东省 海安<span class="label label-info pull-right">17:00     22:30</span></li>
+                <li>海南省 海口<span class="label label-info pull-right">12:30     17:00     18:00     19:30     20:30</span></li>
+                <li>海南省 三亚<span class="label label-info pull-right">17:00</span></li>
+                <li>湖南省 长沙<span class="label label-info pull-right">12:30    17:00     18:30</span></li>
+                <li>湖南省 衡阳<span class="label label-info pull-right">10:45</span></li>
+                <li>湖北省 武汉<span class="label label-info pull-right">12:30    18:30</span></li>
+                <li>湖北省 十堰<span class="label label-info pull-right">12:00</span></li>
+                <li>河南省 郑州<span class="label label-info pull-right">10:30    11:00</span></li>
+                <li>河南省 周口<span class="label label-info pull-right">10:00</span></li>
+                <li>河南省 驻马店<span class="label label-info pull-right">12:30</span></li>
+                <li>江苏省 无锡<span class="label label-info pull-right">13:30</span></li>
+                <li>贵州省 贵阳<span class="label label-info pull-right">10:30     19:00     19:30     20:00     21:00<br/> 22:00    23:00</span></li>
+                <li>贵州省 都匀<span class="label label-info pull-right">10:30     16:30     19:00     20:00     22:00<br/> 23:00</span></li>
+                <li>贵州省 遵义<span class="label label-info pull-right">14:30     18:00     19:00</span></li>
+                <li>四川省 成都<span class="label label-info pull-right">14:30     16:30</span></li>
+                <li>四川省 泸州<span class="label label-info pull-right">12:00     16:00</span></li>
+                <li>四川省 南充<span class="label label-info pull-right">12:00     15:00</span></li>
+                <li>云南省 昆明<span class="label label-info pull-right">19:30</span></li>
+                <li>云南省 文山<span class="label label-info pull-right">19:30</span></li>
+
+                <li class="divider">跨地市(广西区内)</li>
+                <li style="line-height: 15em">柳州市 柳州<span class="label label-info pull-right">06:50     07:20     07:35     07:50     08:00<br/>   08:10   08:30     08:45     08:55     09:00<br/>  09:10     09:20   09:30     09:40     09:50<br/>   10:00     10:10     10:20   10:30     10:40<br/>  10:45     10:50     11:00     11:10    11:20<br/>   11:30     11:40     11:45     12:00     12:10<br/> 12:20     12:25     12:30     12:35     12:40<br/>  12:50    13:00     13:05     13:10     13:20<br/>  13:30     13:50    14:00     14:10     14:20<br/> 14:25     14:30     14:40    14:50     15:00<br/> 15:10     15:25     15:35     15:45    16:00<br/>  16:15     16:20     16:30     16:50     17:00<br/> 17:10     17:20     17:30     17:40     17:50<br/>  18:00    18:10     18:20     18:30     18:40<br/>  18:50     19:00    19:15     19:30     19:45<br/>  20:00     20:15     20:30     21:15     21:50<br/>  22:10</span></li>
+                <li>柳州市 鹿寨<span class="label label-info pull-right">09:00     11:10     13:10    14:00     19:30<br/> 22:30     22:45</span></li>
+                <li>柳州市 融安<span class="label label-info pull-right">08:00     14:00     14:30</span></li>
+                <li>柳州市 柳城<span class="label label-info pull-right">08:30     09:10     13:30     14:00</span></li>
+                <li>柳州市 三江<span class="label label-info pull-right">08:00     14:30</span></li>
+                <li style="line-height: 10em">桂林市 桂林<span class="label label-info pull-right">07:30     08:00     08:15     08:30     08:45<br/> 09:00     09:15     09:30     09:45     09:55<br/>  10:05     10:15     10:25     10:35     10:45<br/> 11:00     11:05     11:15     11:30     11:45<br/> 12:15     12:20     12:30     12:40     12:50<br/> 13:00     13:15     13:30     13:45     14:00<br/> 14:15     14:30     14:45     15:00     15:05<br/> 15:15     15:30     15:40     15:50     16:00<br/>  16:15     16:30     16:45     17:00     17:15<br/>  17:30     17:45     18:00     18:15     18:30<br/> 19:00     19:30     20:00     20:30     21:00<br/> 21:30     22:00     23:30</span></li>
+                <li>桂林市 兴安<span class="label label-info pull-right">10:45     11:05     15:40     20:30    22:00</span></li>
+                <li>桂林市 全州<span class="label label-info pull-right">10:45     18:45     20:30     22:00</span></li>
+                <li>桂林市 龙胜<span class="label label-info pull-right">10:50     16:10</span></li>
+                <li>桂林市 恭城<span class="label label-info pull-right">11:00     16:20</span></li>
+                <li>桂林市 阳朔<span class="label label-info pull-right">08:50     11:00     15:15</span></li>
+                <li>桂林市 资源<span class="label label-info pull-right">10:05</span></li>
+                <li>桂林市 永福<span class="label label-info pull-right">14:00</span></li>
+                <li style="line-height: 3em">桂林市 荔浦<span class="label label-info pull-right">09:00   10:30   10:40  11:10   12:40<br/> 13:20   14:50   17:10   19:30   21:00<br/> 22:30   22:45</span></li>
+                <li>桂林市 平乐<span class="label label-info pull-right">09:20   09:40   11:10  15:30   16:40<br/> 21:00   22:45</span></li>
+                <li style="line-height: 14em">北海市 北海<span class="label label-info pull-right">07:00     07:30     07:40     08:00     08:20<br/>  08:30     08:40     08:50     09:00     09:10<br/> 09:20     09:30     09:40     09:50     10:00<br/> 10:10     10:20     10:30     10:40     10:50<br/>  11:00     11:10     11:20     11:30     11:40<br/> 11:50     12:00     12:10     12:20     12:30<br/>  12:35   12:40     12:50     13:00     13:10<br/> 13:20     13:30     13:40     13:50     14:00<br/>  14:10     14:15     14:20     14:30     14:40<br/>  14:50     15:00     15:10     15:20     15:30<br/>  15:40     15:50     16:00     16:10     16:20<br/>  16:30     16:40     16:50     17:00     17:10<br/>  17:20     17:30     17:40     17:50     18:00<br/> 18:10     18:20     18:30     18:40     18:50<br/> 19:00     19:15     19:20     19:30     19:40<br/>  19:50     20:00     20:15     20:30     20:45<br/> 21:00     21:30     22:00</span></li>
+                <li>北海市 银滩<span class="label label-info pull-right">07:40     11:10     15:00</span></li>
+                <li style="line-height: 3.5em">北海市 合浦<span class="label label-info pull-right">08:00     09:00     10:20     11:20     12:00<br/> 12:40     13:20     14:00     15:20     16:00<br/> 16:40     17:20     18:00     18:40     19:20<br/>  20:00     20:40     21:20</span></li>
+                <li style="line-height: 8em">钦州市 钦州<span class="label label-info pull-right">07:00     07:40     08:30     09:20     10:00<br/> 10:15     10:30     11:00     11:20     11:30<br/> 11:40     12:00     12:20     12:40     13:00<br/> 13:15     13:30     13:45     14:00     14:15<br/> 14:40     15:10     15:25     15:40     16:00<br/> 16:20     16:40     16:50     17:00     17:20<br/> 17:40     17:50     18:00     18:20     18:40<br/> 19:00     19:20     19:30     20:00     20:20<br/> 20:40     21:00     21:50     22:50</span></li>
+                <li>钦州市 钦州港<span class="label label-info pull-right">08:00    09:00     09:40    10:45     14:30<br/> 15:50</span></li>
+                <li style="line-height: 3em">钦州市 灵山<span class="label label-info pull-right">08:00     09:00     10:00    11:00    12:10<br/> 12:40    13:10   14:30    16:00   17:00<br/> 18:10    19:10     20:20</span></li>
+                <li style="line-height: 5em">防城港市 防城港<span class="label label-info pull-right">07:30     08:30     09:00     10:00<br/>  11:00    11:30     12:00     12:30<br/>  12:50     13:30   14:30     15:05<br/>  15:30     16:00     16:30    17:00<br/>   18:00     18:30     19:00    20:00<br/>   21:20</span></li>
+                <li style="line-height: 4em">防城港市 东兴<span class="label label-info pull-right">08:00     08:30     09:00    09:30     10:10<br/> 10:30   11:00     11:30   12:00   12:20<br/>   12:40   13:00   13:35     14:00     14:20<br/>  15:00    15:30    16:05   16:30   17:10<br/> 17:30   17:50   18:30   19:30   20:40</span></li>
+                <li style="line-height: 3em">贺州市 八步<span class="label label-info pull-right">09:00     10:00   11:00   12:00     14:00<br/>  18:00     21:30      22:30     23:00     23:10<br/>  23:50</span></li>
+                <li>贺州市 企沙<span class="label label-info pull-right">11:30     12:00     15:05     18:30</span></li>
+                <li>贺州市 钟山<span class="label label-info pull-right">09:40     12:50    21:00   22:45</span></li>
+                <li style="line-height: 3.5em">河池市 河池<span class="label label-info pull-right">08:00     09:00    09:50   10:00     10:30<br/> 11:00     11:30     12:00     13:00     13:30<br/>  14:00     14:30     15:00     16:30     18:00<br/> 18:30     19:20     21:30</span></li>
+                <li>河池市 昭平<span class="label label-info pull-right">10:40     12:40    22:30</span></li>
+                <li style="line-height: 11em">玉林市 玉林<span class="label label-info pull-right">07:00     07:30    08:00     08:20     08:40<br/>  08:50     09:00     09:10     09:20     09:40<br/>  10:00     10:10     10:20     10:30     10:40<br/>  10:50     11:00     11:15     11:30     11:45<br/>  12:00     12:10     12:20     12:30     12:40<br/>  12:50     13:00     13:10     13:20     13:30<br/>  13:40     13:45     13:50     14:00     14:20<br/>  14:40     15:00     15:15     15:20     15:40<br/>  16:00     16:15     16:40     16:45     17:00<br/>  17:20     17:30     17:40     17:50     18:00<br/>  18:10     18:30     18:45     19:00     19:15<br/>  19:20     19:30     19:40     20:00     20:10<br/>  20:20     20:40     21:00     21:30     22:00</span></li>
+                <li style="line-height: 3.5em">玉林市 宜州<span class="label label-info pull-right">08:20    09:00    09:30     10:00     11:00<br/>  12:00     12:45     13:30      14:00    14:30<br/>  15:30    16:30      17:30    18:00     18:30<br/>  19:30 </span></li>
+                <li>玉林市 罗城<span class="label label-info pull-right">09:30     12:00     14:00     15:30     16:30<br/>  18:00     18:30</span></li>
+                <li>玉林市 南丹<span class="label label-info pull-right">14:30</span></li>
+                <li>玉林市 天峨<span class="label label-info pull-right">09:30     12:40     15:30     19:30</span></li>
+                <li>玉林市 巴马<span class="label label-info pull-right">13:10</span></li>
+                <li style="line-height: 4em">玉林市 北流<span class="label label-info pull-right">07:30     08:15     09:10     09:25     09:50<br/> 10:20     11:10     12:10     13:00     13:30<br/>  14:10     14:40     15:15     15:50     16:10<br/>  16:40     17:15     18:00     18:15     18:55<br/>  19:15   19:50   21:00</span></li>
+                <li>玉林市 凤山<span class="label label-info pull-right">12:45</span></li>
+                <li>玉林市 都安<span class="label label-info pull-right">08:00     12:10     17:10</span></li>
+                <li style="line-height: 3em">玉林市 容县<span class="label label-info pull-right">08:40     09:25     10:10     10:40     11:00<br/> 11:50     12:40     13:35     14:25     15:15<br/>  16:05     16:55     18:15     19:15</span></li>
+                <li style="line-height: 4em">崇左市 崇左<span class="label label-info pull-right">07:40     08:40     09:40     10:40     11:20<br/> 11:50     12:20     12:50     13:50     14:30<br/>  15:00     15:30     16:00     16:30     17:30<br/>  18:40     19:40     20:40</span></li>
+                <li style="line-height: 4em">崇左市 博白<span class="label label-info pull-right">08:50     09:35     10:00     10:40     11:20<br/> 12:00     12:30     13:00     13:45     14:15<br/>  14:45     15:15     15:40     16:10     16:40<br/>  17:10     18:00     18:30     19:25     20:20</span></li>
+                <li style="line-height: 6em">崇左市 扶绥<span class="label label-info pull-right">07:00     08:00     08:30     09:00     09:30<br/> 10:00     10:30     11:00     11:30     12:00<br/>  12:30     13:00     13:20     13:40     14:00<br/>  14:20     14:40     15:00     15:20     15:40<br/>  16:00     16:20     16:40     17:00     17:30<br/>  18:00     18:30     19:00     19:30     20:00<br/>  20:30     21:00     21:30     22:30</span></li>
+                <li>崇左市 江宁<span class="label label-info pull-right">08:50     13:10</span></li>
+                <li style="line-height: 3em">崇左市 陆川<span class="label label-info pull-right">08:50     09:30    10:30    11:55    12:20<br/>  13:20  14:20   15:20  16:20   17:20<br/>  18:30   19:10</span></li>
+                <li style="line-height: 3em">崇左市 兴业<span class="label label-info pull-right">09:50     10:00    10:40    11:20    12:00<br/>  12:30   13:10  13:30   15:25   18:20<br/>   18:30    19:25   22:00</span></li>
+                <li style="line-height: 4em">崇左市 凭祥<span class="label label-info pull-right">07:30     08:30    09:45    10:15    11:00<br/>  11:40     12:20     13:00     13:50     14:30<br/>  15:30     16:30     17:30     18:00     18:30<br/> 19:30     20:30</span></li>
+                <li>兴业高峰<span class="label label-info pull-right">10:10     15:50</span></li>
+                <li style="line-height: 3em">崇左市 龙州<span class="label label-info pull-right">08:00     09:20     10:30     11:30     12:20<br/>  13:10     14:10     14:50     15:40     16:30<br/>  17:40     18:50     21:00</span></li>
+                <li>崇左市 德天瀑布<span class="label label-info pull-right">8:30</span></li>
+                <li style="line-height: 7em">贵港市 贵港<span class="label label-info pull-right">07:00     07:30     08:00     08:20     08:40<br/>  09:00     09:20     09:40     10:00     10:30<br/>  11:00     11:20     11:40     12:00     12:10<br/>  12:30     12:40    13:00      13:20     13:40<br/>  14:00     14:30     15:00     15:20     15:40<br/>  16:00     16:20     16:40     17:00     17:30<br/>  18:00     18:30     19:00     19:30     20:00<br/>  20:30     21:00     21:30</span></li>
+                <li>贵港市 宁明<span class="label label-info pull-right">10:45     12:40     15:00     17:30     19:30</span></li>
+                <li>贵港市 大新<span class="label label-info pull-right">07:30     08:30     12:00     14:00     16:00</span></li>
+                <li style="line-height: 4em">贵港市 桂平<span class="label label-info pull-right">07:00     08:00     09:00     09:30     10:00<br/> 10:30     11:30     12:00     12:30     13:30<br/>  14:00    15:00     16:00     16:30     17:00<br/>  17:30     18:30     19:00     19:30     20:30</span></li>
+                <li>贵港市 天等<span class="label label-info pull-right">7:30</span></li>
+                <li style="line-height: 3em">南宁市(区、县) 伶俐<span class="label label-info pull-right">08:00     08:50     09:40     10:30<br/>   11:20   12:10     13:00     13:50<br/>   14:40     15:30    16:20     17:10<br/>     18:10     19:10</span></li>
+                <li style="line-height: 3em">南宁市(区、县) 平南<span class="label label-info pull-right">08:00     09:15     10:00     10:45<br/>   12:00   12:30     13:30     14:30<br/>   15:30     16:50    17:20     19:00<br/>     20:00</span></li>
+                <li style="line-height: 11em">南宁市(区、县) 武鸣里建<span class="label label-info pull-right">07:30   07:50   08:10<br/>   08:30  08:50  09:10<br/>  09:30  09:50   10:10<br/>  10:30  10:50  11:10<br/>  11:30  11:50   12:10<br/>   12:30   12:50   13:10<br/>  13:30  13:50  14:10<br/>  14:30   14:50  15:10<br/>  15:30  15:50  16:15<br/>  16:50   17:10   17:30<br/>   17:50  18:10  18:30<br/>  18:50  19:10   19:30<br/>  19:50  20:10</span></li>
+                <li style="line-height: 2.5em">南宁市(区、县) 覃塘<span class="label label-info pull-right">09:30     10:30     11:30    13:30<br/>   14:30     15:30      16:30     18:30</span></li>
+                <li style="line-height: 4em">梧州市 梧州<span class="label label-info pull-right">08:00     08:30     09:00     10:00     10:40<br/>   11:15     12:00     12:30     13:00    13:30<br/>    14:00     14:30     15:30     16:30     19:00<br/>   20:00    23:30</span></li>
+                <li style="line-height: 5em">梧州市 六景<span class="label label-info pull-right">07:30    08:00      08:30     09:00     09:30<br/>   10:00     10:30     11:00     11:30    12:00<br/>    12:30     13:00    13:30      14:00     14:30<br/>   15:00      15:30     16:00     16:30    17:00<br/>     17:30     18:00   18:30    19:30</span></li>
+                <li>梧州市 藤县<span class="label label-info pull-right">08:40     09:40     10:40     12:40     18:20</span></li>
+                <li>梧州市 岑溪<span class="label label-info pull-right">08:00     09:30     11:00     13:00     14:30<br/>   16:00     18:00     20:30     23:30</span></li>
+                <li style="line-height: 5em">梧州市 峦城<span class="label label-info pull-right">07:10     07:40     08:10     08:40     09:05<br/>   09:30   09:55   10:20   10:45   11:10<br/>   11:35   12:00  12:25     12:50    13:15<br/>    13:40     14:05    14:30   14:55   15:20<br/>  15:45   16:10   16:40   17:10      17:40<br/>    18:10     18:40</span></li>
+                <li>梧州市 蒙山<span class="label label-info pull-right">15:50</span></li>
+                <li style="line-height: 5em">来宾市 来宾<span class="label label-info pull-right">08:00     08:30     09:00     09:30      09:50<br/>    10:20     10:40     11:10     11:30     12:00<br/>     12:30     13:00     13:30     13:45     14:10<br/>      14:30    14:45     15:00     15:30     16:00<br/>     16:30     17:00     17:20     17:40     18:10<br/>     18:40     19:40     20:10     20:40</span></li>
+                <li style="line-height: 9em">来宾市 横县<span class="label label-info pull-right">07:00     07:20     07:40     08:00      08:15<br/>    08:30     08:45     09:00     09:15     09:30<br/>     09:45     10:00     10:15     10:30     11:00<br/>      11:15     11:30     11:45     12:00     12:15<br/>    12:30     12:45     13:00     13:15     13:30<br/>     13:45     14:00     14:15     14:30     14:45<br/>     15:00     15:15     15:30     15:45     16:00<br/>     16:15     16:30     16:45     17:00     17:20<br/>     17:40     18:00     18:20     18:40     19:00<br/>     19:30     20:00     20:40     21:30     22:00</span></li>
+                <li>来宾市 忻城<span class="label label-info pull-right">08:50     10:30     14:00     17:00</span></li>
+                <li>来宾市 八一<span class="label label-info pull-right">08:00     09:50     14:30     17:40</span></li>
+                <li>来宾市 武宣<span class="label label-info pull-right">08:00     09:00     10:30     12:00      13:40<br/>     14:20     16:00     18:50</span></li>
+                <li>来宾市 象州<span class="label label-info pull-right">08:40     11:40     15:50</span></li>
+                <li style="line-height: 4em">来宾市 黎塘<span class="label label-info pull-right">07:40     08:05     08:30     09:05     09:45<br/>     10:10     10:35     11:00     11:50     12:15<br/>     12:40     13:05     13:45     14:20     14:45<br/>     15:10     15:35     16:25     17:15     18:20<br/>     19:00     20:30</span></li>
+                <li>来宾市 金秀<span class="label label-info pull-right">09:30     14:10</span></li>
+                <li>来宾市 合山<span class="label label-info pull-right">08:30     09:45     11:30     13:00     14:00<br/>  15:00     16:20     17:30     19:00</span></li>
+                <li style="line-height: 3.5em">百色市 百色<span class="label label-info pull-right">08:00     09:00     09:30     10:00     10:30<br/>  11:00     12:00     12:30     13:00    13:15<br/>   13:30  14:00     14:40     15:30     16:30<br/>  17:30     18:00     18:30     19:00     22:10</span></li>
+                <li>百色市 隆安<span class="label label-info pull-right">10:20</span></li>
+                <li>百色市 德保<span class="label label-info pull-right">10:40     12:20     23:00</span></li>
+                <li>百色市 靖西<span class="label label-info pull-right">09:40     12:20     16:00     23:00</span></li>
+            </ul>
+        </div>
+
+        <div id="nanningbeidaStation" class="panel" title="南宁北大客运中心">
+            <h2 class="expanded" onclick="$('#nanningbeidaStationInfo').toggle();">南宁北大客运站</h2>
+            <div id="nanningbeidaStationInfo" class="article">
+                <p>西乡塘专线 、2路、4路、8路、10路、19路、24路、31路、34路、36路、46路、48路、52路、59路、60路、66路、76路、204路、207路、604路</p>
+            </div>
+            <ul class="list">
+                <li>订票电话<span class="label label-success pull-right">0771-5508333  2102334  2102445</span></li>
+                <li>小件快运<span class="label label-success pull-right">3820058</span></li>
+                <li>详细地址<span class="label label-success pull-right">广西壮族自治区南宁市西乡塘区北大北路26号</span></li>
+                <li class="divider">发车时刻表</li>
+                <li>
+                    <h3>南宁-文昌</h3>
+                    <h5>票价: 230元</h5>
+                    <p>终点站：文昌市汽车站</p>
+                    <p>发车时间：17:30</p>
+                </li>
+                <li>
+                    <h3>南宁-那坡</h3>
+                    <h5>票价: 130元</h5>
+                    <p>终点站：那坡县汽车总站</p>
+                    <p>发车时间：07:30   09:00   11:00   12:40    14:30    15:40   17:00   19:20</p>
+                </li>
+                <li>
+                    <h3>南宁-中山</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：中山市汽车总站</p>
+                    <p>发车时间：15:30  18:00  19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-全州</h3>
+                    <h5>票价: 130元</h5>
+                    <p>终点站：全州县汽车总站</p>
+                    <p>发车时间：12:10    22:00</p>
+                </li>
+                <li>
+                    <h3>南宁-珠海</h3>
+                    <h5>票价: 180元</h5>
+                    <p>终点站：珠海拱北区长途汽车站</p>
+                    <p>发车时间：19:40  20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-富宁</h3>
+                    <h5>票价: 133元</h5>
+                    <p>终点站：富宁县汽车站</p>
+                    <p>发车时间：11:50  13:30   14:50    15:50   18:50   19:50    20:50</p>
+                </li>
+                <li>
+                    <h3>南宁-雷平</h3>
+                    <p>终点站：大新县雷平镇站</p>
+                    <p>发车时间：13:10 14:30 17:10 18:50</p>
+                </li>
+                <li>
+                    <h3>南宁-龙头</h3>
+                    <h5>票价: 13元</h5>
+                    <p>终点站：扶绥县龙头乡站</p>
+                    <p>发车时间：从7:00至18:00每隔25分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-沙坡</h3>
+                    <p>终点站：陆川县沙坡镇站</p>
+                    <p>发车时间：07:00</p>
+                </li>
+                <li>
+                    <h3>南宁-西林</h3>
+                    <h5>票价: 140元</h5>
+                    <p>终点站：西林县汽车总站</p>
+                    <p>发车时间：22:30</p>
+                </li>
+                <li>
+                    <h3>南宁-望谟</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：望谟县汽车站</p>
+                    <p>发车时间：22:00</p>
+                </li>
+                <li>
+                    <h3>南宁-昭平</h3>
+                    <h5>票价: 140元</h5>
+                    <p>终点站：昭平县汽车总站</p>
+                    <p>发车时间：21:20</p>
+                </li>
+                <li>
+                    <h3>南宁-桂林</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：桂林市汽车总站</p>
+                    <p>发车时间：14:00</p>
+                </li>
+                <li>
+                    <h3>南宁-八宝</h3>
+                    <h5>票价: 145元</h5>
+                    <p>终点站：广南县八宝镇站</p>
+                    <p>发车时间：21:50</p>
+                </li>
+                <li>
+                    <h3>南宁-桂林</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：桂林市汽车总站</p>
+                    <p>发车时间：16:10     17:40   23:30</p>
+                </li>
+                <li>
+                    <h3>南宁-隆林</h3>
+                    <h5>票价: 148元</h5>
+                    <p>终点站：隆林县城东客运站</p>
+                    <p>发车时间：08:40  13:00  22:30  23:00</p>
+                </li>
+                <li>
+                    <h3>南宁-河池金城江</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：河池市金城江区城东客运站</p>
+                    <p>发车时间：11:00</p>
+                </li>
+                <li>
+                    <h3>南宁-富庶</h3>
+                    <h5>票价: 14元</h5>
+                    <p>终点站：南宁市西乡塘区坛洛镇富庶乡站</p>
+                    <p>发车时间：从7:00到18:00，每隔15分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-龙临</h3>
+                    <h5>票价: 100元</h5>
+                    <p>终点站：靖西县龙临镇站</p>
+                    <p>发车时间：17:50   18:30</p>
+                </li>
+                <li>
+                    <h3>南宁-容奇</h3>
+                    <h5>票价: 150元</h5>
+                    <p>终点站：顺德区容奇镇汽车站</p>
+                    <p>发车时间：08:40   15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-凤山</h3>
+                    <h5>票价: 103元</h5>
+                    <p>终点站：凤山县汽车站</p>
+                    <p>发车时间：15:00  07:40</p>
+                </li>
+                <li>
+                    <h3>南宁-金光客运站</h3>
+                    <h5>票价: 15元</h5>
+                    <p>终点站：南宁金光客运站</p>
+                    <p>发车时间：从06:20至20:00每隔10分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-靖西</h3>
+                    <h5>票价: 103元</h5>
+                    <p>终点站：靖西县汽车总站</p>
+                    <p>发车时间：从7：00至19：00每隔40分钟一班；20：00  23：50</p>
+                </li>
+                <li>
+                    <h3>南宁-金光农场</h3>
+                    <h5>票价: 15元</h5>
+                    <p>终点站：南宁市金光农场站</p>
+                    <p>发车时间：从6：20至20：00每隔10分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-凌云</h3>
+                    <h5>票价: 103元</h5>
+                    <p>终点站：凌云县汽车总站</p>
+                    <p>发车时间：14：20  17：40  20：40</p>
+                </li>
+                <li>
+                    <h3>南宁-南宁那龙矿</h3>
+                    <h5>票价: 15元</h5>
+                    <p>终点站：南宁那龙矿站</p>
+                    <p>发车时间：从06::05至19:10每隔15分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-梧州</h3>
+                    <h5>票价: 103元</h5>
+                    <p>终点站：梧州市河西汽车站</p>
+                    <p>发车时间：08:30   09:30  11:00    13:00   15:00   17:00    19：00</p>
+                </li>
+                <li>
+                    <h3>南宁-东莞</h3>
+                    <h5>票价: 103元</h5>
+                    <p>终点站：东莞市汽车总站</p>
+                    <p>发车时间：08:30  18:00  19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-乐业</h3>
+                    <h5>票价: 113元</h5>
+                    <p>终点站：乐业县汽车总站</p>
+                    <p>发车时间：12:40  21:50</p>
+                </li>
+                <li>
+                    <h3>南宁-西林</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：西林县汽车总站</p>
+                    <p>发车时间：09:20  12:20   21:00</p>
+                </li>
+                <li>
+                    <h3>南宁-那坡</h3>
+                    <h5>票价: 113元</h5>
+                    <p>终点站：那坡县汽车总站</p>
+                    <p>发车时间：09:00  16:00</p>
+                </li>
+                <li>
+                    <h3>南宁-广南</h3>
+                    <h5>票价: 173元</h5>
+                    <p>终点站：广南县汽车站</p>
+                    <p>发车时间：09:30  15:30  23:20</p>
+                </li>
+                <li>
+                    <h3>南宁-全州</h3>
+                    <h5>票价: 113元</h5>
+                    <p>终点站：全州县汽车总站</p>
+                    <p>发车时间：08:30  22:00</p>
+                </li>
+                <li>
+                    <h3>南宁-砚山</h3>
+                    <h5>票价: 178元</h5>
+                    <p>终点站：砚山县汽车站</p>
+                    <p>发车时间：09:00  22:30</p>
+                </li>
+                <li>
+                    <h3>南宁-贺州</h3>
+                    <h5>票价: 115元</h5>
+                    <p>终点站：贺州市汽车总站</p>
+                    <p>发车时间：22:00</p>
+                </li>
+                <li>
+                    <h3>南宁-中东</h3>
+                    <h5>票价: 17元</h5>
+                    <p>终点站：扶绥县中东镇站</p>
+                    <p>发车时间：06:00   06:45   08:50   09:30   11:00   12:00   13:00   13:50   14:30   16:00</p>
+                </li>
+                <li>
+                    <h3>南宁-茂名</h3>
+                    <h5>票价: 115元</h5>
+                    <p>终点站：茂名市汽车总站</p>
+                    <p>发车时间：07:30   11:20    17:20</p>
+                </li>
+                <li>
+                    <h3>南宁-文山</h3>
+                    <h5>票价: 183元</h5>
+                    <p>终点站：文山县客运站</p>
+                    <p>发车时间：10:10  13:10  14:30  15:00  22:00</p>
+                </li>
+                <li>
+                    <h3>南宁-信都</h3>
+                    <h5>票价: 118元</h5>
+                    <p>终点站：贺州市信都镇站</p>
+                    <p>发车时间：20:40</p>
+                </li>
+                <li>
+                    <h3>南宁-新隆</h3>
+                    <h5>票价: 18元</h5>
+                    <p>终点站：扶绥县中东镇新隆村站</p>
+                    <p>发车时间：08:10  10:00    13:30    15:10</p>
+                </li>
+                <li>
+                    <h3>南宁-电白</h3>
+                    <h5>票价: 120元</h5>
+                    <p>终点站：电白县汽车站</p>
+                    <p>发车时间：14:40</p>
+                </li>
+                <li>
+                    <h3>南宁-扶绥</h3>
+                    <h5>票价: 20元</h5>
+                    <p>终点站：扶绥县汽车总站</p>
+                    <p>发车时间：从7：00至18:30每隔30分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-贺州</h3>
+                    <h5>票价: 123元</h5>
+                    <p>终点站：贺州市汽车总站</p>
+                    <p>发车时间：21:30</p>
+                </li>
+                <li>
+                    <h3>南宁-那桐</h3>
+                    <h5>票价: 20元</h5>
+                    <p>终点站：隆安县那桐镇站</p>
+                    <p>发车时间：从7:40至17:10每隔30分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-乐业</h3>
+                    <h5>票价: 123元</h5>
+                    <p>终点站：乐业县汽车总站</p>
+                    <p>发车时间：09：00  21：00</p>
+                </li>
+                <li>
+                    <h3>南宁-河口</h3>
+                    <h5>票价: 213元</h5>
+                    <p>终点站：资源县河口瑶族乡站</p>
+                    <p>发车时间：16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-隆林</h3>
+                    <h5>票价: 128元</h5>
+                    <p>终点站：隆林县城东客运站</p>
+                    <p>发车时间：22:00  22:30  23:00  23:30</p>
+                </li>
+                <li>
+                    <h3>南宁-浪侨</h3>
+                    <h5>票价: 21元</h5>
+                    <p>终点站：隆安县那桐镇浪侨村站</p>
+                    <p>发车时间：08:40  9:10  17:40  18:20</p>
+                </li>
+                <li>
+                    <h3>南宁-那桐糖厂</h3>
+                    <h5>票价: 21元</h5>
+                    <p>终点站：隆安县那桐糖厂站</p>
+                    <p>发车时间：10:40  15:40</p>
+                </li>
+                <li>
+                    <h3>南宁-凤庄</h3>
+                    <h5>票价: 22元</h5>
+                    <p>终点站：扶绥县龙头乡凤庄村站</p>
+                    <p>发车时间：09:30  14:20</p>
+                </li>
+                <li>
+                    <h3>南宁-监利</h3>
+                    <h5>票价: 230元</h5>
+                    <p>终点站：监利市客运站</p>
+                    <p>发车时间：12:20</p>
+                </li>
+                <li>
+                    <h3>南宁-扶绥</h3>
+                    <h5>票价: 23元</h5>
+                    <p>终点站：扶绥县汽车总站</p>
+                    <p>发车时间：从7：00至18:30每隔30分钟一班。</p>
+                </li>
+                <li>
+                    <h3>南宁-平江</h3>
+                    <h5>票价: 240元</h5>
+                    <p>终点站：平江县汽车站</p>
+                    <p>发车时间：10:20</p>
+                </li>
+                <li>
+                    <h3>南宁-丁当</h3>
+                    <h5>票价: 24元</h5>
+                    <p>终点站：隆安县丁当镇站</p>
+                    <p>发车时间：07:30   09:00   10:30   12:00   12:50   13:50   14:50   15:50   16:30   17:30</p>
+                </li>
+                <li>
+                    <h3>南宁-隆安</h3>
+                    <h5>票价: 24元</h5>
+                    <p>终点站：隆安县客运站</p>
+                    <p>发车时间：从5:50至17:30每隔20分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-隆安</h3>
+                    <h5>票价: 25元</h5>
+                    <p>终点站：隆安县客运站</p>
+                    <p>发车时间：06:40  07:20  07:40  08:00   08:20   09:00   09:40  10:00   10:20     11:00  11:20  11:40  12:00    12:40  13:00    13:20     14:00    14:20   14:40     15:20   15:40</p>
+                </li>
+                <li>
+                    <h3>南宁-武陵</h3>
+                    <h5>票价: 27元</h5>
+                    <p>终点站：宾阳县武陵镇站</p>
+                    <p>发车时间：09:00    12:10    16:20    17:20</p>
+                </li>
+                <li>
+                    <h3>南宁-平果</h3>
+                    <h5>票价: 28元</h5>
+                    <p>终点站：平果县汽车总站</p>
+                    <p>发车时间：从8:30至17:10每隔20分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-丁当</h3>
+                    <h5>票价: 29元</h5>
+                    <p>终点站：隆安县丁当镇站</p>
+                    <p>发车时间：07:30        08:30        10:30       12:00  12:50    13:50   14:50    15:50    16:30    17:30</p>
+                </li>
+                <li>
+                    <h3>南宁-隆安</h3>
+                    <h5>票价: 29元</h5>
+                    <p>终点站：隆安县那桐镇站</p>
+                    <p>发车时间：从6：40至21：40每隔20分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-敏阳</h3>
+                    <h5>票价: 29元</h5>
+                    <p>终点站：隆安县敏阳乡站</p>
+                    <p>发车时间：08:20    11:00    15:30    16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-都结</h3>
+                    <h5>票价: 30元</h5>
+                    <p>终点站：隆安县都结乡站</p>
+                    <p>发车时间：09:20    09:50    15:20    15:50</p>
+                </li>
+                <li>
+                    <h3>南宁-平果</h3>
+                    <h5>票价: 30元</h5>
+                    <p>终点站：平果铝站</p>
+                    <p>发车时间：11:50    16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-雁江</h3>
+                    <h5>票价: 30元</h5>
+                    <p>终点站：隆安县雁江镇站</p>
+                    <p>发车时间：06:10    11：10    14:20   16：10</p>
+                </li>
+                <li>
+                    <h3>南宁-陆连</h3>
+                    <h5>票价: 32元</h5>
+                    <p>终点站：隆安县都结乡陆连村站</p>
+                    <p>发车时间：10:30</p>
+                </li>
+                <li>
+                    <h3>南宁-双桥</h3>
+                    <h5>票价: 35元</h5>
+                    <p>终点站：宾阳县双桥乡站</p>
+                    <p>发车时间：07:00   11:00 15:40</p>
+                </li>
+                <li>
+                    <h3>南宁-榜圩</h3>
+                    <h5>票价: 38元</h5>
+                    <p>终点站：平果县榜圩镇站</p>
+                    <p>发车时间：08:50   13:10</p>
+                </li>
+                <li>
+                    <h3>南宁-平果</h3>
+                    <h5>票价: 38元</h5>
+                    <p>终点站：平果县汽车总站</p>
+                    <p>发车时间：从7：30至21：30每隔30分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-平果</h3>
+                    <h5>票价: 38元</h5>
+                    <p>终点站：平果铝站</p>
+                    <p>发车时间：11:50    16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-桂平</h3>
+                    <h5>票价: 40元</h5>
+                    <p>终点站：桂平市汽车总站</p>
+                    <p>发车时间：13:00</p>
+                </li>
+                <li>
+                    <h3>南宁-大新</h3>
+                    <h5>票价: 45元</h5>
+                    <p>终点站：大新县汽车总站</p>
+                    <p>发车时间：从6:30至17:50每隔20分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-驮堪</h3>
+                    <h5>票价: 46元</h5>
+                    <p>终点站：天等县驮堪乡站</p>
+                    <p>发车时间：12:20</p>
+                </li>
+                <li>
+                    <h3>南宁-钦州</h3>
+                    <h5>票价: 48元</h5>
+                    <p>终点站：钦州市汽车总站</p>
+                    <p>发车时间：09:00    10:40   12:30     17:30</p>
+                </li>
+                <li>
+                    <h3>南宁-钦州港</h3>
+                    <h5>票价: 48元</h5>
+                    <p>终点站：钦州港区汽车站</p>
+                    <p>发车时间：06:30    07:50</p>
+                </li>
+                <li>
+                    <h3>南宁-玉林</h3>
+                    <h5>票价: 48元</h5>
+                    <p>终点站：玉林市客运中心</p>
+                    <p>发车时间：07:20  08:50  13:50</p>
+                </li>
+                <li>
+                    <h3>南宁-大新</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：大新县汽车总站</p>
+                    <p>发车时间：06:30  07:00   07:30  08:00  08:30   09:00   09:30  10:00  10:30  11:00  11:30   12:00   12:30   13:00  13:30  14:00  14:30  15:00  15:30  16:00    16:30   17:30  18:00  18:30  19:00   20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-防城港</h3>
+                    <h5>票价: 50元</h5>
+                    <p>终点站：防城港市港口汽车客运站</p>
+                    <p>发车时间：08:10</p>
+                </li>
+                <li>
+                    <h3>南宁-田东</h3>
+                    <h5>票价: 53元</h5>
+                    <p>终点站：田东县汽车总站</p>
+                    <p>发车时间：从10:30至16:10每隔40分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-东兴</h3>
+                    <h5>票价: 55元</h5>
+                    <p>终点站：东兴市汽车总站</p>
+                    <p>发车时间：08:40  12:10  14:40</p>
+                </li>
+                <li>
+                    <h3>南宁-北海</h3>
+                    <h5>票价: 58元</h5>
+                    <p>终点站：北海市汽车总站</p>
+                    <p>发车时间：06:50   10:00   08:10   12:00  13:30  14:30  15:30  18:30</p>
+                </li>
+                <li>
+                    <h3>南宁-公馆</h3>
+                    <h5>票价: 58元</h5>
+                    <p>终点站：合浦县公馆镇站</p>
+                    <p>发车时间：12:00   14:30</p>
+                </li>
+                <li>
+                    <h3>南宁-柳州</h3>
+                    <h5>票价: 58元</h5>
+                    <p>终点站：柳州市汽车总站</p>
+                    <p>发车时间：07:00    07:30    08:30    10:10    14:20     15:00    15:40    17:00     20:10</p>
+                </li>
+                <li>
+                    <h3>南宁-柳州</h3>
+                    <h5>票价: 58元</h5>
+                    <p>终点站：柳州市汽车总站</p>
+                    <p>发车时间：12:00     20:40</p>
+                </li>
+                <li>
+                    <h3>南宁-天等</h3>
+                    <h5>票价: 58元</h5>
+                    <p>终点站：天等县汽车总站</p>
+                    <p>发车时间：6:00至19:00每隔30分钟发一班</p>
+                </li>
+                <li>
+                    <h3>南宁-田东</h3>
+                    <h5>票价: 58元</h5>
+                    <p>终点站：田东县汽车总站</p>
+                    <p>发车时间：从7：40至20：20每隔40分钟一</p>
+                </li>
+                <li>
+                    <h3>南宁-田阳</h3>
+                    <h5>票价: 58元</h5>
+                    <p>终点站：田阳县汽车总站</p>
+                    <p>发车时间：从11:10至17:50每隔40分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-宝圩</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：大新县宝圩乡站</p>
+                    <p>发车时间：09:10     09:50   11:50     12:50     15:50</p>
+                </li>
+                <li>
+                    <h3>南宁-平南</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：平南县汽车总站</p>
+                    <p>发车时间：11：30   16：30</p>
+                </li>
+                <li>
+                    <h3>南宁-硕龙</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：大新县硕龙镇站</p>
+                    <p>发车时间：15:10</p>
+                </li>
+                <li>
+                    <h3>南宁-五山</h3>
+                    <h5>票价: 60元</h5>
+                    <p>终点站：大新县五山乡站</p>
+                    <p>发车时间：14:50</p>
+                </li>
+                <li>
+                    <h3>南宁-天等</h3>
+                    <h5>票价: 63元</h5>
+                    <p>终点站：天等县汽车总站</p>
+                    <p>发车时间：07:00   07:40    08:20    09:00    10:20    11:00    12:20    13:40   14:20    15:00    15:40    16:20    17:40    18:20    19:40</p>
+                </li>
+                <li>
+                    <h3>南宁-田阳</h3>
+                    <h5>票价: 63元</h5>
+                    <p>终点站：田阳县汽车总站</p>
+                    <p>发车时间：08:00    08:40    09:20    10:00    10:40    11:20   12:40   13:30    14:20    15:10    16:50    17:40    18:40    19:40    22:20</p>
+                </li>
+                <li>
+                    <h3>南宁-陆川</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：陆川县汽车总站</p>
+                    <p>发车时间：08:00   10:10</p>
+                </li>
+                <li>
+                    <h3>南宁-平南</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：平南县汽车总站</p>
+                    <p>发车时间：11:30  16:30</p>
+                </li>
+                <li>
+                    <h3>南宁-浦北</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：浦北县汽车总站</p>
+                    <p>发车时间：06:50</p>
+                </li>
+                <li>
+                    <h3>南宁-下雷</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：大新县下雷镇站</p>
+                    <p>发车时间：12:10</p>
+                </li>
+                <li>
+                    <h3>南宁-玉林</h3>
+                    <h5>票价: 65元</h5>
+                    <p>终点站：玉林市客运中心</p>
+                    <p>发车时间：07:30    08:30    09:40    10:10    10:40    11:40    12：30    13:10    13:40    14:20
+                        15:30    16:30      18:00    19:00    21:00</p>
+                </li>
+                <li>
+                    <h3>南宁-凭祥</h3>
+                    <h5>票价: 66元</h5>
+                    <p>终点站：凭祥市汽车总站</p>
+                    <p>发车时间：08:20</p>
+                </li>
+                <li>
+                    <h3>南宁-巴荷</h3>
+                    <h5>票价: 68元</h5>
+                    <p>终点站：天等县巴荷乡站</p>
+                    <p>发车时间：16:15</p>
+                </li>
+                <li>
+                    <h3>南宁-百色</h3>
+                    <h5>票价: 68元</h5>
+                    <p>终点站：百色市汽车总站</p>
+                    <p>发车时间：从6:00至18:00每隔15分钟一班，从18:20至21:20每隔20分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-北流</h3>
+                    <h5>票价: 68元</h5>
+                    <p>终点站：北流市汽车总站</p>
+                    <p>发车时间：10:00   14:10</p>
+                </li>
+                <li>
+                    <h3>南宁-大新锰矿</h3>
+                    <h5>票价: 68元</h5>
+                    <p>终点站：大新锰矿站</p>
+                    <p>发车时间：15:30</p>
+                </li>
+                <li>
+                    <h3>南宁-向都</h3>
+                    <h5>票价: 68元</h5>
+                    <p>终点站：天等县向都镇站</p>
+                    <p>发车时间：12:45</p>
+                </li>
+                <li>
+                    <h3>南宁-金龙</h3>
+                    <h5>票价: 70元</h5>
+                    <p>终点站：龙州县金龙镇站</p>
+                    <p>发车时间：07:10   07:50    10:30    12:30   13:50</p>
+                </li>
+                <li>
+                    <h3>南宁-土湖</h3>
+                    <h5>票价: 70元</h5>
+                    <p>终点站：大新县土湖乡站</p>
+                    <p>发车时间：16:10</p>
+                </li>
+                <li>
+                    <h3>南宁-博白</h3>
+                    <h5>票价: 73元</h5>
+                    <p>终点站：博白县汽车总站</p>
+                    <p>发车时间：08:50    09:30    13:50    14:50    17：30</p>
+                </li>
+                <li>
+                    <h3>南宁-梧州</h3>
+                    <h5>票价: 73元</h5>
+                    <p>终点站：梧州市金辉汽车站</p>
+                    <p>发车时间：06:40    21:00    21:40</p>
+                </li>
+                <li>
+                    <h3>南宁-巴马</h3>
+                    <h5>票价: 78元</h5>
+                    <p>终点站：巴马县汽车总站</p>
+                    <p>发车时间：07:50</p>
+                </li>
+                <li>
+                    <h3>南宁-德保</h3>
+                    <h5>票价: 78元</h5>
+                    <p>终点站：德保县汽车总站</p>
+                    <p>发车时间：07:40   14:10    15:30    17:30</p>
+                </li>
+                <li>
+                    <h3>南宁-容县</h3>
+                    <h5>票价: 78元</h5>
+                    <p>终点站：容县汽车总站</p>
+                    <p>发车时间：08:30     15:50   13:00</p>
+                </li>
+                <li>
+                    <h3>南宁-藤县太平</h3>
+                    <h5>票价: 78元</h5>
+                    <p>终点站：藤县太平镇客运站</p>
+                    <p>发车时间：16:00</p>
+                </li>
+                <li>
+                    <h3>南宁-百色</h3>
+                    <h5>票价: 80元</h5>
+                    <p>终点站：百色市汽车总站</p>
+                    <p>发车时间：从7：00至21：30每隔30分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-百色</h3>
+                    <h5>票价: 80元</h5>
+                    <p>终点站：百色市汽车总站</p>
+                    <p>发车时间：23:30    01:30</p>
+                </li>
+                <li>
+                    <h3>南宁-田林</h3>
+                    <h5>票价: 80元</h5>
+                    <p>终点站：田林县汽车总站</p>
+                    <p>发车时间：12:10    14:30</p>
+                </li>
+                <li>
+                    <h3>南宁-百色</h3>
+                    <h5>票价: 80元</h5>
+                    <p>终点站：百色市汽车总站</p>
+                    <p>发车时间：7:50</p>
+                </li>
+                <li>
+                    <h3>南宁-德保</h3>
+                    <h5>票价: 88元</h5>
+                    <p>终点站：德保县汽车总站</p>
+                    <p>发车时间：08:20    09:00    09:40   10:20   11:00    11:40    12:20    13:00    14:20    15:00   15:40    16:20    17:00   18:20    19:00    20：20</p>
+                </li>
+                <li>
+                    <h3>南宁-巴马</h3>
+                    <h5>票价: 90元</h5>
+                    <p>终点站：巴马县汽车总站</p>
+                    <p>发车时间：07:30    08:30    09:00    10:00   11:50   13:40   14:40   16:00   18:00</p>
+                </li>
+                <li>
+                    <h3>南宁-田林</h3>
+                    <h5>票价: 90元</h5>
+                    <p>终点站：田林县汽车总站</p>
+                    <p>发车时间：08:40    10:20    11:40    15:30    17:30     19:10     23:00</p>
+                </li>
+                <li>
+                    <h3>南宁-靖西</h3>
+                    <h5>票价: 93元</h5>
+                    <p>终点站：靖西县汽车总站</p>
+                    <p>发车时间：从7:10至21:50每隔40分钟一班</p>
+                </li>
+                <li>
+                    <h3>南宁-凌云</h3>
+                    <h5>票价: 93元</h5>
+                    <p>终点站：凌云县汽车总站</p>
+                    <p>发车时间：20:30    23:00</p>
+                </li>
+                <li>
+                    <h3>南宁-平乐</h3>
+                    <h5>票价: 93元</h5>
+                    <p>终点站：平乐县汽车总站</p>
+                    <p>发车时间：16:00</p>
+                </li>
+                <li>
+                    <h3>南宁-岑溪</h3>
+                    <h5>票价: 98元</h5>
+                    <p>终点站：岑溪市汽车总站</p>
+                    <p>发车时间：08：00    11:00    14:00</p>
+                </li>
+                <li>
+                    <h3>南宁-富宁</h3>
+                    <h5>票价: 98元</h5>
+                    <p>终点站：富宁县汽车站</p>
+                    <p>发车时间：07:50</p>
+                </li>
+                <li>
+                    <h3>南宁-藤县</h3>
+                    <h5>票价: 103元</h5>
+                    <p>终点站：藤县汽车总站</p>
+                    <p>发车时间：07:30    08：00    08：50     10:50    13:50    15:30   17:00</p>
+                </li>
+                <li>
+                    <h3>南宁-深圳龙岗</h3>
+                    <h5>票价: 190元</h5>
+                    <p>终点站：深圳龙岗区汽车总站</p>
+                    <p>发车时间：16:30   17:30   18:00</p>
+                </li>
+                <li>
+                    <h3>南宁-个旧</h3>
+                    <h5>票价: 198元</h5>
+                    <p>终点站：个旧市汽车站</p>
+                    <p>发车时间：8:00</p>
+                </li>
+                <li>
+                    <h3>南宁-广州</h3>
+                    <h5>票价: 190元</h5>
+                    <p>终点站：广州市广东省汽车客运站</p>
+                    <p>发车时间：09:00    10:30    18:00    21:30    21:40</p>
+                </li>
+                <li>
+                    <h3>南宁-揭阳</h3>
+                    <h5>票价: 198元</h5>
+                    <p>终点站：揭阳市汽车客运站</p>
+                    <p>发车时间：17:00</p>
+                </li>
+                <li>
+                    <h3>南宁-广州</h3>
+                    <h5>票价: 180元</h5>
+                    <p>终点站：广州市广东省汽车客运站</p>
+                    <p>发车时间：18:10    19:40</p>
+                </li>
+                <li>
+                    <h3>南宁-凤岗</h3>
+                    <h5>票价: 208元</h5>
+                    <p>终点站：东莞凤岗镇站</p>
+                    <p>发车时间：08:00    09:00    10:00    18:00    18:30    20:00</p>
+                </li>
+                <li>
+                    <h3>南宁-文昌</h3>
+                    <h5>票价: 230元</h5>
+                    <p>终点站：文昌市汽车站</p>
+                    <p>发车时间：17:30</p>
+                </li>
+                <li>
+                    <h3>南宁-深圳宝安</h3>
+                    <h5>票价: 210元</h5>
+                    <p>终点站：深圳宝安区汽车站</p>
+                    <p>发车时间：08:30    10:00    17:00    18:00    19:00   19:30</p>
+                </li>
+                <li>
+                    <h3>南宁-中山</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：中山市汽车总站</p>
+                    <p>发车时间：15:30  18:00  19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-深圳龙岗</h3>
+                    <h5>票价: 210元</h5>
+                    <p>终点站：深圳龙岗区汽车总站</p>
+                    <p>发车时间：10:00</p>
+                </li>
+                <li>
+                    <h3>南宁-珠海</h3>
+                    <h5>票价: 180元</h5>
+                    <p>终点站：珠海拱北区长途汽车站</p>
+                    <p>发车时间：19:40    20:30</p>
+                </li>
+                <li>
+                    <h3>南宁-深圳</h3>
+                    <h5>票价: 220元</h5>
+                    <p>终点站：深圳福田区汽车站</p>
+                    <p>发车时间：08:30    18:00    19:30</p>
+                </li>
+                <li>
+                    <h3>南宁-东莞</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：东莞市汽车总站</p>
+                    <p>发车时间：08:30    18:00   19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-常德</h3>
+                    <h5>票价: 250元</h5>
+                    <p>终点站：常德市汽车站</p>
+                    <p>发车时间：12:00</p>
+                </li>
+                <li>
+                    <h3>南宁-佛山大沥</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：佛山大沥区站</p>
+                    <p>发车时间：09:00</p>
+                </li>
+                <li>
+                    <h3>南宁-昆明</h3>
+                    <h5>票价: 263元</h5>
+                    <p>终点站：昆明市汽车客运站</p>
+                    <p>发车时间：13:30</p>
+                </li>
+                <li>
+                    <h3>南宁-惠州</h3>
+                    <h5>票价: 160元</h5>
+                    <p>终点站：惠州市汽车总站</p>
+                    <p>发车时间：18:00</p>
+                </li>
+                <li>
+                    <h3>南宁-三亚</h3>
+                    <h5>票价: 280元</h5>
+                    <p>终点站：三亚市汽车站</p>
+                    <p>发车时间：15:00</p>
+                </li>
+                <li>
+                    <h3>南宁-番禹</h3>
+                    <h5>票价: 170元</h5>
+                    <p>终点站：广州市番禹汽车客运站</p>
+                    <p>发车时间：09:20（普通车）    18:00（快班）</p>
+                </li>
+                <li>
+                    <h3>南宁-厦门</h3>
+                    <h5>票价: 300元</h5>
+                    <p>终点站：厦门市长途汽车站</p>
+                    <p>发车时间：11:30</p>
+                </li>
+                <li>
+                    <h3>南宁-东莞常平</h3>
+                    <h5>票价: 180元</h5>
+                    <p>终点站：东莞常平镇汽车站</p>
+                    <p>发车时间：08:30   18:00    19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-成都</h3>
+                    <h5>票价: 320元</h5>
+                    <p>终点站：成都市汽车站</p>
+                    <p>发车时间：14:30</p>
+                </li>
+                <li>
+                    <h3>南宁-海口</h3>
+                    <h5>票价: 180元</h5>
+                    <p>终点站：海口市汽车站</p>
+                    <p>发车时间：18:30    19:00</p>
+                </li>
+                <li>
+                    <h3>南宁-宁德</h3>
+                    <h5>票价: 380元</h5>
+                    <p>终点站：宁德市汽车站</p>
+                    <p>发车时间：11:30</p>
+                </li>
+                <li>
+                    <h3>南宁-福鼎</h3>
+                    <h5>票价: 400元</h5>
+                    <p>终点站：福鼎市汽车站</p>
+                    <p>发车时间：09:00</p>
+                </li>
+            </ul>
+        </div>
+
+        <div id="airportTax" class="panel article" title="出租车">
+            <p>南宁的出租车大多为红、绿色车身，随时都可以叫到。</p>
+            <p>计费方式为：起步价白天（06：00~23：00）为人民币9.00元，晚上（23：00~06：00）为人民币11.00元，每公里2.00元，计价时统一使用计价器</p>
+            <p>此外，勿必注意，在主要街道均设有出租车上下客站，前后5米均可叫停。</p>
+            <p>出租车上的明显位置都印有投诉电话号码。</p>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $.ui.ready(function () {
+        $.ui.removeFooterMenu();
+    });
+</script>
+</body>
+</html>

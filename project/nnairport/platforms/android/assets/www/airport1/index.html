@@ -1,0 +1,1163 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+
+<head>
+    <script>
+        (function () {
+            if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                        document.createTextNode("@-ms-viewport{width:auto!important}")
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+        })();
+    </script>
+
+    <title>玩转机场</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link rel="stylesheet" type="text/css" href="css/icons.css"/>
+
+    <!--
+  <link rel="stylesheet" type="text/css" href="css/af.ui.css" title="default" />
+-->
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="css/appframework.css"/>
+    <link rel="stylesheet" type="text/css" href="css/lists.css"/>
+    <link rel="stylesheet" type="text/css" href="css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="css/buttons.css"/>
+    <link rel="stylesheet" type="text/css" href="css/badges.css"/>
+    <link rel="stylesheet" type="text/css" href="css/grid.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/android.css"/>
+    <link rel="stylesheet" type="text/css" href="css/win8.css"/>
+    <link rel="stylesheet" type="text/css" href="css/bb.css"/>
+    <link rel="stylesheet" type="text/css" href="css/ios.css"/>
+    <link rel="stylesheet" type="text/css" href="css/ios7.css"/>
+    <link rel="stylesheet" type="text/css" href="css/tizen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/firefox.css"/>
+
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.actionsheet.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.popup.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.scroller.css"/>
+    <link rel="stylesheet" type="text/css" href="plugins/css/af.selectBox.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/iconfont/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="css/common.css" />
+
+    <link rel="stylesheet" type="text/css" href="css/airport.css" />
+
+    <!-- uncomment for intel.xdk apps
+    <script type="text/javascript" charset="utf-8" src="intelxdk.js"></script>
+    <script type="text/javascript" charset="utf-8" src="xhr.js"></script>
+    -->
+    <script type="text/javascript" charset="utf-8" src="./appframework.js"></script>
+    <!-- include af.desktopBrowsers.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "plugins/af.desktopBrowsers.js";
+            var tag = $("head").append(script);
+            //$.os.desktop=true;
+        }
+
+        //  $.feat.nativeTouchScroll=true;
+
+    </script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.actionsheet.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.css3animate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.passwordBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.scroller.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.selectBox.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchEvents.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.touchLayer.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.popup.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="./ui/appframework.ui.js"></script>
+    <!-- <script type="text/javascript" charset="utf-8" src="./ui/transitions/all.js"></script> -->
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/fade.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/flip.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/pop.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slide.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideDown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./ui/transitions/slideUp.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.slidemenu.js"></script>
+    <script type="text/javascript" charset="utf-8" src="./plugins/af.8tiles.js"></script>
+
+    <script type="text/javascript" src="airport.js"></script>
+</head>
+
+<body>
+<div id="afui" class="ios7">
+    <!-- this is the splashscreen you see. -->
+    <div id="splashscreen" class='ui-loader heavy'>
+        玩转机场
+        <br>
+        <br> <span class='ui-icon ui-icon-loading spin'></span>
+
+        <h1>正在启动......</h1>
+    </div>
+    <div id="header">
+        <a id='menubadge' onclick='af.ui.toggleSideMenu()' class='menuButton'></a>
+    </div>
+    <div id="content">
+        <!-- 首页 -->
+        <div title='玩转机场' id="main" class="panel" selected="true">
+            <ul class="list">
+                <li><a class="iconfont icon-daohang" href="#airNavigation">机场导航</a></li>
+                <li><a class="iconfont icon-hangbandongtai" href="#hbdtPanel">航班动态</a></li>
+                <li><a class="iconfont icon-fuwu" href="#airportService">机场服务</a></li>
+                <li><a class="iconfont icon-iconfontcolor34" href="#airportNotice">机场公告</a></li>
+                <li><a class="iconfont icon-jiesuan" href="#serviceBooking">服务预订</a></li>
+                <li><a class="iconfont icon-guibinzhongxin" href="#">贵宾服务</a></li>
+                <li><a class="iconfont icon-jiejifuwu" href="#">接送机</a></li>
+                <li><a class="iconfont icon-canyin" href="#cateringHotel">餐饮住宿</a></li>
+                <li><a class="iconfont icon-kefu" href="#servicePerson">人工服务</a></li>
+            </ul>
+        </div>
+
+        <!-- 机场导航 -->
+        <div id="airNavigation" class="panel" data-title="机场导航">
+            <h3><a href="#navigationSearch">搜索</a></h3>
+        </div>
+
+        <!-- 导航搜索 -->
+        <div id="navigationSearch" class="panel" data-title="搜索">
+            <div>
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                    <input type="search" placeholder="搜索">
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#">值机</a></td>
+                            <td><a href="#">安检</a></td>
+                            <td><a href="#">登机口</a></td>
+                            <td><a href="#">贵宾室</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">餐厅</a></td>
+                            <td><a href="#">商场</a></td>
+                            <td><a href="#">联检</a></td>
+                            <td><a href="#navigationSearchMore" class="more">更多 &gt;</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <ul class="list">
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">T2航站楼出入口<p>北京市朝阳区</p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">泰山火车站<p>泰山市泰山区</p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                    <li><a href="#" class="glyphicon glyphicon-map-marker big">杨林收费站<p></p></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 导航搜索更多 -->
+        <div id="navigationSearchMore" class="panel" data-title="更多">
+            <div>
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">值机柜台号</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#"></a></td>
+                            <td><a href="#"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">安检通道号</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#"></a></td>
+                            <td><a href="#"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">登机口</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#"></a></td>
+                            <td><a href="#"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">贵宾室</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#"></a></td>
+                            <td><a href="#"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">餐厅</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#"></a></td>
+                            <td><a href="#"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">商场</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#"></a></td>
+                            <td><a href="#"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">联检</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#"></a></td>
+                            <td><a href="#"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">ATM</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#"></a></td>
+                            <td><a href="#"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">医务室</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">4</a></td>
+                            <td><a href="#"></a></td>
+                            <td><a href="#"></a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">派出所</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">售票处</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">中转</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="category_card">
+                    <table>
+                        <tr>
+                            <td><a href="#" class="important">行李</a></td>
+                            <td><a href="#">1</a></td>
+                            <td><a href="#">2</a></td>
+                            <td><a href="#">1</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 航班动态 -->
+        <div id="hbdtPanel" class="panel" data-title="航班动态">
+            <div class="button-grouped flex tabbed">
+                <a class="button pressed">广州出发 </a>
+                <a class="button">到达广州 </a>
+            </div>
+
+            <h3>您可按<span>城市名</span>查询</h3>
+            <ul class="list inset">
+                <li>
+                    <a><i class="iconfont icon-hangbandongtai"></i>出发地：<span class="gray_888" style="float: right;margin: 3px 15px 0 0;">全部</span></a>
+                </li>
+            </ul>
+            <h3>或者按<span>航班号</span>查询</h3>
+            <div class="input-group">
+                <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                <input type="search" placeholder="可输入数字">
+            </div>
+
+            <div id="days">
+                <ul class="yesterday">
+                    <li class="day">3-23</li>
+                    <li>昨天</li>
+                </ul>
+                <ul class="today">
+                    <li class="day">3-24</li>
+                    <li>今天</li>
+                </ul>
+                <ul class="tomorrow">
+                    <li class="day">3-25</li>
+                    <li>明天</li>
+                </ul>
+            </div>
+
+            <a id="btnQuery" class="btn btn-primary block" href="#queryListPanel">查询</a>
+            <br/>
+            <a id="btnAddFocus" class="btn btn-warning block" href="#addFocusPanel">添加关注</a>
+        </div>
+
+        <!-- 航班查询列表 -->
+        <div class="panel " data-title="查询列表" id="queryListPanel">
+            <ul class="list">
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">MU3616</td>
+                                <td>
+                                    <div class="gray_888">宁波  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">CZ3780</td>
+                                <td>
+                                    <div class="gray_888">宁波  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">CZ3802</td>
+                                <td>
+                                    <div class="gray_888">杭州  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">MF1662</td>
+                                <td>
+                                    <div class="gray_888">杭州  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">MF1646</td>
+                                <td>
+                                    <div class="gray_888">宁波  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">MU3487</td>
+                                <td>
+                                    <div class="gray_888">杭州  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">KE8865</td>
+                                <td>
+                                    <div class="gray_888">首尔  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">MU5733</td>
+                                <td>
+                                    <div class="gray_888">丽江  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">MU3616</td>
+                                <td>
+                                    <div class="gray_888">宁波  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+                <li>
+                    <a href="#hbdtPanel_detail">
+                        <table>
+                            <tr>
+                                <td class="bold_15">MU3616</td>
+                                <td>
+                                    <div class="gray_888">宁波  <span class="split_line">—</span>  广州</div>
+                                    <h5><i class="iconfont icon-hangbandongtai"></i><span class="bold_15">3月24日 00:05</span></h5>
+                                </td>
+                                <td>到达</td>
+                            </tr>
+                        </table>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 航班动态详细 -->
+        <div class="panel" data-title="航班动态" id="hbdtPanel_detail">
+            <div>
+                <table class="fist-line">
+                    <tr>
+                        <td>到达</td>
+                        <td>
+                            <div>MU3616</div>
+                            <div>东方航空</div>
+                        </td>
+                        <td>
+                            <div class="phone">
+                                <i class="glyphicon glyphicon-earphone"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div style="padding: 0 10px">
+                    <table class="second_line">
+                        <tr class="gray_888_f18">
+                            <td>宁波</td>
+                            <td>
+                                <div><i class="iconfont icon-hangbandongtai"></i></div>
+                                3月23日 周一
+                            </td>
+                            <td>广州</td>
+                        </tr>
+                    </table>
+
+                    <table class="three_line">
+                        <tr>
+                            <td style="border-left: none">
+                                <div>预计到达</div>
+                                <div class="dark_30">23:55</div>
+                            </td>
+                            <td>
+                                <div>实际到达</div>
+                                <div class="dark_30">23:55</div>
+                            </td>
+                            <td style="border-right: none;border-bottom: 5px solid #b5b5b5;">
+                                <div>到达口<i class="glyphicon glyphicon-map-marker"></i></div>
+                                <div class="blue_30">W2</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: none">
+                                <div>航站楼</div>
+                                <div class="dark_30_1">T1</div>
+                            </td>
+                            <td>
+                                <div>行李带</div>
+                                <div class="dark_30_1">10</div>
+                            </td>
+                            <td style="border-right: none">
+                                <div>机型</div>
+                                <div class="dark_30_1">738</div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="four_line">
+                        <div>
+                            <span class="rectangle_long"></span>
+                            <span class="rectangle_long"></span>
+                            <div style="display: inline-block;">
+                                <span class="rectangle_short"></span><br/>
+                                <span class="rectangle_short"></span>
+                            </div>
+                            <span class="rectangle_long"></span>
+                            <span class="rectangle_long"></span>
+                        </div>
+                        <table>
+                            <tr>
+                                <td style="width: 60%"></td>
+                                <td align="left" style="color: white;font-size: 17PX;font-weight: bold;">航班到达时间</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td align="left" style="color: green;font-size: 17PX;font-weight: bold;">倒计时</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <a class="button"><i class="glyphicon glyphicon-eye-open"></i>关注</a>
+                    <a class="button"><i class="glyphicon glyphicon-share"></i>分享</a>
+                    <a class="button"><i class="glyphicon glyphicon-refresh"></i>刷新</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 添加关注 -->
+        <div class="panel" data-title="添加关注" id="addFocusPanel">
+            <ul class="list">
+                <li>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="bold_15">布隆迪航 BY9085</div>
+                                <div class="time"><span class="pull-left bold_20">02:05</span> <em></em><i>到站</i><em></em> <span class="pull-right bold_20">05:30</span></div>
+                                <div class="gray_888"><span class="pull-left">北京首都PEK</span> <span class="pull-right">广州白云CAN</span></div>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus"></i>
+                                <p>关注</p>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="bold_15">布隆迪航 BY9085</div>
+                                <div class="time"><span class="pull-left bold_20">02:05</span> <em></em><i>到站</i><em></em> <span class="pull-right bold_20">05:30</span></div>
+                                <div class="gray_888"><span class="pull-left">北京首都PEK</span> <span class="pull-right">广州白云CAN</span></div>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus"></i>
+                                <p>关注</p>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="bold_15">海南航空 HU7811</div>
+                                <div class="time"><span class="pull-left bold_20">07:15</span> <em></em><i>到站</i><em></em> <span class="pull-right bold_20">10:35</span></div>
+                                <div class="gray_888"><span class="pull-left">北京首都PEK</span> <span class="pull-right">广州白云CAN</span></div>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus"></i>
+                                <p>关注</p>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="bold_15">中国国航 CA1351</div>
+                                <div class="time"><span class="pull-left bold_20">08:05</span> <em></em><i>到站</i><em></em> <span class="pull-right bold_20">10:55</span></div>
+                                <div class="gray_888"><span class="pull-left">北京首都PEK</span> <span class="pull-right">广州白云CAN</span></div>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus"></i>
+                                <p>关注</p>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="bold_15">深圳航空 ZH1351</div>
+                                <div class="time"><span class="pull-left bold_20">08:05</span> <em></em><i>到站</i><em></em> <span class="pull-right bold_20">10:55</span></div>
+                                <div class="gray_888"><span class="pull-left">北京首都PEK</span> <span class="pull-right">广州白云CAN</span></div>
+                                <div>实际承运CA1351</div>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus"></i>
+                                <p>关注</p>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="bold_15">山东航空 SC1351</div>
+                                <div class="time"><span class="pull-left bold_20">08:05</span> <em></em><i>到站</i><em></em> <span class="pull-right bold_20">10:55</span></div>
+                                <div class="gray_888"><span class="pull-left">北京首都PEK</span> <span class="pull-right">广州白云CAN</span></div>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus"></i>
+                                <p>关注</p>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="bold_15">布隆迪航 BY9085</div>
+                                <div class="time"><span class="pull-left bold_20">02:05</span> <em></em><i>到站</i><em></em> <span class="pull-right bold_20">05:30</span></div>
+                                <div class="gray_888"><span class="pull-left">北京首都PEK</span> <span class="pull-right">广州白云CAN</span></div>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus"></i>
+                                <p>关注</p>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="bold_15">布隆迪航 BY9085</div>
+                                <div class="time"><span class="pull-left bold_20">02:05</span> <em></em><i>到站</i><em></em> <span class="pull-right bold_20">05:30</span></div>
+                                <div class="gray_888"><span class="pull-left">北京首都PEK</span> <span class="pull-right">广州白云CAN</span></div>
+                            </td>
+                            <td>
+                                <i class="fa fa-plus"></i>
+                                <p>关注</p>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 机场服务 -->
+        <div class="panel" data-title="机场服务" id="airportService">
+            <ul class="list">
+                <li><a href="#lostQuery">遗失物品查询</a></li>
+                <li><a href="#serviceComplain">服务投诉</a></li>
+                <li><a href="#serviceIntro">机场服务设施介绍</a></li>
+                <li><a href="#transportIntro">机场交通介绍</a></li>
+            </ul>
+        </div>
+
+        <!-- 遗失物品查询 -->
+        <div class="panel" data-title="遗失物品查询" id="lostQuery">
+            <form style="margin-top: 10px;">
+                <input type="text" placeholder="航班号">
+                <input type="date" placeholder="乘机日期">
+                <input type="text" placeholder="乘客姓名">
+                <input type="text" placeholder="联系方式">
+                <textarea rows="5" placeholder="遗失物品名称描述"></textarea>
+            </form>
+
+            <a href="#" class="btn btn-primary block">提交</a>
+        </div>
+
+        <!-- 服务投诉 -->
+        <div class="panel" data-title="服务投诉" id="serviceComplain">
+            <form style="margin-top: 10px;">
+                <input type="text" placeholder="航班号">
+                <input type="date" placeholder="乘机日期">
+                <input type="text" placeholder="旅客姓名">
+                <input type="text" placeholder="联系方式">
+                <textarea rows="5" placeholder="投诉事项描述"></textarea>
+            </form>
+
+            <a href="#" class="btn btn-primary block">提交</a>
+        </div>
+
+        <!-- 机场服务设施介绍 -->
+        <div class="panel" data-title="机场服务设施介绍" id="serviceIntro">
+            <ul class="list">
+                <li><a href="#">餐厅</a></li>
+                <li><a href="#">商店</a></li>
+                <li><a href="#">医务室</a></li>
+                <li><a href="#">派出所</a></li>
+                <li><a href="#">银行（ATM)</a></li>
+                <li><a href="#">小件寄存</a></li>
+                <li><a href="#">贵宾厅</a></li>
+                <li><a href="#">洗手间</a></li>
+                <li><a href="#">吸烟室</a></li>
+            </ul>
+        </div>
+
+        <!-- 机场交通介绍 -->
+        <div class="panel" data-title="机场交通介绍" id="transportIntro">
+
+        </div>
+
+        <!-- 机场公告 -->
+        <div class="panel" data-title="机场公告" id="airportNotice">
+            <ul class="list">
+                <li><a href="#">机场介绍</a></li>
+                <li><a href="#">天气预报</a></li>
+                <li><a href="#">机场市场信息</a></li>
+                <li><a href="#">候机楼商业信息</a></li>
+                <li><a href="#">紧急预警</a></li>
+                <li><a href="#">优惠券</a></li>
+            </ul>
+        </div>
+
+        <!-- 服务预定 -->
+        <div class="panel" data-title="服务预定" id="serviceBooking">
+            <ul class="list">
+                <li><a href="#inOutService">进出港导乘服务</a></li>
+                <li><a href="#inOutService">自主联程服务</a></li>
+                <li><a href="#inOutService">贵宾服务</a></li>
+                <li><a href="#inOutService">餐饮服务</a></li>
+                <li><a href="#inOutService">宾馆住宿</a></li>
+                <li><a href="#inOutService">接送机</a></li>
+            </ul>
+        </div>
+
+        <!-- 进出港导乘服务 -->
+        <div class="panel" data-title="进出港导乘服务" id="inOutService">
+            <ul class="list">
+                <li>
+                    <table>
+                        <tr>
+                            <td>服务项目名称</td>
+                            <td align="right"><span>¥150</span></td>
+                        </tr>
+                        <tr>
+                            <td><p>服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述</p></td>
+                            <td align="right">
+                                <a href="#booking" class="btn btn-primary pull-right">预定</a>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>服务项目名称</td>
+                            <td align="right"><span>¥150</span></td>
+                        </tr>
+                        <tr>
+                            <td><p>服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述</p></td>
+                            <td align="right">
+                                <a href="#booking" class="btn btn-primary pull-right">预定</a>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>服务项目名称</td>
+                            <td align="right"><span>¥150</span></td>
+                        </tr>
+                        <tr>
+                            <td><p>服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述</p></td>
+                            <td align="right">
+                                <a href="#booking" class="btn btn-primary pull-right">预定</a>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>服务项目名称</td>
+                            <td align="right"><span>¥150</span></td>
+                        </tr>
+                        <tr>
+                            <td><p>服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述</p></td>
+                            <td align="right">
+                                <a href="#booking" class="btn btn-primary pull-right">预定</a>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+                    <table>
+                        <tr>
+                            <td>服务项目名称</td>
+                            <td align="right"><span>¥150</span></td>
+                        </tr>
+                        <tr>
+                            <td><p>服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述服务描述</p></td>
+                            <td align="right">
+                                <a href="#booking" class="btn btn-primary pull-right">预定</a>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+
+            </ul>
+        </div>
+
+        <!-- 预订 -->
+        <div class="panel wrapper" data-title="预订" id="booking">
+            <form style="margin-top: 10px;">
+                <input type="text" placeholder="航班号">
+                <input type="date" placeholder="乘机日期">
+                <input type="text" placeholder="乘客姓名">
+                <input type="text" placeholder="联系方式">
+            </form>
+
+            <a href="#" class="btn btn-primary block">支付</a>
+        </div>
+
+        <!-- 餐饮住宿 -->
+        <div class="panel" data-title="餐饮住宿" id="cateringHotel">
+            <div class="button-grouped flex">
+                <a id="btnCatering" class="button pressed">餐饮 </a>
+                <a id="btnHotel" class="button">住宿 </a>
+            </div>
+
+            <div class="wrapper">
+                <ul id="cateringList" class="list img">
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                紫悦餐厅
+                                <p>T1 F-21号登机口附近</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                KFC
+                                <p>候机楼一楼到达厅</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                紫悦餐厅
+                                <p>T1 F-21号登机口附近</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                KFC
+                                <p>候机楼一楼到达厅</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                紫悦餐厅
+                                <p>T1 F-21号登机口附近</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                KFC
+                                <p>候机楼一楼到达厅</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul id="hotelList" class="list img" style="display: none;">
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                机场宾馆
+                                <p>T1 F-21号登机口附近</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                民航大厦南楼
+                                <p>候机楼一楼到达厅</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                机场宾馆
+                                <p>T1 F-21号登机口附近</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#cateringHotelDetail">
+                            <img src="image/ziyue.jpg">
+                            <div class="desc">
+                                民航大厦南楼
+                                <p>候机楼一楼到达厅</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 餐饮住宿详情 -->
+        <div class="panel wrapper" data-title="餐饮住宿详情" id="cateringHotelDetail">
+            <table>
+                <tr>
+                    <td style="width: 125px;">
+                        <img src="image/ziyue.jpg" style="width: 120px; height: 80px">
+                    </td>
+                    <td style="padding: 10px;">
+                        紫悦餐厅
+                        <p>位置：候机楼二楼 </p>
+                        <p>营业时间： 06 ： 00- 航班结束</p>
+                    </td>
+                </tr>
+            </table>
+
+            <ul class="list">
+                <li>
+                    <p>候机楼内最大的餐厅，总经营面积2447平方米，可同时容纳近千人用餐，可接待团体、散客订餐并提供包厢服务。主要经营：桂林特色米粉、手工面食、精美小炒、烟、酒、茶水、咖啡、小吃等，为旅客提供多元化选择。</p>
+                </li>
+                <li class="divider">联系电话</li>
+                <li>
+                    <p><a href="tel:0773-2845895">0773-2845895</a></p>
+                    <p><a href="tel:18977399539">18977399539</a></p>
+                </li>
+            </ul>
+
+            <a href="#" class="btn btn-primary block">预定</a>
+        </div>
+
+        <!-- 人工服务 -->
+        <div class="panel" data-title="人工服务" id="servicePerson">
+            <ul class="list" style="padding-top: 10px;">
+                <li class="divider">
+                    航班查询
+                </li>
+                <li>
+                    <p><a href="tel:07712095160">0771-2095160</a>(人工)</p>
+                    <p><a href="tel:07712095180">0771-2095180</a>(自动)</p>
+                </li>
+
+                <li class="divider">
+                    机场问讯
+                </li>
+                <li>
+                    <p><a href="tel:07712095123">0771-2095123</a></p>
+                    <p><a href="tel:07712095124">0771-2095124</a></p>
+                </li>
+
+                <li class="divider">
+                    货物查询
+                </li>
+                <li>
+                    <p><a href="tel:07712095333">0771-2095333</a></p>
+                </li>
+
+                <li class="divider">
+                    航班售票
+                </li>
+                <li>
+                    <p><a href="tel:07712095298">0771-2095298</a></p>
+                </li>
+
+                <li class="divider">
+                    机场宾馆
+                </li>
+                <li>
+                    <p><a href="tel:07712095360">0771-2095360</a></p>
+                </li>
+
+                <li class="divider">
+                    停车收费
+                </li>
+                <li>
+                    <p><a href="tel:07712095571">0771-2095571</a></p>
+                </li>
+
+                <li class="divider">
+                    顾客投诉（表扬）
+                </li>
+                <li>
+                    <p><a href="tel:07712095056">0771-2095056</a></p>
+                    <p><a href="tel:07712095398">0771-2095398</a></p>
+                    <p><a href="tel:07712095069">0771-2095069</a>（传真）</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="navbar">
+        <a href="javascript:void(0);" class="iconfont icon-feijipiao pressed">飞机票</a>
+        <a href="#" class="iconfont icon-hangbandongtai">航班动态</a>
+        <a href="#" class="iconfont icon-gongwenbao">行程服务</a>
+        <a href="#" class="iconfont icon-gerenzhongxin">个人中心</a>
+    </div>
+
+    <nav id="main_nav">
+        <ul class="list">
+            <li><a class="iconfont icon-zhuce" href="#">注册、登录</a></li>
+            <li><a class="iconfont icon-dingdan" href="#">我的订单</a></li>
+            <li><a class="iconfont icon-zancunfuwushixiang" href="#">服务帮助</a></li>
+            <li><a class="iconfont icon-shezhi" href="#">设置</a></li>
+            <li><a class="iconfont icon-guanyuabout" href="#">关于</a></li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>
